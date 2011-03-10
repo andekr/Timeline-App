@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest android:versionCode="1" android:versionName="1.0"
+    package="com.fabula.android.timeline" xmlns:android="http://schemas.android.com/apk/res/android">
+    <application android:debuggable="true" android:icon="@drawable/icon" android:label="@string/app_name">
+        <activity android:label="@string/app_name"
+            android:name="TimelineActivity" android:screenOrientation="landscape" android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
+        
+         <activity android:name="DashboardActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+                <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="image/*"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="video/*"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="audio/*"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="text/plain"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="share"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="text/plain"/>
+            </intent-filter>
+         </activity>
+         
+        <activity android:label="@string/create_note_name"
+            android:name=".NoteActivity" android:screenOrientation="landscape"/>
+            
+        <activity android:label="@string/app_name"
+            android:name=".ProfileActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
+            
+            
+           <provider
+            android:authorities="com.fabula.android.timeline.providers.ExperienceProvider" android:name="com.fabula.android.timeline.providers.ExperienceProvider"/>
+        <provider
+            android:authorities="com.fabula.android.timeline.providers.EventProvider" android:name="com.fabula.android.timeline.providers.EventProvider"/>
+        <provider
+            android:authorities="com.fabula.android.timeline.providers.NoteProvider" android:name="com.fabula.android.timeline.providers.NoteProvider"/>
+        <provider
+            android:authorities="com.fabula.android.timeline.providers.EventItemProvider" android:name="com.fabula.android.timeline.providers.EventItemProvider"/>
+        <provider
+            android:authorities="com.fabula.android.timeline.providers.PictureProvider" android:name="com.fabula.android.timeline.providers.PictureProvider"/>
+        <provider
+            android:authorities="com.fabula.android.timeline.providers.BaseContentProvider" android:name="com.fabula.android.timeline.providers.BaseContentProvider"/>
+        <!-- 
+	<receiver android:name=".receivers.IntentReceiver" android:enabled="true">
+			<intent-filter>
+				<action android:name="com.fabula.android.timeline.intent.action.IMAGE"></action>
+			</intent-filter>
+		</receiver>
+ -->
+        <provider
+            android:authorities="com.fabula.android.timeline.providers.recordingprovider" android:name="com.fabula.android.timeline.providers.RecordingProvider"/>
+        <provider
+            android:authorities="com.fabula.android.timeline.providers.videoprovider" android:name="com.fabula.android.timeline.providers.VideoProvider"/>
+        <provider
+            android:authorities="com.fabula.android.timeline.providers.emotionsprovider" android:name="com.fabula.android.timeline.providers.EmotionsProvider"/>
+   
+</application>
+    <uses-sdk android:minSdkVersion="7"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature android:name="android.hardware.camera"/>
+    <uses-feature android:name="android.hardware.camera.autofocus"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-feature android:name="android.hardware.microphone" android:required="false"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.USE_CREDENTIALS"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+</manifest>

@@ -1,0 +1,85 @@
+package com.fabula.android.timeline.database;
+
+import com.fabula.android.timeline.models.Emotion.EmotionColumns;
+import com.fabula.android.timeline.models.Event.EventColumns;
+import com.fabula.android.timeline.models.EventItem.EventItemsColumns;
+import com.fabula.android.timeline.models.Experience.ExperienceColumns;
+import com.fabula.android.timeline.models.SimpleNote.NoteColumns;
+import com.fabula.android.timeline.models.SimplePicture.PictureColumns;
+import com.fabula.android.timeline.models.SimpleRecording.RecordingColumns;
+import com.fabula.android.timeline.models.SimpleVideo.VideoColumns;
+
+/**
+ *  "Static" class with statements for creating database tables.
+ * 
+ * @author andekr
+ *
+ */
+public class SQLStatements {
+	
+	public static final String EVENT_DATABASE_TABLE_NAME = "events";
+	public static final String NOTE_DATABASE_TABLE_NAME = "notes";
+	public static final String EVENT_TO_EVENT_ITEM_DATABASE_TABLE_NAME = "event_to_event_items";
+	public static final String PICTURE_DATABASE_TABLE_NAME = "pictures";
+	public static final String RECORDINGS_DATABASE_TABLE_NAME ="recordings";
+	public static final String VIDEO_DATABASE_TABLE_NAME = "videos";
+	public static final String EMOTIONS_DATABASE_TABLE_NAME = "emotions";	
+	public static final String TIMELINES_DATABASE_TABLE_NAME = "timelines";
+	
+    public static final String EVENT_DATABASE_CREATE =
+        "create table " + EVENT_DATABASE_TABLE_NAME + 
+        " (" + EventColumns.EVENT_ID + " varchar primary key, " +
+        EventColumns.EVENT_EXPERIENCEID + " varchar, " +
+        EventColumns.EVENT_LOCATION_LAT + " varchar, " +
+        EventColumns.EVENT_LOCATION_LNG + " varchar, " +
+        EventColumns.EVENT_TITLE+" long not null);";
+    
+    public static final String EVENT_TO_EVENT_ITEM_DATABASE_CREATE =
+        "create table " + EVENT_TO_EVENT_ITEM_DATABASE_TABLE_NAME + 
+        " (" + EventColumns._ID + " varchar, " +
+        EventItemsColumns.EVENT_ITEM_ID + " varchar, " +
+        EventItemsColumns.EVENT_ITEM_TYPE + " INTEGER, " +
+        EventItemsColumns.CREATED_DATE + " LONG, " +
+        "primary key("+EventColumns._ID+" ,"+ EventItemsColumns.EVENT_ITEM_ID+"));";
+    
+    public static final String NOTES_DATABASE_CREATE = "CREATE TABLE " + NOTE_DATABASE_TABLE_NAME + " ("
+		+ NoteColumns._ID + " VARCHAR PRIMARY KEY,"
+		+ NoteColumns.TITLE + " TEXT,"
+		+ NoteColumns.NOTE + " TEXT,"
+		+ NoteColumns.CREATED_DATE + " LONG,"
+		+EventItemsColumns.USERNAME+" VARCHAR,"
+		+ NoteColumns.MODIFIED_DATE + " INTEGER"+");";
+    
+	public static final String PICTURE_DATABASE_CREATE = "CREATE TABLE " + PICTURE_DATABASE_TABLE_NAME + " ("
+		+PictureColumns._ID +" VARCHAR PRIMARY KEY,"
+		+PictureColumns.FILE_PATH+" VARCHAR NOT NULL,"
+		+PictureColumns.DESCRIPTION+" TEXT,"
+		+EventItemsColumns.USERNAME+" VARCHAR,"
+		+PictureColumns.CREATED_DATE+" LONG"+");";
+	
+	public static final String RECORDING_DATABASE_CREATE = "CREATE TABLE " + RECORDINGS_DATABASE_TABLE_NAME + "("
+		+RecordingColumns._ID +" VARCHAR PRIMARY KEY,"
+		+RecordingColumns.FILE_URI +" VARCHAR NOT NULL,"
+		+RecordingColumns.DESCRIPTION +" TEXT,"
+		+EventItemsColumns.USERNAME+" VARCHAR,"
+		+RecordingColumns.CREATED_DATE +" LONG"+");" ;
+	
+	public static final String VIDEO_DATABASE_CREATE = "CREATE TABLE " + VIDEO_DATABASE_TABLE_NAME +"("
+		+VideoColumns._ID +" VARCHAR PRIMARY KEY,"
+		+VideoColumns.FILE_PATH + " VARCHAR NOT NULL,"
+		+VideoColumns.DESCRIPTION + " TEXT,"
+		+EventItemsColumns.USERNAME+" VARCHAR,"
+		+VideoColumns.CREATED_DATE +" LONG"+");";
+	
+	public static final String EMOTIONS_DATABASE_CREATE = "CREATE TABLE " + EMOTIONS_DATABASE_TABLE_NAME+"("
+		+EmotionColumns._ID+ " INTEGER PRIMARY KEY AUTOINCREMENT,"
+		+EmotionColumns.EVENT_ID +" VARCHAR NOT NULL,"
+		+EmotionColumns.EMOTION_TYPE +" INTEGER NOT NULL"+");";
+
+	public static final String TIMELINES_DATABASE_CREATE = "CREATE TABLE " + TIMELINES_DATABASE_TABLE_NAME+"("
+		+ExperienceColumns._ID+ " VARCHAR PRIMARY KEY,"
+		+ExperienceColumns.EXPERIENCE_NAME+ " VARCHAR NOT NULL,"
+		+ExperienceColumns.EXPERIENCE_SHARED+ " INTEGER,"
+		+ExperienceColumns.EXPERIENCE_CREATOR+ " VARCHAR NOT NULL"+");";
+		
+}

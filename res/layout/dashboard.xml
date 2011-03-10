@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent" android:background="@color/White">
+
+
+
+<TableRow android:id="@+id/dash_header_row" android:layout_width="fill_parent" android:layout_height="wrap_content" android:background="@color/Header">
+<ImageButton android:background="@drawable/header_home_button" android:layout_width="wrap_content" android:id="@+id/HeaderHomeButto" android:focusable="false" android:layout_height="50dp"></ImageButton>
+
+</TableRow>
+
+
+
+<TableRow android:id="@+id/DashTableRow01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:paddingTop="20dp" android:paddingBottom="20dp">
+<LinearLayout android:paddingTop="10dp" android:layout_weight="1" android:layout_height="100dip" android:paddingBottom="10dp" android:layout_width="fill_parent" android:id="@+id/LinearLayout01"><LinearLayout android:paddingRight="30dip" android:layout_weight="2" android:layout_height="fill_parent" android:layout_width="0dp" android:id="@+id/LinearLayout03" android:paddingLeft="35dip"><ImageButton android:scaleType="centerInside" android:background="@drawable/dash_new_button" android:layout_height="fill_parent" android:layout_width="fill_parent" android:id="@+id/dash_new_timeline"></ImageButton>
+</LinearLayout>
+<LinearLayout android:paddingRight="35dip" android:layout_weight="2" android:layout_height="fill_parent" android:paddingLeft="35dip" android:layout_width="0dp" android:id="@+id/LinearLayout03"><ImageButton android:scaleType="centerInside" android:background="@drawable/dash_my_timelines_button" android:layout_height="fill_parent" android:layout_width="fill_parent" android:id="@+id/dash_my_timelines"></ImageButton>
+</LinearLayout>
+</LinearLayout>
+
+
+</TableRow>
+<TableRow android:id="@+id/DashTableRow02" android:layout_height="wrap_content" android:layout_width="fill_parent" android:paddingTop="20dip" android:paddingBottom="20dip">
+<LinearLayout android:layout_weight="1" android:layout_width="fill_parent" android:id="@+id/LinearLayout01" android:layout_height="100dip">
+
+<LinearLayout android:layout_width="0dp" android:id="@+id/LinearLayout03" android:layout_height="fill_parent" android:layout_weight="2" android:paddingLeft="20dip" android:paddingRight="25dip">
+<ImageButton android:id="@+id/dash_new_timeline" android:scaleType="centerInside" android:background="@drawable/dash_my_groups_button" android:layout_width="fill_parent" android:layout_height="fill_parent"></ImageButton>
+</LinearLayout>
+
+<LinearLayout android:layout_width="0dp" android:id="@+id/LinearLayout03" android:layout_height="fill_parent" android:layout_weight="2" android:paddingLeft="20dip" android:paddingRight="20dip">
+<ImageButton android:scaleType="centerInside" android:background="@drawable/dash_shared_timelines_button" android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/dash_shared_timelines"></ImageButton>
+</LinearLayout>
+
+</LinearLayout>
+</TableRow>
+
+<TableRow android:id="@+id/DashTableRow03" android:layout_height="wrap_content" android:layout_width="fill_parent" android:paddingTop="20dip" android:paddingBottom="20dip">
+<LinearLayout android:layout_weight="1" android:layout_width="fill_parent" android:id="@+id/LinearLayout01" android:layout_height="100dip">
+
+<LinearLayout android:layout_width="0dp" android:id="@+id/LinearLayout03" android:layout_height="fill_parent" android:layout_weight="2" android:paddingLeft="30dip" android:paddingRight="30dip">
+<ImageButton android:scaleType="centerInside" android:background="@drawable/dash_my_profile_button" android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/dash_profile"></ImageButton>
+</LinearLayout>
+
+<LinearLayout android:layout_width="0dp" android:id="@+id/LinearLayout03" android:layout_height="fill_parent" android:layout_weight="2" android:paddingLeft="20dip" android:paddingRight="20dip">
+<ImageButton android:scaleType="centerInside" android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/dash_sync" android:background="@drawable/dash_sync_button"></ImageButton>
+</LinearLayout>
+</LinearLayout>
+
+</TableRow>
+
+
+</TableLayout>

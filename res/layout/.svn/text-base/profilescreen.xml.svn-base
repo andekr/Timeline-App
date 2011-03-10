@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent" android:padding="5dp">
+<TextView android:layout_height="wrap_content" android:text="@string/Username_label" android:id="@+id/Username_label" android:textStyle="bold" android:textSize="20sp" android:layout_width="fill_parent"></TextView>
+
+<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/UsernameTextView" android:textSize="20sp" android:text="bruker@google.com" android:layout_below="@+id/Username_label"></TextView>
+</RelativeLayout>

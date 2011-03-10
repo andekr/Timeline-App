@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:id="@+id/MENU_EXTRACT_ITEM" android:title="@string/extract_item_label"></item>
+<item android:title="@string/Edit_label" android:id="@+id/MENU_EDIT_NOTE"></item>
+<item android:title="@string/Delete_item_label" android:id="@+id/MENU_DELETE_ITEM"></item>
+<item android:id="@+id/MENU_DELETE_EVENT"></item>
+<item android:id="@+id/MENU_DELETE_TIMELINE"></item>
+<item android:id="@+id/MENU_OPEN_TIMELINE"></item>
+</menu>

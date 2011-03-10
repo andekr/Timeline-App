@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/imageandtextbutton" android:clickable="true" android:background="@drawable/quickcontact_slider_btn" android:layout_height="70dp" android:layout_width="70dp" android:gravity="center" android:paddingBottom="5dp" android:paddingTop="5dp" android:paddingLeft="10dp" android:paddingRight="10dp">
+<ImageView android:layout_height="wrap_content" android:src="@drawable/ic_menu_play_clip" android:id="@+id/CustomButtonIcon" android:layout_width="wrap_content" android:clickable="false"></ImageView>
+<TextView android:id="@+id/TextView01" android:layout_height="wrap_content" android:text="Play" android:textColor="@color/Black" android:gravity="center" android:layout_below="@+id/CustomButtonIcon" android:layout_width="wrap_content" android:clickable="false"></TextView>
+</RelativeLayout>

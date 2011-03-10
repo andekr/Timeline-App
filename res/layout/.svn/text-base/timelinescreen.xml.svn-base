@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" android:background="@color/White" android:id="@+id/timelineRelativeLayout">
+
+<!--  
+<ImageView android:layout_above="@+id/TimelineMenuDockLinearLayout" android:id="@+id/ImageView01" android:layout_width="fill_parent" android:layout_height="fill_parent"></ImageView>
+<VideoView android:layout_above="@+id/TimelineMenuDockLinearLayout" android:id="@+id/VideoView01" android:layout_height="fill_parent" android:layout_width="wrap_content" android:layout_centerHorizontal="true"></VideoView>
+-->
+<LinearLayout android:layout_width="fill_parent" android:background="@color/Header" android:id="@+id/TimeLineHeaderLinearLayout" android:layout_height="25dip"><ImageButton android:background="@drawable/header_home_button" android:layout_height="fill_parent" android:layout_width="170dp" android:id="@+id/HomeButton" android:focusable="false"></ImageButton>
+<TextView android:layout_width="fill_parent" android:gravity="right|center_vertical" android:layout_height="fill_parent" android:text="Screenlabel" android:id="@+id/TimelineLabel" android:textColor="@color/White"></TextView>
+</LinearLayout>
+<HorizontalScrollView 
+	android:id="@+id/HorizontalScrollView01" 
+	android:layout_width="wrap_content" 
+	android:layout_height="fill_parent" 
+	android:layout_above="@+id/TimelineMenuDockLinearLayout" 
+	android:persistentDrawingCache="scrolling" android:layout_below="@+id/TimeLineHeaderLinearLayout">
+	<LinearLayout 
+		android:id="@+id/LinearLayout01" 
+		android:layout_width="fill_parent" 
+		android:layout_height="fill_parent">
+		<GridView android:id="@+id/GridView01" android:layout_height="fill_parent" android:padding="0dp" android:horizontalSpacing="0dp" android:gravity="center" android:verticalSpacing="0dp" android:layout_above="@+id/TimelineMenuDockLinearLayout" android:layout_width="1000dp" android:minWidth="1000dp" android:numColumns="24" android:listSelector="@drawable/customcircleselector" android:stretchMode="columnWidth" android:scrollbars="horizontal|vertical" android:scrollbarFadeDuration="100" android:cacheColorHint="#00000000">
+			</GridView>
+
+
+
+
+</LinearLayout></HorizontalScrollView>
+<LinearLayout android:id="@+id/TimelineMenuDockLinearLayout" android:layout_width="fill_parent" android:layout_alignParentBottom="true" android:background="@drawable/quickcontact_slider_background" android:layout_height="50dip">
+<LinearLayout
+	android:orientation="horizontal"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:gravity="center"
+	android:clickable="true"
+	android:background="@drawable/quickcontact_slider_btn" android:id="@+id/MenuCameraButton" android:paddingLeft="5dp" android:paddingRight="5dp">
+
+	<ImageView
+		android:id="@+id/icon" 
+		android:scrollbarAlwaysDrawHorizontalTrack="true" android:src="@drawable/ic_menu_camera" android:layout_width="40dp" android:layout_height="fill_parent"/>
+	
+</LinearLayout>
+<LinearLayout
+	android:orientation="horizontal"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:gravity="center"
+	android:clickable="true"
+	android:background="@drawable/quickcontact_slider_btn" android:id="@+id/MenuVideoCameraButton" android:paddingLeft="5dp" android:paddingRight="5dp">
+
+	<ImageView
+		android:id="@+id/icon" 
+		android:scrollbarAlwaysDrawHorizontalTrack="true" android:src="@drawable/ic_menu_video" android:layout_width="40dp" android:layout_height="fill_parent"/>
+	
+</LinearLayout>
+
+<LinearLayout
+	android:orientation="horizontal"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:gravity="center"
+	android:clickable="true"
+	android:background="@drawable/quickcontact_slider_btn" android:id="@+id/MenuAudioButton" android:paddingLeft="5dp" android:paddingRight="5dp">
+
+	<ImageView
+		android:id="@+id/icon" 
+		android:scrollbarAlwaysDrawHorizontalTrack="true" android:src="@drawable/ic_menu_audio" android:layout_width="40dp" android:layout_height="fill_parent"/>
+	
+</LinearLayout>
+
+<LinearLayout
+	android:orientation="horizontal"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:gravity="center"
+	android:clickable="true"
+	android:background="@drawable/quickcontact_slider_btn" android:id="@+id/MenuNoteButton" android:paddingLeft="5dp" android:paddingRight="5dp">
+
+	<ImageView
+		android:id="@+id/icon" 
+		android:scrollbarAlwaysDrawHorizontalTrack="true" android:src="@drawable/ic_menu_note" android:layout_width="40dp" android:layout_height="fill_parent"/>
+	
+</LinearLayout>
+
+<LinearLayout
+	android:orientation="horizontal"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:gravity="center"
+	android:clickable="true"
+	android:background="@drawable/quickcontact_slider_btn" android:id="@+id/MenuAttachmentButton" android:paddingLeft="5dp" android:paddingRight="5dp">
+
+	<ImageView
+		android:id="@+id/icon" 
+		android:scrollbarAlwaysDrawHorizontalTrack="true" android:src="@drawable/ic_menu_attachment" android:layout_width="40dp" android:layout_height="fill_parent"/>
+	
+</LinearLayout>
+<ZoomControls android:id="@+id/ZoomControls01" android:layout_height="wrap_content" android:gravity="right" android:layout_width="fill_parent"></ZoomControls>
+
+</LinearLayout>
+
+
+
+</RelativeLayout>
+

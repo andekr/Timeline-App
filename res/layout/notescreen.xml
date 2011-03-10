@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" android:background="@color/White">
+
+<ScrollView android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/NoteScrollView" android:layout_above="@+id/TimelineMenuDockLinearLayout" android:layout_alignParentTop="true" android:background="@color/White"><RelativeLayout android:id="@+id/RelativeLayout01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@color/White"><EditText android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/NoteTitleEditText" android:hint="Enter note title"></EditText><EditText android:layout_height="wrap_content" android:layout_width="fill_parent" android:hint="Enter note text" android:id="@+id/NoteTextEditText" android:layout_below="@+id/NoteTitleEditText"></EditText></RelativeLayout>
+</ScrollView>
+
+
+<RelativeLayout android:id="@+id/TimelineMenuDockLinearLayout" android:layout_width="fill_parent" android:layout_alignParentBottom="true" android:background="@drawable/quickcontact_slider_background" android:layout_height="50dip">
+
+
+
+
+
+
+
+
+<LinearLayout android:id="@+id/NoteConfirmButtonsLinearLayout" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_alignParentRight="true"><Button android:layout_height="wrap_content" android:id="@+id/SaveNoteButton" android:text="@string/save_label" android:layout_width="80dip" android:layout_gravity="right"></Button>
+
+<Button android:layout_height="wrap_content" android:text="@string/discard_label" android:layout_width="80dip" android:layout_gravity="right" android:id="@+id/DiscardNoteButton"></Button>
+</LinearLayout>
+</RelativeLayout>
+
+</RelativeLayout>
+

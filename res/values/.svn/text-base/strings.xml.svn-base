@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources>
+    <string name="hello">Hello World, starterActivity!</string>
+    <string name="app_name">TimelineApplication</string>
+
+    <string name="create_note_name">Create a new note</string>
+	<string name="save_label">Save</string>
+	<string name="discard_label">Discard</string>
+	<string name="Edit_label">Edit</string>
+	<string name="Delete_item_label">Delete item</string>
+	<string name="Delete_event_label">Delete event</string>
+	<string name="Delete_event_title">Delete?</string>
+	<string name="Delete_event_confirmation">Do you really want to delete entire event?</string>
+	<string name="yes_label">Yes</string>
+	<string name="no_label">No</string>
+	<string name="Delete_timeline_label">Delete timeline</string>
+	<string name="Delete_timeline_title">Delete timeline?</string>
+	<string name="Delete_timeline_confirmation">Do you really want to delete the entire timeline?</string>
+	<string name="Open_timeline_label">Open timeline</string>
+	<string name="Add_to_timeline_label">Add to this timeline</string>
+	<string name="Username_label">Username:</string>
+	<string name="Enter_name_label">Create a new timeline</string>
+	<string name="Timelinename_hint">Name of timeline</string>
+	<string name="ShareTimeline_label">Share timeline?</string>
+	<string name="Select_Timeline_label">Select a timeline!</string>
+
+
+    <string name="picture">Picture</string>
+    <string name="video"> Video </string>
+    <string name="barcode"> Barcode </string>
+    <string name="file"> File </string>
+    <string name="url"> Url </string>
+    <string name="audio"> Audio</string>
+    
+    <string name="play_label">Play</string>
+    <string name="like_label">Like</string>
+    <string name="extract_item_label">Extract item to new event</string>
+    
+    <string name="like_toast">You like this event!</string>
+    <string name="cool_toast">You think this event is cool!</string>
+    <string name="dislike_toast">You dislike this event.</string>
+    <string name="sad_toast">This event makes you sad.</string>
+    
+    <string name="new_timeline">Enter the name of your timeline</string>
+      
+    <string name="no_events_toast">You have no events this day</string>
+    
+<color name="Grey">#666666</color>
+<color name="White">#FFF</color>
+<color name="Black">#000000</color>
+<color name="Green">#339900</color>
+<color name="Header">#069d2e</color>
+
+<string-array name="attachment_types">
+	<item>@string/picture</item>
+	<item>@string/video</item>
+	<item>@string/audio</item>
+	<item>@string/barcode</item>
+	<item>@string/file</item>
+	<!--  <item>@string/url</item> -->
+</string-array>
+
+
+</resources>
