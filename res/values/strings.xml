@@ -59,6 +59,7 @@
 	<item>@string/file</item>
 	<!--  <item>@string/url</item> -->
 </string-array>
+	<string name="openMapView">Open Mapview</string>
 
 
 </resources>

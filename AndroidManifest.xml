@@ -6,6 +6,8 @@
             android:name="TimelineActivity" android:screenOrientation="landscape" android:theme="@android:style/Theme.NoTitleBar">
         </activity>
         
+        <uses-library android:name="com.google.android.maps" />
+        
          <activity android:name="DashboardActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -44,6 +46,11 @@
         <activity android:label="@string/app_name"
             android:name=".ProfileActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar">
         </activity>
+        
+        <activity android:label="@string/app_name"
+            android:name=".TimelineMapView" android:screenOrientation="landscape" android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
+        
             
             
            <provider
@@ -70,7 +77,8 @@
         <provider
             android:authorities="com.fabula.android.timeline.providers.videoprovider" android:name="com.fabula.android.timeline.providers.VideoProvider"/>
         <provider
-            android:authorities="com.fabula.android.timeline.providers.emotionsprovider" android:name="com.fabula.android.timeline.providers.EmotionsProvider"/>
+            android:authorities="com.fabula.android.timeline.providers.emotionsprovider" android:name="com.fabula.android.timeline.providers.EmotionsProvider"></provider><activity android:screenOrientation="landscape" android:name="TimelineMapView"></activity>
+        
    
 </application>
     <uses-sdk android:minSdkVersion="7"/>

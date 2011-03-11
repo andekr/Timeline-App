@@ -67,7 +67,7 @@ import com.fabula.android.timeline.utilities.MyLocation;
  */
 public class TimelineActivity extends Activity implements SimpleGestureListener {
 	
-	private LinearLayout cameraButton, videoCameraButton, audioRecorderButton, createNoteButton, attachmentButton;
+	private LinearLayout cameraButton, videoCameraButton, audioRecorderButton, createNoteButton, attachmentButton, openMapViewButton;
 	private TextView screenTitle;
 	private TimelineGridAdapter EventAdapter;
 	private Event selectedEvent;
@@ -98,7 +98,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	
 	private MyLocation myLocation;
 	
-	private SimpleGestureFilter detector; 
+	private SimpleGestureFilter detector;
 
 	/** Called when the activity is first created. */
     @Override
@@ -461,11 +461,15 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
     	createNoteButton = (LinearLayout)findViewById(R.id.MenuNoteButton);
     	createNoteButton.setOnClickListener(createNoteListener);
     	
+    	openMapViewButton = (LinearLayout) findViewById(R.id.OpenMapView);
+    	openMapViewButton.setOnClickListener(openMapViewListener);
+    	
     	attachmentButton = (LinearLayout)findViewById(R.id.MenuAttachmentButton);
     	attachmentButton.setOnClickListener(addAttachmentListener);
     	
     	scrollview = (HorizontalScrollView) findViewById(R.id.HorizontalScrollView01);
     	scrollview.setScrollContainer(true);
+    	
     	gridview = (GridView) findViewById(R.id.GridView01);
     	
     	EventAdapter = new TimelineGridAdapter(this, this);
@@ -575,6 +579,22 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 			startAttachmentDialog();
 		}
 	};
+	
+	private OnClickListener openMapViewListener = new OnClickListener() {
+		
+		public void onClick(View v) {
+			openMapView();
+		}
+	};
+	
+	/**
+	 * Method that opens the map view activity
+	 */
+	
+	private void openMapView() {
+		Intent mapViewIntent = new Intent(this, TimelineMapView.class);		
+		startActivity(mapViewIntent);
+	}
 	
 
 	/**
