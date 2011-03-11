@@ -44,25 +44,11 @@ public class TimelineMapItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 		return timelineMapOverlays.size();
 	}
 	
-//	@Override
-//	public boolean onTap(GeoPoint p, MapView mapView) {
-//		
-//		mOverlayItem = 
-//		openEventViewInTimeLineActivity();
-//		return super.onTap(p, mapView);
-//	}
-	
 	private void openEventViewInTimeLineActivity(OverlayItem item) {
 		Intent eventTappedIntent = new Intent();
 		eventTappedIntent.putExtra("EVENT_ID", item.getSnippet());
 		mActivity.setResult(Activity.RESULT_OK, eventTappedIntent);
 		mActivity.finish();
-	}
-	
-	@Override
-	public boolean onTouchEvent(MotionEvent event, MapView mapView) {
-		// TODO Auto-generated method stub
-		return super.onTouchEvent(event, mapView);
 	}
 
 	@Override
