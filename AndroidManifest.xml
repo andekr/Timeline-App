@@ -48,7 +48,7 @@
         </activity>
         
         <activity android:label="@string/app_name"
-            android:name=".TimelineMapView" android:screenOrientation="landscape" android:theme="@android:style/Theme.NoTitleBar">
+            android:name="com.fabula.android.timeline.Map.TimelineMapView" android:screenOrientation="landscape" android:theme="@android:style/Theme.NoTitleBar">
         </activity>
         
             
@@ -77,7 +77,7 @@
         <provider
             android:authorities="com.fabula.android.timeline.providers.videoprovider" android:name="com.fabula.android.timeline.providers.VideoProvider"/>
         <provider
-            android:authorities="com.fabula.android.timeline.providers.emotionsprovider" android:name="com.fabula.android.timeline.providers.EmotionsProvider"></provider><activity android:screenOrientation="landscape" android:name="TimelineMapView"></activity>
+            android:authorities="com.fabula.android.timeline.providers.emotionsprovider" android:name="com.fabula.android.timeline.providers.EmotionsProvider"></provider>
         
    
 </application>

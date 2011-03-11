@@ -60,6 +60,7 @@
 	<!--  <item>@string/url</item> -->
 </string-array>
 	<string name="openMapView">Open Mapview</string>
+	<string name="map_view">Open Map View</string>
 
 
 </resources>

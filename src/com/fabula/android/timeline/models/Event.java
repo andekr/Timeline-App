@@ -90,6 +90,7 @@ public class Event {
 	}
 	
 	public GeoPoint getGeoPointLocation() {
+
 		return new GeoPoint((int)(getLatitude() * 1E6) , (int) (getLongitude() * 1E6));
 	}
 

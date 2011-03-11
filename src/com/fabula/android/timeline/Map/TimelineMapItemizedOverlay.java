@@ -1,4 +1,4 @@
-package com.fabula.android.timeline;
+package com.fabula.android.timeline.Map;
 
 import java.util.ArrayList;
 

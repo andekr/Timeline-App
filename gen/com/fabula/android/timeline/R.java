@@ -131,22 +131,22 @@ public final class R {
         public static final int HorizontalScrollView01=0x7f0a003e;
         public static final int LinearLayout01=0x7f0a0008;
         public static final int LinearLayout03=0x7f0a0009;
-        public static final int MENU_DELETE_EVENT=0x7f0a004b;
-        public static final int MENU_DELETE_ITEM=0x7f0a004a;
-        public static final int MENU_DELETE_TIMELINE=0x7f0a004c;
-        public static final int MENU_EDIT_NOTE=0x7f0a0049;
-        public static final int MENU_EXTRACT_ITEM=0x7f0a0048;
-        public static final int MENU_OPEN_TIMELINE=0x7f0a004d;
+        public static final int MENU_DELETE_EVENT=0x7f0a004a;
+        public static final int MENU_DELETE_ITEM=0x7f0a0049;
+        public static final int MENU_DELETE_TIMELINE=0x7f0a004b;
+        public static final int MENU_EDIT_NOTE=0x7f0a0048;
+        public static final int MENU_EXTRACT_ITEM=0x7f0a0047;
+        public static final int MENU_OPEN_TIMELINE=0x7f0a004c;
         public static final int MenuAttachmentButton=0x7f0a0044;
         public static final int MenuAudioButton=0x7f0a0042;
         public static final int MenuCameraButton=0x7f0a0040;
         public static final int MenuNoteButton=0x7f0a0043;
         public static final int MenuVideoCameraButton=0x7f0a0041;
+        public static final int NEW_MAP_VIEW=0x7f0a0046;
         public static final int NoteConfirmButtonsLinearLayout=0x7f0a001e;
         public static final int NoteScrollView=0x7f0a0019;
         public static final int NoteTextEditText=0x7f0a001d;
         public static final int NoteTitleEditText=0x7f0a001c;
-        public static final int OpenMapView=0x7f0a0045;
         public static final int PopupAddButton=0x7f0a0029;
         public static final int PopupContentLinearLayout=0x7f0a0028;
         public static final int PopupContentScrollView=0x7f0a0026;
@@ -171,7 +171,7 @@ public final class R {
         public static final int TimelineNameEditText=0x7f0a0016;
         public static final int UsernameTextView=0x7f0a0030;
         public static final int Username_label=0x7f0a002f;
-        public static final int ZoomControls01=0x7f0a0047;
+        public static final int ZoomControls01=0x7f0a0045;
         public static final int arrow_down=0x7f0a0036;
         public static final int arrow_up=0x7f0a0032;
         public static final int attachmentIcon=0x7f0a0002;
@@ -187,7 +187,6 @@ public final class R {
         public static final int footer=0x7f0a0035;
         public static final int header2=0x7f0a0031;
         public static final int icon=0x7f0a0000;
-        public static final int imageView1=0x7f0a0046;
         public static final int imageandtextbutton=0x7f0a0011;
         public static final int layout_root=0x7f0a0014;
         public static final int listIcon=0x7f0a0013;
@@ -216,7 +215,8 @@ public final class R {
         public static final int timelinescreen=0x7f03000d;
     }
     public static final class menu {
-        public static final int popupextractitemtoexperiencecontextmenu=0x7f090000;
+        public static final int mapviewmenu=0x7f090000;
+        public static final int popupextractitemtoexperiencecontextmenu=0x7f090001;
     }
     public static final class string {
         public static final int Add_to_timeline_label=0x7f050010;
@@ -246,6 +246,7 @@ public final class R {
         public static final int hello=0x7f050000;
         public static final int like_label=0x7f05001d;
         public static final int like_toast=0x7f05001f;
+        public static final int map_view=0x7f050026;
         public static final int new_timeline=0x7f050023;
         public static final int no_events_toast=0x7f050024;
         public static final int no_label=0x7f05000b;
