@@ -297,7 +297,7 @@ public class TimelineGridAdapter extends ArrayAdapter<Event> {
     		}
     		if(!showing){
             //set up dialog
-            dialog = new EventDialog(mContext,(Event)v.getTag(),mActivity);
+            dialog = new EventDialog(mContext,(Event)v.getTag(),mActivity, false);
             dialog.setOnCancelListener(new OnCancelListener() {
     			public void onCancel(DialogInterface dialog) {
     				((TimelineActivity)mActivity).setSelectedEvent(null);

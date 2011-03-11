@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.widget.LinearLayout;
 
 import com.fabula.android.timeline.R;
+import com.fabula.android.timeline.Utilities;
 import com.fabula.android.timeline.R.drawable;
 import com.fabula.android.timeline.R.id;
 import com.fabula.android.timeline.R.layout;
@@ -42,9 +43,6 @@ public class TimelineMapView extends MapActivity {
 		
 		mapView.setBuiltInZoomControls(true);
 		mapOverlays = mapView.getOverlays();
-		drawable = this.getResources().getDrawable(R.drawable.icon);
-		itemizedOverlay = new TimelineMapItemizedOverlay(drawable, this);
-		
 
 		addEventsToMap(loadEventsWithGeolocationFromDatabase());
 		
@@ -75,8 +73,11 @@ public class TimelineMapView extends MapActivity {
 	private void addEventsToMap(ArrayList<Event> allEvents) {
 		
 		for (Event event : allEvents) {
-			OverlayItem overlayItem = new OverlayItem(event.getGeoPointLocation(), "", "");
+			OverlayItem overlayItem = new OverlayItem(event.getGeoPointLocation(), "", event.getId());
 
+			drawable = this.getResources().getDrawable(Utilities.getMapImageIcon(event));
+			
+			itemizedOverlay = new TimelineMapItemizedOverlay(drawable, this, this);
 			itemizedOverlay.addOverlay(overlayItem);
 			mapOverlays.add(itemizedOverlay);
 		}

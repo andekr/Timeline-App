@@ -9,6 +9,7 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
+import android.graphics.Shader.TileMode;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -102,6 +103,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	private MyLocation myLocation;
 	
 	private SimpleGestureFilter detector;
+	private EventDialog eventDialog;
 
 	/** Called when the activity is first created. */
     @Override
@@ -283,6 +285,19 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 				
 				getBarcodeResults(requestCode, resultCode, data);
 				break;
+		
+		case Utilities.MAP_VIEW_ACTIVITY_REQUEST_CODE:
+			
+			if(resultCode == RESULT_OK) {
+				
+				String id = data.getExtras().getString("EVENT_ID");
+				Event selectedEvent = timeline.getEvent(id);
+				
+				if(selectedEvent != null) {
+				eventDialog = new EventDialog(this, selectedEvent, this, true);
+				eventDialog.show();
+				}
+			}
 
 		default:
 			break;
@@ -397,6 +412,15 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 		Intent noteIntent = new Intent(this, NoteActivity.class);
 		noteIntent.putExtra(Utilities.REQUEST_CODE, Utilities.CREATE_NOTE_ACTIVITY_REQUEST_CODE);
 		startActivityForResult(noteIntent, Utilities.CREATE_NOTE_ACTIVITY_REQUEST_CODE);
+	}
+	
+	/**
+	 * Method that opens the map view activity
+	 */
+	
+	public void openMapView() {
+		Intent mapViewIntent = new Intent(this, TimelineMapView.class);		
+		startActivityForResult(mapViewIntent, Utilities.MAP_VIEW_ACTIVITY_REQUEST_CODE);
 	}
 
 	/**
@@ -580,14 +604,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 		}
 	};
 		
-	/**
-	 * Method that opens the map view activity
-	 */
-	
-	private void openMapView() {
-		Intent mapViewIntent = new Intent(this, TimelineMapView.class);		
-		startActivity(mapViewIntent);
-	}
+
 	
 
 	/**

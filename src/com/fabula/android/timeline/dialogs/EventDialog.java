@@ -59,8 +59,9 @@ public class EventDialog extends Dialog {
 	private Runnable shareEventThread;
 	private String addressString="";
 	private Address address;
+	private boolean fromMap;
 
-	public EventDialog(Context context, Event event, Activity activity){
+	public EventDialog(Context context, Event event, Activity activity, boolean fromMap){
 		super(context);
 		this.mContext = context;
 		this.mEvent = event;
@@ -68,6 +69,7 @@ public class EventDialog extends Dialog {
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		this.setContentView(R.layout.popupcontentdialog);
 		this.setCancelable(true);
+		this.fromMap = fromMap;
 		
 		 dialogIcon = (ImageView)findViewById(R.id.PopupDialogTypeIconImageView);
          dialogIcon.setImageResource(Utilities.getImageIcon(this.mEvent));
@@ -449,5 +451,14 @@ public class EventDialog extends Dialog {
 		values.put(EmotionColumns.EMOTION_TYPE, like.getType());
 		
 		mContext.getContentResolver().insert(EmotionColumns.CONTENT_URI, values);
+	}
+	
+	@Override
+	public void onBackPressed() {
+		
+		if(fromMap) {
+			((TimelineActivity) mActivity).openMapView();
+		}
+		super.onBackPressed();
 	}
 }

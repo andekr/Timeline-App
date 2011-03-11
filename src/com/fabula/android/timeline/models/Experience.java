@@ -89,6 +89,15 @@ public class Experience {
 		return uriToExperience;
 	}
 	
+	public Event getEvent(String eventId) {
+		
+		for (Event event : Events) {
+			if(event.getId().equals(eventId)) 
+				return event;
+		}
+		return null;
+	}
+	
 	public Account getCreator() {
 		return creator;
 	}
