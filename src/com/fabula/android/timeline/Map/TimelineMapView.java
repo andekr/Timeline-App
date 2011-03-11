@@ -48,30 +48,38 @@ public class TimelineMapView extends MapActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.timelinemaplayout);
 		setupViews();
+		setUpMapControllers();
 		
+		if(getIntent().getAction().equals(Utilities.INTENT_ACTION_OPEN_MAP_VIEW_FROM_TIMELINE)) {
+			addEventsToMap(loadEventsWithGeolocationFromDatabase());
+		}
+		else if(getIntent().getAction().equals(Utilities.INTENT_ACTION_OPEN_MAP_VIEW_FROM_DASHBOARD)) {
+			addAllTimelineAppEventsToMap();
+		}
+	}
+
+	private void setUpMapControllers() {
 		mapView.setBuiltInZoomControls(true);
 		mapController = mapView.getController();
 		mapController.setZoom(18);
 		mapController.animateTo(MyLocation.getInstance(this).getGeoPointLocation());
 		mapOverlays = mapView.getOverlays();
+	}
+	
+	/**
+	 * Adds all the events saved in all the timeline to the map view
+	 */
+	private void addAllTimelineAppEventsToMap() {
+		new TimelineDatabaseHelper(this, Utilities.ALL_TIMELINES_DATABASE_NAME);
+		contentLoader = new ContentLoader(this);
 		
-		if(getIntent().getAction().equals(Utilities.INTENT_ACTION_OPEN_MAP_VIEW_FROM_TIMELINE)) {
+		ArrayList<Experience> experiences = contentLoader.LoadAllExperiencesFromDatabase();
+		TimelineDatabaseHelper.getCurrentTimeLineDatabase().close();
+		
+		for (Experience experience : experiences) {
+			eventDatabaseHelper = new DatabaseHelper(this, experience.getTitle());
 			addEventsToMap(loadEventsWithGeolocationFromDatabase());
-			
-		}else if(getIntent().getAction().equals(Utilities.INTENT_ACTION_OPEN_MAP_VIEW_FROM_DASHBOARD)) {
-			
-			new TimelineDatabaseHelper(this, Utilities.ALL_TIMELINES_DATABASE_NAME);
-			contentLoader = new ContentLoader(this);
-			
-			ArrayList<Experience> experiences = contentLoader.LoadAllExperiencesFromDatabase();
-			TimelineDatabaseHelper.getCurrentTimeLineDatabase().close();
-			
-			for (Experience experience : experiences) {
-				eventDatabaseHelper = new DatabaseHelper(this, experience.getTitle());
-				addEventsToMap(loadEventsWithGeolocationFromDatabase());
-				eventDatabaseHelper.close();
-			}
-
+			eventDatabaseHelper.close();
 		}
 	}
 	

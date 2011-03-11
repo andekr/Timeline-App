@@ -296,6 +296,10 @@ public class DashboardActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
+	/**
+	 * Open the map view where all the events in every timeline is showed on the map.
+	 */
+	
 	public void openMapView() {
 		Intent mapViewIntent = new Intent(this, TimelineMapView.class);
 		mapViewIntent.setAction(Utilities.INTENT_ACTION_OPEN_MAP_VIEW_FROM_DASHBOARD);
