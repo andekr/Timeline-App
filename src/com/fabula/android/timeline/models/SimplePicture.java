@@ -7,7 +7,6 @@ import java.util.Date;
 
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
-import org.simpleframework.xml.Transient;
 
 import android.accounts.Account;
 import android.content.Context;
