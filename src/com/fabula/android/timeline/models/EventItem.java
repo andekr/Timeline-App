@@ -2,10 +2,6 @@ package com.fabula.android.timeline.models;
 
 import java.util.UUID;
 
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.Element;
-import org.simpleframework.xml.Transient;
-
 import android.accounts.Account;
 import android.content.Context;
 import android.content.Intent;
@@ -18,24 +14,29 @@ import com.fabula.android.timeline.Utilities;
 import com.fabula.android.timeline.models.Event.EventColumns;
 import com.fabula.android.timeline.providers.EventItemProvider;
 
-@Transient
 public abstract class EventItem {
 	
-	@Element
 	private String id;
-	private Account user;
+	private transient Account user;
+	private String creator;
+	
+	//Workaroud for GSON to serialize these fields in subclasses
+	String className;
+	String pictureFilename;
+	String noteTitle;
+	String noteText;
 	
 	public EventItem(Context c) {
 		super();
 		this.id = UUID.randomUUID().toString();
-		user = Utilities.getUserAccount(c);
+		setUser(Utilities.getUserAccount(c));
 		Log.i("Event item created by: ", user.name);
 	}
 
 	public EventItem(String id, Account u) {
 		super(); 
 		this.id = id;
-		user = u;
+		setUser(u);
 	}
 
 	public String getId() {
@@ -48,17 +49,15 @@ public abstract class EventItem {
 	}
 
 	public void setUser(Account user) {
+		creator = user.name;
 		this.user = user;
 	}
 	
-	
-	@Attribute
-	public String getUsername() {
-		return user.name;
+	public String getCreator() {
+		return creator;
 	}
 	
-	@Attribute
-	public void setUsername(String username) {
+	public void setCreator(String username) {
 		//
 	}
 

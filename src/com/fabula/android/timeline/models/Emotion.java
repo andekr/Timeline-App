@@ -1,20 +1,15 @@
 package com.fabula.android.timeline.models;
 
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.Root;
-
 import android.net.Uri;
 import android.provider.BaseColumns;
 
 import com.fabula.android.timeline.R;
 
-@Root
 public enum Emotion {
 	
 	LIKE(R.drawable.emo_im_happy, 1), COOL(R.drawable.emo_im_cool,2), DISLIKE(R.drawable.emo_im_dislike,3), SAD(R.drawable.emo_im_sad,4);
 
 	private int icon;
-	
 	private int type;
 	
 	Emotion(int icon, int type){
@@ -25,12 +20,10 @@ public enum Emotion {
 	public int getIcon(){
 		return icon;
 	}
-	@Attribute
 	public int getType() {
 		return type;
 	}
 	
-	@Attribute
 	public String getName(){
 		return name();
 	}

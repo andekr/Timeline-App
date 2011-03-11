@@ -5,9 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Date;
 
-import org.simpleframework.xml.Element;
-import org.simpleframework.xml.Root;
-
 import android.accounts.Account;
 import android.content.Context;
 import android.content.Intent;
@@ -23,22 +20,21 @@ import android.widget.LinearLayout.LayoutParams;
 
 import com.fabula.android.timeline.providers.PictureProvider;
 
-@Root
 public class SimplePicture extends EventItem {
 
-	private Uri pictureUri;
+	private transient Uri pictureUri;
 	private Date created;
-	@Element
-	private String pictureFilename;
+	
 	
 	public SimplePicture(Context c) {
 		super(c);
 		this.created = new Date();
+		className = "SimplePicture";
 	}
 	
 	public SimplePicture(String id, Uri uri, Date created, Account u) {
 		super(id, u);
-		
+		className = "SimplePicture";
 		this.pictureUri = uri;
 		this.created = created;
 		pictureFilename = String.valueOf((""+created.getTime()+pictureUri.getEncodedPath()).hashCode());
@@ -68,6 +64,13 @@ public class SimplePicture extends EventItem {
 
 	public void setCreated(Date created) {
 		this.created = created;
+	}
+	
+	
+	//For GSON serializing
+	@SuppressWarnings("unused")
+	private String getClassName() {
+		return className;
 	}
 
 	@Override
@@ -148,4 +151,5 @@ public class SimplePicture extends EventItem {
         
 
 	}
+
 }
