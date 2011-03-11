@@ -419,7 +419,8 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	 */
 	
 	public void openMapView() {
-		Intent mapViewIntent = new Intent(this, TimelineMapView.class);		
+		Intent mapViewIntent = new Intent(this, TimelineMapView.class);	
+		mapViewIntent.setAction(Utilities.INTENT_ACTION_OPEN_MAP_VIEW_FROM_TIMELINE);
 		startActivityForResult(mapViewIntent, Utilities.MAP_VIEW_ACTIVITY_REQUEST_CODE);
 	}
 
@@ -799,7 +800,6 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 		switch (item.getItemId()) {
 		case R.id.NEW_MAP_VIEW:
 			openMapView();
-			System.out.println("HER SKAL KARTE ÅPNE SEG");
 			return true;
 
 		default:

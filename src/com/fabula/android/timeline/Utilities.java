@@ -33,6 +33,8 @@ public class Utilities {
 	
 	public static final String INTENT_ACTION_NEW_TIMELINE = "com.fabula.android.timeline.intent.NEW_TIMELINE";
 	public static final String INTENT_ACTION_ADD_TO_TIMELINE = "com.fabula.android.timeline.intent.ADD_TIMELINE";
+	public static final String INTENT_ACTION_OPEN_MAP_VIEW_FROM_TIMELINE = "com.fabula.android.intent.OPEN_MAP_TIMELINE";
+	public static final String INTENT_ACTION_OPEN_MAP_VIEW_FROM_DASHBOARD = "com.fabula.android.intent.OPEN_MAP_DASHBOARD";
 	
     public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 0;
     public static final int CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE = 1;
@@ -40,6 +42,7 @@ public class Utilities {
     public static final int CREATE_NOTE_ACTIVITY_REQUEST_CODE = 3;
     public static final int ATTACHMENT_ACTIVITY_REQUEST_CODE = 4;
     public static final int MAP_VIEW_ACTIVITY_REQUEST_CODE = 14;
+    public static final int ALL_EXPERIENCES_MAP_ACTIVITY_REQUEST_CODE = 15;
     
     public static final int SELECT_PICTURE = 5;
     public static final int SELECT_VIDEO = 6;

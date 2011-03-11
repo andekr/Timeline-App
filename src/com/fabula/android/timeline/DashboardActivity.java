@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
@@ -20,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.fabula.android.timeline.Map.TimelineMapView;
 import com.fabula.android.timeline.contentmanagers.ContentAdder;
 import com.fabula.android.timeline.contentmanagers.ContentLoader;
 import com.fabula.android.timeline.database.DatabaseHelper;
@@ -273,5 +275,30 @@ public class DashboardActivity extends Activity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+	}
+	
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.mapviewmenu, menu);
+	    return true;
+	}
+	
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.NEW_MAP_VIEW:
+			openMapView();
+			System.out.println("HER SKAL KARTE ÅPNE SEG");
+			return true;
+
+		default:
+			break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
+	public void openMapView() {
+		Intent mapViewIntent = new Intent(this, TimelineMapView.class);
+		mapViewIntent.setAction(Utilities.INTENT_ACTION_OPEN_MAP_VIEW_FROM_DASHBOARD);
+		startActivityForResult(mapViewIntent, Utilities.ALL_EXPERIENCES_MAP_ACTIVITY_REQUEST_CODE);
 	}
 }

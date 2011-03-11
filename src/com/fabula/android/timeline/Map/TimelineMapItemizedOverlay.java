@@ -3,29 +3,20 @@ package com.fabula.android.timeline.Map;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.view.MotionEvent;
 
-import com.fabula.android.timeline.dialogs.EventDialog;
-import com.fabula.android.timeline.models.Event;
-import com.google.android.maps.GeoPoint;
 import com.google.android.maps.ItemizedOverlay;
-import com.google.android.maps.MapView;
 import com.google.android.maps.OverlayItem;
 
 public class TimelineMapItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 	
 	private ArrayList<OverlayItem> timelineMapOverlays = new ArrayList<OverlayItem>();
-	private Context mContext;
-	private Event event;
-	private EventDialog eventDialog;
 	private Activity mActivity;
 	
-	public TimelineMapItemizedOverlay(Drawable defaultMarker, Context context, Activity activity) {
+	public TimelineMapItemizedOverlay(Drawable defaultMarker,  Activity activity) {
 		super(boundCenterBottom(defaultMarker));
-		mContext = context;
+
 		this.mActivity = activity;
 	}
 	
@@ -44,6 +35,13 @@ public class TimelineMapItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 		return timelineMapOverlays.size();
 	}
 	
+	@Override
+	protected boolean onTap(int index) {
+		OverlayItem item = timelineMapOverlays.get(index);
+		openEventViewInTimeLineActivity(item);
+		return true;
+	}
+	
 	private void openEventViewInTimeLineActivity(OverlayItem item) {
 		Intent eventTappedIntent = new Intent();
 		eventTappedIntent.putExtra("EVENT_ID", item.getSnippet());
@@ -51,11 +49,7 @@ public class TimelineMapItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 		mActivity.finish();
 	}
 
-	@Override
-	protected boolean onTap(int index) {
-		OverlayItem item = timelineMapOverlays.get(index);
-		openEventViewInTimeLineActivity(item);
-		return true;
-	}
+
+
 
 }
