@@ -211,7 +211,7 @@ public class DashboardActivity extends Activity {
 		timelineIntent.putExtra(Utilities.DATABASENAME_REQUEST, timelineName);
 		timelineIntent.putExtra(Utilities.SHARED_REQUEST, shared);
 		timelineIntent.putExtra(Utilities.EXPERIENCEID_REQUEST, timeLine.getId());
-		timelineIntent.putExtra(Utilities.EXPERIENCECREATOR_REQUEST, timeLine.getCreator().name);
+		timelineIntent.putExtra(Utilities.EXPERIENCECREATOR_REQUEST, timeLine.getUser().name);
 		startActivity(timelineIntent);
 
 	}

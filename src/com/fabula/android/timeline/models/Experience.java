@@ -4,10 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.Element;
-import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.Root;
 
 import android.accounts.Account;
 import android.net.Uri;
@@ -20,33 +16,29 @@ import com.fabula.android.timeline.providers.ExperienceProvider;
  * @author andekr
  *
  */
-@Root
-public class Experience {
 
-	@Attribute
+public class Experience {
 	private String id;
-	@Element
 	private String title;
-	@Element
 	private boolean shared;
-	private Account creator;
-	@ElementList
-	private ArrayList<Event> Events;
+	private transient Account user;
+	private String creator;
+	private ArrayList<Event> events;
 	private Uri uriToExperience;
 	
 
-	public Experience(String title, boolean shared, Account creator) {
+	public Experience(String title, boolean shared, Account user) {
 		this.id = UUID.randomUUID().toString();
 		this.title = title;
 		this.shared = shared;
-		this.creator = creator;
+		setUser(user);
 	}
 	
-	public Experience(String id, String title, boolean shared, Account creator) {
+	public Experience(String id, String title, boolean shared, Account user) {
 		this.id = id;
 		this.title = title;
 		this.shared = shared;
-		this.creator = creator;
+		setUser(user);
 	}
 	
 	public String getId() {
@@ -69,17 +61,17 @@ public class Experience {
 		this.shared = shared;
 	}
 	public ArrayList<Event> getEvents() {
-		return Events;
+		return events;
 	}
 	public void setEvents(ArrayList<Event> events) {
-		this.Events = events;
+		this.events = events;
 	}
 	public void addEvent(Event event){
-		this.Events.add(event);
+		this.events.add(event);
 	}
 	
 	public void removeEvent(Event event){
-		this.Events.remove(event);
+		this.events.remove(event);
 	}
 	
 	public void setUriToExperience(Uri uriToExperience) {
@@ -91,36 +83,38 @@ public class Experience {
 	
 	public Event getEvent(String eventId) {
 		
-		for (Event event : Events) {
+		for (Event event : events) {
 			if(event.getId().equals(eventId)) 
 				return event;
 		}
 		return null;
 	}
 	
-	public Account getCreator() {
+	public Account getUser() {
+		return user;
+	}
+
+	public void setUser(Account user) {
+		this.creator = user.name;
+		this.user = user;
+	}
+	
+		
+	@SuppressWarnings("unused")
+	private String getCreator() {
 		return creator;
 	}
 
-	public void setCreator(Account creator) {
+	@SuppressWarnings("unused")
+	private void setCreator(String creator) {
 		this.creator = creator;
-	}
-	
-	@Attribute
-	public String getUsername() {
-		return creator.name;
-	}
-	
-	@Attribute
-	public void setUsername(String username) {
-		//
 	}
 
 	
 	public float getTimeScopeOfExperience(){
 		float min=0, max=0, diff;//Min blir aldri satt!
 		
-		for (Event event : Events) {
+		for (Event event : events) {
 			if(min==0)
 				min = event.getDatetimemillis();
 			
@@ -140,7 +134,7 @@ public class Experience {
 		Date min = null, max = null;
 		
 		
-		for (Event event : Events) {
+		for (Event event : events) {
 			if(min==null)
 				min = event.getDatetime();
 			if(max==null)
