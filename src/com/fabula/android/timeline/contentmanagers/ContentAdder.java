@@ -82,7 +82,7 @@ public class ContentAdder {
 		 values.put(ExperienceColumns._ID, experience.getId());
 		 values.put(ExperienceColumns.EXPERIENCE_NAME, experience.getTitle());
 		 values.put(ExperienceColumns.EXPERIENCE_SHARED, experience.isSharedAsInt());
-		 values.put(ExperienceColumns.EXPERIENCE_CREATOR, experience.getCreator().name);
+		 values.put(ExperienceColumns.EXPERIENCE_CREATOR, experience.getUser().name);
 		 
 		 context.getContentResolver().insert(ExperienceColumns.CONTENT_URI, values);
 		 
@@ -131,7 +131,7 @@ public class ContentAdder {
 		  values.put(NoteColumns._ID, note.getId());
 		  values.put(NoteColumns.TITLE, note.getNoteTitle());
 		  values.put(NoteColumns.NOTE, note.getNoteText()); 
-		  values.put(EventItemsColumns.USERNAME, note.getUsername());
+		  values.put(EventItemsColumns.USERNAME, note.getCreator());
 		  values.put(NoteColumns.CREATED_DATE, event.getDatetimemillis());
 		  		  
 		  context.getContentResolver().insert(NoteColumns.CONTENT_URI, values);
@@ -144,7 +144,7 @@ public class ContentAdder {
 		
 		values.put(PictureColumns._ID, picture.getId());
 		values.put(PictureColumns.FILE_PATH, picture.getPictureUri().toString());
-		values.put(EventItemsColumns.USERNAME, picture.getUsername());
+		values.put(EventItemsColumns.USERNAME, picture.getCreator());
 		values.put(PictureColumns.CREATED_DATE, picture.getCreated().getTime());
 		
 		context.getContentResolver().insert(PictureColumns.CONTENT_URI, values);
@@ -156,7 +156,7 @@ public class ContentAdder {
 		
 		values.put(RecordingColumns._ID, recording.getId());
 		values.put(RecordingColumns.FILE_URI, recording.getRecordingUri().toString());
-		values.put(EventItemsColumns.USERNAME, recording.getUsername());
+		values.put(EventItemsColumns.USERNAME, recording.getCreator());
 		values.put(RecordingColumns.DESCRIPTION, recording.getRecordingDescription());
 		
 		context.getContentResolver().insert(RecordingColumns.CONTENT_URI, values);
@@ -167,7 +167,7 @@ public class ContentAdder {
 		
 		values.put(VideoColumns._ID, video.getId());
 		values.put(VideoColumns.FILE_PATH, video.getVideoUri().toString());
-		values.put(EventItemsColumns.USERNAME, video.getUsername());
+		values.put(EventItemsColumns.USERNAME, video.getCreator());
 		
 		context.getContentResolver().insert(VideoColumns.CONTENT_URI, values);
 	}

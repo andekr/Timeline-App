@@ -1,7 +1,5 @@
 package com.fabula.android.timeline.models;
 
-import org.simpleframework.xml.Element;
-import org.simpleframework.xml.Root;
 
 import android.accounts.Account;
 import android.content.Context;
@@ -16,27 +14,23 @@ import android.widget.TextView;
 import com.fabula.android.timeline.R;
 import com.fabula.android.timeline.providers.NoteProvider;
 
-@Root
 public class SimpleNote extends EventItem{
 	
 
-	@Element
-	private String noteText;
-	@Element
-	private String noteTitle;
-	
-		
 	public SimpleNote(Context c) {
 		super(c);
+		className = "SimpleNote";
 	}
 	
 	public SimpleNote(String noteText, Context c) {
 		super(c);
+		className = "SimpleNote";
 		this.noteText = noteText;
 	}
 	
 	public SimpleNote(String id, String title, String noteText, Account u){
 		super(id, u);
+		className = "SimpleNote";
 		this.noteText = noteText;
 		this.noteTitle = title;
 	}

@@ -111,7 +111,7 @@ public TimelineBrowserDialog(Context context, Intent receivedIntent, boolean sha
 		receivedIntent.putExtra(Utilities.DATABASENAME_REQUEST, databaseName);
 		receivedIntent.putExtra(Utilities.SHARED_REQUEST, shared);
 		receivedIntent.putExtra(Utilities.EXPERIENCEID_REQUEST, id);
-		receivedIntent.putExtra(Utilities.EXPERIENCECREATOR_REQUEST, experience.getCreator().name);
+		receivedIntent.putExtra(Utilities.EXPERIENCECREATOR_REQUEST, experience.getUser().name);
 		
 		context.startActivity(receivedIntent);
 		this.dismiss();

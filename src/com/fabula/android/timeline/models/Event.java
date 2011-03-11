@@ -4,11 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.Element;
-import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.Root;
-
 import android.location.Location;
 import android.net.Uri;
 import android.provider.BaseColumns;
@@ -16,22 +11,19 @@ import android.util.Log;
 
 import com.fabula.android.timeline.providers.EventProvider;
 
-@Root
 public class Event {
 	
-	@Attribute
 	private String id;
-	@Element
 	private String experienceid;
 	
-	private Location location;
+	private transient Location location;
+	private transient Date datetime;
 	
-	private Date datetime;
-	@Element
+	private double longitude;
+	private double latitude;
+	
 	private long datetimemillis;
-	@ElementList
 	private ArrayList<EventItem> eventItems;
-	@ElementList
 	private ArrayList<Emotion> emotionList;
 	
 	public Event(String exID, Location location) {
@@ -42,7 +34,7 @@ public class Event {
 		eventItems = new ArrayList<EventItem>();
 		emotionList = new ArrayList<Emotion>();
 		setDatetime(new Date());
-		this.location = location;
+		setLocation(location);
 	}
 	
 	public Event(String id, String exID, Date dateTime, Location location) {
@@ -52,7 +44,7 @@ public class Event {
 		eventItems = new ArrayList<EventItem>();
 		emotionList = new ArrayList<Emotion>();
 		setDatetime(dateTime);
-		this.location = location;
+		setLocation(location);
 	}
 	
 	public String getId() {
@@ -89,24 +81,22 @@ public class Event {
 	}
 
 	public void setLocation(Location location) {
+		this.longitude = location.getLongitude();
+		this.latitude = location.getLatitude();
 		this.location = location;
 	}
 	
-	@Element
 	public Double getLatitude(){
-		return getLocation().getLatitude();
+		return latitude;
 	}
 	
-	@Element 
 	public void setLatitude(Double latitude){
 	}
 	
-	@Element
 	public Double getLongitude(){
-		return getLocation().getLongitude();
+		return longitude;
 	}
 	
-	@Element 
 	public void setLongitude(Double longitude){
 	}
 	
