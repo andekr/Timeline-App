@@ -1,3 +1,5 @@
+
+//NOT IN USE
 package com.fabula.android.timeline.models;
 
 import java.io.File;
@@ -14,6 +16,7 @@ public class SimpleAttachment extends EventItem{
 	}
 	
 	private File attachment;
+	@SuppressWarnings("unused")
 	private String attachmentDescription;
 	
 	public void setAttachment(File attachment) {
