@@ -9,6 +9,7 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
+import android.graphics.Shader.TileMode;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -16,6 +17,8 @@ import android.provider.MediaStore.Video;
 import android.provider.MediaStore.Video.Media;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -30,6 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ZoomControls;
 
+import com.fabula.android.timeline.Map.TimelineMapView;
 import com.fabula.android.timeline.SimpleGestureFilter.SimpleGestureListener;
 import com.fabula.android.timeline.adapters.TimelineGridAdapter;
 import com.fabula.android.timeline.barcode.IntentIntegrator;
@@ -67,7 +71,7 @@ import com.fabula.android.timeline.utilities.MyLocation;
  */
 public class TimelineActivity extends Activity implements SimpleGestureListener {
 	
-	private LinearLayout cameraButton, videoCameraButton, audioRecorderButton, createNoteButton, attachmentButton;
+	private LinearLayout cameraButton, videoCameraButton, audioRecorderButton, createNoteButton, attachmentButton, openMapViewButton;
 	private TextView screenTitle;
 	private TimelineGridAdapter EventAdapter;
 	private Event selectedEvent;
@@ -98,7 +102,8 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	
 	private MyLocation myLocation;
 	
-	private SimpleGestureFilter detector; 
+	private SimpleGestureFilter detector;
+	private EventDialog eventDialog;
 
 	/** Called when the activity is first created. */
     @Override
@@ -280,6 +285,19 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 				
 				getBarcodeResults(requestCode, resultCode, data);
 				break;
+		
+		case Utilities.MAP_VIEW_ACTIVITY_REQUEST_CODE:
+			
+			if(resultCode == RESULT_OK) {
+				
+				String id = data.getExtras().getString("EVENT_ID");
+				Event selectedEvent = timeline.getEvent(id);
+				
+				if(selectedEvent != null) {
+				eventDialog = new EventDialog(this, selectedEvent, this, true);
+				eventDialog.show();
+				}
+			}
 
 		default:
 			break;
@@ -395,6 +413,15 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 		noteIntent.putExtra(Utilities.REQUEST_CODE, Utilities.CREATE_NOTE_ACTIVITY_REQUEST_CODE);
 		startActivityForResult(noteIntent, Utilities.CREATE_NOTE_ACTIVITY_REQUEST_CODE);
 	}
+	
+	/**
+	 * Method that opens the map view activity
+	 */
+	
+	public void openMapView() {
+		Intent mapViewIntent = new Intent(this, TimelineMapView.class);		
+		startActivityForResult(mapViewIntent, Utilities.MAP_VIEW_ACTIVITY_REQUEST_CODE);
+	}
 
 	/**
 	 * The method that starts the Attacment dialog.
@@ -460,12 +487,13 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
     	
     	createNoteButton = (LinearLayout)findViewById(R.id.MenuNoteButton);
     	createNoteButton.setOnClickListener(createNoteListener);
-    	
+    		
     	attachmentButton = (LinearLayout)findViewById(R.id.MenuAttachmentButton);
     	attachmentButton.setOnClickListener(addAttachmentListener);
     	
     	scrollview = (HorizontalScrollView) findViewById(R.id.HorizontalScrollView01);
     	scrollview.setScrollContainer(true);
+    	
     	gridview = (GridView) findViewById(R.id.GridView01);
     	
     	EventAdapter = new TimelineGridAdapter(this, this);
@@ -575,6 +603,8 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 			startAttachmentDialog();
 		}
 	};
+		
+
 	
 
 	/**
@@ -735,7 +765,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	 *  
 	 */
 	@Override
-	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+	public boolean onContextItemSelected(MenuItem item) {
 		switch (item.getGroupId()) {
 		case R.id.MENU_DELETE_EVENT:
 			Log.v(this.getClass().getSimpleName()+" LONG-CLICK", "DELETE EVENT: "+ selectedEvent.getId());
@@ -758,9 +788,26 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 				AlertDialog confirmation = builder.create();
 				confirmation.show();
 			return true;
+			
 	}
 		return false;
 	}
+	
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.NEW_MAP_VIEW:
+			openMapView();
+			System.out.println("HER SKAL KARTE ÅPNE SEG");
+			return true;
+
+		default:
+			break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
 
 	/**
 	 * Click listener on delete Event yes button 
@@ -873,7 +920,11 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode != KeyEvent.KEYCODE_BACK) {
+		
+		if(keyCode == KeyEvent.KEYCODE_MENU) {
+			return super.onKeyDown(keyCode, event);
+	    }
+		else if (keyCode != KeyEvent.KEYCODE_BACK) {
 			System.out.println("Resetting backcounter");
 			backCounter=0;
 	        return true;
@@ -884,5 +935,14 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	public MyLocation getMyLocation(){
 		return myLocation;
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.mapviewmenu, menu);
+	    return true;
+	}
+	
+
 	
 }

@@ -39,6 +39,7 @@ public class Utilities {
     public static final int RECORD_AUDIO_ACTIVITY_REQUEST_CODE = 2;
     public static final int CREATE_NOTE_ACTIVITY_REQUEST_CODE = 3;
     public static final int ATTACHMENT_ACTIVITY_REQUEST_CODE = 4;
+    public static final int MAP_VIEW_ACTIVITY_REQUEST_CODE = 14;
     
     public static final int SELECT_PICTURE = 5;
     public static final int SELECT_VIDEO = 6;
@@ -81,6 +82,24 @@ public class Utilities {
 			}
 		}
 		return R.drawable.ic_menu_archive;
+	}
+	
+	public static int getMapImageIcon(Event ex) {
+		
+		if(ex.getEventItems().size()==1){
+			if(ex.getEventItems().get(0) instanceof SimplePicture){
+				return R.drawable.mapicon_photo;
+			}else if(ex.getEventItems().get(0) instanceof SimpleRecording){
+				return R.drawable.mapicon_audio;
+			}else if(ex.getEventItems().get(0) instanceof SimpleVideo){
+				return R.drawable.mapicon_video;
+			}else if(ex.getEventItems().get(0) instanceof SimpleAttachment){
+				return R.drawable.mapicon_note;
+			}else if(ex.getEventItems().get(0) instanceof SimpleNote){
+				return R.drawable.mapicon_note;
+			}
+		}
+		return R.drawable.mapicon_note;
 	}
 	
 	

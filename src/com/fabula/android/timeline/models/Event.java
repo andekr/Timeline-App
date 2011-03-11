@@ -15,6 +15,7 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 import com.fabula.android.timeline.providers.EventProvider;
+import com.google.android.maps.GeoPoint;
 
 @Root
 public class Event {
@@ -86,6 +87,11 @@ public class Event {
 	}
 	public Location getLocation() {
 		return location;
+	}
+	
+	public GeoPoint getGeoPointLocation() {
+
+		return new GeoPoint((int)(getLatitude() * 1E6) , (int) (getLongitude() * 1E6));
 	}
 
 	public void setLocation(Location location) {
