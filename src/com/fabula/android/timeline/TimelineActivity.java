@@ -9,6 +9,7 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
+import android.content.res.Configuration;
 import android.graphics.Shader.TileMode;
 import android.net.Uri;
 import android.os.Bundle;
@@ -943,6 +944,9 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	    return true;
 	}
 	
-
+  @Override
+public void onConfigurationChanged(Configuration newConfig) {
+	super.onConfigurationChanged(newConfig);
+}
 	
 }

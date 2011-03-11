@@ -99,7 +99,7 @@ public class Uploader {
 		
 	}
 	
-	public static void putToGAE(Object o, String xmlLocation){
+	public static void putToGAE(Object o, String jsonString){
 	   
 	
 		DefaultHttpClient httpClient = new DefaultHttpClient();
@@ -114,21 +114,20 @@ public class Uploader {
 		else if(o instanceof Event)
 			httpPut = new HttpPut("/rest/event/");
 		// Make sure the server knows what kind of a response we will accept
-		httpPut.addHeader("Accept", "application/xml");
+		httpPut.addHeader("Accept", "application/json");
 		// Also be sure to tell the server what kind of content we are sending
-		httpPut.addHeader("Content-Type", "application/xml");
+		httpPut.addHeader("Content-Type", "application/json");
 		       
 		try
 		{
-		    StringEntity entity = new StringEntity(readFileAsString(xmlLocation), "UTF-8");
-		    System.out.println(readFileAsString(xmlLocation));
-		    entity.setContentType("application/xml");
+		    StringEntity entity = new StringEntity(jsonString, "UTF-8");
+		    entity.setContentType("application/json");
 		    httpPut.setEntity(entity);
 		   
 		        // execute is a blocking call, it's best to call this code in a thread separate from the ui's
 		    HttpResponse response = httpClient.execute(targetHost, httpPut);
 
-		    Log.v("PutExperiences to GAE", response.getStatusLine().toString());
+		    Log.v("Put to GAE", response.getStatusLine().toString());
 		}
 		catch (Exception ex)
 		{
@@ -136,6 +135,14 @@ public class Uploader {
 		}
 	}
 	
+	/**
+	 * Convert XML to String
+	 * 
+	 * @param filePath
+	 * @return
+	 * @throws java.io.IOException
+	 */
+	@SuppressWarnings("unused")
 	private static String readFileAsString(String filePath) throws java.io.IOException{
 	    byte[] buffer = new byte[(int) new File(filePath).length()];
 	    BufferedInputStream f = null;

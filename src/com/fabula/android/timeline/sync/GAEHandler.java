@@ -3,7 +3,12 @@ package com.fabula.android.timeline.sync;
 import android.app.Activity;
 import android.util.Log;
 
+import com.fabula.android.timeline.Utilities;
+import com.fabula.android.timeline.models.Event;
+import com.fabula.android.timeline.models.EventItem;
+import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.models.Experiences;
+import com.fabula.android.timeline.models.SimplePicture;
 import com.google.gson.Gson;
 
 /**
@@ -25,10 +30,10 @@ public class GAEHandler {
 		Gson gson = new Gson();
 //		File sdCardDirectory = Environment.getExternalStorageDirectory();
 //		File result = new File(sdCardDirectory.getPath()+"/experiences.txt");
+		String jsonString ="";
 
 		try {
-			String jsonString = gson.toJson(object, Experiences.class);
-			System.out.println(jsonString);
+			jsonString = gson.toJson(object, object.getClass());
 //			serializer.write(object, result);
 		} catch (Exception e) {
 			Log.e("save", e.getMessage());
@@ -66,30 +71,30 @@ public class GAEHandler {
 //		    }
 		
 		    //Saving xml to server
-//		    System.out.println("Lagrer XML på server: "+result.getPath());
+		    System.out.println("Lagrer JSON på Google App Engine: "+jsonString);
 //		    Uploader.uploadFile(result.getPath(), result.getPath());
-//		    Uploader.putToGAE(object, result.getPath());
+		    Uploader.putToGAE(object, jsonString);
 		    
 		    //Saving pictures to server
-//		    System.out.println("Lagrer bilder på server");
-//		    if(object instanceof Experiences){
-//		    	for (Experience ex : ((Experiences) object).getExperiences()) {
-//		    		for (Event event : ex.getEvents()) {
-//			    		for (EventItem eventI : event.getEventItems()) {
-//					    	if(eventI instanceof SimplePicture){
-//					    		Uploader.uploadFile(Utilities.getRealPathFromURI(((SimplePicture)eventI).getPictureUri(), a), ((SimplePicture)eventI).getPictureFilename());
-//					    	}
-//						}
-//					}
-//				}
-//		    	
-//		    }else if(object instanceof Event){
-//		    	for (EventItem eventI : ((Event)object).getEventItems()) {
-//			    	if(eventI instanceof SimplePicture){
-//			    		Uploader.uploadFile(Utilities.getRealPathFromURI(((SimplePicture)eventI).getPictureUri(), a), ((SimplePicture)eventI).getPictureFilename());
-//			    	}
-//				}
-//		    }
+		    System.out.println("Lagrer bilder på server");
+		    if(object instanceof Experiences){
+		    	for (Experience ex : ((Experiences) object).getExperiences()) {
+		    		for (Event event : ex.getEvents()) {
+			    		for (EventItem eventI : event.getEventItems()) {
+					    	if(eventI instanceof SimplePicture){
+					    		Uploader.uploadFile(Utilities.getRealPathFromURI(((SimplePicture)eventI).getPictureUri(), a), ((SimplePicture)eventI).getPictureFilename());
+					    	}
+						}
+					}
+				}
+		    	
+		    }else if(object instanceof Event){
+		    	for (EventItem eventI : ((Event)object).getEventItems()) {
+			    	if(eventI instanceof SimplePicture){
+			    		Uploader.uploadFile(Utilities.getRealPathFromURI(((SimplePicture)eventI).getPictureUri(), a), ((SimplePicture)eventI).getPictureFilename());
+			    	}
+				}
+		    }
 		  
 	}
 	
