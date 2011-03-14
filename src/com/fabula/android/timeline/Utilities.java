@@ -10,7 +10,9 @@ import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.net.NetworkInfo.State;
 import android.provider.MediaStore;
 
 import com.fabula.android.timeline.models.Event;
@@ -328,4 +330,6 @@ public class Utilities {
         cursor.moveToFirst();
         return cursor.getString(column_index);
     }
+	
+	
 }

@@ -12,6 +12,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -29,8 +30,10 @@ public class MyLocation {
 	String locationProvider;
 	Location location = null;
 	boolean gps_enabled, network_enabled;
+	static Context context;
 	
 	protected MyLocation(final Context c) {
+		context = c;
 		// Acquire a reference to the system Location Manager
 		locationManager = (LocationManager) c.getSystemService(Context.LOCATION_SERVICE);
 		locationProvider = LocationManager.NETWORK_PROVIDER;
@@ -97,29 +100,38 @@ public class MyLocation {
 	 * @throws IOException if the Geocoder fails
 	 */
 	public static Address getAddressForLocation(Context context, Location location) throws IOException{
+		if(isConnectedToInternet()){
+		    if (location == null) {
+		        return null;
+		    }
+	
+		    double latitude = location.getLatitude();
+		    double longitude = location.getLongitude();
+		    int maxResults = 1;
+	
+		    Geocoder gc = new Geocoder(context, Locale.getDefault());
+		    List<Address> addresses = null;
+			try {
+				addresses = gc.getFromLocation(latitude, longitude, maxResults);
+			} catch (IOException e) {
+				Log.e("getAddressForLocation", e.getMessage());
+				throw new IOException();
+			}
+	
+		    if (addresses.size() == 1) {
+		        return addresses.get(0);
+		    } else {
+		        return null;
+		    }
+		}else
+			return null;
+	}
 
-	    if (location == null) {
-	        return null;
-	    }
-
-	    double latitude = location.getLatitude();
-	    double longitude = location.getLongitude();
-	    int maxResults = 1;
-
-	    Geocoder gc = new Geocoder(context, Locale.getDefault());
-	    List<Address> addresses = null;
-		try {
-			addresses = gc.getFromLocation(latitude, longitude, maxResults);
-		} catch (IOException e) {
-			Log.e("getAddressForLocation", e.getMessage());
-			throw new IOException();
-		}
-
-	    if (addresses.size() == 1) {
-	        return addresses.get(0);
-	    } else {
-	        return null;
-	    }
+	public static boolean isConnectedToInternet(){
+		ConnectivityManager connec =  (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+           
+		return (connec.getNetworkInfo(0).isConnectedOrConnecting() ||  connec.getNetworkInfo(1).isConnectedOrConnecting())? true : false;
+		 
 	}
 
 
