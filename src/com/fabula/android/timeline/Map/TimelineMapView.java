@@ -2,30 +2,23 @@ package com.fabula.android.timeline.Map;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.android.maps.GeoPoint;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.util.Log;
+
+import com.fabula.android.timeline.R;
+import com.fabula.android.timeline.Utilities;
+import com.fabula.android.timeline.contentmanagers.ContentLoader;
+import com.fabula.android.timeline.database.DatabaseHelper;
+import com.fabula.android.timeline.database.TimelineDatabaseHelper;
+import com.fabula.android.timeline.models.Event;
+import com.fabula.android.timeline.models.Experience;
+import com.fabula.android.timeline.utilities.MyLocation;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
-
-import android.app.Activity;
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.util.Log;
-import android.widget.LinearLayout;
-
-import com.fabula.android.timeline.R;
-import com.fabula.android.timeline.Utilities;
-import com.fabula.android.timeline.R.drawable;
-import com.fabula.android.timeline.R.id;
-import com.fabula.android.timeline.R.layout;
-import com.fabula.android.timeline.contentmanagers.ContentLoader;
-import com.fabula.android.timeline.database.DatabaseHelper;
-import com.fabula.android.timeline.database.TimelineDatabaseHelper;
-import com.fabula.android.timeline.models.*;
-import com.fabula.android.timeline.utilities.MyLocation;
 
 /**
  * This class open a new mapview of the timeline that the application is running at a given time.
@@ -62,7 +55,12 @@ public class TimelineMapView extends MapActivity {
 		mapView.setBuiltInZoomControls(true);
 		mapController = mapView.getController();
 		mapController.setZoom(18);
-		mapController.animateTo(MyLocation.getInstance(this).getGeoPointLocation());
+		try {
+			mapController.animateTo(MyLocation.getInstance(this).getGeoPointLocation());
+		} catch (NullPointerException e) {
+			Log.e(this.getClass().getSimpleName(), "Location not availiable");
+		}
+		
 		mapOverlays = mapView.getOverlays();
 	}
 	

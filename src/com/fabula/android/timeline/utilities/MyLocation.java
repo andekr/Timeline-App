@@ -28,6 +28,7 @@ public class MyLocation {
 	LocationListener locationListener;
 	String locationProvider;
 	Location location = null;
+	boolean gps_enabled, network_enabled;
 	
 	protected MyLocation(final Context c) {
 		// Acquire a reference to the system Location Manager
@@ -57,6 +58,12 @@ public class MyLocation {
 				location = arg0;
 			}
 		};
+		
+		//exceptions will be thrown if provider is not permitted.
+        try{gps_enabled=locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);}catch(Exception ex){}
+        
+        if(gps_enabled)
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
 		// Register the listener with the Location Manager to receive location updates
 		locationManager.requestLocationUpdates(locationProvider, 0, 0, locationListener);

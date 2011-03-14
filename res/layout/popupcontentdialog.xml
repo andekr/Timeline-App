@@ -3,8 +3,9 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="wrap_content"
   android:layout_height="wrap_content">
-<RelativeLayout android:layout_below="@id/TextView01" android:layout_width="wrap_content" android:id="@+id/PopupTitleRelativeLayout" android:layout_toLeftOf="@+id/PopupMoreActionsRelativeLayout" android:layout_height="50dip"><ImageView android:id="@+id/PopupDialogTypeIconImageView" android:src="@drawable/ic_menu_camera" android:layout_height="50dp" android:layout_width="50dp"></ImageView><TextView android:layout_toRightOf="@+id/PopupDialogTypeIconImageView" android:layout_width="fill_parent" android:gravity="center" android:id="@+id/PopupDialogDateAndTimeTextView" android:text="Overskrift med dato og tid" android:textSize="24sp" android:textColor="@color/White" android:layout_height="wrap_content" android:layout_alignTop="@+id/PopupDialogTypeIconImageView"></TextView>
+<RelativeLayout android:layout_below="@id/TextView01" android:layout_width="wrap_content" android:id="@+id/PopupTitleRelativeLayout" android:layout_toLeftOf="@+id/PopupMoreActionsRelativeLayout" android:layout_height="50dip"><TextView android:layout_toRightOf="@+id/PopupDialogTypeIconImageView" android:layout_width="fill_parent" android:gravity="center" android:id="@+id/PopupDialogDateAndTimeTextView" android:text="Overskrift med dato og tid" android:textSize="24sp" android:textColor="@color/White" android:layout_height="wrap_content" android:layout_alignTop="@+id/PopupDialogTypeIconImageView"></TextView>
 <TextView android:layout_height="wrap_content" android:layout_below="@+id/PopupDialogDateAndTimeTextView" android:layout_alignLeft="@+id/PopupDialogDateAndTimeTextView" android:layout_width="fill_parent" android:layout_centerHorizontal="true" android:gravity="center" android:text="Lokasjon" android:id="@+id/PopupDialogLocationTextView"></TextView>
+<ImageView android:layout_height="40dp" android:id="@+id/PopupDialogTypeIconImageView" android:layout_width="40dp" android:layout_alignParentLeft="true" android:src="@drawable/ic_menu_camera"></ImageView>
 </RelativeLayout>
 
 

@@ -382,7 +382,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
               
       	    //create new Intent
       	    Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-      	    intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+//      	    intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);//Did not work in Android 2.3
       	    intent.putExtra("output", uri.getPath());
       	    startActivityForResult(intent, Utilities.CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
 		} catch (Exception e) {
