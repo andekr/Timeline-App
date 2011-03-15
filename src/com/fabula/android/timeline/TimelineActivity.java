@@ -43,6 +43,7 @@ import com.fabula.android.timeline.contentmanagers.ContentAdder;
 import com.fabula.android.timeline.contentmanagers.ContentDeleter;
 import com.fabula.android.timeline.contentmanagers.ContentLoader;
 import com.fabula.android.timeline.contentmanagers.ContentUpdater;
+import com.fabula.android.timeline.contentmanagers.UserGroupManager;
 import com.fabula.android.timeline.database.DatabaseHelper;
 import com.fabula.android.timeline.dialogs.AttachmentAdder;
 import com.fabula.android.timeline.dialogs.EventDialog;
@@ -54,6 +55,7 @@ import com.fabula.android.timeline.models.SimpleNote;
 import com.fabula.android.timeline.models.SimplePicture;
 import com.fabula.android.timeline.models.SimpleRecording;
 import com.fabula.android.timeline.models.SimpleVideo;
+import com.fabula.android.timeline.models.User;
 import com.fabula.android.timeline.models.Zoom;
 import com.fabula.android.timeline.utilities.MyLocation;
 
@@ -141,8 +143,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
         //Creates the experience and loads it with events
         timeline = new Experience(experienceID, databaseName, sharedExperience, new Account(experienceCreator, "com.google"));
         timeline.setEvents(loadedEvents);
-        
-        
+         
         setupViews();
        
         //If the activity is started with a send-Intent(e.g. via share button in the Gallery), the item is added to the Timeline

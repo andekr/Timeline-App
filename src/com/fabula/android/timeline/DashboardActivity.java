@@ -24,11 +24,15 @@ import android.widget.ToggleButton;
 import com.fabula.android.timeline.Map.TimelineMapView;
 import com.fabula.android.timeline.contentmanagers.ContentAdder;
 import com.fabula.android.timeline.contentmanagers.ContentLoader;
+import com.fabula.android.timeline.contentmanagers.UserGroupManager;
 import com.fabula.android.timeline.database.DatabaseHelper;
 import com.fabula.android.timeline.database.TimelineDatabaseHelper;
+import com.fabula.android.timeline.database.UserGroupDatabaseHelper;
 import com.fabula.android.timeline.dialogs.TimelineBrowserDialog;
 import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.models.Experiences;
+import com.fabula.android.timeline.models.Group;
+import com.fabula.android.timeline.models.User;
 import com.fabula.android.timeline.sync.GAEHandler;
 import com.fabula.android.timeline.utilities.MyLocation;
 
@@ -73,7 +77,7 @@ public class DashboardActivity extends Activity {
 		profileIntent = new Intent(this, ProfileActivity.class);
 		timelineIntent = new Intent(this, TimelineActivity.class);
 		timelineIntent.setAction(Utilities.INTENT_ACTION_NEW_TIMELINE); //Default Intent action for TimelineActivity is to create/open a timeline.
-
+		
 		setupViews();
 
 		//If the application is started with a SEND- or share Intent, change the Intent to add to a timeline
@@ -139,7 +143,6 @@ public class DashboardActivity extends Activity {
 
 	};
 	
-	
 	private OnClickListener viewProfileListener = new OnClickListener() {
 		public void onClick(View v) {
 			startActivity(profileIntent);
@@ -203,8 +206,13 @@ public class DashboardActivity extends Activity {
 	private void createNewTimeline(String timelineName, boolean shared) {
 
 		Account creator = Utilities.getUserAccount(this);
+		
 		Experience timeLine = new Experience(timelineName, shared, creator);
-
+		User user = new User(creator.name);
+		
+//		addNewUserToDatabase(user);
+//		addUserToAGroup(user, timeLine.getTitle());
+		
 		String databaseName = timeLine.getTitle() + ".db";
 		addNewTimelineToTimelineDatabase(timeLine); 
 		new DatabaseHelper(this, databaseName);
@@ -215,6 +223,29 @@ public class DashboardActivity extends Activity {
 		startActivity(timelineIntent);
 
 	}
+
+//	private void addUserToAGroup(User user, String title) {
+//		UserGroupManager uGManager = new UserGroupManager(this);
+//		UserGroupDatabaseHelper helper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
+//		
+//		Group group = new Group(title);
+//		uGManager.addGroupToGroupDatabase(group);
+//		uGManager.addUserToAGroupInTheDatabase(group, user);
+//		helper.close();
+//	}
+//
+//	/**
+//	 * Adds a new user to the user database
+//	 * 
+//	 * @param creator Account. The google user performing actions on the application
+//	 */
+//	private void addNewUserToDatabase(User user) {
+//		
+//		UserGroupManager uGManager = new UserGroupManager(this);
+//		UserGroupDatabaseHelper helper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
+//		uGManager.addUserToUserDatabase(user);
+//		helper.close();
+//	}
 
 	/**
 	 * Adds the new timeline to the database containing all the timelines.
@@ -268,10 +299,8 @@ public class DashboardActivity extends Activity {
 		TimelineDatabaseHelper.getCurrentTimeLineDatabase().close();
 		// Serialisere til XML el. JSON og sende opp til server(med REST?)
 		
-			
 	}
 
-	
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
