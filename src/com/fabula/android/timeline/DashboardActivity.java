@@ -58,8 +58,10 @@ public class DashboardActivity extends Activity {
 	private ImageButton profileButton;
 	private ImageButton browseSharedTimelinesButton;
 	private ImageButton syncronizeButton;
+	private ImageButton myGroupsButton;
 	private Intent timelineIntent;
 	private Intent profileIntent;
+	private Intent myGroupsIntent;
 	private ContentAdder contentAdder;
 	private ContentLoader contentLoader;
 	Runnable syncThread;
@@ -73,7 +75,7 @@ public class DashboardActivity extends Activity {
 		contentAdder = new ContentAdder(getApplicationContext());
 		contentLoader = new ContentLoader(getApplicationContext());
 		
-		
+		myGroupsIntent = new Intent(this, MyGroupsActivity.class);
 		profileIntent = new Intent(this, ProfileActivity.class);
 		timelineIntent = new Intent(this, TimelineActivity.class);
 		timelineIntent.setAction(Utilities.INTENT_ACTION_NEW_TIMELINE); //Default Intent action for TimelineActivity is to create/open a timeline.
@@ -115,6 +117,8 @@ public class DashboardActivity extends Activity {
 		browseMyTimelinesButton.setOnClickListener(browseTimeLineListener);
 		browseSharedTimelinesButton = (ImageButton) findViewById(R.id.dash_shared_timelines);
 		browseSharedTimelinesButton.setOnClickListener(browseSharedTimeLinesListener);
+		myGroupsButton = (ImageButton) findViewById(R.id.dash_my_groups);
+		myGroupsButton.setOnClickListener(openMyGroupsListener);
 		profileButton = (ImageButton) findViewById(R.id.dash_profile);
 		profileButton.setOnClickListener(viewProfileListener);
 		syncronizeButton = (ImageButton)findViewById(R.id.dash_sync);
@@ -141,6 +145,12 @@ public class DashboardActivity extends Activity {
 			browseAllTimelines(true);		
 		}
 
+	};
+	
+	private OnClickListener openMyGroupsListener = new OnClickListener() {
+		public void onClick(View v) {
+			startActivity(myGroupsIntent);
+		}
 	};
 	
 	private OnClickListener viewProfileListener = new OnClickListener() {

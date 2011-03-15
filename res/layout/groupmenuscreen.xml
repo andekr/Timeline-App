@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent" android:background="@color/White">
+  
+  <TableRow android:id="@+id/group_header_row" android:layout_width="fill_parent" android:layout_height="wrap_content" android:background="@color/Header">
+	<ImageButton android:background="@drawable/header_home_button" android:layout_width="wrap_content" android:id="@+id/GroupHomeButto" android:focusable="false" android:layout_height="50dp">
+	</ImageButton>
+  </TableRow>
+  <TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/descriptionRow">
+      <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/titleTextView" android:text="Your Groups:" android:textSize="20dip" android:paddingBottom="5dip" android:paddingTop="5dip" android:textColor="@color/Black" android:editable="false"></TextView>
+  </TableRow>
+  <TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/listGroupsRow">
+      <ListView android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/groupsList"></ListView>
+  
+  </TableRow>
+  <TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/buttonRow" android:layout_gravity="bottom">
+  <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/groupButtonLayout" android:layout_gravity="bottom">
+      <ImageButton android:layout_height="50dp" android:layout_width="wrap_content" android:focusable="false" android:background="@drawable/header_home_button" android:id="@+id/HeaderHomeButto" android:layout_gravity="center_horizontal"></ImageButton>
+  </LinearLayout>
+  </TableRow>
+
+</TableLayout>

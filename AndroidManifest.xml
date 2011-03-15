@@ -51,6 +51,10 @@
             android:name="com.fabula.android.timeline.Map.TimelineMapView" android:screenOrientation="landscape" android:theme="@android:style/Theme.NoTitleBar">
         </activity>
         
+        <activity android:label="@string/app_name"
+            android:name=".MyGroupsActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
+        
             
             
            <provider
