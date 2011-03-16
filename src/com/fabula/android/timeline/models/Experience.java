@@ -2,6 +2,7 @@ package com.fabula.android.timeline.models;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -18,14 +19,17 @@ import com.fabula.android.timeline.providers.ExperienceProvider;
  */
 
 public class Experience {
+
+
 	private String id;
 	private String title;
 	private boolean shared;
 	private transient Account user;
 	private String creator;
-	private ArrayList<Event> events;
+	private List<Event> events;
 	private Uri uriToExperience;
 	
+	public Experience() {}
 
 	public Experience(String title, boolean shared, Account user) {
 		this.id = UUID.randomUUID().toString();
@@ -60,10 +64,10 @@ public class Experience {
 	public void setShared(boolean shared) {
 		this.shared = shared;
 	}
-	public ArrayList<Event> getEvents() {
+	public List<Event> getEvents() {
 		return events;
 	}
-	public void setEvents(ArrayList<Event> events) {
+	public void setEvents(List<Event> events) {
 		this.events = events;
 	}
 	public void addEvent(Event event){
@@ -91,6 +95,9 @@ public class Experience {
 	}
 	
 	public Account getUser() {
+		if(user==null)
+			this.user = new Account(creator, "com.google");
+		
 		return user;
 	}
 
@@ -107,6 +114,7 @@ public class Experience {
 
 	@SuppressWarnings("unused")
 	private void setCreator(String creator) {
+		this.user = new Account(creator, "com.google");
 		this.creator = creator;
 	}
 

@@ -26,6 +26,9 @@ public abstract class EventItem {
 	String noteTitle;
 	String noteText;
 	
+	public EventItem(){
+	}
+	
 	public EventItem(Context c) {
 		super();
 		this.id = UUID.randomUUID().toString();
@@ -118,6 +121,18 @@ public abstract class EventItem {
 			 }
 			return 0;
 		}
+	}
+	
+	@Override
+	public String toString() {
+		  StringBuffer sb = new StringBuffer();
+	        sb.append("EventItem ID: ").append(getId()+"\n");
+	        sb.append("EventItem className: ").append(className+"\n");
+	        sb.append("EventItem title: ").append(noteTitle+"\n");
+	        sb.append("EventItem text: ").append(noteText+"\n");
+	        sb.append("EventItem filename: ").append(pictureFilename+"\n");
+	       
+	    return sb.toString();
 	}
 
 }

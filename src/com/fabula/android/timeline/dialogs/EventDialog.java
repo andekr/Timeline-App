@@ -1,6 +1,7 @@
 package com.fabula.android.timeline.dialogs;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.londatiga.android.ActionItem;
 import net.londatiga.android.QuickAction;
@@ -54,7 +55,7 @@ public class EventDialog extends Dialog {
 	private Context mContext;
 	private LinearLayout mainLayout, emotionLayout;
 	private QuickAction qa;
-	private ArrayList<EventItem> items;
+	private List<EventItem> items;
 	private ImageView dialogIcon;
 	private Runnable shareEventThread;
 	private String addressString="";

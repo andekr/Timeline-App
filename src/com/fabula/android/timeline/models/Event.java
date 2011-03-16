@@ -2,6 +2,7 @@ package com.fabula.android.timeline.models;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import android.location.Location;
@@ -24,8 +25,10 @@ public class Event {
 	private double latitude;
 	
 	private long datetimemillis;
-	private ArrayList<EventItem> eventItems;
-	private ArrayList<Emotion> emotionList;
+	private List<EventItem> eventItems;
+	private List<Emotion> emotionList;
+	
+	public Event(){}
 	
 	public Event(String exID, Location location) {
 		super();
@@ -110,10 +113,10 @@ public class Event {
 		eventItems.add(evItem);
 	}
 	
-	public ArrayList<EventItem> getEventItems() {
+	public List<EventItem> getEventItems() {
 		return eventItems;
 	}
-	public void setEventItems(ArrayList<EventItem> eventItems) {
+	public void setEventItems(List<EventItem> eventItems) {
 		this.eventItems = eventItems;
 	}
 	
@@ -121,11 +124,11 @@ public class Event {
 		emotionList.add(emotion);
 	}
 	
-	public ArrayList<Emotion> getEmotionList() {
+	public List<Emotion> getEmotionList() {
 		return emotionList;
 	}
 
-	public void setEmotionList(ArrayList<Emotion> emotionList) {
+	public void setEmotionList(List<Emotion> emotionList) {
 		this.emotionList = emotionList;
 	}
 

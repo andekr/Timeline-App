@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -382,7 +383,7 @@ public class TimelineGridAdapter extends ArrayAdapter<Event> {
 	}
 	
 	private void setEventsInHour(Date hour){
-		ArrayList<Event> allEvents = ((TimelineActivity)mActivity).getTimeline().getEvents();
+		List<Event> allEvents = ((TimelineActivity)mActivity).getTimeline().getEvents();
 		
 		if(hour==null){
 			hour = allEvents.get(0).getDatetime();
@@ -399,7 +400,7 @@ public class TimelineGridAdapter extends ArrayAdapter<Event> {
 	}
 	
 	private void setEventsInDay(Date day) {
-		ArrayList<Event> allEvents = ((TimelineActivity)mActivity).getTimeline().getEvents();
+		List<Event> allEvents = ((TimelineActivity)mActivity).getTimeline().getEvents();
 		
 		
 		if(day==null){
@@ -415,7 +416,7 @@ public class TimelineGridAdapter extends ArrayAdapter<Event> {
 	}
 	
 	private void setEventsInWeek(Date week){
-		ArrayList<Event> allEvents = ((TimelineActivity)mActivity).getTimeline().getEvents();
+		List<Event> allEvents = ((TimelineActivity)mActivity).getTimeline().getEvents();
 		if(week==null){
 			week = allEvents.get(0).getDatetime();
 		}
@@ -432,7 +433,7 @@ public class TimelineGridAdapter extends ArrayAdapter<Event> {
 	}
 	
 	private void setEventsInMonth(Date month){
-		ArrayList<Event> allEvents = ((TimelineActivity)mActivity).getTimeline().getEvents();
+		List<Event> allEvents = ((TimelineActivity)mActivity).getTimeline().getEvents();
 		
 		if(month==null){
 			try {

@@ -16,7 +16,9 @@ import com.fabula.android.timeline.providers.NoteProvider;
 
 public class SimpleNote extends EventItem{
 	
-
+	public SimpleNote() {}
+	
+	
 	public SimpleNote(Context c) {
 		super(c);
 		className = "SimpleNote";

@@ -1,6 +1,10 @@
 package com.fabula.android.timeline;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import android.accounts.Account;
 import android.app.Activity;
@@ -9,6 +13,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +24,7 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -31,6 +38,7 @@ import com.fabula.android.timeline.database.UserGroupDatabaseHelper;
 import com.fabula.android.timeline.dialogs.TimelineBrowserDialog;
 import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.models.Experiences;
+import com.fabula.android.timeline.sync.Downloader;
 import com.fabula.android.timeline.models.Group;
 import com.fabula.android.timeline.models.User;
 import com.fabula.android.timeline.sync.GAEHandler;
@@ -59,6 +67,7 @@ public class DashboardActivity extends Activity {
 	private ImageButton browseSharedTimelinesButton;
 	private ImageButton syncronizeButton;
 	private ImageButton myGroupsButton;
+	private TextView lastSyncedTextView;
 	private Intent timelineIntent;
 	private Intent profileIntent;
 	private Intent myGroupsIntent;
@@ -67,6 +76,7 @@ public class DashboardActivity extends Activity {
 	private Account creator;
 	private User user;
 	Runnable syncThread;
+	private long lastSynced=0;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -75,6 +85,7 @@ public class DashboardActivity extends Activity {
 		
 		creator = Utilities.getUserAccount(this);
 		user = new User(creator.name);
+
 		//Initializes the content managers
 		contentAdder = new ContentAdder(getApplicationContext());
 		contentLoader = new ContentLoader(getApplicationContext());
@@ -85,9 +96,16 @@ public class DashboardActivity extends Activity {
 		profileIntent = new Intent(this, ProfileActivity.class);
 		timelineIntent = new Intent(this, TimelineActivity.class);
 		timelineIntent.setAction(Utilities.INTENT_ACTION_NEW_TIMELINE); //Default Intent action for TimelineActivity is to create/open a timeline.
+
+		try {
+			lastSynced = getLastSynced();
+		} catch (Exception e) {
+			Log.e(this.getClass().getSimpleName(), "Couldn't retrieve last synced time");
+		}
 		
 		setupViews();
-
+		
+		
 		//If the application is started with a SEND- or share Intent, change the Intent to add to a timeline
 		if (getIntent().getAction().equals(Intent.ACTION_SEND)
 				|| getIntent().getAction().equals("share")) {
@@ -129,6 +147,20 @@ public class DashboardActivity extends Activity {
 		profileButton.setOnClickListener(viewProfileListener);
 		syncronizeButton = (ImageButton)findViewById(R.id.dash_sync);
 		syncronizeButton.setOnClickListener(syncListener);
+		
+		lastSyncedTextView = (TextView)findViewById(R.id.DashLastSyncedTextView);
+		setLastSyncedTextView();
+			
+	}
+
+	private void setLastSyncedTextView() {
+		if(lastSynced!=0){
+			String lastSyncedFormattedString = DateFormat.format
+   		 ("dd MMMM yyyy "+DateFormat.HOUR_OF_DAY+":mm:ss", new Date(lastSynced)).toString();
+			lastSyncedTextView.setText(getResources().getString(R.string.Last_synced_label).toString()+" "+lastSyncedFormattedString);
+		}else{
+			lastSyncedTextView.setText(getResources().getString(R.string.Last_synced_label).toString()+" Never");
+		}
 	}
 
 	private OnClickListener newTimeLineListener = new OnClickListener() {
@@ -167,7 +199,7 @@ public class DashboardActivity extends Activity {
 	
 	private OnClickListener syncListener = new OnClickListener() {
 		public void onClick(View v) {
-			Toast.makeText(DashboardActivity.this, "Syncronizing shared experiences with server...", Toast.LENGTH_SHORT).show();
+			Toast.makeText(DashboardActivity.this, "Syncronizing shared timelines with server...", Toast.LENGTH_SHORT).show();
 				Thread shareThread = new Thread(syncThread, "shareThread");
 				shareThread.start();
 		}
@@ -291,7 +323,8 @@ public class DashboardActivity extends Activity {
 	 * 
 	 */
 	private void syncTimelines() {
-		//Hente ned fra server og merge
+		//Hente ned fra server
+		// og merge //TODO
 		// Hente inn experiencer som er delt - DONE
 		// Hente ut alle events i alle delte experiencer (kun de som ikke er låst) - DONE
 		new TimelineDatabaseHelper(this, Utilities.ALL_TIMELINES_DATABASE_NAME);
@@ -310,9 +343,69 @@ public class DashboardActivity extends Activity {
 //		}
 	
 		TimelineDatabaseHelper.getCurrentTimeLineDatabase().close();
-		// Serialisere til XML el. JSON og sende opp til server(med REST?)
+		
+
+		Experiences exps = Downloader.getAllSharedExperiencesFromServer();
+		for (Experience e : exps.getExperiences()) {
+			addNewTimelineToTimelineDatabase(e);
+		}
+		
+		runOnUiThread(confirmSync);
 		
 	}
+	
+	private void storeLastSynced(long lastSyncedInMillis){
+		String FILENAME = "lastSynced";
+		String lastSynced = String.valueOf(lastSyncedInMillis);
+		this.lastSynced = lastSyncedInMillis;
+		setLastSyncedTextView();
+		
+		try {
+			FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+			fos.write(lastSynced.getBytes());
+			fos.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private long getLastSynced(){
+		String FILENAME = "lastSynced";
+		int ch;
+	    StringBuffer strContent = new StringBuffer("");
+		
+		try {
+			FileInputStream fis = openFileInput(FILENAME);
+			while( (ch = fis.read()) != -1)
+		        strContent.append((char)ch);
+			fis.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return Long.valueOf(strContent.toString());
+	}
+	
+	
+	/**
+	 * Thread to notify user that timelines have been synced. Intended run on UI thread.
+	 * 
+	 */
+    private Runnable confirmSync = new Runnable() {
+        public void run(){
+        	try {
+        		storeLastSynced(new Date().getTime());
+        		Toast.makeText(DashboardActivity.this, "Timelines synced!",Toast.LENGTH_SHORT).show();
+			} catch (Exception e) {
+			}
+        	
+        }
+
+      };
+    
 
 	@Override
 	protected void onDestroy() {

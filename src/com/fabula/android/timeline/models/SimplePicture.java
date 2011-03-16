@@ -1,53 +1,70 @@
 package com.fabula.android.timeline.models;
 
 
+import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Date;
 
+import org.apache.http.util.ByteArrayBuffer;
+
 import android.accounts.Account;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.BaseColumns;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
 
+import com.fabula.android.timeline.Utilities;
 import com.fabula.android.timeline.providers.PictureProvider;
 
 public class SimplePicture extends EventItem {
 
 	private transient Uri pictureUri;
-	private Date created;
 	
+	public SimplePicture(){}
 	
 	public SimplePicture(Context c) {
 		super(c);
-		this.created = new Date();
 		className = "SimplePicture";
 	}
 	
-	public SimplePicture(String id, Uri uri, Date created, Account u) {
+	public SimplePicture(String id, Uri uri, Account u, String filename) {
 		super(id, u);
 		className = "SimplePicture";
 		this.pictureUri = uri;
-		this.created = created;
-		pictureFilename = String.valueOf((""+created.getTime()+pictureUri.getEncodedPath()).hashCode());
+		pictureFilename = filename;
 	}
 	
+	public SimplePicture(String id, Account u, String filename) {
+		super(id, u);
+		className = "SimplePicture";
+		File file = DownloadFromUrl(filename, Utilities.IMAGE_STORAGE_FILEPATH+filename);
+		this.pictureUri = Uri.fromFile(file);
+		pictureFilename = filename;
+	}
 	
 
 	public Uri getPictureUri() {
 		return pictureUri;
 	}
-	public void setPictureUri(Uri pictureUri) {
+	public void setPictureUri(Uri pictureUri, String filename) {
 		this.pictureUri = pictureUri;
-		pictureFilename = String.valueOf((""+created.getTime()+pictureUri.getEncodedPath()).hashCode());
+		pictureFilename = filename;
 	}
 	
 	public String getPictureFilename() {
@@ -58,18 +75,11 @@ public class SimplePicture extends EventItem {
 		this.pictureFilename = pictureFilename;
 	}
 	
-	public Date getCreated() {
-		return created;
-	}
-
-	public void setCreated(Date created) {
-		this.created = created;
-	}
 	
 	
 	//For GSON serializing
 	@SuppressWarnings("unused")
-	private String getClassName() {
+	public String getClassName() {
 		return className;
 	}
 
@@ -143,7 +153,9 @@ public class SimplePicture extends EventItem {
 
         public static final String TITLE = "title";
         
-        public static final String FILE_PATH = "file_path";
+        public static final String URI_PATH = "uri_path";
+        
+        public static final String FILENAME = "filename";
         
         public static final String DESCRIPTION = "description";
         
@@ -152,4 +164,51 @@ public class SimplePicture extends EventItem {
 
 	}
 
+    public File DownloadFromUrl(String imageURL, String fileName) {  //this is the downloader method
+        try {
+                URL url = new URL("http://folk.ntnu.no/andekr/upload/files/" + imageURL); //you can write here any link
+                File file = new File(fileName);
+                
+                if(!file.exists()){
+	                long startTime = System.currentTimeMillis();
+	                Log.d("ImageManager", "download begining");
+	                Log.d("ImageManager", "download url:" + url);
+	                Log.d("ImageManager", "downloaded file name:" + fileName);
+	                /* Open a connection to that URL. */
+	                URLConnection ucon = url.openConnection();
+	
+	                /*
+	                 * Define InputStreams to read from the URLConnection.
+	                 */
+	                InputStream is = ucon.getInputStream();
+	                BufferedInputStream bis = new BufferedInputStream(is);
+	
+	                /*
+	                 * Read bytes to the Buffer until there is nothing more to read(-1).
+	                 */
+	                ByteArrayBuffer baf = new ByteArrayBuffer(50);
+	                int current = 0;
+	                while ((current = bis.read()) != -1) {
+	                        baf.append((byte) current);
+	                }
+	
+	                /* Convert the Bytes read to a String. */
+	                FileOutputStream fos = new FileOutputStream(file);
+	               
+	                fos.write(baf.toByteArray());
+	                fos.close();
+	                Log.d("ImageManager", "download ready in"
+	                                + ((System.currentTimeMillis() - startTime) / 1000)
+	                                + " sec");
+                }else{
+                	 Log.d("ImageManager", "file exists!");
+                }
+                return file;
+
+        } catch (IOException e) {
+                Log.d("ImageManager", "Error: " + e);
+                return null;
+        }
+
+    }
 }

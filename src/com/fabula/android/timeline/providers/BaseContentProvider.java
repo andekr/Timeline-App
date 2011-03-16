@@ -88,11 +88,11 @@ public class BaseContentProvider extends ContentProvider{
         switch (uriMatcher.match(uri)) {
         
 		case NOTE_ITEM:
-			rowId = DatabaseHelper.getCurrentTimelineDatabase().insert(SQLStatements.NOTE_DATABASE_TABLE_NAME, NoteColumns.NOTE, values);
+			rowId = DatabaseHelper.getCurrentTimelineDatabase().insertWithOnConflict(SQLStatements.NOTE_DATABASE_TABLE_NAME, NoteColumns.NOTE, values, SQLiteDatabase.CONFLICT_REPLACE);
 	        return notifyContentResolver(uri, rowId);
 	        
 		case PICTURE_ITEM:
-			rowId = DatabaseHelper.getCurrentTimelineDatabase().insert(SQLStatements.PICTURE_DATABASE_TABLE_NAME,"", values);
+			rowId = DatabaseHelper.getCurrentTimelineDatabase().insertWithOnConflict(SQLStatements.PICTURE_DATABASE_TABLE_NAME,"", values, SQLiteDatabase.CONFLICT_REPLACE);
 			return notifyContentResolver(uri, rowId);
 			
 		case RECORDING_ITEM:

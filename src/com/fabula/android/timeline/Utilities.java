@@ -1,5 +1,10 @@
 package com.fabula.android.timeline;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -10,9 +15,11 @@ import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.net.NetworkInfo.State;
+import android.os.Environment;
 import android.provider.MediaStore;
 
 import com.fabula.android.timeline.models.Event;
@@ -70,12 +77,16 @@ public class Utilities {
 
 
     
+    
     public static float HOUR_IN_MILLIS = 3600000;
     public static float DAY_IN_MILLIS = 86400000;
     public static float WEEK_IN_MILLIS = DAY_IN_MILLIS*7;
     
     public static int EVENT_TAG_KEY = 100;
     public static int ACTIVITY_TAG_KEY = 101;
+    
+    static File sdCardDirectory = Environment.getExternalStorageDirectory();
+    public static String IMAGE_STORAGE_FILEPATH = sdCardDirectory.getPath()+"/data/com.fabula.android.timeline/images/";
     
 	public static int getImageIcon(Event ex){
 		if(ex.getEventItems().size()==1){
@@ -336,5 +347,36 @@ public class Utilities {
         return cursor.getString(column_index);
     }
 	
+	public static void copyFile(String fromFile, String toPath, String toFilename) {
+		
+		System.out.println("COPY!");
+		if(Environment.getExternalStorageState().equals("mounted")) {
+			File sdCardDirectory = Environment.getExternalStorageDirectory();
+
+				try {
+					if(sdCardDirectory.canWrite()) {
+						
+						
+						File destinationDirectory = new File(toPath);
+						File sourceFile = new File(fromFile);
+						File destinationFile = new File(destinationDirectory, toFilename);
+						
+						if(!destinationDirectory.exists()) {
+							destinationDirectory.mkdirs();
+						}
+						
+						FileChannel source = new FileInputStream(sourceFile).getChannel();
+						FileChannel destination = new FileOutputStream(destinationFile).getChannel();
+						destination.transferFrom(source, 0, source.size());
+						source.close();
+						destination.close();
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		
+	}
 	
 }

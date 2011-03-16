@@ -1,6 +1,10 @@
 package com.fabula.android.timeline.models;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import com.google.gson.*;
+
 
 
 /**
@@ -12,13 +16,19 @@ import java.util.ArrayList;
  */
 public class Experiences {
 
-	private ArrayList<Experience> experiences;
+	/**
+	 * No-args for Gson  
+	 */
+	public Experiences() {}
+
+	private List<Experience> experiences;
 	
-	public Experiences(ArrayList<Experience> experiences) {
+	
+	public Experiences(List<Experience> experiences) {
 		this.experiences = experiences;
 	}
 
-	public ArrayList<Experience> getExperiences() {
+	public List<Experience> getExperiences() {
 		return experiences;
 	}
 

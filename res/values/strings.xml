@@ -24,6 +24,7 @@
 	<string name="Groupname_hint">Name of group</string>
 	<string name="ShareTimeline_label">Share timeline?</string>
 	<string name="Select_Timeline_label">Select a timeline!</string>
+	<string name="Last_synced_label">Last synced:</string>
 
 
     <string name="picture">Picture</string>

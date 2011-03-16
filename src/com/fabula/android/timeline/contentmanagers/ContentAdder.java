@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.util.Log;
 
+import com.fabula.android.timeline.database.DatabaseHelper;
 import com.fabula.android.timeline.models.Event;
 import com.fabula.android.timeline.models.EventItem;
 import com.fabula.android.timeline.models.Experience;
@@ -86,6 +87,14 @@ public class ContentAdder {
 		 
 		 context.getContentResolver().insert(ExperienceColumns.CONTENT_URI, values);
 		 
+		 if(experience.getEvents()!=null){
+			 for (Event e : experience.getEvents()) {
+				DatabaseHelper eventDatabaseHelper = new DatabaseHelper(context, experience.getTitle());
+				addEventToEventContentProvider(e);
+				eventDatabaseHelper.close();
+			}
+		 }
+		 
 		 Log.i("CONTENT ADDER", "Added experience to DB: " + experience.getId());
 	}
 	
@@ -144,9 +153,9 @@ public class ContentAdder {
 		ContentValues values = new ContentValues();
 		
 		values.put(PictureColumns._ID, picture.getId());
-		values.put(PictureColumns.FILE_PATH, picture.getPictureUri().toString());
+		values.put(PictureColumns.URI_PATH, picture.getPictureUri().toString());
+		values.put(PictureColumns.FILENAME, picture.getPictureFilename());
 		values.put(EventItemsColumns.USERNAME, picture.getCreator());
-		values.put(PictureColumns.CREATED_DATE, picture.getCreated().getTime());
 		
 		context.getContentResolver().insert(PictureColumns.CONTENT_URI, values);
 	}
