@@ -62,6 +62,11 @@ public class Group {
 		return members.get(index);
 	}
 	
+	@Override
+	public String toString() {
+		return this.name;
+	}
+	
 	public static final class GroupColumns implements BaseColumns {
 		
 		private GroupColumns() {}

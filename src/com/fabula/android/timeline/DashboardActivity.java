@@ -63,11 +63,15 @@ public class DashboardActivity extends Activity {
 	private ImageButton profileButton;
 	private ImageButton browseSharedTimelinesButton;
 	private ImageButton syncronizeButton;
+	private ImageButton myGroupsButton;
 	private TextView lastSyncedTextView;
 	private Intent timelineIntent;
 	private Intent profileIntent;
+	private Intent myGroupsIntent;
 	private ContentAdder contentAdder;
 	private ContentLoader contentLoader;
+	private Account creator;
+	private User user;
 	Runnable syncThread;
 	private long lastSynced=0;
 
@@ -76,11 +80,15 @@ public class DashboardActivity extends Activity {
 		setContentView(R.layout.dashboard);
 		MyLocation.getInstance(this);//Starts the LocationManager right away so a location will be available as soon as possible
 		
-		
+		creator = Utilities.getUserAccount(this);
+		user = new User(creator.name);
+
 		//Initializes the content managers
 		contentAdder = new ContentAdder(getApplicationContext());
 		contentLoader = new ContentLoader(getApplicationContext());
 		
+		myGroupsIntent = new Intent(this, MyGroupsActivity.class);
+		myGroupsIntent.putExtra("ACCOUNT", creator);
 		
 		profileIntent = new Intent(this, ProfileActivity.class);
 		timelineIntent = new Intent(this, TimelineActivity.class);
@@ -130,6 +138,8 @@ public class DashboardActivity extends Activity {
 		browseMyTimelinesButton.setOnClickListener(browseTimeLineListener);
 		browseSharedTimelinesButton = (ImageButton) findViewById(R.id.dash_shared_timelines);
 		browseSharedTimelinesButton.setOnClickListener(browseSharedTimeLinesListener);
+		myGroupsButton = (ImageButton) findViewById(R.id.dash_my_groups);
+		myGroupsButton.setOnClickListener(openMyGroupsListener);
 		profileButton = (ImageButton) findViewById(R.id.dash_profile);
 		profileButton.setOnClickListener(viewProfileListener);
 		syncronizeButton = (ImageButton)findViewById(R.id.dash_sync);
@@ -170,6 +180,12 @@ public class DashboardActivity extends Activity {
 			browseAllTimelines(true);		
 		}
 
+	};
+	
+	private OnClickListener openMyGroupsListener = new OnClickListener() {
+		public void onClick(View v) {
+			startActivity(myGroupsIntent);
+		}
 	};
 	
 	private OnClickListener viewProfileListener = new OnClickListener() {
@@ -234,10 +250,7 @@ public class DashboardActivity extends Activity {
 	 */
 	private void createNewTimeline(String timelineName, boolean shared) {
 
-		Account creator = Utilities.getUserAccount(this);
-		
 		Experience timeLine = new Experience(timelineName, shared, creator);
-		User user = new User(creator.name);
 		
 //		addNewUserToDatabase(user);
 //		addUserToAGroup(user, timeLine.getTitle());

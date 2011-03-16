@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:background="@color/White" android:layout_width="wrap_content" android:layout_height="fill_parent">
+  
+  <LinearLayout android:id="@+id/group_header_row" android:layout_width="fill_parent" android:layout_height="wrap_content" android:background="@color/Header">
+	<ImageButton android:background="@drawable/header_home_button" android:layout_width="wrap_content" android:id="@+id/GroupHomeButto" android:focusable="false" android:layout_height="50dip">
+	</ImageButton>
+  </LinearLayout>
+  
+  <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/descriptionRow" android:paddingTop="20dip" android:layout_below="@+id/group_header_row">
+      <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/titleTextView" android:text="Your Groups:" android:textSize="20dip" android:textColor="@color/Black"></TextView>
+  </LinearLayout>
+  
+  <LinearLayout android:layout_width="wrap_content" android:id="@+id/listGroupsRow" android:paddingTop="20dip" android:layout_below="@+id/descriptionRow" android:layout_height="wrap_content" android:layout_above="@+id/buttonRow">
+      <ListView android:layout_width="match_parent" android:id="@+id/groupsList" android:scrollbars="vertical" android:background="@color/White" android:clickable="true" android:fadingEdge="vertical" android:layout_height="wrap_content"></ListView>
+  </LinearLayout>
+  
+  <LinearLayout android:id="@+id/buttonRow" android:layout_width="fill_parent" android:layout_alignParentBottom="true" android:layout_height="wrap_content">
+  <ImageButton android:layout_marginLeft="100dip" android:background="@drawable/dash_my_groups_button" android:id="@+id/my_groups" android:layout_width="wrap_content" android:layout_height="75dip" android:layout_gravity="bottom|center"></ImageButton>
+  </LinearLayout>
+
+</RelativeLayout>
