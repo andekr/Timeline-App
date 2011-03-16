@@ -14,10 +14,16 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnCreateContextMenuListener;
 import android.view.ViewGroup;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -30,6 +36,7 @@ public class MyGroupsActivity extends Activity {
 	private ImageButton addNewGroupButton, homeButton;
 	private User applicationUser;
 	private ArrayAdapter<Group> groupListAdapter;
+	private Group selectedGroup;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +110,32 @@ public class MyGroupsActivity extends Activity {
 		return connectedGroups;
 	}
 	
+	private OnItemLongClickListener openItemLongClickMenuListener = new OnItemLongClickListener() {
+
+		public boolean onItemLongClick(AdapterView<?> view, View arg1,
+				int position, long arg3) {
+			
+			MyGroupsActivity.this.setSelectedGroup(groupListAdapter.getItem(position));
+			
+			view.setOnCreateContextMenuListener(new OnCreateContextMenuListener() {
+				
+				public void onCreateContextMenu(ContextMenu menu, View v,
+						ContextMenuInfo menuInfo) {
+					
+					menu.add(R.id.MENU_DELETE_ITEM, 0,0, R.string.Leave_group_label);
+					
+				}
+			});
+			
+			return false;
+		}
+		
+	};
+	
+	private void setSelectedGroup(Group group) {
+		this.selectedGroup = group;
+	}
+	
 	private void setupViews() {
 		myGroupsList = (ListView) findViewById(R.id.groupsList);
 		
@@ -114,7 +147,7 @@ public class MyGroupsActivity extends Activity {
 		applicationUser = new User(userAccount.name);
 		
 		groupListAdapter = new GroupListAdapter(this, getAllGroupsConnectedToUser((userAccount)));
-//		groupListAdapter = new ArrayAdapter<Group>(this, R.layout.mygroupslist, getAllGroupsConnectedToUser((userAccount)));
+		myGroupsList.setOnItemLongClickListener(openItemLongClickMenuListener);
 		myGroupsList.setAdapter(groupListAdapter);
 		
 		homeButton = (ImageButton)findViewById(R.id.GroupHomeButto);
