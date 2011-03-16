@@ -2,24 +2,24 @@
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="fill_parent"
-  android:layout_height="fill_parent" android:background="@color/White" android:orientation="vertical">
+  android:background="@color/White" android:orientation="vertical" android:layout_height="fill_parent">
   
   <LinearLayout android:id="@+id/group_header_row" android:layout_width="fill_parent" android:layout_height="wrap_content" android:background="@color/Header">
 	<ImageButton android:background="@drawable/header_home_button" android:layout_width="wrap_content" android:id="@+id/GroupHomeButto" android:focusable="false" android:layout_height="50dp">
 	</ImageButton>
   </LinearLayout>
   
-  <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/descriptionRow" android:paddingBottom="20dip" android:paddingTop="20dip">
+  <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/descriptionRow" android:paddingTop="20dip">
       <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/titleTextView" android:text="Your Groups:" android:textSize="20dip" android:textColor="@color/Black" android:editable="false"></TextView>
   </LinearLayout>
   
-  <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/listGroupsRow" android:paddingBottom="20dip" android:paddingTop="20dip">
-      <ListView android:layout_width="match_parent" android:id="@+id/groupsList" android:layout_height="175dip"></ListView>
+  <LinearLayout android:layout_width="wrap_content" android:id="@+id/listGroupsRow" android:paddingTop="20dip" android:layout_height="wrap_content">
+      <ListView android:layout_width="match_parent" android:id="@+id/groupsList" android:scrollbars="vertical" android:background="@color/White" android:clickable="true" android:layout_height="225dip"></ListView>
   </LinearLayout>
   
-  <LinearLayout android:id="@+id/buttonRow" android:layout_width="fill_parent" android:layout_height="fill_parent" android:paddingBottom="10dip" android:paddingTop="10dip" android:gravity="bottom">
+  <LinearLayout android:id="@+id/buttonRow" android:layout_width="fill_parent" android:gravity="bottom" android:layout_gravity="bottom" android:layout_height="wrap_content">
   <LinearLayout android:layout_width="wrap_content" android:id="@+id/groupButtonLayout" android:layout_height="wrap_content">
-      <ImageButton android:scaleType="centerInside" android:background="@drawable/dash_my_groups_button" android:layout_height="fill_parent" android:id="@+id/dash_my_groups" android:layout_width="wrap_content" android:layout_gravity="center" android:layout_marginLeft="100dip"></ImageButton>
+      <ImageButton android:background="@drawable/dash_my_groups_button" android:layout_width="wrap_content" android:layout_gravity="center" android:layout_marginLeft="100dip" android:id="@+id/my_groups" android:layout_height="wrap_content"></ImageButton>
   </LinearLayout>
   </LinearLayout>
 

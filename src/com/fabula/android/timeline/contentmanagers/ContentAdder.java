@@ -122,6 +122,7 @@ public class ContentAdder {
 			values.put(EventItemsColumns.EVENT_ITEM_TYPE, EventItem.EventItemTypes.getItemType(item));
 						
 			context.getContentResolver().insert(EventItemsColumns.CONTENT_URI, values);
+
 	}
 
 	private void addNoteToNoteContentProvider(Event event, SimpleNote note) {

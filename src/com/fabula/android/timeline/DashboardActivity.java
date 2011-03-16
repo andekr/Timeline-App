@@ -64,6 +64,8 @@ public class DashboardActivity extends Activity {
 	private Intent myGroupsIntent;
 	private ContentAdder contentAdder;
 	private ContentLoader contentLoader;
+	private Account creator;
+	private User user;
 	Runnable syncThread;
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -71,11 +73,15 @@ public class DashboardActivity extends Activity {
 		setContentView(R.layout.dashboard);
 		MyLocation.getInstance(this);//Starts the LocationManager right away so a location will be available as soon as possible
 		
+		creator = Utilities.getUserAccount(this);
+		user = new User(creator.name);
 		//Initializes the content managers
 		contentAdder = new ContentAdder(getApplicationContext());
 		contentLoader = new ContentLoader(getApplicationContext());
 		
 		myGroupsIntent = new Intent(this, MyGroupsActivity.class);
+		myGroupsIntent.putExtra("ACCOUNT", creator);
+		
 		profileIntent = new Intent(this, ProfileActivity.class);
 		timelineIntent = new Intent(this, TimelineActivity.class);
 		timelineIntent.setAction(Utilities.INTENT_ACTION_NEW_TIMELINE); //Default Intent action for TimelineActivity is to create/open a timeline.
@@ -215,10 +221,7 @@ public class DashboardActivity extends Activity {
 	 */
 	private void createNewTimeline(String timelineName, boolean shared) {
 
-		Account creator = Utilities.getUserAccount(this);
-		
 		Experience timeLine = new Experience(timelineName, shared, creator);
-		User user = new User(creator.name);
 		
 //		addNewUserToDatabase(user);
 //		addUserToAGroup(user, timeLine.getTitle());
