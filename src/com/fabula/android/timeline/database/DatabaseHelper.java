@@ -34,8 +34,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 //		File sdCardDirectory = Environment.getExternalStorageDirectory();
 	
 		timelineDatabase = this.getWritableDatabase();
-		
-		
 	}	
 	
 	public static SQLiteDatabase getCurrentTimelineDatabase() {
@@ -45,8 +43,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return timelineDatabase;
 	}
 	
-	
-	
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(SQLStatements.EVENT_DATABASE_CREATE);
 		db.execSQL(SQLStatements.EVENT_TO_EVENT_ITEM_DATABASE_CREATE);
@@ -55,8 +51,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.execSQL(SQLStatements.RECORDING_DATABASE_CREATE);	
 		db.execSQL(SQLStatements.VIDEO_DATABASE_CREATE);
 		db.execSQL(SQLStatements.EMOTIONS_DATABASE_CREATE);
-		
-		
 		
 		backupDBToSDcard(db, this.databaseName);
 	}
@@ -90,7 +84,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 					e.printStackTrace();
 				}
 			}
-		
 	}
 	
 	@Override
@@ -103,7 +96,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.execSQL("DROP TABLE IF EXISTS " + SQLStatements.RECORDINGS_DATABASE_TABLE_NAME);
 		db.execSQL("DROP TABLE IF EXISTS " + SQLStatements.VIDEO_DATABASE_TABLE_NAME);
 		db.execSQL("DROP TABLE IF EXISTS " + SQLStatements.EMOTIONS_DATABASE_TABLE_NAME);
-		
 		
         onCreate(db);
 		

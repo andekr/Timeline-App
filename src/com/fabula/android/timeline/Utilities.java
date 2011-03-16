@@ -66,11 +66,16 @@ public class Utilities {
     
     public static final String DATABASE_NAME = "timelineDB.db";
     public static final int DATABASE_VERSION = 1; //var 24
+	public static final int USER_GROUP_DATABASE_VERSION = 1;
 	
     public static final String DATABASENAME_REQUEST = "DATABASENAME";
     public static final String EXPERIENCEID_REQUEST = "EXPERIENCEID";
     public static final String EXPERIENCECREATOR_REQUEST = "EXPERIENCECREATOR";
     public static final String SHARED_REQUEST = "SHAREDEXPERIENCE";
+
+	public static final String USER_GROUP_DATABASE_NAME = "user_group_database.db";
+
+
     
     
     public static float HOUR_IN_MILLIS = 3600000;

@@ -13,6 +13,7 @@ import android.provider.BaseColumns;
 import com.fabula.android.timeline.database.DatabaseHelper;
 import com.fabula.android.timeline.database.SQLStatements;
 import com.fabula.android.timeline.database.TimelineDatabaseHelper;
+import com.fabula.android.timeline.database.UserGroupDatabaseHelper;
 import com.fabula.android.timeline.models.EventItem.EventItemsColumns;
 import com.fabula.android.timeline.models.SimpleNote.NoteColumns;
 
@@ -35,6 +36,11 @@ public class BaseContentProvider extends ContentProvider{
 		return TimelineDatabaseHelper.getCurrentTimeLineDatabase();
 	}
 	
+	public SQLiteDatabase getUserDatabase() {
+		return UserGroupDatabaseHelper.getUserDatabase();
+	}
+	
+	
 	@Override
 	public int delete(Uri uri, String id, String[] whereArgs) {
 		
@@ -56,6 +62,7 @@ public class BaseContentProvider extends ContentProvider{
 		case VIDEO_ITEM:
 			count = DatabaseHelper.getCurrentTimelineDatabase().delete(SQLStatements.VIDEO_DATABASE_TABLE_NAME, BaseColumns._ID + "="+itemID,whereArgs);
 			break;
+		
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
 		}

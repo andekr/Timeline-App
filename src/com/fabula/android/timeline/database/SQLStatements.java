@@ -4,10 +4,12 @@ import com.fabula.android.timeline.models.Emotion.EmotionColumns;
 import com.fabula.android.timeline.models.Event.EventColumns;
 import com.fabula.android.timeline.models.EventItem.EventItemsColumns;
 import com.fabula.android.timeline.models.Experience.ExperienceColumns;
+import com.fabula.android.timeline.models.Group.GroupColumns;
 import com.fabula.android.timeline.models.SimpleNote.NoteColumns;
 import com.fabula.android.timeline.models.SimplePicture.PictureColumns;
 import com.fabula.android.timeline.models.SimpleRecording.RecordingColumns;
 import com.fabula.android.timeline.models.SimpleVideo.VideoColumns;
+import com.fabula.android.timeline.models.User.UserColumns;
 
 /**
  *  "Static" class with statements for creating database tables.
@@ -25,6 +27,9 @@ public class SQLStatements {
 	public static final String VIDEO_DATABASE_TABLE_NAME = "videos";
 	public static final String EMOTIONS_DATABASE_TABLE_NAME = "emotions";	
 	public static final String TIMELINES_DATABASE_TABLE_NAME = "timelines";
+	public static final String USER_DATABASE_TABLE_NAME = "users";
+	public static final String GROUP_DATABASE_TABLE_NAME = "groups";
+	public static final String USER_GROUP_DATABASE_TABLE_NAME = "user_groups";
 	
     public static final String EVENT_DATABASE_CREATE =
         "create table " + EVENT_DATABASE_TABLE_NAME + 
@@ -82,5 +87,18 @@ public class SQLStatements {
 		+ExperienceColumns.EXPERIENCE_NAME+ " VARCHAR NOT NULL,"
 		+ExperienceColumns.EXPERIENCE_SHARED+ " INTEGER,"
 		+ExperienceColumns.EXPERIENCE_CREATOR+ " VARCHAR NOT NULL"+");";
+	
+	public static final String USER_DATABASE_CREATE = "CREATE TABLE " + USER_DATABASE_TABLE_NAME+"("
+	    +UserColumns._ID+ " VARCHAR PRIMARY KEY,"
+	    +UserColumns.USER_NAME+ " VARCHAR NOT NULL"+");";
+	
+	public static final String GROUP_DATABASE_CREATE = "CREATE TABLE " + GROUP_DATABASE_TABLE_NAME+"("
+		+GroupColumns._ID+ " VARCHAR PRIMARY KEY,"
+		+GroupColumns.GROUP_NAME+ " VARCHAR NOT NULL"+");";
+	
+	public static final String USER_GROUP_DATABASE_CREATE = "CREATE TABLE " + USER_GROUP_DATABASE_TABLE_NAME+"("
+		+GroupColumns._ID+ " VARCHAR,"
+		+UserColumns.USER_NAME+ " VARCHAR, "
+		+"primary key("+GroupColumns._ID+" ,"+ UserColumns.USER_NAME+"));";
 		
 }
