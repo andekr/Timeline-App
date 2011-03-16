@@ -77,11 +77,13 @@ public class EmotionsProvider extends BaseContentProvider {
         
         long rowId = super.getDatabase().insert(SQLStatements.EMOTIONS_DATABASE_TABLE_NAME, "", values);
         
-		if (rowId > 0) {
-		    Uri noteUri = ContentUris.withAppendedId(NoteColumns.CONTENT_URI, rowId);
-		    getContext().getContentResolver().notifyChange(noteUri, null);
-		    return noteUri;
-		}
+        //---if added successfully---
+	      if (rowId>0)
+	      {
+	         Uri _uri = ContentUris.withAppendedId(CONTENT_URI, rowId);
+	         getContext().getContentResolver().notifyChange(_uri, null);    
+	         return _uri;                
+	      }   
 		throw new SQLException("Failed to insert row into " + uri);
 	}
 
@@ -95,7 +97,7 @@ public class EmotionsProvider extends BaseContentProvider {
 	}
 	static{
 		emotionsColumnMapping = new HashMap<String, String>();
-		emotionsColumnMapping.put(EmotionColumns._ID, EmotionColumns._ID);
+		emotionsColumnMapping.put(EmotionColumns.EMOTION_ID, EmotionColumns.EMOTION_ID);
 		emotionsColumnMapping.put(EmotionColumns.EVENT_ID, EventColumns._ID);
 		emotionsColumnMapping.put(EmotionColumns.EMOTION_TYPE, EmotionColumns.EMOTION_TYPE);
 	}

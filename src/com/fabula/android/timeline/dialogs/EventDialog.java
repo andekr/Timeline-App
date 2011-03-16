@@ -38,6 +38,7 @@ import com.fabula.android.timeline.models.Event;
 import com.fabula.android.timeline.models.EventItem;
 import com.fabula.android.timeline.models.SimpleNote;
 import com.fabula.android.timeline.models.Emotion.EmotionColumns;
+import com.fabula.android.timeline.models.Emotion.EmotionEnum;
 import com.fabula.android.timeline.sync.GAEHandler;
 import com.fabula.android.timeline.utilities.MyLocation;
 
@@ -212,7 +213,7 @@ public class EventDialog extends Dialog {
 			}
 		
 		for (Emotion emotion : mEvent.getEmotionList()) {
-			ImageView emotionIcon  = getEmotionIcon(mContext.getResources().getDrawable(emotion.getIcon()));
+			ImageView emotionIcon  = getEmotionIcon(mContext.getResources().getDrawable(emotion.getEmotionType().getIcon()));
 			emotionLayout.addView(emotionIcon);
 		}
 		
@@ -338,13 +339,14 @@ public class EventDialog extends Dialog {
 	private void setupEmotionButtonQuickAction() {
 		final ActionItem like = new ActionItem();
 		
-		like.setIcon(mContext.getResources().getDrawable(Emotion.LIKE.getIcon()));
+		like.setIcon(mContext.getResources().getDrawable(EmotionEnum.LIKE.getIcon()));
 		like.setTag(mEvent);
 		like.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				((Event)v.getTag()).addEmotion(Emotion.LIKE);
-				addEmotionToDatabase((Event) v.getTag(), Emotion.LIKE);
+				Emotion emo = new Emotion(EmotionEnum.LIKE);
+				((Event)v.getTag()).addEmotion(emo);
+				addEmotionToDatabase((Event) v.getTag(), emo);
 				Toast.makeText(mContext, R.string.like_toast , Toast.LENGTH_SHORT).show();
 				Log.i(this.toString(), "LIKE event set");
 				updateMainview();
@@ -354,13 +356,14 @@ public class EventDialog extends Dialog {
 				
 		final ActionItem cool = new ActionItem();
 		
-		cool.setIcon(mContext.getResources().getDrawable(Emotion.COOL.getIcon()));
+		cool.setIcon(mContext.getResources().getDrawable(EmotionEnum.COOL.getIcon()));
 		cool.setTag(mEvent);
 		cool.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				((Event)v.getTag()).addEmotion(Emotion.COOL);
-				addEmotionToDatabase((Event) v.getTag(), Emotion.COOL);
+				Emotion emo = new Emotion(EmotionEnum.COOL);
+				((Event)v.getTag()).addEmotion(emo);
+				addEmotionToDatabase((Event) v.getTag(), emo);
 				Toast.makeText(mContext, R.string.cool_toast , Toast.LENGTH_SHORT).show();
 				Log.i(this.toString(), "COOL event set");
 				updateMainview();
@@ -369,13 +372,14 @@ public class EventDialog extends Dialog {
 		
 		final ActionItem dislike = new ActionItem();
 		
-		dislike.setIcon(mContext.getResources().getDrawable(Emotion.DISLIKE.getIcon()));
+		dislike.setIcon(mContext.getResources().getDrawable(EmotionEnum.DISLIKE.getIcon()));
 		dislike.setTag(mEvent);
 		dislike.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				((Event)v.getTag()).addEmotion(Emotion.DISLIKE);
-				addEmotionToDatabase((Event) v.getTag(), Emotion.DISLIKE);
+				Emotion emo = new Emotion(EmotionEnum.DISLIKE);
+				((Event)v.getTag()).addEmotion(emo);
+				addEmotionToDatabase((Event) v.getTag(), emo);
 				Toast.makeText(mContext, R.string.dislike_toast , Toast.LENGTH_SHORT).show();
 				Log.i(this.toString(), "DISLIKE event set");
 				updateMainview();
@@ -384,13 +388,14 @@ public class EventDialog extends Dialog {
 		
 		final ActionItem sad = new ActionItem();
 		
-		sad.setIcon(mContext.getResources().getDrawable(Emotion.SAD.getIcon()));
+		sad.setIcon(mContext.getResources().getDrawable(EmotionEnum.SAD.getIcon()));
 		sad.setTag(mEvent);
 		sad.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				((Event)v.getTag()).addEmotion(Emotion.SAD);
-				addEmotionToDatabase((Event) v.getTag(), Emotion.SAD);
+				Emotion emo = new Emotion(EmotionEnum.SAD);
+				((Event)v.getTag()).addEmotion(emo);
+				addEmotionToDatabase((Event) v.getTag(), emo);
 				Toast.makeText(mContext, R.string.sad_toast , Toast.LENGTH_SHORT).show();
 				Log.i(this.toString(), "SAD event set");
 				updateMainview();
@@ -444,12 +449,13 @@ public class EventDialog extends Dialog {
     	((TimelineActivity)mActivity).removeEvent(event);
 	}
 	
-	private void addEmotionToDatabase(Event tag, Emotion like) {
+	private void addEmotionToDatabase(Event tag, Emotion emo) {
 		
 		ContentValues values = new ContentValues();
 		
+		values.put(EmotionColumns._ID, emo.getEmotionid());
 		values.put(EmotionColumns.EVENT_ID, tag.getId());
-		values.put(EmotionColumns.EMOTION_TYPE, like.getType());
+		values.put(EmotionColumns.EMOTION_TYPE, emo.getEmotionType().getType());
 		
 		mContext.getContentResolver().insert(EmotionColumns.CONTENT_URI, values);
 	}

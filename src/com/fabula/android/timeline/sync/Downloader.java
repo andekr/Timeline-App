@@ -13,6 +13,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import com.fabula.android.timeline.Utilities;
 import com.fabula.android.timeline.database.TimelineDatabaseHelper;
+import com.fabula.android.timeline.models.Emotion;
 import com.fabula.android.timeline.models.Event;
 import com.fabula.android.timeline.models.EventItem;
 import com.fabula.android.timeline.models.Experience;
@@ -42,6 +43,7 @@ public class Downloader {
 			Log.i("DOWNLOADER", "Json Parser started.. Getting all Experiences");
 			GsonBuilder gsonB = new GsonBuilder();
 			gsonB.registerTypeAdapter(EventItem.class, new EventItemDeserializer());
+//			gsonB.registerTypeAdapter(Emotion.class, new EmotionDeserializer());
 //			gsonB.registerTypeAdapter(EventItem.class, new EventItemInstanceCreator());
 			gsonB.serializeNulls();
 			
@@ -87,15 +89,7 @@ public class Downloader {
         return data;
     }
 	
-//	public static class EventItemInstanceCreator implements InstanceCreator<EventItem> {
-//		  public EventItem createInstance(Type type) {
-//		    if (type.getClass().getSimpleName().equals(SimplePicture.class)) {
-//				return new SimplePicture();
-//			}else
-//				return null;
-//		  }
-//		}
-	
+
 	public static class EventItemDeserializer implements JsonDeserializer<EventItem> {
 		  public EventItem deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 		      throws JsonParseException {
@@ -116,8 +110,20 @@ public class Downloader {
 			} else 
 				  return null;
 			  
-//		    return new DateTime(json.getAsJsonPrimitive().getAsString());
 		  }
 		}
+	
+	//TODO: Trengs kanskje ikke?
+//	public static class EmotionDeserializer implements JsonDeserializer<Emotion> {
+//		  public Emotion deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+//		      throws JsonParseException {
+//			  
+//			  String emotionType = json.getAsJsonPrimitive().getAsString();
+//			 
+//			  Emotion emotion = Emotion.valueOf(emotionType);
+//			  
+//			return emotion;
+//		  }
+//		}
 
 }
