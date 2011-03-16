@@ -31,16 +31,13 @@ import android.widget.ToggleButton;
 import com.fabula.android.timeline.Map.TimelineMapView;
 import com.fabula.android.timeline.contentmanagers.ContentAdder;
 import com.fabula.android.timeline.contentmanagers.ContentLoader;
-import com.fabula.android.timeline.contentmanagers.UserGroupManager;
 import com.fabula.android.timeline.database.DatabaseHelper;
 import com.fabula.android.timeline.database.TimelineDatabaseHelper;
-import com.fabula.android.timeline.database.UserGroupDatabaseHelper;
 import com.fabula.android.timeline.dialogs.TimelineBrowserDialog;
 import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.models.Experiences;
-import com.fabula.android.timeline.sync.Downloader;
-import com.fabula.android.timeline.models.Group;
 import com.fabula.android.timeline.models.User;
+import com.fabula.android.timeline.sync.Downloader;
 import com.fabula.android.timeline.sync.GAEHandler;
 import com.fabula.android.timeline.utilities.MyLocation;
 
@@ -248,7 +245,7 @@ public class DashboardActivity extends Activity {
 		String databaseName = timeLine.getTitle() + ".db";
 		addNewTimelineToTimelineDatabase(timeLine); 
 		new DatabaseHelper(this, databaseName);
-		timelineIntent.putExtra(Utilities.DATABASENAME_REQUEST, timelineName);
+		timelineIntent.putExtra(Utilities.DATABASENAME_REQUEST, databaseName);
 		timelineIntent.putExtra(Utilities.SHARED_REQUEST, shared);
 		timelineIntent.putExtra(Utilities.EXPERIENCEID_REQUEST, timeLine.getId());
 		timelineIntent.putExtra(Utilities.EXPERIENCECREATOR_REQUEST, timeLine.getUser().name);

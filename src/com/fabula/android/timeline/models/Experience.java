@@ -1,10 +1,8 @@
 package com.fabula.android.timeline.models;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-
 
 import android.accounts.Account;
 import android.net.Uri;

@@ -146,6 +146,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
         
         //Creates the experience and loads it with events
         timeline = new Experience(experienceID, databaseName, sharedExperience, new Account(experienceCreator, "com.google"));
+        
         timeline.setEvents(loadedEvents);
          
         setupViews();

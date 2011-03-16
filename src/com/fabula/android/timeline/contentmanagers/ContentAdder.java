@@ -100,7 +100,7 @@ public class ContentAdder {
 	
 	private void addEventItemsToDB(Event event) {
 		
-		for (EventItem item : event.getEventItems()) {
+		for (EventItem item : event.getEventItems()) { 
 			connectEventWithEventItemInDatabase(event, item);
 			
 			if(item instanceof SimpleNote) {

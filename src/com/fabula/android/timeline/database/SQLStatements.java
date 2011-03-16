@@ -78,7 +78,7 @@ public class SQLStatements {
 		+VideoColumns.CREATED_DATE +" LONG"+");";
 	
 	public static final String EMOTIONS_DATABASE_CREATE = "CREATE TABLE " + EMOTIONS_DATABASE_TABLE_NAME+"("
-		+EmotionColumns._ID+ " INTEGER PRIMARY KEY AUTOINCREMENT,"
+		+EmotionColumns.EMOTION_ID+ " VARCHAR PRIMARY KEY ,"
 		+EmotionColumns.EVENT_ID +" VARCHAR NOT NULL,"
 		+EmotionColumns.EMOTION_TYPE +" INTEGER NOT NULL"+");";
 

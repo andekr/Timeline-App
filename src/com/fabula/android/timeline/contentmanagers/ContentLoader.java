@@ -13,6 +13,7 @@ import android.util.Log;
 
 import com.fabula.android.timeline.models.Emotion;
 import com.fabula.android.timeline.models.Emotion.EmotionColumns;
+import com.fabula.android.timeline.models.Emotion.EmotionEnum;
 import com.fabula.android.timeline.models.Event;
 import com.fabula.android.timeline.models.Event.EventColumns;
 import com.fabula.android.timeline.models.EventItem.EventItemsColumns;
@@ -330,25 +331,26 @@ public class ContentLoader {
 	
 	private void loadAllEmotions(Event event) {
 		
-		String[] columns = new String[] {EmotionColumns.EVENT_ID, EmotionColumns.EMOTION_TYPE};
+		String[] columns = new String[] {EmotionColumns._ID, EmotionColumns.EVENT_ID, EmotionColumns.EMOTION_TYPE};
 		String where = EmotionColumns.EVENT_ID+ "='"+event.getId()+"'";
 		
 		Cursor listOfEmotions = context.getContentResolver().query(EmotionColumns.CONTENT_URI, columns, where, null, null);
 		
 		if(listOfEmotions.moveToFirst()){
+			String id = listOfEmotions.getString(listOfEmotions.getColumnIndex(NoteColumns._ID));
 			do{
 				switch (listOfEmotions.getInt(listOfEmotions.getColumnIndex(EmotionColumns.EMOTION_TYPE))) {
 				case 1:
-					event.addEmotion(Emotion.LIKE);
+					event.addEmotion(new Emotion(id, EmotionEnum.LIKE));
 					break;
 				case 2:
-					event.addEmotion(Emotion.COOL);
+					event.addEmotion(new Emotion(id, EmotionEnum.COOL));
 					break;
 				case 3:
-					event.addEmotion(Emotion.DISLIKE);
+					event.addEmotion(new Emotion(id, EmotionEnum.DISLIKE));
 					break;
 				case 4:
-					event.addEmotion(Emotion.SAD);
+					event.addEmotion(new Emotion(id, EmotionEnum.SAD));
 					break;
 				}
 				
