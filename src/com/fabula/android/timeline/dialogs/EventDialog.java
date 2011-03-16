@@ -346,7 +346,7 @@ public class EventDialog extends Dialog {
 			public void onClick(View v) {
 				Emotion emo = new Emotion(EmotionEnum.LIKE);
 				((Event)v.getTag()).addEmotion(emo);
-				addEmotionToDatabase((Event) v.getTag(), emo);
+				((TimelineActivity)mActivity).getContentAdder().addEmotionToDatabase((Event) v.getTag(), emo);
 				Toast.makeText(mContext, R.string.like_toast , Toast.LENGTH_SHORT).show();
 				Log.i(this.toString(), "LIKE event set");
 				updateMainview();
@@ -363,7 +363,7 @@ public class EventDialog extends Dialog {
 			public void onClick(View v) {
 				Emotion emo = new Emotion(EmotionEnum.COOL);
 				((Event)v.getTag()).addEmotion(emo);
-				addEmotionToDatabase((Event) v.getTag(), emo);
+				((TimelineActivity)mActivity).getContentAdder().addEmotionToDatabase((Event) v.getTag(), emo);
 				Toast.makeText(mContext, R.string.cool_toast , Toast.LENGTH_SHORT).show();
 				Log.i(this.toString(), "COOL event set");
 				updateMainview();
@@ -379,7 +379,7 @@ public class EventDialog extends Dialog {
 			public void onClick(View v) {
 				Emotion emo = new Emotion(EmotionEnum.DISLIKE);
 				((Event)v.getTag()).addEmotion(emo);
-				addEmotionToDatabase((Event) v.getTag(), emo);
+				((TimelineActivity)mActivity).getContentAdder().addEmotionToDatabase((Event) v.getTag(), emo);
 				Toast.makeText(mContext, R.string.dislike_toast , Toast.LENGTH_SHORT).show();
 				Log.i(this.toString(), "DISLIKE event set");
 				updateMainview();
@@ -395,7 +395,7 @@ public class EventDialog extends Dialog {
 			public void onClick(View v) {
 				Emotion emo = new Emotion(EmotionEnum.SAD);
 				((Event)v.getTag()).addEmotion(emo);
-				addEmotionToDatabase((Event) v.getTag(), emo);
+				((TimelineActivity)mActivity).getContentAdder().addEmotionToDatabase((Event) v.getTag(), emo);
 				Toast.makeText(mContext, R.string.sad_toast , Toast.LENGTH_SHORT).show();
 				Log.i(this.toString(), "SAD event set");
 				updateMainview();
@@ -449,16 +449,16 @@ public class EventDialog extends Dialog {
     	((TimelineActivity)mActivity).removeEvent(event);
 	}
 	
-	private void addEmotionToDatabase(Event tag, Emotion emo) {
-		
-		ContentValues values = new ContentValues();
-		
-		values.put(EmotionColumns._ID, emo.getEmotionid());
-		values.put(EmotionColumns.EVENT_ID, tag.getId());
-		values.put(EmotionColumns.EMOTION_TYPE, emo.getEmotionType().getType());
-		
-		mContext.getContentResolver().insert(EmotionColumns.CONTENT_URI, values);
-	}
+//	public void addEmotionToDatabase(Event tag, Emotion emo) {
+//		
+//		ContentValues values = new ContentValues();
+//		
+//		values.put(EmotionColumns._ID, emo.getEmotionid());
+//		values.put(EmotionColumns.EVENT_ID, tag.getId());
+//		values.put(EmotionColumns.EMOTION_TYPE, emo.getEmotionType().getType());
+//		
+//		mContext.getContentResolver().insert(EmotionColumns.CONTENT_URI, values);
+//	}
 	
 	@Override
 	public void onBackPressed() {
