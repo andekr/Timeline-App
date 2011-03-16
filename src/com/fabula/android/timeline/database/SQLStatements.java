@@ -52,9 +52,10 @@ public class SQLStatements {
     
 	public static final String PICTURE_DATABASE_CREATE = "CREATE TABLE " + PICTURE_DATABASE_TABLE_NAME + " ("
 		+PictureColumns._ID +" VARCHAR PRIMARY KEY,"
-		+PictureColumns.FILE_PATH+" VARCHAR NOT NULL,"
+		+PictureColumns.URI_PATH+" VARCHAR NOT NULL,"
 		+PictureColumns.DESCRIPTION+" TEXT,"
 		+EventItemsColumns.USERNAME+" VARCHAR,"
+		+PictureColumns.FILENAME+" VARCHAR,"
 		+PictureColumns.CREATED_DATE+" LONG"+");";
 	
 	public static final String RECORDING_DATABASE_CREATE = "CREATE TABLE " + RECORDINGS_DATABASE_TABLE_NAME + "("

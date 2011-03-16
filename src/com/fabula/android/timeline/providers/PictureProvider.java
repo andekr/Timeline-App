@@ -106,9 +106,10 @@ public class PictureProvider extends BaseContentProvider {
         imageColumnMapping = new HashMap<String, String>();
         imageColumnMapping.put(PictureColumns._ID, PictureColumns._ID);
         imageColumnMapping.put(PictureColumns.TITLE, PictureColumns.TITLE);
-        imageColumnMapping.put(PictureColumns.FILE_PATH, PictureColumns.FILE_PATH);
+        imageColumnMapping.put(PictureColumns.URI_PATH, PictureColumns.URI_PATH);
         imageColumnMapping.put(PictureColumns.CREATED_DATE, PictureColumns.CREATED_DATE);
         imageColumnMapping.put(PictureColumns.DESCRIPTION, PictureColumns.DESCRIPTION);
+        imageColumnMapping.put(PictureColumns.FILENAME, PictureColumns.FILENAME);
         imageColumnMapping.put(EventItemsColumns.USERNAME, EventItemsColumns.USERNAME);
 	}
 }

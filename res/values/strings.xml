@@ -23,6 +23,7 @@
 	<string name="Timelinename_hint">Name of timeline</string>
 	<string name="ShareTimeline_label">Share timeline?</string>
 	<string name="Select_Timeline_label">Select a timeline!</string>
+	<string name="Last_synced_label">Last synced:</string>
 
 
     <string name="picture">Picture</string>

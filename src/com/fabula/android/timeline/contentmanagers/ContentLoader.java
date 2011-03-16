@@ -284,7 +284,7 @@ public class ContentLoader {
 
 	private void addPictureItemToEvent(Event event, String eventItemID) {
 		
-		String[] pictureColumns = new String[] {PictureColumns._ID, PictureColumns.FILE_PATH, PictureColumns.CREATED_DATE, EventItemsColumns.USERNAME};
+		String[] pictureColumns = new String[] {PictureColumns._ID, PictureColumns.URI_PATH, EventItemsColumns.USERNAME, PictureColumns.FILENAME};
 		String whereStatement = PictureColumns._ID+"='"+eventItemID+"'";
 		
 		Cursor cursorOnListOfPicturesBelongingToEvent = context.getContentResolver().query(PictureColumns.CONTENT_URI, pictureColumns, whereStatement, null, null);
@@ -293,9 +293,10 @@ public class ContentLoader {
 			do{
 				SimplePicture picture = new SimplePicture(
 						cursorOnListOfPicturesBelongingToEvent.getString(cursorOnListOfPicturesBelongingToEvent.getColumnIndex(PictureColumns._ID)),
-						Uri.parse(cursorOnListOfPicturesBelongingToEvent.getString(cursorOnListOfPicturesBelongingToEvent.getColumnIndex(PictureColumns.FILE_PATH))), 
-						new Date(cursorOnListOfPicturesBelongingToEvent.getLong(cursorOnListOfPicturesBelongingToEvent.getColumnIndex(PictureColumns.CREATED_DATE))),
-						new Account(cursorOnListOfPicturesBelongingToEvent.getString(cursorOnListOfPicturesBelongingToEvent.getColumnIndex(EventItemsColumns.USERNAME)), "com.google"));
+						Uri.parse(cursorOnListOfPicturesBelongingToEvent.getString(cursorOnListOfPicturesBelongingToEvent.getColumnIndex(PictureColumns.URI_PATH))), 
+						new Account(cursorOnListOfPicturesBelongingToEvent.getString(cursorOnListOfPicturesBelongingToEvent.getColumnIndex(EventItemsColumns.USERNAME)), "com.google"),
+						cursorOnListOfPicturesBelongingToEvent.getString(cursorOnListOfPicturesBelongingToEvent.getColumnIndex(PictureColumns.FILENAME))
+						);
 				
 				event.getEventItems().add(picture);
 			}while(cursorOnListOfPicturesBelongingToEvent.moveToNext());

@@ -49,6 +49,9 @@
 </LinearLayout>
 
 </TableRow>
+<TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/DashTableRow">
+    <TextView android:layout_height="wrap_content" android:id="@+id/DashLastSyncedTextView" android:gravity="center" android:layout_width="fill_parent" android:text="@string/Last_synced_label"></TextView>
+</TableRow>
 
 
 </TableLayout>

@@ -6,9 +6,11 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 
+import com.fabula.android.timeline.database.DatabaseHelper;
 import com.fabula.android.timeline.database.SQLStatements;
 import com.fabula.android.timeline.models.Experience.ExperienceColumns;
 
@@ -40,7 +42,7 @@ public class ExperienceProvider extends BaseContentProvider {
             values = new ContentValues();
         }
         
-        long rowId = super.getTimelinesDatabase().insert(SQLStatements.TIMELINES_DATABASE_TABLE_NAME, "", values);
+        long rowId = super.getTimelinesDatabase().insertWithOnConflict(SQLStatements.TIMELINES_DATABASE_TABLE_NAME, "", values, SQLiteDatabase.CONFLICT_REPLACE); 
         
 		if (rowId > 0) {
 		    Uri exUri = ContentUris.withAppendedId(ExperienceColumns.CONTENT_URI, rowId);

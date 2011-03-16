@@ -1,6 +1,8 @@
 package com.fabula.android.timeline;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 
 import android.accounts.Account;
 import android.app.Activity;
@@ -13,6 +15,7 @@ import android.content.res.Configuration;
 import android.graphics.Shader.TileMode;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Video;
 import android.provider.MediaStore.Video.Media;
@@ -89,6 +92,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	private Animation slideRightOut;
 	private ImageButton homeButton;
 	private int backCounter = 0;
+	private String intentFilename;
 
 	public String databaseName, experienceID, experienceCreator;
 	public boolean sharedExperience;
@@ -149,7 +153,9 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
         if(getIntent().getAction().equals(Utilities.INTENT_ACTION_ADD_TO_TIMELINE)){
         	if(getIntent().getType().contains("image/")){
         			imageUri = (Uri) getIntent().getExtras().get(Intent.EXTRA_STREAM);
-        			addPictureToTimeline();
+        			String filename =(Utilities.getUserAccount(this).name+new Date().getTime()).hashCode()+".jpg";
+    				Utilities.copyFile(Utilities.getRealPathFromURI(imageUri, this), Utilities.IMAGE_STORAGE_FILEPATH, filename);
+        			addPictureToTimeline(filename);
         	}
         	else if(getIntent().getType().contains("video/")){
         			videoUri = (Uri) getIntent().getExtras().get(Intent.EXTRA_STREAM);
@@ -199,7 +205,8 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 				   
 				   Toast.makeText(this, "Picture created", Toast.LENGTH_SHORT).show();
 
-	    	    	addPictureToTimeline();
+	    	    	addPictureToTimeline(intentFilename);
+	    	    	intentFilename="";
 
 	    	    } else if (resultCode == RESULT_CANCELED) {
 	    	        Toast.makeText(this, "Picture was not taken", Toast.LENGTH_SHORT).show();
@@ -278,7 +285,10 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 				
 				Toast.makeText(this, "Picture was selected", Toast.LENGTH_SHORT).show();
 				imageUri = (Uri) data.getData();
-    	    	addPictureToTimeline();	//Eller skal det være attachment?
+				String filename =(Utilities.getUserAccount(this).name+new Date().getTime()).hashCode()+".jpg";
+				Utilities.copyFile(Utilities.getRealPathFromURI(imageUri, this), Utilities.IMAGE_STORAGE_FILEPATH, filename);
+				//TODO: Kopiere filen til Fabula-images også?
+				addPictureToTimeline(filename);	//Eller skal det være attachment?
 			}
 			break;
 			case Utilities.CAPTURE_BARCODE:
@@ -341,6 +351,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 		    ContentValues values = new ContentValues();
 		    values.put(MediaStore.Images.Media.TITLE, "TimelineImage");
 		    values.put(MediaStore.Images.Media.DESCRIPTION,"Image capture by camera");
+		    
 		    //Put some geolocation information into the image meta tag, if location is known
 		    try {
 		    	 values.put(MediaStore.Images.Media.LATITUDE, myLocation.getLocation().getLatitude());
@@ -351,13 +362,18 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 		   
 		    //imageUri is the current activity attribute, define and save it for later usage (also in onSaveInstanceState)
 		   try {
-			   imageUri = getContentResolver().insert(
-			    		MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+			  
+			   intentFilename =(Utilities.getUserAccount(this).name+new Date().getTime()).hashCode()+".jpg";
+			   imageUri = Uri.fromFile(new File(Utilities.IMAGE_STORAGE_FILEPATH+intentFilename));
+			   if(!(new File(Utilities.IMAGE_STORAGE_FILEPATH)).exists()) {
+					(new File(Utilities.IMAGE_STORAGE_FILEPATH)).mkdirs();
+				}
 			    //create new Intent
 			    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 			    intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
 			    startActivityForResult(intent, Utilities.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 		} catch (Exception e) {
+			Log.e("StartCamera", "Feil", e);
 			Toast.makeText(this, "SD card not availiable", Toast.LENGTH_LONG).show();
 		}
 		    
@@ -616,10 +632,10 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	 * the method creates a new {@link Event}.
 	 * 
 	 */
-	private void addPictureToTimeline(){
+	private void addPictureToTimeline(String filename){
 		
 		SimplePicture picture = new SimplePicture(this);
-		picture.setPictureUri(imageUri);
+		picture.setPictureUri(imageUri, filename);
 		
 		
     	if(selectedEvent!=null){

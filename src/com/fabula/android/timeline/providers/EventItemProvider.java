@@ -7,6 +7,7 @@ import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
@@ -33,7 +34,7 @@ public class EventItemProvider extends BaseContentProvider {
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
 		
-		Long rowID = super.getDatabase().insert(SQLStatements.EVENT_TO_EVENT_ITEM_DATABASE_TABLE_NAME, "", values);
+		Long rowID = super.getDatabase().insertWithOnConflict(SQLStatements.EVENT_TO_EVENT_ITEM_DATABASE_TABLE_NAME, "", values, SQLiteDatabase.CONFLICT_REPLACE);
 		
 		if(rowID > 0){
 			Uri _uri = ContentUris.withAppendedId(CONTENT_URI, rowID);
