@@ -28,7 +28,7 @@ public class Uploader {
 		if(!saveFilename.contains("."))
 			saveFilename = saveFilename+Utilities.getExtension(locationFilename);
 		
-		if(exists("http://folk.ntnu.no/andekr/upload/files/"+saveFilename)){
+//		if(exists("http://folk.ntnu.no/andekr/upload/files/"+saveFilename)){
 		
 			HttpURLConnection connection = null;
 			DataOutputStream outputStream = null;
@@ -99,9 +99,10 @@ public class Uploader {
 			{
 			//Exception handling
 			}
-		}else{
-			System.out.println("image exists on server");
-		}
+//		}
+//		else{
+//			System.out.println("image exists on server");
+//		}
 	}
 	
 	public static void putToGAE(Object o, String jsonString){
@@ -160,7 +161,6 @@ public class Uploader {
 	    return new String(buffer);
 	}
 	
-	//TODO: Funker ikke av en eller annen grunn. Havner i catch, selv om responseCode er 200
 	public static boolean exists(String URLName){
 	    try {
 	      HttpURLConnection.setFollowRedirects(false);
