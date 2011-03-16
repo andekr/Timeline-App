@@ -26,7 +26,7 @@ public class MyGroupsActivity extends Activity {
 	
 	private Account userAccount;
 	private ListView myGroupsList;
-	private ImageButton addNewGroupButton;
+	private ImageButton addNewGroupButton, homeButton;
 	private User applicationUser;
 	private ArrayAdapter<Group> groupListAdapter;
 	
@@ -35,25 +35,17 @@ public class MyGroupsActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.groupmenuscreen);
 		
-		myGroupsList = (ListView) findViewById(R.id.groupsList);
-		
-		
-		addNewGroupButton = (ImageButton) findViewById(R.id.my_groups);
-		addNewGroupButton.setOnClickListener(newGroupButtonListener);
-		
-		userAccount = (Account) getIntent().getParcelableExtra("ACCOUNT");
-		applicationUser = new User(userAccount.name);
-		
-		groupListAdapter = new ArrayAdapter<Group>(this, R.layout.mygroupslist, getAllGroupsConnectedToUser((userAccount)));
-		myGroupsList.setAdapter(groupListAdapter);
+		setupViews();
 		
 	}
-	
+
 	private OnClickListener newGroupButtonListener = new OnClickListener() {
 		public void onClick(View v) {
 			openNewGroupNameInputDialog();
 		}
 	};
+	
+	
 
 	
 	private void openNewGroupNameInputDialog() {
@@ -111,6 +103,28 @@ public class MyGroupsActivity extends Activity {
 		
 		helper.close();
 		return connectedGroups;
+	}
+	
+	private void setupViews() {
+		myGroupsList = (ListView) findViewById(R.id.groupsList);
+		
+		
+		addNewGroupButton = (ImageButton) findViewById(R.id.my_groups);
+		addNewGroupButton.setOnClickListener(newGroupButtonListener);
+		
+		userAccount = (Account) getIntent().getParcelableExtra("ACCOUNT");
+		applicationUser = new User(userAccount.name);
+		
+		groupListAdapter = new ArrayAdapter<Group>(this, R.layout.mygroupslist, getAllGroupsConnectedToUser((userAccount)));
+		myGroupsList.setAdapter(groupListAdapter);
+		
+		homeButton = (ImageButton)findViewById(R.id.GroupHomeButto);
+		homeButton.setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View v) {
+				finish();
+			}
+		});
 	}
 
 }
