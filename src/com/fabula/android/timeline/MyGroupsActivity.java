@@ -2,6 +2,7 @@ package com.fabula.android.timeline;
 
 import java.util.ArrayList;
 
+import com.fabula.android.timeline.adapters.GroupListAdapter;
 import com.fabula.android.timeline.contentmanagers.UserGroupManager;
 import com.fabula.android.timeline.database.UserGroupDatabaseHelper;
 import com.fabula.android.timeline.models.Group;
@@ -44,9 +45,6 @@ public class MyGroupsActivity extends Activity {
 			openNewGroupNameInputDialog();
 		}
 	};
-	
-	
-
 	
 	private void openNewGroupNameInputDialog() {
 		
@@ -115,7 +113,8 @@ public class MyGroupsActivity extends Activity {
 		userAccount = (Account) getIntent().getParcelableExtra("ACCOUNT");
 		applicationUser = new User(userAccount.name);
 		
-		groupListAdapter = new ArrayAdapter<Group>(this, R.layout.mygroupslist, getAllGroupsConnectedToUser((userAccount)));
+		groupListAdapter = new GroupListAdapter(this, getAllGroupsConnectedToUser((userAccount)));
+//		groupListAdapter = new ArrayAdapter<Group>(this, R.layout.mygroupslist, getAllGroupsConnectedToUser((userAccount)));
 		myGroupsList.setAdapter(groupListAdapter);
 		
 		homeButton = (ImageButton)findViewById(R.id.GroupHomeButto);
