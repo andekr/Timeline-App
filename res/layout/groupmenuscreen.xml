@@ -13,7 +13,7 @@
   </LinearLayout>
   
   <LinearLayout android:layout_width="wrap_content" android:id="@+id/listGroupsRow" android:paddingTop="20dip" android:layout_below="@+id/descriptionRow" android:layout_height="wrap_content" android:layout_above="@+id/buttonRow" android:background="@color/White">
-      <ListView android:layout_width="match_parent" android:id="@+id/groupsList"  android:cacheColorHint="#00000000" android:scrollbars="vertical" android:background="@color/White" android:fadingEdge="vertical" android:layout_height="wrap_content"></ListView>
+      <ExpandableListView android:layout_width="match_parent" android:id="@+id/groupsList"  android:cacheColorHint="#00000000" android:scrollbars="vertical" android:background="@color/White" android:fadingEdge="vertical" android:layout_height="wrap_content"></ExpandableListView>
   </LinearLayout>
   
   <LinearLayout android:id="@+id/buttonRow" android:layout_width="fill_parent" android:layout_alignParentBottom="true" android:layout_height="wrap_content">

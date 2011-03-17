@@ -41,5 +41,9 @@ public class User {
 		
 		public static final Uri CONTENT_URI = Uri.parse("content://" + UserProvider.AUTHORITY + "/users");
 	}
-
+	
+	@Override
+	public String toString() {
+		return this.userName;
+	}
 }

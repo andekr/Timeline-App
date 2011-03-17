@@ -107,9 +107,30 @@ public class UserGroupManager {
 		
 		Cursor c = context.getContentResolver().query(GroupProvider.CONTENT_URI, groupsTableColumns, whereStatement, null, null);
 		if(c.moveToFirst()) {
+	
 			group = new Group( c.getString(c.getColumnIndex(GroupColumns._ID)),c.getString(c.getColumnIndex(GroupColumns.GROUP_NAME)));
+			group.setMembers(getUsersConnectedToAGroup(group));
 		}
 		c.close();
 		return group;
+	}
+	
+	private ArrayList <User> getUsersConnectedToAGroup(Group group) {
+		
+		String [] userGroupsTableColumns = new String[] {GroupColumns._ID, UserColumns.USER_NAME};
+		ArrayList<User> users = new ArrayList<User>();
+		
+		String where = GroupColumns._ID+ " = '" +group.getId()+"'";
+		
+		Cursor c = context.getContentResolver().query(UserGroupProvider.CONTENT_URI, userGroupsTableColumns, where, null, null);
+		
+		if(c.moveToFirst()) {
+			do {
+				users.add(new User(c.getString(c.getColumnIndex(UserColumns.USER_NAME))));
+			} while (c.moveToNext());
+		}
+		c.close();
+		return users;
+		
 	}
 }

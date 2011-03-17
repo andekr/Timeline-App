@@ -2,6 +2,7 @@ package com.fabula.android.timeline;
 
 import java.util.ArrayList;
 
+import com.fabula.android.timeline.adapters.ExpandableGroupsListViewAdapter;
 import com.fabula.android.timeline.adapters.GroupListAdapter;
 import com.fabula.android.timeline.contentmanagers.UserGroupManager;
 import com.fabula.android.timeline.database.UserGroupDatabaseHelper;
@@ -26,6 +27,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -33,13 +35,15 @@ import android.widget.Toast;
 public class MyGroupsActivity extends Activity {
 	
 	private Account userAccount;
-	private ListView myGroupsList;
+//	private ListView myGroupsList;
 	private ImageButton addNewGroupButton, homeButton;
 	private User applicationUser;
-	private GroupListAdapter groupListAdapter;
+//	private GroupListAdapter groupListAdapter;
 	private Group selectedGroup;
 	private ArrayList <Group> connectedGroups;
 	private UserGroupManager uGManager;
+	private ExpandableListView myGroupsList;
+	private ExpandableGroupsListViewAdapter groupListAdapter;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,21 +66,9 @@ public class MyGroupsActivity extends Activity {
 		uGManager.addUserToAGroupInTheDatabase(group, applicationUser);
 		group.addMembers(applicationUser);
 		connectedGroups.add(group);
+		groupListAdapter.notifyDataSetChanged();
 		helper.close();
 		Toast.makeText(MyGroupsActivity.this.getApplicationContext(), "You have created the group: " +group.toString() , Toast.LENGTH_SHORT).show();
-	}
-	
-	/**
-	 * Get all groups from the database connected to the user using the application
-	 * @param user. The user using the application
-	 * @return a list of all the groups the user are a part of
-	 */
-	private ArrayList <Group> getAllGroupsConnectedToUser(Account user) {
-		
-		UserGroupDatabaseHelper helper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
-		ArrayList <Group> allGroups = uGManager.getAllGroupsConnectedToAUser(applicationUser);
-		helper.close();
-		return allGroups;
 	}
 	
 //	set the selected group
@@ -98,12 +90,26 @@ public class MyGroupsActivity extends Activity {
 		if(selectedGroup.getMembers().isEmpty()) {
 			deleteGroupFromDatabase(selectedGroup);
 		}
-		groupListAdapter.remove(selectedGroup);
+		
+		groupListAdapter.notifyDataSetChanged();
 		helper.close();
 	}
 	
 	private void deleteGroupFromDatabase(Group group) {
 		uGManager.deleteGroupFromDatabase(group);
+	}
+	
+	/**
+	 * Get all groups from the database connected to the user using the application
+	 * @param user. The user using the application
+	 * @return a list of all the groups the user are a part of
+	 */
+	private ArrayList <Group> getAllGroupsConnectedToUser(Account user) {
+		
+		UserGroupDatabaseHelper helper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
+		ArrayList <Group> allGroups = uGManager.getAllGroupsConnectedToAUser(applicationUser);
+		helper.close();
+		return allGroups;
 	}
 
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
@@ -128,7 +134,7 @@ public class MyGroupsActivity extends Activity {
 	
 	private void leaveGroupConfirmationDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(R.string.Leave_group_confirmation)
+		builder.setMessage("Do you really want to leave group " +selectedGroup.toString()+"?")
 		.setPositiveButton(R.string.yes_label, leaveGroupConfirmationListener)
 		.setNegativeButton(R.string.no_label, new DialogInterface.OnClickListener() {
 		public void onClick(DialogInterface dialog, int which) {
@@ -167,7 +173,7 @@ public class MyGroupsActivity extends Activity {
 		public boolean onItemLongClick(AdapterView<?> view, View arg1,
 				int position, long arg3) {
 			
-			MyGroupsActivity.this.setSelectedGroup(groupListAdapter.getItem(position));
+			MyGroupsActivity.this.setSelectedGroup(groupListAdapter.getGroup(position));
 			
 			view.setOnCreateContextMenuListener(new OnCreateContextMenuListener() {
 				
@@ -220,7 +226,7 @@ public class MyGroupsActivity extends Activity {
 	}
 
 	private void setupViews() {
-		myGroupsList = (ListView) findViewById(R.id.groupsList);
+		myGroupsList = (ExpandableListView) findViewById(R.id.groupsList);
 		
 		
 		addNewGroupButton = (ImageButton) findViewById(R.id.my_groups);
@@ -230,9 +236,10 @@ public class MyGroupsActivity extends Activity {
 		applicationUser = new User(userAccount.name);
 		
 		connectedGroups = getAllGroupsConnectedToUser(userAccount);
-		groupListAdapter = new GroupListAdapter(this, connectedGroups);
+		groupListAdapter = new ExpandableGroupsListViewAdapter(this, connectedGroups);
 		
 		myGroupsList.setAdapter(groupListAdapter);
+		this.registerForContextMenu(myGroupsList);
 		myGroupsList.setOnItemLongClickListener(openItemLongClickMenuListener);
 
 		
