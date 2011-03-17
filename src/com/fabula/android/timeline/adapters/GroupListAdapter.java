@@ -26,6 +26,7 @@ public class GroupListAdapter extends ArrayAdapter<Group> {
 		 this.mContext = context;
 		 this.groups = groups;
 		 mInflater = LayoutInflater.from(mContext); 
+		 setNotifyOnChange(true);
 	 }
 
 	public int getCount() {

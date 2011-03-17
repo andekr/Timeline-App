@@ -38,11 +38,14 @@ public class MyGroupsActivity extends Activity {
 	private User applicationUser;
 	private GroupListAdapter groupListAdapter;
 	private Group selectedGroup;
+	private ArrayList <Group> connectedGroups;
+	private UserGroupManager uGManager;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.groupmenuscreen);
+		uGManager = new UserGroupManager(this);
 		setupViews();
 	}
 	
@@ -55,11 +58,12 @@ public class MyGroupsActivity extends Activity {
 		Group group = new Group(groupName);
 		
 		UserGroupDatabaseHelper helper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
-		UserGroupManager uGManager = new UserGroupManager(this);
 		uGManager.addGroupToGroupDatabase(group);
 		uGManager.addUserToAGroupInTheDatabase(group, applicationUser);
-		groupListAdapter.add(group);
+		group.addMembers(applicationUser);
+		connectedGroups.add(group);
 		helper.close();
+		Toast.makeText(MyGroupsActivity.this.getApplicationContext(), "You have created the group: " +group.toString() , Toast.LENGTH_SHORT).show();
 	}
 	
 	/**
@@ -70,10 +74,9 @@ public class MyGroupsActivity extends Activity {
 	private ArrayList <Group> getAllGroupsConnectedToUser(Account user) {
 		
 		UserGroupDatabaseHelper helper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
-		UserGroupManager uGManager = new UserGroupManager(this);
-		ArrayList <Group> connectedGroups = uGManager.getAllGroupsConnectedToAUser(applicationUser);
+		ArrayList <Group> allGroups = uGManager.getAllGroupsConnectedToAUser(applicationUser);
 		helper.close();
-		return connectedGroups;
+		return allGroups;
 	}
 	
 //	set the selected group
@@ -87,11 +90,22 @@ public class MyGroupsActivity extends Activity {
 	protected void leaveGroup() {
 		
 		UserGroupDatabaseHelper helper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
-		UserGroupManager uGManager = new UserGroupManager(this);
 		uGManager.removeUserFromAGroupInTheDatabase(selectedGroup, applicationUser);
+		connectedGroups.remove(selectedGroup);
+		selectedGroup.removeMember(applicationUser);
+		
+		//delete the group if it has no members
+		if(selectedGroup.getMembers().isEmpty()) {
+			deleteGroupFromDatabase(selectedGroup);
+		}
+		groupListAdapter.remove(selectedGroup);
 		helper.close();
 	}
 	
+	private void deleteGroupFromDatabase(Group group) {
+		uGManager.deleteGroupFromDatabase(group);
+	}
+
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		switch (item.getGroupId()) {
 		
@@ -140,7 +154,6 @@ public class MyGroupsActivity extends Activity {
 		public void onClick(DialogInterface dialog, int which) {
 			leaveGroup();
 			Toast.makeText(MyGroupsActivity.this.getApplicationContext(), "You have left group: "+selectedGroup.toString() , Toast.LENGTH_SHORT).show();
-			groupListAdapter.remove(selectedGroup);
 			selectedGroup = null;
 			dialog.dismiss();
 		}
@@ -155,7 +168,6 @@ public class MyGroupsActivity extends Activity {
 				int position, long arg3) {
 			
 			MyGroupsActivity.this.setSelectedGroup(groupListAdapter.getItem(position));
-			System.out.println("GRUPPE:  " +selectedGroup.toString() );
 			
 			view.setOnCreateContextMenuListener(new OnCreateContextMenuListener() {
 				
@@ -217,9 +229,12 @@ public class MyGroupsActivity extends Activity {
 		userAccount = (Account) getIntent().getParcelableExtra("ACCOUNT");
 		applicationUser = new User(userAccount.name);
 		
-		groupListAdapter = new GroupListAdapter(this, getAllGroupsConnectedToUser((userAccount)));
-		myGroupsList.setOnItemLongClickListener(openItemLongClickMenuListener);
+		connectedGroups = getAllGroupsConnectedToUser(userAccount);
+		groupListAdapter = new GroupListAdapter(this, connectedGroups);
+		
 		myGroupsList.setAdapter(groupListAdapter);
+		myGroupsList.setOnItemLongClickListener(openItemLongClickMenuListener);
+
 		
 		homeButton = (ImageButton)findViewById(R.id.GroupHomeButto);
 		homeButton.setOnClickListener(new OnClickListener() {

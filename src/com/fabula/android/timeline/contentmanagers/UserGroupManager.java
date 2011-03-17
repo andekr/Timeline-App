@@ -65,8 +65,9 @@ public class UserGroupManager {
 	public void deleteGroupFromDatabase(Group group) {
 		
 		String where = GroupColumns._ID+ " = '" +group.getId()+"'";
-		context.getContentResolver().delete(GroupColumns.CONTENT_URI, where, null);
+		context.getContentResolver().delete(GroupProvider.CONTENT_URI, where, null);
 		context.getContentResolver().delete(UserGroupProvider.CONTENT_URI, where, null);
+		Log.i("USER GROUP MANAGER", "Group: "+ group.toString()+ " deleted from database");
 	}
 	
 	public void deleteUserFromDatabase(User user) {
