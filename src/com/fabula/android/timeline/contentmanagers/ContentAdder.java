@@ -5,9 +5,11 @@ import android.content.Context;
 import android.util.Log;
 
 import com.fabula.android.timeline.database.DatabaseHelper;
+import com.fabula.android.timeline.models.Emotion;
 import com.fabula.android.timeline.models.Event;
 import com.fabula.android.timeline.models.EventItem;
 import com.fabula.android.timeline.models.Experience;
+import com.fabula.android.timeline.models.Emotion.EmotionColumns;
 import com.fabula.android.timeline.models.EventItem.EventItemsColumns;
 import com.fabula.android.timeline.models.SimpleNote;
 import com.fabula.android.timeline.models.Event.EventColumns;
@@ -120,6 +122,14 @@ public class ContentAdder {
 				addVideoToVideoContentProvider(event, video);
 			}
 		}
+		
+		if(event.getEmotionList()!=null){
+			for (Emotion emo : event.getEmotionList()) {
+				addEmotionToDatabase(event, emo);
+			}
+		}
+		
+		
 	}
 
 	private void connectEventWithEventItemInDatabase(Event event, EventItem item) {
@@ -180,6 +190,17 @@ public class ContentAdder {
 		values.put(EventItemsColumns.USERNAME, video.getCreator());
 		
 		context.getContentResolver().insert(VideoColumns.CONTENT_URI, values);
+	}
+	
+	public void addEmotionToDatabase(Event tag, Emotion emo) {
+		
+		ContentValues values = new ContentValues();
+		
+		values.put(EmotionColumns._ID, emo.getEmotionid());
+		values.put(EmotionColumns.EVENT_ID, tag.getId());
+		values.put(EmotionColumns.EMOTION_TYPE, emo.getEmotionType().getType());
+		
+		context.getContentResolver().insert(EmotionColumns.CONTENT_URI, values);
 	}
 
 	

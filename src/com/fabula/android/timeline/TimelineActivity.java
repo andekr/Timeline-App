@@ -890,6 +890,11 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 		screenTitle.setText(title);
 	}
 	
+	
+	public ContentAdder getContentAdder() {
+		return contentAdder;
+	}
+
 	/**
 	 * Overrides the click listener on the device BACK-button.
 	 * The new behavior makes the back button zoom out until max zoomed out.
@@ -966,5 +971,6 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 public void onConfigurationChanged(Configuration newConfig) {
 	super.onConfigurationChanged(newConfig);
 }
+  
 	
 }

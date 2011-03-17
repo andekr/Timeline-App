@@ -6,6 +6,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 
@@ -75,7 +76,7 @@ public class EmotionsProvider extends BaseContentProvider {
             values = new ContentValues();
         }
         
-        long rowId = super.getDatabase().insert(SQLStatements.EMOTIONS_DATABASE_TABLE_NAME, "", values);
+        long rowId = super.getDatabase().insertWithOnConflict(SQLStatements.EMOTIONS_DATABASE_TABLE_NAME, "", values, SQLiteDatabase.CONFLICT_REPLACE);
         
         //---if added successfully---
 	      if (rowId>0)
