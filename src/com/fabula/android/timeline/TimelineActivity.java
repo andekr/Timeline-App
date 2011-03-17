@@ -149,7 +149,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
         
         timeline.setEvents(loadedEvents);
          
-        setupViews();
+        setupViews(); 
        
         //If the activity is started with a send-Intent(e.g. via share button in the Gallery), the item is added to the Timeline
         if(getIntent().getAction().equals(Utilities.INTENT_ACTION_ADD_TO_TIMELINE)){

@@ -40,7 +40,7 @@ public class GAEHandler {
 	public static void send(Object object, Activity a){
 //		Serializer serializer = new Persister();
 		GsonBuilder gsonB = new GsonBuilder();
-		gsonB.registerTypeAdapter(Experience.class, new ExperienceSerializer());
+		gsonB.registerTypeAdapter(Experiences.class, new ExperiencesSerializer());
 //		gsonB.registerTypeAdapter(Event.class, new EventSerializer());
 		
 		Gson gson = gsonB.create();
@@ -125,16 +125,23 @@ public class GAEHandler {
 //		  }
 //		}
 
-	private static class ExperienceSerializer implements JsonSerializer<Experience> {
-		  public JsonElement serialize(Experience src, Type typeOfSrc, JsonSerializationContext context) {
-			  if(src.getEvents().size()==0)
-				   src.setEvents(null);
+	private static class ExperiencesSerializer implements JsonSerializer<Experiences> {
+		  public JsonElement serialize(Experiences src, Type typeOfSrc, JsonSerializationContext context) {
+			  if(src.getExperiences().size()==0)
+					 src.setExperiences(null);
 			  else{
-				  for (Event event : src.getEvents()) {
-					  if(event.getEmotionList().size()==0)
-						   event.setEmotionList(null);
-				}
+				  for (Experience ex: src.getExperiences()) {
+					 if(ex.getEvents().size()==0)
+						 ex.setEvents(null);
+					  else{
+						  for (Event event : ex.getEvents()) {
+							  if(event.getEmotionList().size()==0)
+								   event.setEmotionList(null);
+						}
+					  }
+				  }
 			  }
+			 
 			Gson gson = new Gson();
 		    return new JsonParser().parse(gson.toJson(src));
 		  }
