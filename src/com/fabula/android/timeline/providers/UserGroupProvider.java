@@ -63,10 +63,9 @@ public class UserGroupProvider extends BaseContentProvider {
 		      return c;
 	}
 	
-	
-	public int delete(Uri uri, String groupID, String userName, String[] whereArgs) {
+	@Override
+	public int delete(Uri uri, String where, String[] whereArgs) {
 		int count = 0;
-		String where = groupID+ " = " +GroupColumns._ID + " AND " + userName + " = " +UserColumns.USER_NAME;
 		count = super.getUserDatabase().delete(SQLStatements.USER_GROUP_DATABASE_TABLE_NAME, where, whereArgs);
 		return count;
 	}

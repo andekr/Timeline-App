@@ -25,6 +25,11 @@ public class Group {
 		this.id = UUID.randomUUID().toString();
 		this.name = name;
 	}
+	
+	public Group(String id, String name) {
+		this.id = id;
+		this.name = name;
+	}
 
 	public String getId() {
 		return id;

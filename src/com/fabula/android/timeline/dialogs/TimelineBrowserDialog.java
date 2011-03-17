@@ -91,6 +91,7 @@ public TimelineBrowserDialog(Context context, Intent receivedIntent, boolean sha
 	}
 	
 	public android.content.DialogInterface.OnClickListener deleteTimelineListener = new DialogInterface.OnClickListener() {	
+		
 		public void onClick(DialogInterface dialog, int which) {
 			directory.deleteTimeline(selectedTimeline.getTitle()+".db");
 			new TimelineDatabaseHelper(context, Utilities.ALL_TIMELINES_DATABASE_NAME);
