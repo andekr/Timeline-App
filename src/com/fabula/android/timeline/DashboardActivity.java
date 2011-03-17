@@ -343,8 +343,10 @@ public class DashboardActivity extends Activity {
 		
 
 		Experiences exps = Downloader.getAllSharedExperiencesFromServer();
-		for (Experience e : exps.getExperiences()) {
-			addNewTimelineToTimelineDatabase(e);
+		if(exps!=null){
+			for (Experience e : exps.getExperiences()) {
+				addNewTimelineToTimelineDatabase(e);
+			}
 		}
 		
 		runOnUiThread(confirmSync);

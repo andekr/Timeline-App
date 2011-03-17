@@ -94,15 +94,17 @@ public class GAEHandler {
 		    //Saving pictures to server
 		    System.out.println("Lagrer bilder på server");
 		    if(object instanceof Experiences){
-		    	for (Experience ex : ((Experiences) object).getExperiences()) {
-		    		for (Event event : ex.getEvents()) {
-			    		for (EventItem eventI : event.getEventItems()) {
-					    	if(eventI instanceof SimplePicture){
-					    		Uploader.uploadFile(Utilities.IMAGE_STORAGE_FILEPATH+((SimplePicture)eventI).getPictureFilename(), ((SimplePicture)eventI).getPictureFilename());
-					    	}
+		    	if(((Experiences) object).getExperiences()!=null){
+			    	for (Experience ex : ((Experiences) object).getExperiences()) {
+			    		for (Event event : ex.getEvents()) {
+				    		for (EventItem eventI : event.getEventItems()) {
+						    	if(eventI instanceof SimplePicture){
+						    		Uploader.uploadFile(Utilities.IMAGE_STORAGE_FILEPATH+((SimplePicture)eventI).getPictureFilename(), ((SimplePicture)eventI).getPictureFilename());
+						    	}
+							}
 						}
 					}
-				}
+		    	}
 		    	
 		    }else if(object instanceof Event){
 		    	for (EventItem eventI : ((Event)object).getEventItems()) {
