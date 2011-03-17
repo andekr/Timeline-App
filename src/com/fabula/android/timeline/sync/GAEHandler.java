@@ -1,15 +1,27 @@
 package com.fabula.android.timeline.sync;
 
+import java.lang.reflect.Type;
+import java.util.List;
+
 import android.app.Activity;
 import android.util.Log;
 
 import com.fabula.android.timeline.Utilities;
+import com.fabula.android.timeline.models.Emotion;
 import com.fabula.android.timeline.models.Event;
 import com.fabula.android.timeline.models.EventItem;
 import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.models.Experiences;
 import com.fabula.android.timeline.models.SimplePicture;
+import com.fabula.android.timeline.sync.Downloader.EventItemDeserializer;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 
 /**
  * 
@@ -27,7 +39,11 @@ public class GAEHandler {
 	 */
 	public static void send(Object object, Activity a){
 //		Serializer serializer = new Persister();
-		Gson gson = new Gson();
+		GsonBuilder gsonB = new GsonBuilder();
+		gsonB.registerTypeAdapter(Experience.class, new ExperienceSerializer());
+//		gsonB.registerTypeAdapter(Event.class, new EventSerializer());
+		
+		Gson gson = gsonB.create();
 //		File sdCardDirectory = Environment.getExternalStorageDirectory();
 //		File result = new File(sdCardDirectory.getPath()+"/experiences.txt");
 		String jsonString ="";
@@ -98,5 +114,30 @@ public class GAEHandler {
 		  
 	}
 	
+	//Custom serializers to remove empty lists, which Google App Engine can't handle right.
+	
+//	private static class EventSerializer implements JsonSerializer<Event> {
+//		  public JsonElement serialize(Event src, Type typeOfSrc, JsonSerializationContext context) {
+//			  if(src.getEmotionList().size()==0)
+//				   src.setEmotionList(null);
+//			Gson gson = new Gson();
+//		    return new JsonParser().parse(gson.toJson(src));
+//		  }
+//		}
+
+	private static class ExperienceSerializer implements JsonSerializer<Experience> {
+		  public JsonElement serialize(Experience src, Type typeOfSrc, JsonSerializationContext context) {
+			  if(src.getEvents().size()==0)
+				   src.setEvents(null);
+			  else{
+				  for (Event event : src.getEvents()) {
+					  if(event.getEmotionList().size()==0)
+						   event.setEmotionList(null);
+				}
+			  }
+			Gson gson = new Gson();
+		    return new JsonParser().parse(gson.toJson(src));
+		  }
+		}
 
 }

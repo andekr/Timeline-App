@@ -337,8 +337,8 @@ public class ContentLoader {
 		Cursor listOfEmotions = context.getContentResolver().query(EmotionColumns.CONTENT_URI, columns, where, null, null);
 		
 		if(listOfEmotions.moveToFirst()){
-			String id = listOfEmotions.getString(listOfEmotions.getColumnIndex(NoteColumns._ID));
 			do{
+				String id = listOfEmotions.getString(listOfEmotions.getColumnIndex(EmotionColumns._ID));
 				switch (listOfEmotions.getInt(listOfEmotions.getColumnIndex(EmotionColumns.EMOTION_TYPE))) {
 				case 1:
 					event.addEmotion(new Emotion(id, EmotionEnum.LIKE));
