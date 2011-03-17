@@ -17,7 +17,7 @@
   </LinearLayout>
   
   <LinearLayout android:id="@+id/buttonRow" android:layout_width="fill_parent" android:layout_alignParentBottom="true" android:layout_height="wrap_content">
-  <ImageButton android:layout_marginLeft="100dip" android:background="@drawable/dash_my_groups_button" android:id="@+id/my_groups" android:layout_width="wrap_content" android:layout_height="75dip" android:layout_gravity="bottom|center"></ImageButton>
+  <ImageButton android:layout_marginLeft="100dip" android:id="@+id/my_groups" android:layout_width="wrap_content" android:layout_height="75dip" android:layout_gravity="bottom|center" android:background="@drawable/add_group_button"></ImageButton>
   </LinearLayout>
 
 </RelativeLayout>
