@@ -24,6 +24,13 @@ public class Group {
 	public Group(String name) {
 		this.id = UUID.randomUUID().toString();
 		this.name = name;
+		members = new ArrayList<User>();
+	}
+	
+	public Group(String id, String name) {
+		this.id = id;
+		this.name = name;
+		members = new ArrayList<User>();
 	}
 
 	public String getId() {

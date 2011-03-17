@@ -15,7 +15,10 @@
 	<string name="no_label">No</string>
 	<string name="Delete_timeline_label">Delete timeline</string>
 	<string name="Delete_timeline_title">Delete timeline?</string>
+	<string name="Leave_group_label">Leave group</string>
+	<string name="Leave_group_title">Leave group?</string>
 	<string name="Delete_timeline_confirmation">Do you really want to delete the entire timeline?</string>
+	<string name="Leave_group_confirmation">Do you really want to leave this group?</string>
 	<string name="Open_timeline_label">Open timeline</string>
 	<string name="Add_to_timeline_label">Add to this timeline</string>
 	<string name="Username_label">Username:</string>

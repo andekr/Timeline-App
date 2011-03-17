@@ -44,13 +44,10 @@ public class GroupProvider extends BaseContentProvider {
 	}
 	
 	@Override
-	public int delete(Uri uri, String id, String[] whereArgs) {
+	public int delete(Uri uri, String where, String[] whereArgs) {
+		
 		int count = 0;
-		
-		String where = id+ " = " +GroupColumns._ID;
-		
 		count = super.getUserDatabase().delete(SQLStatements.GROUP_DATABASE_TABLE_NAME, where, whereArgs);
-		
 		return count;
 	}
 	

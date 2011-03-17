@@ -56,7 +56,7 @@ public class UserGroupManager {
 	
 	public void removeUserFromAGroupInTheDatabase(Group group, User user) {
 		
-		String where = GroupColumns._ID+ " = " +group.getId()+ " AND " +UserColumns.USER_NAME+ " = " +user.getUserName();
+		String where = GroupColumns._ID+ " = '" +group.getId()+"'"+ " AND " +UserColumns.USER_NAME+ " = '" +user.getUserName()+"'";
 		context.getContentResolver().delete(UserGroupProvider.CONTENT_URI, where , null);
 		
 		Log.i("USER GROUP MANAGER", "User: "+ user.getUserName()+ " removed from group: "+group.getName());
@@ -64,9 +64,10 @@ public class UserGroupManager {
 	
 	public void deleteGroupFromDatabase(Group group) {
 		
-		String where = GroupColumns._ID+ " = " +group.getId();
-		context.getContentResolver().delete(GroupColumns.CONTENT_URI, where, null);
+		String where = GroupColumns._ID+ " = '" +group.getId()+"'";
+		context.getContentResolver().delete(GroupProvider.CONTENT_URI, where, null);
 		context.getContentResolver().delete(UserGroupProvider.CONTENT_URI, where, null);
+		Log.i("USER GROUP MANAGER", "Group: "+ group.toString()+ " deleted from database");
 	}
 	
 	public void deleteUserFromDatabase(User user) {
@@ -106,9 +107,8 @@ public class UserGroupManager {
 		
 		Cursor c = context.getContentResolver().query(GroupProvider.CONTENT_URI, groupsTableColumns, whereStatement, null, null);
 		if(c.moveToFirst()) {
-		group = new Group(c.getString(c.getColumnIndex(GroupColumns.GROUP_NAME)));
+			group = new Group( c.getString(c.getColumnIndex(GroupColumns._ID)),c.getString(c.getColumnIndex(GroupColumns.GROUP_NAME)));
 		}
-		
 		c.close();
 		return group;
 	}
