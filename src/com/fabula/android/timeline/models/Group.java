@@ -58,9 +58,22 @@ public class Group {
 	}
 	
 	public void addMembers(User user) {
-		members.add(user);
+		
+		if(!userAlreadyExistsInMembers(user)) {
+			members.add(user);
+		}
+		
 	}
 	
+	private boolean userAlreadyExistsInMembers(User user) {
+		for (User u : members) {
+			if(u.getUserName().equals(user.getUserName())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public void removeMember(User user) {
 		members.remove(user);
 	}
@@ -68,7 +81,7 @@ public class Group {
 	public User getMember(int index) {
 		return members.get(index);
 	}
-	
+		
 	@Override
 	public String toString() {
 		return this.name;

@@ -28,6 +28,8 @@
 	<string name="ShareTimeline_label">Share timeline?</string>
 	<string name="Select_Timeline_label">Select a timeline!</string>
 	<string name="Last_synced_label">Last synced:</string>
+	<string name="Add_user_label">Add user</string>
+	<string name="Select_user_label">Select a user:</string>
 
 
     <string name="picture">Picture</string>

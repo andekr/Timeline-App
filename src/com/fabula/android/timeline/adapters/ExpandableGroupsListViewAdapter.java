@@ -1,13 +1,9 @@
 package com.fabula.android.timeline.adapters;
 
 import java.util.ArrayList;
-
-import com.fabula.android.timeline.MyGroupsActivity;
 import com.fabula.android.timeline.R;
-import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.models.Group;
 import com.fabula.android.timeline.models.User;
-
 import android.content.Context;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -21,7 +17,6 @@ import android.widget.TextView;
 public class ExpandableGroupsListViewAdapter extends BaseExpandableListAdapter{
 
 	private ArrayList <Group> groups;
-	private ArrayList <User> users;
 	private Context mContext;
 	private LayoutInflater mInflater;
 	
@@ -60,7 +55,6 @@ public class ExpandableGroupsListViewAdapter extends BaseExpandableListAdapter{
 	}
 
 	public Group getGroup(int groupPosition) {
-		// TODO Auto-generated method stub
 		return groups.get(groupPosition);
 	}
 
@@ -82,7 +76,6 @@ public class ExpandableGroupsListViewAdapter extends BaseExpandableListAdapter{
 	public View getChildView(int groupPosition, int childPosition,
 			boolean isLastChild, View convertView, ViewGroup parent) {
 	 
-//		View textView = getSubGroupView(groupPosition, childPosition, isLastChild, convertView, parent);
 		TextView textView = getGenericView();
 		textView.setText(getChild(groupPosition, childPosition).toString());
 		textView.setClickable(false);
@@ -121,30 +114,4 @@ public class ExpandableGroupsListViewAdapter extends BaseExpandableListAdapter{
 
 			 return convertView;
 	 }
-	
-//	private View getSubGroupView(int groupPosition, int childPosition,
-//			boolean isLastChild, View convertView, ViewGroup parent) {
-//		  
-//		ViewHolder holder;
-//		
-//		if (convertView == null) {
-//			
-//			 convertView = mInflater.inflate(R.layout.list_timeline_view, null, false);
-//			 convertView.setPadding(70, 0, 0, 10);
-//			 holder = new ViewHolder();
-//			 holder.icon = (ImageView) convertView.findViewById(R.id.listIcon);
-//			 holder.text = (TextView) convertView.findViewById(R.id.userlisttextview);
-//
-//			 convertView.setTag(holder);
-//			 
-//		 } else {
-//			 holder = (ViewHolder) convertView.getTag();
-//		 }
-//			 
-//			 holder.icon.setImageResource(R.drawable.my_profile_small);
-//			 
-//			 System.out.println("GROUP: "+groupPosition+ " CHILD:  "+childPosition );
-//			 holder.text.setText(getChild(groupPosition, childPosition).toString());
-//			 return convertView;
-//	 }
 }

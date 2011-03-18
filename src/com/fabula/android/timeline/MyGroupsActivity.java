@@ -2,54 +2,53 @@ package com.fabula.android.timeline;
 
 import java.util.ArrayList;
 
-import com.fabula.android.timeline.adapters.ExpandableGroupsListViewAdapter;
-import com.fabula.android.timeline.adapters.GroupListAdapter;
-import com.fabula.android.timeline.contentmanagers.UserGroupManager;
-import com.fabula.android.timeline.database.UserGroupDatabaseHelper;
-import com.fabula.android.timeline.models.Group;
-import com.fabula.android.timeline.models.User;
 import android.accounts.Account;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnCreateContextMenuListener;
 import android.view.ViewGroup;
-import android.view.ContextMenu.ContextMenuInfo;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.fabula.android.timeline.adapters.ExpandableGroupsListViewAdapter;
+import com.fabula.android.timeline.adapters.UserListAdapter;
+import com.fabula.android.timeline.contentmanagers.UserGroupManager;
+import com.fabula.android.timeline.database.UserGroupDatabaseHelper;
+import com.fabula.android.timeline.models.Group;
+import com.fabula.android.timeline.models.User;
+
 public class MyGroupsActivity extends Activity {
 	
 	private Account userAccount;
-//	private ListView myGroupsList;
 	private ImageButton addNewGroupButton, homeButton;
 	private User applicationUser;
-//	private GroupListAdapter groupListAdapter;
+	private UserListAdapter userlistAdapter;
 	private Group selectedGroup;
 	private ArrayList <Group> connectedGroups;
 	private UserGroupManager uGManager;
 	private ExpandableListView myGroupsList;
 	private ExpandableGroupsListViewAdapter groupListAdapter;
+	private UserGroupDatabaseHelper helper;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.groupmenuscreen);
-		uGManager = new UserGroupManager(this);
 		setupViews();
 	}
 	
@@ -60,15 +59,28 @@ public class MyGroupsActivity extends Activity {
 
 	protected void addNewGroup(String groupName) {
 		Group group = new Group(groupName);
-		
-		UserGroupDatabaseHelper helper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
 		uGManager.addGroupToGroupDatabase(group);
 		uGManager.addUserToAGroupInTheDatabase(group, applicationUser);
 		group.addMembers(applicationUser);
 		connectedGroups.add(group);
 		groupListAdapter.notifyDataSetChanged();
-		helper.close();
 		Toast.makeText(MyGroupsActivity.this.getApplicationContext(), "You have created the group: " +group.toString() , Toast.LENGTH_SHORT).show();
+	}
+	
+	/**
+	 * Add new user to a group if they don't already are there
+	 * @param selectedUsers
+	 */
+	protected void addUsersToGroup(ArrayList<User> selectedUsers) {
+		for (User user : selectedUsers) {
+//			if(!isAlreadyPartOfGroup(user, selectedGroup)) {
+				
+				uGManager.addUserToAGroupInTheDatabase(selectedGroup, user);
+				selectedGroup.addMembers(user);
+//			}
+		}
+		Toast.makeText(this, "New users has been added to group "+selectedGroup+"!", Toast.LENGTH_SHORT).show();
+		userlistAdapter.notifyDataSetChanged();
 	}
 	
 //	set the selected group
@@ -76,12 +88,15 @@ public class MyGroupsActivity extends Activity {
 		this.selectedGroup = group;
 	}
 	
+	public Group getSelectedGroup() {
+		return selectedGroup;
+	}
+	
 	/**
 	 * Leaves the selected group
 	 */
 	protected void leaveGroup() {
 		
-		UserGroupDatabaseHelper helper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
 		uGManager.removeUserFromAGroupInTheDatabase(selectedGroup, applicationUser);
 		connectedGroups.remove(selectedGroup);
 		selectedGroup.removeMember(applicationUser);
@@ -92,7 +107,6 @@ public class MyGroupsActivity extends Activity {
 		}
 		
 		groupListAdapter.notifyDataSetChanged();
-		helper.close();
 	}
 	
 	private void deleteGroupFromDatabase(Group group) {
@@ -105,12 +119,22 @@ public class MyGroupsActivity extends Activity {
 	 * @return a list of all the groups the user are a part of
 	 */
 	private ArrayList <Group> getAllGroupsConnectedToUser(Account user) {
-		
-		UserGroupDatabaseHelper helper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
 		ArrayList <Group> allGroups = uGManager.getAllGroupsConnectedToAUser(applicationUser);
-		helper.close();
 		return allGroups;
 	}
+	
+	/**
+	 * Get all users from the database
+	 * @return ArrayList with all the users
+	 */
+	private ArrayList<User> getAllUsers() {
+		ArrayList<User> users = uGManager.getAllUsersFromDatabase();
+		return users;
+	}
+	
+	/**
+	 * Checks what item type that has been selected in a long press context menu
+	 */
 
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		switch (item.getGroupId()) {
@@ -118,25 +142,54 @@ public class MyGroupsActivity extends Activity {
 		case R.id.MENU_DELETE_ITEM:
 			leaveGroupConfirmationDialog();
 			break;
+		case R.id.MENU_ADD_USER:
+			openSelectUserToAddDialog();
+			break;
 		}
 		return false;
 	}
-	
-	private OnClickListener newGroupButtonListener = new OnClickListener() {
-		public void onClick(View v) {
-			openNewGroupNameInputDialog();
-		}
-	};
+	/**
+	 * Closes the database when the back-button is pressed
+	 */
+	@Override
+	public void onBackPressed() {
+		helper.close();
+		super.onBackPressed();
+	}
+//	/**
+//	 * Checks if a username already is part of a group (the user name is unique by default)
+//	 * @param user the user to be checked
+//	 * @param group the group to be checked
+//	 * @return true if the user already is a part of the group, false otherwise
+//	 */
+//	private boolean isAlreadyPartOfGroup(User user, Group group) {
+//		
+//		for (User u : group.getMembers()) {
+//			if(user.getUserName().equals(u.getUserName())) {
+//				return true;
+//			}
+//		}
+//		return false;
+//	}
 	
 	/**
-	 * Confirmation dialog that pops when you tries to leave a group
+	 * Dialog for selecting wich user to add to the group
 	 */
-	
-	private void leaveGroupConfirmationDialog() {
+	private void openSelectUserToAddDialog() {
+		
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage("Do you really want to leave group " +selectedGroup.toString()+"?")
-		.setPositiveButton(R.string.yes_label, leaveGroupConfirmationListener)
-		.setNegativeButton(R.string.no_label, new DialogInterface.OnClickListener() {
+		
+		ListView userList = new ListView(this);
+		userList.setBackgroundColor(this.getResources().getColor(R.color.White));
+		userList.setCacheColorHint(this.getResources().getColor(android.R.color.transparent));
+		userlistAdapter = new UserListAdapter(this, getAllUsers() , selectedGroup);
+		userList.setAdapter(userlistAdapter);
+				
+		builder.setView(userList);
+		
+		builder.setMessage("Select users to add:")
+		.setPositiveButton("Add users", addUserDialogListener)
+		.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 		public void onClick(DialogInterface dialog, int which) {
 			selectedGroup = null;
 			dialog.cancel();
@@ -148,43 +201,10 @@ public class MyGroupsActivity extends Activity {
 			dialog.cancel()	;					
 		}
 	});
+		
 		AlertDialog confirmation = builder.create();
 		confirmation.show();
 	}
-	
-	/**
-	 * Confirmation dialog listener
-	 */
-	private android.content.DialogInterface.OnClickListener leaveGroupConfirmationListener = new DialogInterface.OnClickListener() {
-		
-		public void onClick(DialogInterface dialog, int which) {
-			leaveGroup();
-			Toast.makeText(MyGroupsActivity.this.getApplicationContext(), "You have left group: "+selectedGroup.toString() , Toast.LENGTH_SHORT).show();
-			selectedGroup = null;
-			dialog.dismiss();
-		}
-	};
-
-	/**
-	 * Listener for a long click on an Item in the group list view
-	 */
-	private OnItemLongClickListener openItemLongClickMenuListener = new OnItemLongClickListener() {
-
-		public boolean onItemLongClick(AdapterView<?> view, View arg1,
-				int position, long arg3) {
-			
-			MyGroupsActivity.this.setSelectedGroup(groupListAdapter.getGroup(position));
-			
-			view.setOnCreateContextMenuListener(new OnCreateContextMenuListener() {
-				
-				public void onCreateContextMenu(ContextMenu menu, View v,
-						ContextMenuInfo menuInfo) {
-					menu.add(R.id.MENU_DELETE_ITEM, 0,0, R.string.Leave_group_label);
-				}
-			});
-			return false;
-		}
-	};
 	
 	/**
 	 * Input dialog for the writing the name of a new group
@@ -208,7 +228,6 @@ public class MyGroupsActivity extends Activity {
 			public void onClick(DialogInterface dialog, int which) {
 				String inputName = inputTextField.getText().toString().trim();
 				addNewGroup(inputName);
-
 				dialog.dismiss();
 			}
 		});
@@ -217,17 +236,115 @@ public class MyGroupsActivity extends Activity {
 				new DialogInterface.OnClickListener() {
 
 			public void onClick(DialogInterface dialog, int which) {
+				selectedGroup = null;
 				dialog.cancel();
 
+			}
+		}).setOnCancelListener(new OnCancelListener() {
+			
+			public void onCancel(DialogInterface dialog) {
+				selectedGroup = null;
+				dialog.cancel();
+				
 			}
 		});
 		
 		groupNameInputDialog.show();
 	}
+	
+	/**
+	 * Confirmation dialog that pops when you tries to leave a group
+	 */
+	
+	private void leaveGroupConfirmationDialog() {
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage("Do you really want to leave group " +selectedGroup.toString()+"?")
+		.setPositiveButton(R.string.yes_label, leaveGroupConfirmationListener)
+		.setNegativeButton(R.string.no_label, new DialogInterface.OnClickListener() {
+		public void onClick(DialogInterface dialog, int which) {
+			selectedGroup = null;
+			dialog.cancel();
+		}
+	})
+		.setOnCancelListener(new OnCancelListener() {
+		public void onCancel(DialogInterface dialog) {
+			selectedGroup = null;
+			dialog.cancel()	;					
+		}
+	});
+		AlertDialog confirmation = builder.create();
+		confirmation.show();
+	}
+	
+	//listeners
+	/**
+	 * Add user dialog listener
+	 */
+	private OnClickListener addUserDialogListener = new DialogInterface.OnClickListener() {
+		
+		public void onClick(DialogInterface dialog, int which) {
+			addUsersToGroup(userlistAdapter.getSelectedUsers());
+			selectedGroup = null;
+			dialog.dismiss();
+		}
+	};
+	
+	/**
+	 * Confirmation dialog listener
+	 */
+	private android.content.DialogInterface.OnClickListener leaveGroupConfirmationListener = new DialogInterface.OnClickListener() {
+		
+		public void onClick(DialogInterface dialog, int which) {
+			
+			leaveGroup();
+			Toast.makeText(MyGroupsActivity.this.getApplicationContext(), "You have left group: "+selectedGroup.toString() , Toast.LENGTH_SHORT).show();
+			selectedGroup = null;
+			dialog.dismiss();
+		}
+	};
 
+	/**
+	 * Listener for a long click on an Item in the group list view
+	 */
+	private OnItemLongClickListener openItemLongClickMenuListener = new OnItemLongClickListener() {
+
+		public boolean onItemLongClick(AdapterView<?> view, View arg1,
+				int position, long arg3) {
+					
+			view.setOnCreateContextMenuListener(new OnCreateContextMenuListener() {
+				
+				public void onCreateContextMenu(ContextMenu menu, View v,
+						ContextMenuInfo menuInfo) {
+					
+					//make sure that the selectedGroup is not out of bounds:
+					ExpandableListView.ExpandableListContextMenuInfo info =
+						(ExpandableListView.ExpandableListContextMenuInfo) menuInfo;
+					MyGroupsActivity.this.setSelectedGroup(groupListAdapter.getGroup(ExpandableListView.getPackedPositionGroup(info.packedPosition)));
+					
+					menu.add(R.id.MENU_ADD_USER,0,0, R.string.Add_user_label);
+					menu.add(R.id.MENU_DELETE_ITEM, 0,0, R.string.Leave_group_label);
+				}
+			});
+			return false;
+		}
+	};
+	
+	private android.view.View.OnClickListener newGroupButtonListener = new View.OnClickListener() {
+		
+		public void onClick(View v) {
+			openNewGroupNameInputDialog();
+		}
+	};
+	
+	/**
+	 * Setup views and instansiate objects the activity is going to use
+	 */
 	private void setupViews() {
 		myGroupsList = (ExpandableListView) findViewById(R.id.groupsList);
 		
+		helper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
+		uGManager = new UserGroupManager(this);
 		
 		addNewGroupButton = (ImageButton) findViewById(R.id.my_groups);
 		addNewGroupButton.setOnClickListener(newGroupButtonListener);
@@ -244,9 +361,10 @@ public class MyGroupsActivity extends Activity {
 
 		
 		homeButton = (ImageButton)findViewById(R.id.GroupHomeButto);
-		homeButton.setOnClickListener(new OnClickListener() {
+		homeButton.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
+				helper.close();
 				finish();
 			}
 		});

@@ -12,6 +12,7 @@ public class User {
 	
 	private String id;
 	private String userName;
+	private boolean isInGroup;
 	
 	public User(String userName) {
 		this.id = UUID.randomUUID().toString();
@@ -33,7 +34,7 @@ public class User {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-
+	
 	public static final class UserColumns implements BaseColumns {
 		
 		public static final String USER_ID = "_id";

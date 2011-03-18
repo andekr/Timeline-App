@@ -7,4 +7,5 @@
 <item android:id="@+id/MENU_DELETE_EVENT"></item>
 <item android:id="@+id/MENU_DELETE_TIMELINE"></item>
 <item android:id="@+id/MENU_OPEN_TIMELINE"></item>
+<item android:id="@+id/MENU_ADD_USER"></item>
 </menu>

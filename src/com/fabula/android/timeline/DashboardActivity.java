@@ -31,8 +31,10 @@ import android.widget.ToggleButton;
 import com.fabula.android.timeline.Map.TimelineMapView;
 import com.fabula.android.timeline.contentmanagers.ContentAdder;
 import com.fabula.android.timeline.contentmanagers.ContentLoader;
+import com.fabula.android.timeline.contentmanagers.UserGroupManager;
 import com.fabula.android.timeline.database.DatabaseHelper;
 import com.fabula.android.timeline.database.TimelineDatabaseHelper;
+import com.fabula.android.timeline.database.UserGroupDatabaseHelper;
 import com.fabula.android.timeline.dialogs.TimelineBrowserDialog;
 import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.models.Experiences;
@@ -82,7 +84,8 @@ public class DashboardActivity extends Activity {
 		
 		creator = Utilities.getUserAccount(this);
 		user = new User(creator.name);
-
+		addUserToDatabaseIfNewUser();
+		
 		//Initializes the content managers
 		contentAdder = new ContentAdder(getApplicationContext());
 		contentLoader = new ContentLoader(getApplicationContext());
@@ -118,6 +121,16 @@ public class DashboardActivity extends Activity {
 				syncTimelines();
 			}
 		};
+	}
+
+	private void addUserToDatabaseIfNewUser() {
+		UserGroupDatabaseHelper helper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
+		UserGroupManager uGManager = new UserGroupManager(this);
+		
+		if(!uGManager.userExists(user)) {
+			uGManager.addUserToUserDatabase(user);
+		}
+		helper.close();
 	}
 
 	@Override
