@@ -150,6 +150,8 @@ public class Event {
 		public static final String EVENT_TITLE = "event_title";
 		
 		public static final String EVENT_ITEMS_ID = "event_items_id";
+
+		public static final String EVENT_LAST_MODIFIED = "last_modified";
 	}
 	
 }

@@ -37,7 +37,8 @@ public class SQLStatements {
         EventColumns.EVENT_EXPERIENCEID + " varchar, " +
         EventColumns.EVENT_LOCATION_LAT + " varchar, " +
         EventColumns.EVENT_LOCATION_LNG + " varchar, " +
-        EventColumns.EVENT_TITLE+" long not null);";
+        EventColumns.EVENT_TITLE + " long not null, " +
+        EventColumns.EVENT_LAST_MODIFIED+" varchar"+");";
     
     public static final String EVENT_TO_EVENT_ITEM_DATABASE_CREATE =
         "create table " + EVENT_TO_EVENT_ITEM_DATABASE_TABLE_NAME + 
@@ -86,7 +87,8 @@ public class SQLStatements {
 		+ExperienceColumns._ID+ " VARCHAR PRIMARY KEY,"
 		+ExperienceColumns.EXPERIENCE_NAME+ " VARCHAR NOT NULL,"
 		+ExperienceColumns.EXPERIENCE_SHARED+ " INTEGER,"
-		+ExperienceColumns.EXPERIENCE_CREATOR+ " VARCHAR NOT NULL"+");";
+		+ExperienceColumns.EXPERIENCE_CREATOR+ " VARCHAR NOT NULL,"
+		+ExperienceColumns.EXPERIENCE_LAST_MODIFIED+ " VARCHAR"+");";
 	
 	public static final String USER_DATABASE_CREATE = "CREATE TABLE " + USER_DATABASE_TABLE_NAME+"("
 	    +UserColumns._ID+ " VARCHAR PRIMARY KEY,"

@@ -72,17 +72,15 @@ public class MyGroupsActivity extends Activity {
 	 * @param selectedUsers
 	 */
 	protected void addUsersToGroup(ArrayList<User> selectedUsers) {
+		
 		for (User user : selectedUsers) {
-//			if(!isAlreadyPartOfGroup(user, selectedGroup)) {
 				uGManager.addUserToAGroupInTheDatabase(selectedGroup, user);
 				selectedGroup.addMembers(user);
-//			}
 		}
 		Toast.makeText(this, "New users has been added to group "+selectedGroup+"!", Toast.LENGTH_SHORT).show();
 		userlistAdapter.notifyDataSetChanged();
 	}
 	
-//	set the selected group
 	private void setSelectedGroup(Group group) {
 		this.selectedGroup = group;
 		System.out.println("Dette er den valgte gruppa nå!   :  "+ selectedGroup);
@@ -156,21 +154,6 @@ public class MyGroupsActivity extends Activity {
 		helper.close();
 		super.onBackPressed();
 	}
-//	/**
-//	 * Checks if a username already is part of a group (the user name is unique by default)
-//	 * @param user the user to be checked
-//	 * @param group the group to be checked
-//	 * @return true if the user already is a part of the group, false otherwise
-//	 */
-//	private boolean isAlreadyPartOfGroup(User user, Group group) {
-//		
-//		for (User u : group.getMembers()) {
-//			if(user.getUserName().equals(u.getUserName())) {
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
 	
 	/**
 	 * Dialog for selecting wich user to add to the group
@@ -191,13 +174,11 @@ public class MyGroupsActivity extends Activity {
 		.setPositiveButton("Add users", addUserDialogListener)
 		.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 		public void onClick(DialogInterface dialog, int which) {
-//			setSelectedGroup(null);
 			dialog.dismiss();
 		}
 	})
 		.setOnCancelListener(new OnCancelListener() {
 		public void onCancel(DialogInterface dialog) {
-//			setSelectedGroup(null);
 			dialog.dismiss();					
 		}
 	});

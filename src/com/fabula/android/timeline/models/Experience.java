@@ -175,6 +175,8 @@ public class Experience {
 		
 		public static final String EXPERIENCE_CREATOR = "creator";
 		
+		public static final String EXPERIENCE_LAST_MODIFIED = "last_modified";
+		
 	}
 
 	public int isSharedAsInt() {
