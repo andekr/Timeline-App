@@ -3,7 +3,7 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_height="?android:attr/listPreferredItemHeight" 
   android:layout_width="fill_parent"
-  android:padding="6dip">
+  android:padding="6dip" android:background="@color/White">
   
       <ImageView
         android:layout_width="wrap_content"
@@ -17,8 +17,7 @@
     <TextView
        	android:id="@+id/userlist_text"
    		android:paddingLeft="6dip"
-		android:textColor="@color/Black" 
-		android:layout_toRightOf="@+id/userlisticon" android:layout_height="fill_parent" android:gravity="center_vertical" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_width="wrap_content"/>
+		android:layout_toRightOf="@+id/userlisticon" android:layout_height="fill_parent" android:gravity="center_vertical" android:layout_width="wrap_content" android:text="Test" android:textSize="16dip" android:width="200dip" android:textColor="@color/Black"/>
 		
     <CheckBox android:layout_height="wrap_content" android:id="@+id/user_list_checkbox" android:layout_width="wrap_content" android:layout_alignParentRight="true"></CheckBox>
 		

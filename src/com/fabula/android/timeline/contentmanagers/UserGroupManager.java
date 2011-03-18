@@ -63,7 +63,7 @@ public class UserGroupManager {
 	private boolean userExistsInGroup(Group group, User user) {
 		
 		ArrayList<Group> userConnectedGroups = getAllGroupsConnectedToAUser(user);
-		System.out.println(userConnectedGroups.size());
+		System.out.println("Number of connected Groups :"+userConnectedGroups.size());
 		for (Group g : userConnectedGroups) {
 			if(g.getId().equals(group)){
 				return true;

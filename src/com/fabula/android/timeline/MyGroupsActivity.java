@@ -74,7 +74,6 @@ public class MyGroupsActivity extends Activity {
 	protected void addUsersToGroup(ArrayList<User> selectedUsers) {
 		for (User user : selectedUsers) {
 //			if(!isAlreadyPartOfGroup(user, selectedGroup)) {
-				
 				uGManager.addUserToAGroupInTheDatabase(selectedGroup, user);
 				selectedGroup.addMembers(user);
 //			}
@@ -86,6 +85,7 @@ public class MyGroupsActivity extends Activity {
 //	set the selected group
 	private void setSelectedGroup(Group group) {
 		this.selectedGroup = group;
+		System.out.println("Dette er den valgte gruppa nå!   :  "+ selectedGroup);
 	}
 	
 	public Group getSelectedGroup() {
@@ -191,14 +191,14 @@ public class MyGroupsActivity extends Activity {
 		.setPositiveButton("Add users", addUserDialogListener)
 		.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 		public void onClick(DialogInterface dialog, int which) {
-			selectedGroup = null;
-			dialog.cancel();
+//			setSelectedGroup(null);
+			dialog.dismiss();
 		}
 	})
 		.setOnCancelListener(new OnCancelListener() {
 		public void onCancel(DialogInterface dialog) {
-			selectedGroup = null;
-			dialog.cancel()	;					
+//			setSelectedGroup(null);
+			dialog.dismiss();					
 		}
 	});
 		
@@ -236,15 +236,13 @@ public class MyGroupsActivity extends Activity {
 				new DialogInterface.OnClickListener() {
 
 			public void onClick(DialogInterface dialog, int which) {
-				selectedGroup = null;
-				dialog.cancel();
+				dialog.dismiss();
 
 			}
 		}).setOnCancelListener(new OnCancelListener() {
 			
 			public void onCancel(DialogInterface dialog) {
-				selectedGroup = null;
-				dialog.cancel();
+				dialog.dismiss();
 				
 			}
 		});
@@ -263,14 +261,14 @@ public class MyGroupsActivity extends Activity {
 		.setPositiveButton(R.string.yes_label, leaveGroupConfirmationListener)
 		.setNegativeButton(R.string.no_label, new DialogInterface.OnClickListener() {
 		public void onClick(DialogInterface dialog, int which) {
-			selectedGroup = null;
-			dialog.cancel();
+			setSelectedGroup(null);
+			dialog.dismiss();
 		}
 	})
 		.setOnCancelListener(new OnCancelListener() {
 		public void onCancel(DialogInterface dialog) {
-			selectedGroup = null;
-			dialog.cancel()	;					
+			setSelectedGroup(null);
+			dialog.dismiss();					
 		}
 	});
 		AlertDialog confirmation = builder.create();
@@ -285,7 +283,7 @@ public class MyGroupsActivity extends Activity {
 		
 		public void onClick(DialogInterface dialog, int which) {
 			addUsersToGroup(userlistAdapter.getSelectedUsers());
-			selectedGroup = null;
+			setSelectedGroup(null);
 			dialog.dismiss();
 		}
 	};
@@ -299,7 +297,7 @@ public class MyGroupsActivity extends Activity {
 			
 			leaveGroup();
 			Toast.makeText(MyGroupsActivity.this.getApplicationContext(), "You have left group: "+selectedGroup.toString() , Toast.LENGTH_SHORT).show();
-			selectedGroup = null;
+			setSelectedGroup(null);
 			dialog.dismiss();
 		}
 	};
