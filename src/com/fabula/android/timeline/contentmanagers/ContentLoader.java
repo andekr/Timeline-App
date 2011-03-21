@@ -18,6 +18,8 @@ import com.fabula.android.timeline.models.Event;
 import com.fabula.android.timeline.models.Event.EventColumns;
 import com.fabula.android.timeline.models.EventItem.EventItemsColumns;
 import com.fabula.android.timeline.models.Experience.ExperienceColumns;
+import com.fabula.android.timeline.models.Group;
+import com.fabula.android.timeline.models.Group.GroupColumns;
 import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.models.ModelType;
 import com.fabula.android.timeline.models.SimpleNote;
@@ -90,6 +92,10 @@ public class ContentLoader {
 						c.getString(c.getColumnIndex(ExperienceColumns.EXPERIENCE_NAME)),
 						(c.getInt((c.getColumnIndex(ExperienceColumns.EXPERIENCE_SHARED)))==1) ? true : false,
 						new Account(c.getString(c.getColumnIndex(ExperienceColumns.EXPERIENCE_CREATOR)), "com.google"));
+				
+				if(experience.isShared()) {
+					experience.setGroup(getGroupSharedWithExperience(c.getString(c.getColumnIndex(ExperienceColumns.EXPERIENCE_SHARED_WITH))));
+				}
 				allExperiences.add(experience);
 				System.out.println("Hentet experience med shared: "+experience.isShared());	
 			}while(c.moveToNext());
@@ -102,6 +108,20 @@ public class ContentLoader {
 		
 	}
 	
+	private Group getGroupSharedWithExperience(String groupId) {
+		String[] GroupTableColumns = new String[] {GroupColumns._ID, GroupColumns.GROUP_NAME};
+		
+		Group g = null;
+		String where = GroupColumns._ID +" = '" +groupId+"'";
+		Cursor c = context.getContentResolver().query(GroupColumns.CONTENT_URI, GroupTableColumns, where, null, null);
+		
+		if(c.moveToNext()) {
+			g = new Group(c.getString(c.getColumnIndex(GroupColumns._ID)), c.getString(c.getColumnIndex(GroupColumns.GROUP_NAME)));
+		}
+		c.close();
+		return g;
+	}
+
 	public ArrayList<Experience> LoadPrivateExperiencesFromDatabase(){
 		
 		ArrayList<Experience> allExperiences = new ArrayList<Experience>();

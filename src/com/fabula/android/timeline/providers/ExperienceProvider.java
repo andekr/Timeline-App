@@ -31,6 +31,7 @@ public class ExperienceProvider extends BaseContentProvider {
        experienceProjectionMap.put(ExperienceColumns.EXPERIENCE_SHARED, ExperienceColumns.EXPERIENCE_SHARED);
        experienceProjectionMap.put(ExperienceColumns.EXPERIENCE_CREATOR, ExperienceColumns.EXPERIENCE_CREATOR);
        experienceProjectionMap.put(ExperienceColumns.EXPERIENCE_LAST_MODIFIED, ExperienceColumns.EXPERIENCE_LAST_MODIFIED);
+       experienceProjectionMap.put(ExperienceColumns.EXPERIENCE_SHARED_WITH, ExperienceColumns.EXPERIENCE_SHARED_WITH);
     }
     
 	//insert some element in the DB

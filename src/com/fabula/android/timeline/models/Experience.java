@@ -26,6 +26,7 @@ public class Experience {
 	private String creator;
 	private List<Event> events;
 	private Uri uriToExperience;
+	private Group group;
 	
 	public Experience() {}
 
@@ -33,6 +34,14 @@ public class Experience {
 		this.id = UUID.randomUUID().toString();
 		this.title = title;
 		this.shared = shared;
+		setUser(user);
+	}
+	
+	public Experience(String title, boolean shared, Account user, Group group) {
+		this.id = UUID.randomUUID().toString();
+		this.title = title;
+		this.shared = shared;
+		this.setGroup(group);
 		setUser(user);
 	}
 	
@@ -177,6 +186,8 @@ public class Experience {
 		
 		public static final String EXPERIENCE_LAST_MODIFIED = "last_modified";
 		
+		public static final String EXPERIENCE_SHARED_WITH = "shared_with_group";
+		
 	}
 
 	public int isSharedAsInt() {
@@ -186,5 +197,13 @@ public class Experience {
 	@Override
 	public String toString() {
 		return this.title;
+	}
+
+	public void setGroup(Group group) {
+		this.group = group;
+	}
+
+	public Group getGroup() {
+		return group;
 	}
 }

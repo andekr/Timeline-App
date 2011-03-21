@@ -72,6 +72,7 @@ public class Utilities {
     public static final String EXPERIENCEID_REQUEST = "EXPERIENCEID";
     public static final String EXPERIENCECREATOR_REQUEST = "EXPERIENCECREATOR";
     public static final String SHARED_REQUEST = "SHAREDEXPERIENCE";
+    public static final String SHARED_WITH_REQUEST = "SHAREDWITH";
 
 	public static final String USER_GROUP_DATABASE_NAME = "user_group_database.db";
 
