@@ -335,7 +335,6 @@ public class DashboardActivity extends Activity {
 		if(shared) {
 			timeLine.setGroup(group);
 			timelineIntent.putExtra(Utilities.SHARED_WITH_REQUEST, timeLine.getGroup().getId());
-			System.out.println("DETTE ER GRUPPA SOM DET ER DELT MED: " +group);
 		}
 		
 		addNewTimelineToTimelineDatabase(timeLine); 
