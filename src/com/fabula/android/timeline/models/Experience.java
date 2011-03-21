@@ -37,6 +37,14 @@ public class Experience {
 		setUser(user);
 	}
 	
+	public Experience(String title, boolean shared, Account user, Group group) {
+		this.id = UUID.randomUUID().toString();
+		this.title = title;
+		this.shared = shared;
+		this.setSharingGroup(group);
+		setUser(user);
+	}
+	
 	public Experience(String id, String title, boolean shared, Account user) {
 		this.id = id;
 		this.title = title;
@@ -183,6 +191,10 @@ public class Experience {
 		
 		public static final String EXPERIENCE_CREATOR = "creator";
 		
+		public static final String EXPERIENCE_LAST_MODIFIED = "last_modified";
+		
+		public static final String EXPERIENCE_SHARED_WITH = "shared_with_group";
+
 	}
 
 	public int isSharedAsInt() {
@@ -193,4 +205,6 @@ public class Experience {
 	public String toString() {
 		return this.title;
 	}
+
+
 }

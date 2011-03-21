@@ -86,8 +86,10 @@ public class SQLStatements {
 		+ExperienceColumns._ID+ " VARCHAR PRIMARY KEY,"
 		+ExperienceColumns.EXPERIENCE_NAME+ " VARCHAR NOT NULL,"
 		+ExperienceColumns.EXPERIENCE_SHARED+ " INTEGER,"
-		+ExperienceColumns.EXPERIENCE_CREATOR+ " VARCHAR NOT NULL"+");";
-	
+		+ExperienceColumns.EXPERIENCE_CREATOR+ " VARCHAR NOT NULL,"
+		+ExperienceColumns.EXPERIENCE_LAST_MODIFIED+ " VARCHAR,"
+		+ExperienceColumns.EXPERIENCE_SHARED_WITH+ " VARCHAR"+");";
+
 	public static final String USER_DATABASE_CREATE = "CREATE TABLE " + USER_DATABASE_TABLE_NAME+"("
 	    +UserColumns._ID+ " VARCHAR PRIMARY KEY,"
 	    +UserColumns.USER_NAME+ " VARCHAR NOT NULL"+");";

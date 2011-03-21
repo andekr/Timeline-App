@@ -12,6 +12,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -22,13 +23,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.fabula.android.timeline.Map.TimelineMapView;
+import com.fabula.android.timeline.adapters.ExpandableGroupsListViewAdapter;
+import com.fabula.android.timeline.adapters.GroupListAdapter;
 import com.fabula.android.timeline.contentmanagers.ContentAdder;
 import com.fabula.android.timeline.contentmanagers.ContentLoader;
 import com.fabula.android.timeline.contentmanagers.UserGroupManager;
@@ -38,6 +48,7 @@ import com.fabula.android.timeline.database.UserGroupDatabaseHelper;
 import com.fabula.android.timeline.dialogs.TimelineBrowserDialog;
 import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.models.Experiences;
+import com.fabula.android.timeline.models.Group;
 import com.fabula.android.timeline.models.User;
 import com.fabula.android.timeline.sync.Downloader;
 import com.fabula.android.timeline.sync.GAEHandler;
@@ -74,6 +85,7 @@ public class DashboardActivity extends Activity {
 	private ContentLoader contentLoader;
 	private Account creator;
 	private User user;
+	private Group selectedGroup;
 	Runnable syncThread;
 	private long lastSynced=0;
 
@@ -85,6 +97,9 @@ public class DashboardActivity extends Activity {
 		creator = Utilities.getUserAccount(this);
 		user = new User(creator.name);
 		addUserToDatabaseIfNewUser();
+		
+		//only used when a new timeline is created
+		selectedGroup = null;
 		
 		//Initializes the content managers
 		contentAdder = new ContentAdder(getApplicationContext());
@@ -229,8 +244,42 @@ public class DashboardActivity extends Activity {
 		View layout = inflater.inflate(R.layout.newtimelinedialog, (ViewGroup) findViewById(R.id.layout_root));
 		timelineNameInputDialog.setView(layout);
 		
+		final ListView groupList = (ListView) layout.findViewById(R.id.sharedtimelinegroupslist);
+		groupList.setCacheColorHint(this.getResources().getColor(android.R.color.transparent));
+		groupList.setAdapter(new GroupListAdapter(mContext, getAllGroupsInDatabase()));
+		
+		
+
+		final TextView selectedGroupText = (TextView) layout.findViewById(R.id.selectedGroupText);
+		selectedGroupText.setText("Select a group to share with:");
+		
 		final EditText inputTextField = (EditText)layout.findViewById(R.id.TimelineNameEditText);
 		final ToggleButton shareToggle = (ToggleButton)layout.findViewById(R.id.ShareTimelineToggleButton);
+		
+		groupList.setOnItemClickListener(new OnItemClickListener() {
+
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+					long arg3) {
+				selectedGroupText.setText("Share with group: " + groupList.getAdapter().getItem(position));
+				selectedGroup = (Group) groupList.getAdapter().getItem(position);
+			}
+		});
+		shareToggle.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				if(isChecked) {
+					selectedGroupText.setVisibility(View.VISIBLE);
+					groupList.setVisibility(View.VISIBLE);
+				}
+				
+				else {
+					selectedGroupText.setVisibility(View.GONE);
+					groupList.setVisibility(View.GONE);	
+					selectedGroup = null;
+					selectedGroupText.setText("Select a group to share with");
+				}
+			}
+		});
 
 		timelineNameInputDialog.setTitle("Enter a name for your timeline!");
 		timelineNameInputDialog.setPositiveButton("Ok",
@@ -239,7 +288,7 @@ public class DashboardActivity extends Activity {
 			public void onClick(DialogInterface dialog, int which) {
 				String inputName = inputTextField.getText().toString().trim();
 				boolean share = shareToggle.isChecked();
-				createNewTimeline(inputName, share);
+				createNewTimeline(inputName, share, selectedGroup);
 				dialog.dismiss();
 			}
 		});
@@ -255,28 +304,42 @@ public class DashboardActivity extends Activity {
 		timelineNameInputDialog.show();
 	}
 	
+	
+	private ArrayList<Group> getAllGroupsInDatabase() {
+		UserGroupDatabaseHelper helper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
+		UserGroupManager uGManager = new UserGroupManager(this);
+		
+		ArrayList<Group> allGroups = uGManager.getAllGroupsConnectedToAUser(user);
+		helper.close();
+		return allGroups;
+	}
+
 	/**
 	 * Creates a new timeline and starts the Timeline activity
 	 * 
 	 * @param timelineName String. Name of the new Timeline
 	 * @param shared boolean If the Timeline should be shared
 	 */
-	private void createNewTimeline(String timelineName, boolean shared) {
+	private void createNewTimeline(String timelineName, boolean shared, Group group) {
 
 		Experience timeLine = new Experience(timelineName, shared, creator);
 		
-//		addNewUserToDatabase(user);
-//		addUserToAGroup(user, timeLine.getTitle());
-		
 		String databaseName = timeLine.getTitle() + ".db";
-		addNewTimelineToTimelineDatabase(timeLine); 
-		new DatabaseHelper(this, databaseName);
+
+		
 		timelineIntent.putExtra(Utilities.DATABASENAME_REQUEST, databaseName);
 		timelineIntent.putExtra(Utilities.SHARED_REQUEST, shared);
 		timelineIntent.putExtra(Utilities.EXPERIENCEID_REQUEST, timeLine.getId());
 		timelineIntent.putExtra(Utilities.EXPERIENCECREATOR_REQUEST, timeLine.getUser().name);
+		
+		if(shared) {
+			timeLine.setSharingGroup(group);
+			timelineIntent.putExtra(Utilities.SHARED_WITH_REQUEST, timeLine.getSharingGroup().getId());
+		}
+		
+		addNewTimelineToTimelineDatabase(timeLine); 
+		new DatabaseHelper(this, databaseName);
 		startActivity(timelineIntent);
-
 	}
 
 //	private void addUserToAGroup(User user, String title) {

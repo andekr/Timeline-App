@@ -86,6 +86,11 @@ public class ContentAdder {
 		 values.put(ExperienceColumns.EXPERIENCE_NAME, experience.getTitle());
 		 values.put(ExperienceColumns.EXPERIENCE_SHARED, experience.isSharedAsInt());
 		 values.put(ExperienceColumns.EXPERIENCE_CREATOR, experience.getUser().name);
+		
+		 
+		 if (experience.isShared()) {
+			 values.put(ExperienceColumns.EXPERIENCE_SHARED_WITH, experience.getSharingGroup().getId());
+		 }
 		 
 		 context.getContentResolver().insert(ExperienceColumns.CONTENT_URI, values);
 		 

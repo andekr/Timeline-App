@@ -32,6 +32,7 @@ public class Group {
 		this.name = name;
 		members = new ArrayList<User>();
 	}
+	
 
 	public String getId() {
 		return id;

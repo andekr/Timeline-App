@@ -130,6 +130,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
         experienceID = getIntent().getExtras().getString(Utilities.EXPERIENCEID_REQUEST);
         experienceCreator = getIntent().getExtras().getString(Utilities.EXPERIENCECREATOR_REQUEST);
         sharedExperience = getIntent().getExtras().getBoolean(Utilities.SHARED_REQUEST);
+        
         Log.i(this.getClass().getSimpleName(), "****Got DB: "+databaseName+" from Intent****");
         Log.i(this.getClass().getSimpleName(), "Experience ID: "+experienceID);
         Log.i(this.getClass().getSimpleName(), "Created by: "+experienceCreator);
