@@ -27,6 +27,7 @@ public class Event {
 	private long datetimemillis;
 	private List<EventItem> eventItems;
 	private List<Emotion> emotionList;
+	private boolean shared;
 	
 	public Event(){}
 	
@@ -131,6 +132,16 @@ public class Event {
 	public void setEmotionList(List<Emotion> emotionList) {
 		this.emotionList = emotionList;
 	}
+	
+	public boolean isShared() {
+		return shared;
+	}
+
+	public void setShared(boolean shared) {
+		this.shared = shared;
+	}
+
+
 
 	public static final class EventColumns implements BaseColumns {
 		

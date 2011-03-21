@@ -26,6 +26,7 @@ public class Experience {
 	private String creator;
 	private List<Event> events;
 	private Uri uriToExperience;
+	private Group sharingGroup;
 	
 	public Experience() {}
 
@@ -115,8 +116,15 @@ public class Experience {
 		this.user = new Account(creator, "com.google");
 		this.creator = creator;
 	}
+		
+	public Group getSharingGroup() {
+		return sharingGroup;
+	}
 
-	
+	public void setSharingGroup(Group sharingGroup) {
+		this.sharingGroup = sharingGroup;
+	}
+
 	public float getTimeScopeOfExperience(){
 		float min=0, max=0, diff;//Min blir aldri satt!
 		
