@@ -55,16 +55,20 @@ public class Downloader {
 	
 	 public static boolean IsUserRegistered(String username){
 		 boolean registered = true; 
-		 String response = Utilities.convertStreamToString(getJSONData("/rest/user/"+username+"/"));
-		 
+		 InputStream is = getJSONData("/rest/user/"+username+"/");
 		 JSONObject json = null;
+		 if(is!=null){
+			 String response = Utilities.convertStreamToString(is);
+			 
+			 try {
+				json = new JSONObject(response);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		 }
 		 
-		 try {
-			json = new JSONObject(response);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		 
 		 
 		 registered = json==null ? false : true;
 		 
@@ -89,7 +93,12 @@ public class Downloader {
     		httpGet.addHeader("Content-Type", "application/json");
             
             HttpResponse response = httpClient.execute(targetHost, httpGet);
-            data = response.getEntity().getContent();
+            data = null; 
+            try {
+            	 data = response.getEntity().getContent();
+			} catch (NullPointerException e) {
+			}
+           
         } catch (Exception e) {
             e.printStackTrace();
         }
