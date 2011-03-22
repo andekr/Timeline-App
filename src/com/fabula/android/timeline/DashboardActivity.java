@@ -11,9 +11,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
-import android.opengl.Visibility;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -22,15 +21,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
-import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -38,9 +35,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.fabula.android.timeline.Map.TimelineMapView;
-import com.fabula.android.timeline.adapters.ExpandableGroupsListViewAdapter;
 import com.fabula.android.timeline.adapters.GroupListAdapter;
-import com.fabula.android.timeline.adapters.UserListAdapter;
 import com.fabula.android.timeline.contentmanagers.ContentAdder;
 import com.fabula.android.timeline.contentmanagers.ContentLoader;
 import com.fabula.android.timeline.contentmanagers.UserGroupManager;
@@ -90,9 +85,9 @@ public class DashboardActivity extends Activity {
 	private Group selectedGroup;
 	Runnable syncThread;
 	private long lastSynced=0;
-	private UserGroupDatabaseHelper helper;
 	private UserGroupManager uGManager;
 	private GroupListAdapter groupListAdapter;
+	private ListView groupList;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -101,7 +96,7 @@ public class DashboardActivity extends Activity {
 		
 		creator = Utilities.getUserAccount(this);
 		user = new User(creator.name);
-		addUserToDatabaseIfNewUser();
+		
 		
 		//only used when a new timeline is created
 		selectedGroup = null;
@@ -109,6 +104,9 @@ public class DashboardActivity extends Activity {
 		//Initializes the content managers
 		contentAdder = new ContentAdder(getApplicationContext());
 		contentLoader = new ContentLoader(getApplicationContext());
+		uGManager = new UserGroupManager(getApplicationContext());
+		
+		addUserToDatabaseIfNewUser();
 		
 		myGroupsIntent = new Intent(this, MyGroupsActivity.class);
 		myGroupsIntent.putExtra("ACCOUNT", creator);
@@ -145,7 +143,6 @@ public class DashboardActivity extends Activity {
 
 	private void addUserToDatabaseIfNewUser() {
 		UserGroupDatabaseHelper helper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
-		UserGroupManager uGManager = new UserGroupManager(this);
 		
 		if(!uGManager.userExists(user)) {
 			uGManager.addUserToUserDatabase(user);
@@ -165,8 +162,6 @@ public class DashboardActivity extends Activity {
 	 * 
 	 */
 	private void setupViews() {
-		
-		
 		
 		newTimeLineButton = (ImageButton) findViewById(R.id.dash_new_timeline);
 		newTimeLineButton.setOnClickListener(newTimeLineListener);
@@ -196,48 +191,6 @@ public class DashboardActivity extends Activity {
 		}
 	}
 
-	private OnClickListener newTimeLineListener = new OnClickListener() {
-
-		public void onClick(View v) {
-			openDialogForTimelineNameInput();
-		}
-	};
-
-	private OnClickListener browseTimeLineListener = new OnClickListener() {
-
-		public void onClick(View v) {
-			browseAllTimelines(false);
-		}
-	};
-	
-	private OnClickListener browseSharedTimeLinesListener = new OnClickListener() {
-
-		public void onClick(View v) {
-			browseAllTimelines(true);		
-		}
-
-	};
-	
-	private OnClickListener openMyGroupsListener = new OnClickListener() {
-		public void onClick(View v) {
-			startActivity(myGroupsIntent);
-		}
-	};
-	
-	private OnClickListener viewProfileListener = new OnClickListener() {
-		public void onClick(View v) {
-			startActivity(profileIntent);
-		}
-	};
-	
-	private OnClickListener syncListener = new OnClickListener() {
-		public void onClick(View v) {
-			Toast.makeText(DashboardActivity.this, "Syncronizing shared timelines with server...", Toast.LENGTH_SHORT).show();
-				Thread shareThread = new Thread(syncThread, "shareThread");
-				shareThread.start();
-		}
-	};
-
 	/**
 	 * Opens the dialog for creating a new timeline.
 	 * Input is name and if the timeline should be shared.
@@ -252,9 +205,8 @@ public class DashboardActivity extends Activity {
 		View layout = inflater.inflate(R.layout.newtimelinedialog, (ViewGroup) findViewById(R.id.layout_root));
 		timelineNameInputDialog.setView(layout);
 		
-		final ListView groupList = (ListView) layout.findViewById(R.id.sharedtimelinegroupslist);
-		groupList.setCacheColorHint(this.getResources().getColor(android.R.color.transparent));
-		groupListAdapter = new GroupListAdapter(this, getAllGroupsInDatabase());
+		groupList = (ListView) layout.findViewById(R.id.sharedtimelinegroupslist);
+		groupListAdapter = new GroupListAdapter(getApplicationContext(), getAllGroupsInDatabase());
 		groupList.setAdapter(groupListAdapter);
 		
 		final ImageButton addGroupButton = (ImageButton) layout.findViewById(R.id.newgroupbutton_in_timelinedialog);
@@ -262,7 +214,6 @@ public class DashboardActivity extends Activity {
 			
 			public void onClick(View v) {
 				openNewGroupNameInputDialog();
-				
 			}
 		});
 		
@@ -315,7 +266,6 @@ public class DashboardActivity extends Activity {
 					createNewTimeline(inputName, share, selectedGroup);
 					dialog.dismiss();
 				}
-
 			}
 		});
 
@@ -327,6 +277,7 @@ public class DashboardActivity extends Activity {
 
 			}
 		});
+		
 		timelineNameInputDialog.show();
 	}
 	
@@ -349,7 +300,6 @@ public class DashboardActivity extends Activity {
 			public void onClick(DialogInterface dialog, int which) {
 				String inputName = inputTextField.getText().toString().trim();
 				addNewGroup(inputName);
-				groupListAdapter.notifyDataSetChanged();
 				dialog.dismiss();
 			}
 		});
@@ -372,28 +322,30 @@ public class DashboardActivity extends Activity {
 		groupNameInputDialog.show();
 	}
 	
-	
+	/**
+	 * Add a new group to the database
+	 * @param groupName The name of the new group
+	 */
 	protected void addNewGroup(String groupName) {
 		
 		Group group = new Group(groupName);
 		
 		new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
 		
-		uGManager = new UserGroupManager(this);
 		uGManager.addGroupToGroupDatabase(group);
 		uGManager.addUserToAGroupInTheDatabase(group, user);
-		
 		group.addMembers(user);
 		Toast.makeText(this, "You have created the group: " +group.toString() , Toast.LENGTH_SHORT).show();
-		groupListAdapter.notifyDataSetChanged();
 		UserGroupDatabaseHelper.getUserDatabase().close();
 		
 	}
 
+	/**
+	 * Retrieves all the groups in the database connected to the user using the application
+	 * @return An array of all the groups
+	 */
 	private ArrayList<Group> getAllGroupsInDatabase() {
 		UserGroupDatabaseHelper helper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
-		UserGroupManager uGManager = new UserGroupManager(this);
-		
 		ArrayList<Group> allGroups = uGManager.getAllGroupsConnectedToAUser(user);
 		helper.close();
 		return allGroups;
@@ -425,29 +377,6 @@ public class DashboardActivity extends Activity {
 		new DatabaseHelper(this, databaseName);
 		startActivity(timelineIntent);
 	}
-
-//	private void addUserToAGroup(User user, String title) {
-//		UserGroupManager uGManager = new UserGroupManager(this);
-//		UserGroupDatabaseHelper helper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
-//		
-//		Group group = new Group(title);
-//		uGManager.addGroupToGroupDatabase(group);
-//		uGManager.addUserToAGroupInTheDatabase(group, user);
-//		helper.close();
-//	}
-//
-//	/**
-//	 * Adds a new user to the user database
-//	 * 
-//	 * @param creator Account. The google user performing actions on the application
-//	 */
-//	private void addNewUserToDatabase(User user) {
-//		
-//		UserGroupManager uGManager = new UserGroupManager(this);
-//		UserGroupDatabaseHelper helper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
-//		uGManager.addUserToUserDatabase(user);
-//		helper.close();
-//	}
 
 	/**
 	 * Adds the new timeline to the database containing all the timelines.
@@ -565,7 +494,6 @@ public class DashboardActivity extends Activity {
 
       };
     
-
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
@@ -599,4 +527,47 @@ public class DashboardActivity extends Activity {
 		mapViewIntent.setAction(Utilities.INTENT_ACTION_OPEN_MAP_VIEW_FROM_DASHBOARD);
 		startActivityForResult(mapViewIntent, Utilities.ALL_EXPERIENCES_MAP_ACTIVITY_REQUEST_CODE);
 	}
+	
+	//listeners
+	private OnClickListener newTimeLineListener = new OnClickListener() {
+
+		public void onClick(View v) {
+			openDialogForTimelineNameInput();
+		}
+	};
+
+	private OnClickListener browseTimeLineListener = new OnClickListener() {
+
+		public void onClick(View v) {
+			browseAllTimelines(false);
+		}
+	};
+	
+	private OnClickListener browseSharedTimeLinesListener = new OnClickListener() {
+
+		public void onClick(View v) {
+			browseAllTimelines(true);		
+		}
+
+	};
+	
+	private OnClickListener openMyGroupsListener = new OnClickListener() {
+		public void onClick(View v) {
+			startActivity(myGroupsIntent);
+		}
+	};
+	
+	private OnClickListener viewProfileListener = new OnClickListener() {
+		public void onClick(View v) {
+			startActivity(profileIntent);
+		}
+	};
+	
+	private OnClickListener syncListener = new OnClickListener() {
+		public void onClick(View v) {
+			Toast.makeText(DashboardActivity.this, "Syncronizing shared timelines with server...", Toast.LENGTH_SHORT).show();
+				Thread shareThread = new Thread(syncThread, "shareThread");
+				shareThread.start();
+		}
+	};
 }

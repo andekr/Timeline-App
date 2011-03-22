@@ -16,7 +16,7 @@ import com.fabula.android.timeline.models.Group;
 public class GroupListAdapter extends ArrayAdapter<Group> {
 
 	private Context mContext;
-	private ArrayList <Group> groups, checkedUsers;
+	private ArrayList <Group> groups;
 	private LayoutInflater mInflater;
 
 	public GroupListAdapter(Context context, ArrayList <Group> groups) {
