@@ -66,7 +66,6 @@ public class MyGroupsActivity extends Activity {
 		connectedGroups.add(group);
 		groupListAdapter.notifyDataSetChanged();
 		Toast.makeText(MyGroupsActivity.this.getApplicationContext(), "You have created the group: " +group.toString() , Toast.LENGTH_SHORT).show();
-		GAEHandler.addUserToServer(applicationUser);
 		GAEHandler.addGroupToServer(group);
 	}
 	

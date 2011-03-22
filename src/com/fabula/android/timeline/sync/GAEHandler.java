@@ -125,6 +125,15 @@ public class GAEHandler {
 		
 	    System.out.println("Lagrer JSON på Google App Engine: "+jsonString);
 	    Uploader.putGroupToGAE(jsonString);
+	    
+	    for (User user : groupToAdd.getMembers()) {
+			addUserGroupToServer(groupToAdd, user);
+		}
+	}
+	
+	public static void addUserGroupToServer(Group groupToAddUser, User userToAdd){
+		 System.out.println("Lagrer bruker til gruppe på Google App Engine");
+	    Uploader.putUserToGroupToGAE(groupToAddUser, userToAdd);
 	}
 	
 	public static void addUserToServer(User userToAdd){

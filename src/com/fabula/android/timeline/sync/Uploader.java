@@ -20,6 +20,8 @@ import com.fabula.android.timeline.Utilities;
 import com.fabula.android.timeline.models.Event;
 import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.models.Experiences;
+import com.fabula.android.timeline.models.Group;
+import com.fabula.android.timeline.models.User;
 
 public class Uploader {
 	
@@ -134,6 +136,16 @@ public class Uploader {
 		makeHttpPutContentTypeHeader(httpPut);
 		
 		sendJSONTOGAEServer(jsonString, targetHost, httpPut);
+		
+	}
+	
+	public static void putUserToGroupToGAE(Group groupToAddUser, User userToAddToGroup){  
+		final HttpHost targetHost = new HttpHost(Utilities.GOOGLE_APP_ENGINE_URL, 80, "http");
+		// Using PUT here
+		final HttpPut httpPut = new HttpPut("/rest/group/"+groupToAddUser.getId()+"/user/"+userToAddToGroup.getUserName()+"/");
+		makeHttpPutContentTypeHeader(httpPut);
+		
+		sendJSONTOGAEServer("", targetHost, httpPut);
 		
 	}
 	
