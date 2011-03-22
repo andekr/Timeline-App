@@ -89,7 +89,13 @@ public class Downloader {
     		httpGet.addHeader("Content-Type", "application/json");
             
             HttpResponse response = httpClient.execute(targetHost, httpGet);
-            data = response.getEntity().getContent();
+            data = null;
+            
+            try {
+            	data = response.getEntity().getContent();
+			} catch (NullPointerException e) {
+				// TODO: handle exception
+			}
         } catch (Exception e) {
             e.printStackTrace();
         }
