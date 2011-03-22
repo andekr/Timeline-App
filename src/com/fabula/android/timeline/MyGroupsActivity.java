@@ -31,6 +31,7 @@ import com.fabula.android.timeline.contentmanagers.UserGroupManager;
 import com.fabula.android.timeline.database.UserGroupDatabaseHelper;
 import com.fabula.android.timeline.models.Group;
 import com.fabula.android.timeline.models.User;
+import com.fabula.android.timeline.sync.Downloader;
 import com.fabula.android.timeline.sync.GAEHandler;
 
 public class MyGroupsActivity extends Activity {
@@ -122,6 +123,9 @@ public class MyGroupsActivity extends Activity {
 	 * @return a list of all the groups the user are a part of
 	 */
 	private ArrayList <Group> getAllGroupsConnectedToUser(Account user) {
+		
+		//TODO move this to appropriate place
+		uGManager.addUsersToUserDatabase(Downloader.getUsersFromServer().getUsers());
 		ArrayList <Group> allGroups = uGManager.getAllGroupsConnectedToAUser(applicationUser);
 		return allGroups;
 	}

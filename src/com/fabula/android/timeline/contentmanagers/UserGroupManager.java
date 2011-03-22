@@ -1,6 +1,7 @@
 package com.fabula.android.timeline.contentmanagers;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.fabula.android.timeline.models.Group;
 import com.fabula.android.timeline.models.Group.GroupColumns;
@@ -23,17 +24,39 @@ public class UserGroupManager {
 		this.context = context;
 	}
 	
+	/**
+	 * Add a user to the database if the user doesn't exists from before
+	 * @param user The user to be added
+	 */
 	public void addUserToUserDatabase(User user) {
 		ContentValues values = new ContentValues();
 		
 		values.put(UserColumns._ID, user.getId());
 		values.put(UserColumns.USER_NAME, user.getUserName());
 		
-		context.getContentResolver().insert(UserColumns.CONTENT_URI, values);
-		
-		Log.i("USER GROUP MANAGER", "User: "+ user.getUserName()+ " added to the database");
+		if (!userExists(user)) {
+			context.getContentResolver().insert(UserColumns.CONTENT_URI, values);
+			Log.i("USER GROUP MANAGER", "User: "+ user.getUserName()+ " added to the database");
+		}
+		else {
+			Log.i("USER GROUP MANAGER", "User: "+ user.getUserName()+ " already exists");
+		}
 	}
 	
+	/**
+	 * Add several users to the database
+	 * @param users The list of users to be added
+	 */
+	public void addUsersToUserDatabase(List <User> users) {
+		for (User u : users) {
+			addUserToUserDatabase(u);
+		}
+	}
+	
+	/**
+	 * Add a group to the database
+	 * @param group The group to be added
+	 */
 	public void addGroupToGroupDatabase(Group group) {
 		ContentValues values = new ContentValues();
 		
@@ -45,6 +68,11 @@ public class UserGroupManager {
 		Log.i("USER GROUP MANAGER", "Group: "+ group.getName()+ " added to the database");
 	}
 	
+	/**
+	 * Add a user to a group in the database
+	 * @param group The group the user should be added to
+	 * @param user The user to be added
+	 */
 	public void addUserToAGroupInTheDatabase(Group group, User user) {
 		ContentValues values = new ContentValues();
 		values.put(GroupColumns._ID, group.getId());
@@ -54,12 +82,15 @@ public class UserGroupManager {
 		if(!userExistsInGroup(group, user)) {
 			context.getContentResolver().insert(UserGroupProvider.CONTENT_URI, values);
 		}
-		
-		
-		
 		Log.i("USER GROUP MANAGER", "User: "+ user.getUserName()+ " added to group: "+group.getName());
 	}
 	
+	/**
+	 * Checks if a user already is in a group
+	 * @param group The group to be checked
+	 * @param user The user to be checked
+	 * @return True if the user is in the group
+	 */
 	private boolean userExistsInGroup(Group group, User user) {
 		
 		ArrayList<Group> userConnectedGroups = getAllGroupsConnectedToAUser(user);
@@ -73,6 +104,11 @@ public class UserGroupManager {
 		return false;
 	}
 
+	/**
+	 * Removes a user from a group in the database
+	 * @param group The group the user should be removed from
+	 * @param user The user to be removed
+	 */
 	public void removeUserFromAGroupInTheDatabase(Group group, User user) {
 		
 		String where = GroupColumns._ID+ " = '" +group.getId()+"'"+ " AND " +UserColumns.USER_NAME+ " = '" +user.getUserName()+"'";
@@ -81,6 +117,10 @@ public class UserGroupManager {
 		Log.i("USER GROUP MANAGER", "User: "+ user.getUserName()+ " removed from group: "+group.getName());
 	}
 	
+	/**
+	 * Deletes a group from the database
+	 * @param group The group to be deleted
+	 */
 	public void deleteGroupFromDatabase(Group group) {
 		
 		String where = GroupColumns._ID+ " = '" +group.getId()+"'";
@@ -88,6 +128,11 @@ public class UserGroupManager {
 		context.getContentResolver().delete(UserGroupProvider.CONTENT_URI, where, null);
 		Log.i("USER GROUP MANAGER", "Group: "+ group.toString()+ " deleted from database");
 	}
+	
+	/**
+	 * Deletes a user from the database
+	 * @param user The user to be deleted
+	 */
 	
 	public void deleteUserFromDatabase(User user) {
 		
@@ -97,6 +142,11 @@ public class UserGroupManager {
 		context.getContentResolver().delete(UserGroupProvider.CONTENT_URI, where, null);
 	}
 	
+	/**
+	 * Checks if a user already exists in the database
+	 * @param user The user to be checked
+	 * @return True if the user already exists
+	 */
 	public Boolean userExists(User user) {
 		
 		String [] userTableColumns = new String[] {UserColumns.USER_NAME};
@@ -112,7 +162,12 @@ public class UserGroupManager {
 			return false;
 		}
 	}
-		
+	
+	/**
+	 * Gets all the groups in the database connected to a given user
+	 * @param user The user connected to groups
+	 * @return A list of the groups connected to the user
+	 */
 	public ArrayList <Group> getAllGroupsConnectedToAUser(User user) {
 		
 		ArrayList<Group> allConnectedGroups = new ArrayList<Group>();
@@ -134,6 +189,11 @@ public class UserGroupManager {
 		return allConnectedGroups;
 	}
 
+	/**
+	 * Gets a group from the database based on an ID
+	 * @param groupID The ID checked against the database
+	 * @return The group with the given groupID
+	 */
 	private Group getGroupFromDatabase(String groupID) {
 		
 		String [] groupsTableColumns = new String[] {GroupColumns._ID, GroupColumns.GROUP_NAME};
@@ -150,6 +210,11 @@ public class UserGroupManager {
 		return group;
 	}
 	
+	/**
+	 * Gets all users in a group
+	 * @param group The group to be checked
+	 * @return A list of all the users connected to the group
+	 */
 	private ArrayList <User> getUsersConnectedToAGroup(Group group) {
 		
 		String [] userGroupsTableColumns = new String[] {GroupColumns._ID, UserColumns.USER_NAME};
@@ -169,6 +234,10 @@ public class UserGroupManager {
 		
 	}
 	
+	/**
+	 * Gets all the users in the user table of the database
+	 * @return A list of all the users
+	 */
 	public ArrayList <User> getAllUsersFromDatabase() {
 		
 		String[] userTableColumns = new String[] {UserColumns.USER_NAME};
