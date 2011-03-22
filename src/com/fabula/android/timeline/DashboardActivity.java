@@ -12,6 +12,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnCancelListener;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -35,6 +37,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.fabula.android.timeline.Map.TimelineMapView;
 import com.fabula.android.timeline.adapters.GroupListAdapter;
+import com.fabula.android.timeline.adapters.UserListAdapter;
 import com.fabula.android.timeline.contentmanagers.ContentAdder;
 import com.fabula.android.timeline.contentmanagers.ContentLoader;
 import com.fabula.android.timeline.contentmanagers.UserGroupManager;
@@ -85,6 +88,9 @@ public class DashboardActivity extends Activity {
 	Runnable syncThread, addGroupToServerThread, checkUserRunnable;
 	private long lastSynced=0;
 	boolean registered=false;
+	private UserGroupDatabaseHelper helper;
+	private UserGroupManager uGManager;
+	private GroupListAdapter groupListAdapter;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -194,6 +200,9 @@ public class DashboardActivity extends Activity {
 	 * 
 	 */
 	private void setupViews() {
+		
+		
+		
 		newTimeLineButton = (ImageButton) findViewById(R.id.dash_new_timeline);
 		newTimeLineButton.setOnClickListener(newTimeLineListener);
 		browseMyTimelinesButton = (ImageButton) findViewById(R.id.dash_my_timelines);
@@ -273,17 +282,25 @@ public class DashboardActivity extends Activity {
 		final AlertDialog.Builder timelineNameInputDialog = new AlertDialog.Builder(
 				this);
 		
-		Context mContext = getApplicationContext();
+		final Context mContext = getApplicationContext();
 		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
 		View layout = inflater.inflate(R.layout.newtimelinedialog, (ViewGroup) findViewById(R.id.layout_root));
 		timelineNameInputDialog.setView(layout);
 		
 		final ListView groupList = (ListView) layout.findViewById(R.id.sharedtimelinegroupslist);
 		groupList.setCacheColorHint(this.getResources().getColor(android.R.color.transparent));
-		groupList.setAdapter(new GroupListAdapter(mContext, getAllGroupsInDatabase()));
+		groupListAdapter = new GroupListAdapter(this, getAllGroupsInDatabase());
+		groupList.setAdapter(groupListAdapter);
 		
+		final ImageButton addGroupButton = (ImageButton) layout.findViewById(R.id.newgroupbutton_in_timelinedialog);
+		addGroupButton.setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View v) {
+				openNewGroupNameInputDialog();
+				
+			}
+		});
 		
-
 		final TextView selectedGroupText = (TextView) layout.findViewById(R.id.selectedGroupText);
 		selectedGroupText.setText("Select a group to share with:");
 		
@@ -292,23 +309,26 @@ public class DashboardActivity extends Activity {
 		
 		groupList.setOnItemClickListener(new OnItemClickListener() {
 
-			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+			public void onItemClick(AdapterView<?> arg0, View view, int position,
 					long arg3) {
 				selectedGroupText.setText("Share with group: " + groupList.getAdapter().getItem(position));
 				selectedGroup = (Group) groupList.getAdapter().getItem(position);
 			}
 		});
+				
 		shareToggle.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				if(isChecked) {
 					selectedGroupText.setVisibility(View.VISIBLE);
 					groupList.setVisibility(View.VISIBLE);
+					addGroupButton.setVisibility(View.VISIBLE);
 				}
 				
 				else {
 					selectedGroupText.setVisibility(View.GONE);
 					groupList.setVisibility(View.GONE);	
+					addGroupButton.setVisibility(View.GONE);
 					selectedGroup = null;
 					selectedGroupText.setText("Select a group to share with");
 				}
@@ -320,10 +340,17 @@ public class DashboardActivity extends Activity {
 				new DialogInterface.OnClickListener() {
 
 			public void onClick(DialogInterface dialog, int which) {
-				String inputName = inputTextField.getText().toString().trim();
-				boolean share = shareToggle.isChecked();
-				createNewTimeline(inputName, share, selectedGroup);
-				dialog.dismiss();
+				
+				if(shareToggle.isChecked() && selectedGroup == null) {
+					Toast.makeText(mContext, "You have to select a group to share the timeline with!", Toast.LENGTH_SHORT).show();
+				}
+				else {
+					String inputName = inputTextField.getText().toString().trim();
+					boolean share = shareToggle.isChecked();
+					createNewTimeline(inputName, share, selectedGroup);
+					dialog.dismiss();
+				}
+
 			}
 		});
 
@@ -338,7 +365,66 @@ public class DashboardActivity extends Activity {
 		timelineNameInputDialog.show();
 	}
 	
+	private void openNewGroupNameInputDialog() {
+		
+		final AlertDialog.Builder groupNameInputDialog = new AlertDialog.Builder(
+				this);
+		
+		Context mContext = getApplicationContext();
+		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
+		View layout = inflater.inflate(R.layout.newgroupdialog, (ViewGroup) findViewById(R.id.newgroupdialogroot));
+		groupNameInputDialog.setView(layout);
+		
+		final EditText inputTextField = (EditText)layout.findViewById(R.id.NewGroupeditText);
+
+		groupNameInputDialog.setTitle("Enter a name for your group!");
+		groupNameInputDialog.setPositiveButton("Ok",
+				new DialogInterface.OnClickListener() {
+
+			public void onClick(DialogInterface dialog, int which) {
+				String inputName = inputTextField.getText().toString().trim();
+				addNewGroup(inputName);
+				groupListAdapter.notifyDataSetChanged();
+				dialog.dismiss();
+			}
+		});
+
+		groupNameInputDialog.setNegativeButton("Cancel",
+				new DialogInterface.OnClickListener() {
+
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+
+			}
+		}).setOnCancelListener(new OnCancelListener() {
+			
+			public void onCancel(DialogInterface dialog) {
+				dialog.dismiss();
+				
+			}
+		});
+		
+		groupNameInputDialog.show();
+	}
 	
+	
+	protected void addNewGroup(String groupName) {
+		
+		Group group = new Group(groupName);
+		
+		new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
+		
+		uGManager = new UserGroupManager(this);
+		uGManager.addGroupToGroupDatabase(group);
+		uGManager.addUserToAGroupInTheDatabase(group, user);
+		
+		group.addMembers(user);
+		Toast.makeText(this, "You have created the group: " +group.toString() , Toast.LENGTH_SHORT).show();
+		groupListAdapter.notifyDataSetChanged();
+		UserGroupDatabaseHelper.getUserDatabase().close();
+		
+	}
+
 	private ArrayList<Group> getAllGroupsInDatabase() {
 		UserGroupDatabaseHelper helper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
 		UserGroupManager uGManager = new UserGroupManager(this);
@@ -360,7 +446,6 @@ public class DashboardActivity extends Activity {
 		
 		String databaseName = timeLine.getTitle() + ".db";
 
-		
 		timelineIntent.putExtra(Utilities.DATABASENAME_REQUEST, databaseName);
 		timelineIntent.putExtra(Utilities.SHARED_REQUEST, shared);
 		timelineIntent.putExtra(Utilities.EXPERIENCEID_REQUEST, timeLine.getId());
