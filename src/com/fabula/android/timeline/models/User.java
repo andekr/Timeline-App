@@ -2,7 +2,6 @@ package com.fabula.android.timeline.models;
 
 import java.util.UUID;
 
-import com.fabula.android.timeline.providers.NoteProvider;
 import com.fabula.android.timeline.providers.UserProvider;
 
 import android.net.Uri;
@@ -10,13 +9,12 @@ import android.provider.BaseColumns;
 
 public class User {
 	
-	private String id;
-	private String userName;
-	private boolean isInGroup;
+	private transient String id;
+	private String username;
 	
 	public User(String userName) {
 		this.id = UUID.randomUUID().toString();
-		this.userName = userName;
+		this.username = userName;
 	}
 	
 	public String getId() {
@@ -28,11 +26,11 @@ public class User {
 	}
 
 	public String getUserName() {
-		return userName;
+		return username;
 	}
 
 	public void setUserName(String userName) {
-		this.userName = userName;
+		this.username = userName;
 	}
 	
 	public static final class UserColumns implements BaseColumns {
@@ -45,6 +43,6 @@ public class User {
 	
 	@Override
 	public String toString() {
-		return this.userName;
+		return this.username;
 	}
 }

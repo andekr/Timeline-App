@@ -12,7 +12,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -24,20 +23,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.fabula.android.timeline.Map.TimelineMapView;
-import com.fabula.android.timeline.adapters.ExpandableGroupsListViewAdapter;
 import com.fabula.android.timeline.adapters.GroupListAdapter;
 import com.fabula.android.timeline.contentmanagers.ContentAdder;
 import com.fabula.android.timeline.contentmanagers.ContentLoader;
@@ -86,8 +82,9 @@ public class DashboardActivity extends Activity {
 	private Account creator;
 	private User user;
 	private Group selectedGroup;
-	Runnable syncThread;
+	Runnable syncThread, addGroupToServerThread, checkUserRunnable;
 	private long lastSynced=0;
+	boolean registered=false;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -112,6 +109,18 @@ public class DashboardActivity extends Activity {
 		timelineIntent = new Intent(this, TimelineActivity.class);
 		timelineIntent.setAction(Utilities.INTENT_ACTION_NEW_TIMELINE); //Default Intent action for TimelineActivity is to create/open a timeline.
 
+		//Check for Internet
+		
+		//Check if user is registered
+		checkUserRunnable = new Runnable() {
+			public void run() {
+				checkIfUserIsRegisteredOnServer();
+			}
+		};
+		
+		Thread checkUserThread = new Thread(checkUserRunnable, "checkUserThread");
+		checkUserThread.start();
+		
 		try {
 			lastSynced = getLastSynced();
 		} catch (Exception e) {
@@ -136,8 +145,33 @@ public class DashboardActivity extends Activity {
 				syncTimelines();
 			}
 		};
+		
 	}
 
+	private void checkIfUserIsRegisteredOnServer() {
+		registered = Downloader.IsUserRegistered(user.getUserName());
+		//Register user if not registered
+		if(!registered){
+			GAEHandler.addUserToServer(user);
+			runOnUiThread(new Runnable() {
+				
+				public void run() {
+					Toast.makeText(DashboardActivity.this, "Ikke registrert. Registrerer bruker.", Toast.LENGTH_LONG).show();
+				}
+			});
+		}else{
+			runOnUiThread(new Runnable() {
+				
+				public void run() {
+					Toast.makeText(DashboardActivity.this, "Registrert fra før!", Toast.LENGTH_LONG).show();
+				}
+			});
+		}
+			
+		
+		
+	}
+	
 	private void addUserToDatabaseIfNewUser() {
 		UserGroupDatabaseHelper helper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
 		UserGroupManager uGManager = new UserGroupManager(this);
@@ -337,6 +371,7 @@ public class DashboardActivity extends Activity {
 			timelineIntent.putExtra(Utilities.SHARED_WITH_REQUEST, timeLine.getSharingGroup().getId());
 		}
 		
+		GAEHandler.addGroupToServer(group);
 		addNewTimelineToTimelineDatabase(timeLine); 
 		new DatabaseHelper(this, databaseName);
 		startActivity(timelineIntent);

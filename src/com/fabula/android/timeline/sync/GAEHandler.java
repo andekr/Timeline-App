@@ -1,25 +1,22 @@
 package com.fabula.android.timeline.sync;
 
 import java.lang.reflect.Type;
-import java.util.List;
 
 import android.app.Activity;
 import android.util.Log;
 
 import com.fabula.android.timeline.Utilities;
-import com.fabula.android.timeline.models.Emotion;
 import com.fabula.android.timeline.models.Event;
 import com.fabula.android.timeline.models.EventItem;
 import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.models.Experiences;
+import com.fabula.android.timeline.models.Group;
 import com.fabula.android.timeline.models.SimplePicture;
-import com.fabula.android.timeline.sync.Downloader.EventItemDeserializer;
+import com.fabula.android.timeline.models.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
@@ -86,7 +83,7 @@ public class GAEHandler {
 //		      e.printStackTrace();
 //		    }
 		
-		    //Saving xml to server
+		    //Saving json to server
 		    System.out.println("Lagrer JSON på Google App Engine: "+jsonString);
 //		    Uploader.uploadFile(result.getPath(), result.getPath());
 		    Uploader.putToGAE(object, jsonString);
@@ -116,17 +113,36 @@ public class GAEHandler {
 		  
 	}
 	
-	//Custom serializers to remove empty lists, which Google App Engine can't handle right.
-	
-//	private static class EventSerializer implements JsonSerializer<Event> {
-//		  public JsonElement serialize(Event src, Type typeOfSrc, JsonSerializationContext context) {
-//			  if(src.getEmotionList().size()==0)
-//				   src.setEmotionList(null);
-//			Gson gson = new Gson();
-//		    return new JsonParser().parse(gson.toJson(src));
-//		  }
-//		}
+	public static void addGroupToServer(Group groupToAdd){
+		Gson gson = new Gson();
+		String jsonString ="";
 
+		try {
+			jsonString = gson.toJson(groupToAdd, Group.class);
+		} catch (Exception e) {
+			Log.e("save", e.getMessage());
+		}
+		
+	    System.out.println("Lagrer JSON på Google App Engine: "+jsonString);
+	    Uploader.putGroupToGAE(jsonString);
+	}
+	
+	public static void addUserToServer(User userToAdd){
+		Gson gson = new Gson();
+		String jsonString ="";
+
+		try {
+			jsonString = gson.toJson(userToAdd, User.class);
+		} catch (Exception e) {
+			Log.e("save", e.getMessage());
+		}
+		
+	    System.out.println("Lagrer JSON på Google App Engine: "+jsonString);
+	    Uploader.putUserToGAE(jsonString);
+	}
+	
+	//Custom serializer to remove empty lists, which Google App Engine can't handle right.
+	
 	private static class ExperiencesSerializer implements JsonSerializer<Experiences> {
 		  public JsonElement serialize(Experiences src, Type typeOfSrc, JsonSerializationContext context) {
 			  if(src.getExperiences().size()==0)

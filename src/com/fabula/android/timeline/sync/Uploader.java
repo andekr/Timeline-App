@@ -105,13 +105,17 @@ public class Uploader {
 //		}
 	}
 	
-	public static void putToGAE(Object o, String jsonString){
-	   
-	
-		DefaultHttpClient httpClient = new DefaultHttpClient();
-		       
-		HttpHost targetHost = new HttpHost("reflectapp.appspot.com", 80, "http");
+	public static void putToGAE(Object o, String jsonString){       
+		HttpHost targetHost = new HttpHost(Utilities.GOOGLE_APP_ENGINE_URL, 80, "http");
 		// Using PUT here
+		HttpPut httpPut = makeHttpPutBasedOnObjectType(o);
+		
+		makeHttpPutContentTypeHeader(httpPut);
+		       
+		sendJSONTOGAEServer(jsonString, targetHost, httpPut);
+	}
+
+	private static HttpPut makeHttpPutBasedOnObjectType(Object o) {
 		HttpPut httpPut = null;
 		if(o instanceof Experiences)
 			httpPut = new HttpPut("/rest/experiences/");
@@ -119,27 +123,70 @@ public class Uploader {
 			httpPut = new HttpPut("/rest/experience/");
 		else if(o instanceof Event)
 			httpPut = new HttpPut("/rest/event/");
+		return httpPut;
+	}
+	
+	
+	public static void putGroupToGAE(final String jsonString){  
+		final HttpHost targetHost = new HttpHost(Utilities.GOOGLE_APP_ENGINE_URL, 80, "http");
+		// Using PUT here
+		final HttpPut httpPut = new HttpPut("/rest/group/");
+		makeHttpPutContentTypeHeader(httpPut);
+		
+		sendJSONTOGAEServer(jsonString, targetHost, httpPut);
+		
+	}
+	
+	public static void putUserToGAE(final String jsonString){  
+		final HttpHost targetHost = new HttpHost(Utilities.GOOGLE_APP_ENGINE_URL, 80, "http");
+		// Using PUT here
+		final HttpPut httpPut = new HttpPut("/rest/user/");
+		makeHttpPutContentTypeHeader(httpPut);
+		
+		sendJSONTOGAEServer(jsonString, targetHost, httpPut);
+		
+	}
+
+	private static void makeHttpPutContentTypeHeader(HttpPut httpPut) {
 		// Make sure the server knows what kind of a response we will accept
 		httpPut.addHeader("Accept", "application/json");
 		// Also be sure to tell the server what kind of content we are sending
 		httpPut.addHeader("Content-Type", "application/json");
-		       
-		try
-		{
-		    StringEntity entity = new StringEntity(jsonString, "UTF-8");
-		    entity.setContentType("application/json");
-		    httpPut.setEntity(entity);
-		   
-		        // execute is a blocking call, it's best to call this code in a thread separate from the ui's
-		    HttpResponse response = httpClient.execute(targetHost, httpPut);
-
-		    Log.v("Put to GAE", response.getStatusLine().toString());
-		}
-		catch (Exception ex)
-		{
-		        ex.printStackTrace();
-		}
 	}
+	
+	private static void sendJSONTOGAEServer(final String jsonString,
+			final HttpHost targetHost, final HttpPut httpPut) {
+		Runnable sendRunnable = new Runnable() {
+			
+			public void run() {
+				try
+				{
+					DefaultHttpClient httpClient = new DefaultHttpClient();
+					
+				    StringEntity entity = new StringEntity(jsonString, "UTF-8");
+				    entity.setContentType("application/json");
+				    httpPut.setEntity(entity);
+				   
+				        // execute is a blocking call, it's best to call this code in a thread separate from the ui's
+				    HttpResponse response = httpClient.execute(targetHost, httpPut);
+
+				    Log.v("Put to GAE", response.getStatusLine().toString());
+				}
+				catch (Exception ex)
+				{
+				        ex.printStackTrace();
+				}
+					}
+		};
+		
+		Thread thread =  new Thread(null, sendRunnable, "merkSettTraad");
+        thread.start();
+	
+	}
+
+
+	
+	
 	
 	/**
 	 * Convert XML to String

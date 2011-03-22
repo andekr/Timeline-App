@@ -31,6 +31,7 @@ import com.fabula.android.timeline.contentmanagers.UserGroupManager;
 import com.fabula.android.timeline.database.UserGroupDatabaseHelper;
 import com.fabula.android.timeline.models.Group;
 import com.fabula.android.timeline.models.User;
+import com.fabula.android.timeline.sync.GAEHandler;
 
 public class MyGroupsActivity extends Activity {
 	
@@ -65,6 +66,8 @@ public class MyGroupsActivity extends Activity {
 		connectedGroups.add(group);
 		groupListAdapter.notifyDataSetChanged();
 		Toast.makeText(MyGroupsActivity.this.getApplicationContext(), "You have created the group: " +group.toString() , Toast.LENGTH_SHORT).show();
+		GAEHandler.addUserToServer(applicationUser);
+		GAEHandler.addGroupToServer(group);
 	}
 	
 	/**
