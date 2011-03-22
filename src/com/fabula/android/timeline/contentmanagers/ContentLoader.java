@@ -94,7 +94,7 @@ public class ContentLoader {
 						new Account(c.getString(c.getColumnIndex(ExperienceColumns.EXPERIENCE_CREATOR)), "com.google"));
 				
 				if(experience.isShared()) {
-					experience.setGroup(getGroupSharedWithExperience(c.getString(c.getColumnIndex(ExperienceColumns.EXPERIENCE_SHARED_WITH))));
+					experience.setSharingGroup(getGroupSharedWithExperience(c.getString(c.getColumnIndex(ExperienceColumns.EXPERIENCE_SHARED_WITH))));
 				}
 				allExperiences.add(experience);
 				System.out.println("Hentet experience med shared: "+experience.isShared());	

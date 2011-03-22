@@ -35,7 +35,7 @@ public class ExperienceProvider extends BaseContentProvider {
     }
     
 	//insert some element in the DB
-	public Uri insert(Uri uri, ContentValues initialValues) {
+	public Uri insert(Uri uri, ContentValues initialValues) { 
 
         ContentValues values;
         if (initialValues != null) {

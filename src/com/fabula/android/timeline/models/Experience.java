@@ -26,7 +26,7 @@ public class Experience {
 	private String creator;
 	private List<Event> events;
 	private Uri uriToExperience;
-	private Group group;
+	private Group sharingGroup;
 	
 	public Experience() {}
 
@@ -41,7 +41,7 @@ public class Experience {
 		this.id = UUID.randomUUID().toString();
 		this.title = title;
 		this.shared = shared;
-		this.setGroup(group);
+		this.setSharingGroup(group);
 		setUser(user);
 	}
 	
@@ -124,8 +124,15 @@ public class Experience {
 		this.user = new Account(creator, "com.google");
 		this.creator = creator;
 	}
+		
+	public Group getSharingGroup() {
+		return sharingGroup;
+	}
 
-	
+	public void setSharingGroup(Group sharingGroup) {
+		this.sharingGroup = sharingGroup;
+	}
+
 	public float getTimeScopeOfExperience(){
 		float min=0, max=0, diff;//Min blir aldri satt!
 		
@@ -187,7 +194,7 @@ public class Experience {
 		public static final String EXPERIENCE_LAST_MODIFIED = "last_modified";
 		
 		public static final String EXPERIENCE_SHARED_WITH = "shared_with_group";
-		
+
 	}
 
 	public int isSharedAsInt() {
@@ -199,11 +206,5 @@ public class Experience {
 		return this.title;
 	}
 
-	public void setGroup(Group group) {
-		this.group = group;
-	}
 
-	public Group getGroup() {
-		return group;
-	}
 }

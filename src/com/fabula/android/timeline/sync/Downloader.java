@@ -4,36 +4,28 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Type;
-import java.util.Date;
-//
+
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.accounts.Account;
+import android.util.Log;
 
 import com.fabula.android.timeline.Utilities;
-import com.fabula.android.timeline.database.TimelineDatabaseHelper;
-import com.fabula.android.timeline.models.Emotion;
-import com.fabula.android.timeline.models.Event;
 import com.fabula.android.timeline.models.EventItem;
-import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.models.Experiences;
 import com.fabula.android.timeline.models.SimpleNote;
 import com.fabula.android.timeline.models.SimplePicture;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.InstanceCreator;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
-
-import android.accounts.Account;
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.util.Log;
-import android.view.View;
 
 public class Downloader {
 	
@@ -61,6 +53,24 @@ public class Downloader {
 		
 	}
 	
+	 public static boolean IsUserRegistered(String username){
+		 boolean registered = true; 
+		 String response = Utilities.convertStreamToString(getJSONData("/rest/user/"+username+"/"));
+		 
+		 JSONObject json = null;
+		 
+		 try {
+			json = new JSONObject(response);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 
+		 registered = json==null ? false : true;
+		 
+		 return registered;
+	 }
+	
 	/**
 	 * Method that fetches JSON-data from a URL
 	 * 
@@ -69,11 +79,9 @@ public class Downloader {
 	 */
 	public static InputStream getJSONData(String url){
         DefaultHttpClient httpClient = new DefaultHttpClient();
-//        URI uri;
         InputStream data = null;
         try {
-//            uri = new URI(url);
-            HttpHost targetHost = new HttpHost("reflectapp.appspot.com", 80, "http");
+            HttpHost targetHost = new HttpHost(Utilities.GOOGLE_APP_ENGINE_URL, 80, "http");
             HttpGet httpGet = new HttpGet(url);
          // Make sure the server knows what kind of a response we will accept
     		httpGet.addHeader("Accept", "application/json");
@@ -113,17 +121,5 @@ public class Downloader {
 		  }
 		}
 	
-	//TODO: Trengs kanskje ikke?
-//	public static class EmotionDeserializer implements JsonDeserializer<Emotion> {
-//		  public Emotion deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-//		      throws JsonParseException {
-//			  
-//			  String emotionType = json.getAsJsonPrimitive().getAsString();
-//			 
-//			  Emotion emotion = Emotion.valueOf(emotionType);
-//			  
-//			return emotion;
-//		  }
-//		}
 
 }
