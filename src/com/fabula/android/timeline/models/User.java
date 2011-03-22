@@ -12,6 +12,8 @@ public class User {
 	private transient String id;
 	private String username;
 	
+	public User() {}
+	
 	public User(String userName) {
 		this.id = UUID.randomUUID().toString();
 		this.username = userName;

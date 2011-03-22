@@ -4,6 +4,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -20,6 +22,8 @@ import com.fabula.android.timeline.models.EventItem;
 import com.fabula.android.timeline.models.Experiences;
 import com.fabula.android.timeline.models.SimpleNote;
 import com.fabula.android.timeline.models.SimplePicture;
+import com.fabula.android.timeline.models.User;
+import com.fabula.android.timeline.models.Users;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -73,6 +77,21 @@ public class Downloader {
 		 registered = json==null ? false : true;
 		 
 		 return registered;
+	 }
+	 
+	 public static Users getUsersFromServer(){
+				try {
+					Log.i("DOWNLOADER", "Json Parser started.. Getting all users");
+					Gson gson = new Gson();
+					
+					Reader r = new InputStreamReader(getJSONData("/rest/users/")); 
+					Users users = gson.fromJson(r, Users.class);
+					Log.i("DOWNLOADER", "Fetched "+users.getUsers().size()+" users");
+					return users;
+				} catch (Exception e) {
+					e.printStackTrace();
+					return null;
+				}
 	 }
 	
 	/**

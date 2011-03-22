@@ -160,6 +160,7 @@ public class DashboardActivity extends Activity {
 
 	private void checkIfUserIsRegisteredOnServer() {
 		registered = Downloader.IsUserRegistered(user.getUserName());
+		Downloader.getUsersFromServer();
 		//Register user if not registered
 		if(!registered){
 			GAEHandler.addUserToServer(user);
