@@ -20,7 +20,7 @@ public class Users {
 	 */
 	public Users() {}
 	
-	@SerializedName("user")
+	@SerializedName("users")
 	private List<User> users;
 	
 	

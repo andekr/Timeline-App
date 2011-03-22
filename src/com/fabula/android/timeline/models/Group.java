@@ -1,6 +1,7 @@
 package com.fabula.android.timeline.models;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import com.fabula.android.timeline.providers.GroupProvider;
@@ -13,7 +14,9 @@ public class Group {
 	
 	private String id;
 	private String name;
-	private ArrayList<User> members;
+	private List<User> members;
+	
+	public Group(){}
 	
 	public Group(String name, ArrayList<User> members) {
 		this.id = UUID.randomUUID().toString();
@@ -50,7 +53,7 @@ public class Group {
 		this.name = name;
 	}
 
-	public ArrayList<User> getMembers() {
+	public List<User> getMembers() {
 		return members;
 	}
 
