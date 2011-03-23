@@ -34,8 +34,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.fabula.android.timeline.Map.TimelineMapView;
 import com.fabula.android.timeline.adapters.GroupListAdapter;
@@ -105,7 +103,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		creator = Utilities.getUserAccount(this);
 		user = new User(creator.name);
 		
-		
 		//only used when a new timeline is created
 		selectedGroup = null;
 		
@@ -117,7 +114,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		setupIntents();
 
 		//Check for Internet
-		
 		
 		progressDialog = new ProgressDialog(this);
 		
@@ -140,7 +136,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		}
 		
 		setupViews();
-		
 		
 		//If the application is started with a SEND- or share Intent, change the Intent to add to a timeline
 		if (getIntent().getAction().equals(Intent.ACTION_SEND)
@@ -183,38 +178,13 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 				}
 			});
 		}
-			
 		progressDialog.dismiss();
 	}
 	
 //	private void addUserToDatabaseIfNewUser() {
 //		uGManager.addUserToUserDatabase(user);
 //	}
-
-	/**
-	 * Sets up the views by getting the views from layout XML and attaching listeners to buttons. 
-	 * 
-	 */
-	private void setupViews() {
-		
-		newTimeLineButton = (ImageButton) findViewById(R.id.dash_new_timeline);
-		newTimeLineButton.setOnClickListener(newTimeLineListener);
-		browseMyTimelinesButton = (ImageButton) findViewById(R.id.dash_my_timelines);
-		browseMyTimelinesButton.setOnClickListener(browseTimeLineListener);
-		browseSharedTimelinesButton = (ImageButton) findViewById(R.id.dash_shared_timelines);
-		browseSharedTimelinesButton.setOnClickListener(browseSharedTimeLinesListener);
-		myGroupsButton = (ImageButton) findViewById(R.id.dash_my_groups);
-		myGroupsButton.setOnClickListener(openMyGroupsListener);
-		profileButton = (ImageButton) findViewById(R.id.dash_profile);
-		profileButton.setOnClickListener(viewProfileListener);
-		syncronizeButton = (ImageButton)findViewById(R.id.dash_sync);
-		syncronizeButton.setOnClickListener(syncListener);
-		
-		lastSyncedTextView = (TextView)findViewById(R.id.DashLastSyncedTextView);
-		setLastSyncedTextView();
-			
-	}
-
+	
 	private void setLastSyncedTextView() {
 		if(lastSynced!=0){
 			String lastSyncedFormattedString = DateFormat.format
@@ -422,7 +392,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		}
 	}
 	
-
 	/**
 	 * Synchronize shared timelines with database.
 	 * 
@@ -638,5 +607,27 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 
 	public void callBack() {
 		openDialogForTimelineNameInput();
+	}
+	
+	/**
+	 * Sets up the views by getting the views from layout XML and attaching listeners to buttons. 
+	 * 
+	 */
+	private void setupViews() {
+		
+		newTimeLineButton = (ImageButton) findViewById(R.id.dash_new_timeline);
+		newTimeLineButton.setOnClickListener(newTimeLineListener);
+		browseMyTimelinesButton = (ImageButton) findViewById(R.id.dash_my_timelines);
+		browseMyTimelinesButton.setOnClickListener(browseTimeLineListener);
+		browseSharedTimelinesButton = (ImageButton) findViewById(R.id.dash_shared_timelines);
+		browseSharedTimelinesButton.setOnClickListener(browseSharedTimeLinesListener);
+		myGroupsButton = (ImageButton) findViewById(R.id.dash_my_groups);
+		myGroupsButton.setOnClickListener(openMyGroupsListener);
+		profileButton = (ImageButton) findViewById(R.id.dash_profile);
+		profileButton.setOnClickListener(viewProfileListener);
+		syncronizeButton = (ImageButton)findViewById(R.id.dash_sync);
+		syncronizeButton.setOnClickListener(syncListener);
+		lastSyncedTextView = (TextView)findViewById(R.id.DashLastSyncedTextView);
+		setLastSyncedTextView();	
 	}
 }
