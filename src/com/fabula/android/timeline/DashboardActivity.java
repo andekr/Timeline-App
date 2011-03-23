@@ -9,6 +9,7 @@ import java.util.Date;
 import android.accounts.Account;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
@@ -92,6 +93,7 @@ public class DashboardActivity extends Activity {
 	private UserGroupManager uGManager;
 	private GroupListAdapter groupListAdapter;
 	private ListView groupList;
+	private ProgressDialog progressDialog;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -121,6 +123,9 @@ public class DashboardActivity extends Activity {
 
 		//Check for Internet
 		
+		
+		progressDialog = new ProgressDialog(this);
+		
 		//Check if user is registered
 		checkUserRunnable = new Runnable() {
 			public void run() {
@@ -130,6 +135,8 @@ public class DashboardActivity extends Activity {
 		
 		Thread checkUserThread = new Thread(checkUserRunnable, "checkUserThread");
 		checkUserThread.start();
+		progressDialog = ProgressDialog.show(DashboardActivity.this,    
+	              "", "", true);
 		
 		try {
 			lastSynced = getLastSynced();
@@ -159,29 +166,30 @@ public class DashboardActivity extends Activity {
 	}
 
 	private void checkIfUserIsRegisteredOnServer() {
+		runOnUiThread(new Runnable() {
+			public void run() {
+				progressDialog.setMessage("Checking user against server ...");
+			}
+		});
 		registered = Downloader.IsUserRegistered(user.getUserName());
-		Downloader.getUsersFromServer();
-		Downloader.getGroupsFromServer(user);
 		//Register user if not registered
 		if(!registered){
 			GAEHandler.addUserToServer(user);
 			runOnUiThread(new Runnable() {
 				
 				public void run() {
-					Toast.makeText(DashboardActivity.this, "Ikke registrert. Registrerer bruker.", Toast.LENGTH_LONG).show();
+					progressDialog.setMessage("Not registered. Registering user.");
 				}
 			});
 		}else{
 			runOnUiThread(new Runnable() {
-				
 				public void run() {
 					Toast.makeText(DashboardActivity.this, "Registrert fra før!", Toast.LENGTH_LONG).show();
 				}
 			});
 		}
 			
-		
-		
+		progressDialog.dismiss();
 	}
 	
 	private void addUserToDatabaseIfNewUser() {

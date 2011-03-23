@@ -29,10 +29,13 @@ public class UserGroupManager {
 		values.put(UserColumns._ID, user.getId());
 		values.put(UserColumns.USER_NAME, user.getUserName());
 		
-		context.getContentResolver().insert(UserColumns.CONTENT_URI, values);
+		if(!userExists(user))
+			context.getContentResolver().insert(UserColumns.CONTENT_URI, values);
 		
 		Log.i("USER GROUP MANAGER", "User: "+ user.getUserName()+ " added to the database");
 	}
+	
+
 	
 	public void addGroupToGroupDatabase(Group group) {
 		ContentValues values = new ContentValues();
@@ -183,4 +186,5 @@ public class UserGroupManager {
 		c.close();
 		return users;
 	}
+	
 }

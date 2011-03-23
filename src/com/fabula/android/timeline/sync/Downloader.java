@@ -95,12 +95,17 @@ public class Downloader {
 	 
 	 public static Groups getGroupsFromServer(User user){
 			try {
-				Log.i("DOWNLOADER", "Json Parser started.. Getting all groups for the user");
+				Log.i("DOWNLOADER", "Json Parser started.. Getting all groups for the user "+user.getUserName());
 				Gson gson = new Gson();
 				
 				Reader r = new InputStreamReader(getJSONData("/rest/groups/"+user.getUserName()+"/")); 
-				Groups groups = gson.fromJson(r, Groups.class);
-				Log.i("DOWNLOADER", "Fetched "+groups.getGroups().size()+" groups");
+				Groups groups = null;
+				groups = gson.fromJson(r, Groups.class);
+				try {
+					Log.i("DOWNLOADER", "Fetched "+groups.getGroups().size()+" groups");
+				} catch (NullPointerException e) {
+					Log.i("DOWNLOADER", "No groups on server!");
+				}
 				return groups;
 			} catch (Exception e) {
 				e.printStackTrace();

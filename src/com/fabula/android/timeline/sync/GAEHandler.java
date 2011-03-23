@@ -150,6 +150,11 @@ public class GAEHandler {
 	    Uploader.putUserToGAE(jsonString);
 	}
 	
+	public static void addUserToGroupOnServer(Group groupToGetNewMember, User userToAddToGroup) {
+		Uploader.putUserToGroupToGAE(groupToGetNewMember, userToAddToGroup);
+	}
+	
+	
 	//Custom serializer to remove empty lists, which Google App Engine can't handle right.
 	
 	private static class ExperiencesSerializer implements JsonSerializer<Experiences> {
@@ -173,5 +178,6 @@ public class GAEHandler {
 		    return new JsonParser().parse(gson.toJson(src));
 		  }
 		}
+
 
 }

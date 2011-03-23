@@ -5,32 +5,36 @@ import java.util.ArrayList;
 import android.accounts.Account;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnCreateContextMenuListener;
 import android.view.ViewGroup;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.View.OnCreateContextMenuListener;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemLongClickListener;
 
 import com.fabula.android.timeline.adapters.ExpandableGroupsListViewAdapter;
 import com.fabula.android.timeline.adapters.UserListAdapter;
 import com.fabula.android.timeline.contentmanagers.UserGroupManager;
 import com.fabula.android.timeline.database.UserGroupDatabaseHelper;
 import com.fabula.android.timeline.models.Group;
+import com.fabula.android.timeline.models.Groups;
 import com.fabula.android.timeline.models.User;
+import com.fabula.android.timeline.models.Users;
+import com.fabula.android.timeline.sync.Downloader;
 import com.fabula.android.timeline.sync.GAEHandler;
 
 public class MyGroupsActivity extends Activity {
@@ -45,12 +49,96 @@ public class MyGroupsActivity extends Activity {
 	private ExpandableListView myGroupsList;
 	private ExpandableGroupsListViewAdapter groupListAdapter;
 	private UserGroupDatabaseHelper helper;
+	private Runnable getUsersAndGroupsRunnable;
+	private ProgressDialog progressDialog;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.groupmenuscreen);
-		setupViews();
+		
+		
+		setupHelpers();
+		
+		progressDialog = new ProgressDialog(this);
+		
+		getUsersAndGroupsRunnable = new Runnable(){
+            public void run() {
+            	getUsersAndGroupsAddToDatabase();
+            }
+
+			
+
+        };
+        
+        
+        startDownloadUsersAndGroups();
+		
+		
+		
+	}
+
+	
+    /**
+     * Metoden som starter tråden som henter serier fra serveren
+     * Kan vises uten progressDialog, som er hendig når man trykker seg tilbake til startskjermen.
+     * Evt. endring vil da reflekteres, men uten å hindre brukereren i se på lista. 
+     * 
+     * @param showProgressDialog Gir mulighet til å vise/ikke vise progressbar ved lasting av nye elementer.
+     */
+	private void startDownloadUsersAndGroups() {
+		Thread thread =  new Thread(null, getUsersAndGroupsRunnable, "getUsersAndGroups");
+        thread.start();
+        progressDialog = ProgressDialog.show(MyGroupsActivity.this,    
+              "", "", true);
+	}
+	
+	private void getUsersAndGroupsAddToDatabase() {
+		getUsersAndAddToDatabase();
+    	getGroupsAndAddToDatabase();
+    	runOnUiThread(new Runnable() {
+			public void run() {
+				setupViews();
+			}
+		});
+	}
+	
+	private void getUsersAndAddToDatabase() {
+		runOnUiThread(new Runnable() {
+			
+			public void run() {
+				progressDialog.setMessage("Loading all users ...");
+			}
+		});
+		
+		Users selectableUsersFromServer = Downloader.getUsersFromServer();
+		if(selectableUsersFromServer!=null){
+			for (User user : selectableUsersFromServer.getUsers()) {
+				uGManager.addUserToUserDatabase(user);
+			}
+		}
+		
+		
+	}	
+	
+	private void getGroupsAndAddToDatabase() {
+		runOnUiThread(new Runnable() {
+			public void run() {
+				progressDialog.setMessage("Loading my groups ...");
+			}
+		});
+		Groups groupsUserIsConnectedToFromServer = Downloader.getGroupsFromServer(applicationUser);
+		
+		if(groupsUserIsConnectedToFromServer!=null){
+			for (Group groupToAddToDatabase : groupsUserIsConnectedToFromServer.getGroups()) {
+				uGManager.addGroupToGroupDatabase(groupToAddToDatabase);
+				for (User user : groupToAddToDatabase.getMembers()) {
+					uGManager.addUserToAGroupInTheDatabase(groupToAddToDatabase, user);
+				}
+			}
+		}
+		
+		
 	}
 	
 	/**
@@ -77,6 +165,7 @@ public class MyGroupsActivity extends Activity {
 		for (User user : selectedUsers) {
 //			if(!isAlreadyPartOfGroup(user, selectedGroup)) {
 				uGManager.addUserToAGroupInTheDatabase(selectedGroup, user);
+				GAEHandler.addUserToGroupOnServer(selectedGroup, user);
 				selectedGroup.addMembers(user);
 //			}
 		}
@@ -158,21 +247,21 @@ public class MyGroupsActivity extends Activity {
 		helper.close();
 		super.onBackPressed();
 	}
-//	/**
-//	 * Checks if a username already is part of a group (the user name is unique by default)
-//	 * @param user the user to be checked
-//	 * @param group the group to be checked
-//	 * @return true if the user already is a part of the group, false otherwise
-//	 */
-//	private boolean isAlreadyPartOfGroup(User user, Group group) {
-//		
-//		for (User u : group.getMembers()) {
-//			if(user.getUserName().equals(u.getUserName())) {
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
+	/**
+	 * Checks if a username already is part of a group (the user name is unique by default)
+	 * @param user the user to be checked
+	 * @param group the group to be checked
+	 * @return true if the user already is a part of the group, false otherwise
+	 */
+	private boolean isAlreadyPartOfGroup(User user, Group group) {
+		
+		for (User u : group.getMembers()) {
+			if(user.getUserName().equals(u.getUserName())) {
+				return true;
+			}
+		}
+		return false;
+	}
 	
 	/**
 	 * Dialog for selecting wich user to add to the group
@@ -184,7 +273,7 @@ public class MyGroupsActivity extends Activity {
 		ListView userList = new ListView(this);
 		userList.setBackgroundColor(this.getResources().getColor(R.color.White));
 		userList.setCacheColorHint(this.getResources().getColor(android.R.color.transparent));
-		userlistAdapter = new UserListAdapter(this, getAllUsers() , selectedGroup);
+		userlistAdapter = new UserListAdapter(this, getAllUsersNotInGroupAlready(selectedGroup) , selectedGroup);
 		userList.setAdapter(userlistAdapter);
 				
 		builder.setView(userList);
@@ -205,9 +294,23 @@ public class MyGroupsActivity extends Activity {
 	});
 		
 		AlertDialog confirmation = builder.create();
-		confirmation.show();
+		if(userlistAdapter.getCount()>0)
+			confirmation.show();
+		else
+			Toast.makeText(this, "No more users to add", Toast.LENGTH_SHORT).show();
 	}
 	
+	private ArrayList<User> getAllUsersNotInGroupAlready(Group selectedGroup) {
+		ArrayList<User> usersNotInGroup = new ArrayList<User>();
+		
+		for (User user : getAllUsers()) {
+			if(!isAlreadyPartOfGroup(user, selectedGroup))
+				usersNotInGroup.add(user);
+		}
+	return usersNotInGroup;
+}
+
+
 	/**
 	 * Input dialog for the writing the name of a new group
 	 */
@@ -337,20 +440,21 @@ public class MyGroupsActivity extends Activity {
 		}
 	};
 	
+	private void setupHelpers() {
+		uGManager = new UserGroupManager(this);
+		helper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
+		userAccount = (Account) getIntent().getParcelableExtra("ACCOUNT");
+		applicationUser = new User(userAccount.name);
+	}
+	
 	/**
 	 * Setup views and instansiate objects the activity is going to use
 	 */
 	private void setupViews() {
 		myGroupsList = (ExpandableListView) findViewById(R.id.groupsList);
 		
-		helper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
-		uGManager = new UserGroupManager(this);
-		
 		addNewGroupButton = (ImageButton) findViewById(R.id.my_groups);
 		addNewGroupButton.setOnClickListener(newGroupButtonListener);
-		
-		userAccount = (Account) getIntent().getParcelableExtra("ACCOUNT");
-		applicationUser = new User(userAccount.name);
 		
 		connectedGroups = getAllGroupsConnectedToUser(userAccount);
 		groupListAdapter = new ExpandableGroupsListViewAdapter(this, connectedGroups);
@@ -368,6 +472,8 @@ public class MyGroupsActivity extends Activity {
 				finish();
 			}
 		});
+		
+		progressDialog.dismiss();
 	}
 
 }
