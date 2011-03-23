@@ -50,6 +50,7 @@ import com.fabula.android.timeline.models.Group;
 import com.fabula.android.timeline.models.User;
 import com.fabula.android.timeline.sync.Downloader;
 import com.fabula.android.timeline.sync.GAEHandler;
+import com.fabula.android.timeline.sync.UserAndGroupServiceHandler;
 import com.fabula.android.timeline.utilities.MyLocation;
 
 
@@ -67,7 +68,7 @@ import com.fabula.android.timeline.utilities.MyLocation;
  * @author andekr
  *
  */
-public class DashboardActivity extends Activity {
+public class DashboardActivity extends Activity implements ProgressDialogActivity {
 
 	private ImageButton newTimeLineButton;
 	private ImageButton browseMyTimelinesButton;
@@ -106,18 +107,11 @@ public class DashboardActivity extends Activity {
 		selectedGroup = null;
 		
 		//Initializes the content managers
-		contentAdder = new ContentAdder(getApplicationContext());
-		contentLoader = new ContentLoader(getApplicationContext());
-		uGManager = new UserGroupManager(getApplicationContext());
+		setupHelpers();
 		
 		addUserToDatabaseIfNewUser();
 		
-		myGroupsIntent = new Intent(this, MyGroupsActivity.class);
-		myGroupsIntent.putExtra("ACCOUNT", creator);
-		
-		profileIntent = new Intent(this, ProfileActivity.class);
-		timelineIntent = new Intent(this, TimelineActivity.class);
-		timelineIntent.setAction(Utilities.INTENT_ACTION_NEW_TIMELINE); //Default Intent action for TimelineActivity is to create/open a timeline.
+		setupIntents();
 
 		//Check for Internet
 		
@@ -163,6 +157,22 @@ public class DashboardActivity extends Activity {
 		
 	}
 
+	private void setupIntents() {
+		myGroupsIntent = new Intent(this, MyGroupsActivity.class);
+		myGroupsIntent.putExtra("ACCOUNT", creator);
+		
+		profileIntent = new Intent(this, ProfileActivity.class);
+		timelineIntent = new Intent(this, TimelineActivity.class);
+		timelineIntent.setAction(Utilities.INTENT_ACTION_NEW_TIMELINE); //Default Intent action for TimelineActivity is to create/open a timeline.
+	}
+
+	private void setupHelpers() {
+		helper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
+		contentAdder = new ContentAdder(getApplicationContext());
+		contentLoader = new ContentLoader(getApplicationContext());
+		uGManager = new UserGroupManager(getApplicationContext());
+	}
+
 	private void checkIfUserIsRegisteredOnServer() {
 		runOnUiThread(new Runnable() {
 			public void run() {
@@ -191,16 +201,12 @@ public class DashboardActivity extends Activity {
 	}
 	
 	private void addUserToDatabaseIfNewUser() {
-		UserGroupDatabaseHelper helper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
-		
-		if(!uGManager.userExists(user)) {
 			uGManager.addUserToUserDatabase(user);
-		}
-		helper.close();
 	}
 
 	@Override
 	protected void onRestart() {
+		helper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
 		super.onRestart();
 		timelineIntent = new Intent(this, TimelineActivity.class);
 		timelineIntent.setAction("NEW");
@@ -246,6 +252,8 @@ public class DashboardActivity extends Activity {
 	 *
 	 */
 	private void openDialogForTimelineNameInput() {
+		
+		
 		final AlertDialog.Builder timelineNameInputDialog = new AlertDialog.Builder(
 				this);
 		
@@ -378,14 +386,11 @@ public class DashboardActivity extends Activity {
 	protected void addNewGroup(String groupName) {
 		
 		Group group = new Group(groupName);
-		
-		new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
-		
 		uGManager.addGroupToGroupDatabase(group);
 		uGManager.addUserToAGroupInTheDatabase(group, user);
 		group.addMembers(user);
+		GAEHandler.addGroupToServer(group);
 		Toast.makeText(this, "You have created the group: " +group.toString() , Toast.LENGTH_SHORT).show();
-		UserGroupDatabaseHelper.getUserDatabase().close();
 		
 	}
 
@@ -394,9 +399,7 @@ public class DashboardActivity extends Activity {
 	 * @return An array of all the groups
 	 */
 	private ArrayList<Group> getAllGroupsInDatabase() {
-		UserGroupDatabaseHelper helper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
 		ArrayList<Group> allGroups = uGManager.getAllGroupsConnectedToAUser(user);
-		helper.close();
 		return allGroups;
 	}
 
@@ -551,7 +554,14 @@ public class DashboardActivity extends Activity {
     
 	@Override
 	protected void onDestroy() {
+		helper.close();
 		super.onDestroy();
+	}
+	
+	@Override
+	public void finish() {
+		helper.close();
+		super.finish();
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -585,9 +595,8 @@ public class DashboardActivity extends Activity {
 	
 	//listeners
 	private OnClickListener newTimeLineListener = new OnClickListener() {
-
 		public void onClick(View v) {
-			openDialogForTimelineNameInput();
+			new UserAndGroupServiceHandler(DashboardActivity.this, DashboardActivity.this);
 		}
 	};
 
@@ -625,4 +634,8 @@ public class DashboardActivity extends Activity {
 				shareThread.start();
 		}
 	};
+
+	public void callBack() {
+		openDialogForTimelineNameInput();
+	}
 }
