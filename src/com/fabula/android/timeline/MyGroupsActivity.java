@@ -189,6 +189,7 @@ public class MyGroupsActivity extends Activity {
 	 */
 	protected void leaveGroup() {
 		
+		GAEHandler.removeUserFromGroupOnServer(selectedGroup, applicationUser);
 		uGManager.removeUserFromAGroupInTheDatabase(selectedGroup, applicationUser);
 		connectedGroups.remove(selectedGroup);
 		selectedGroup.removeMember(applicationUser);
@@ -196,6 +197,7 @@ public class MyGroupsActivity extends Activity {
 		//delete the group if it has no members
 		if(selectedGroup.getMembers().isEmpty()) {
 			deleteGroupFromDatabase(selectedGroup);
+			GAEHandler.removeGroupFromDatabase(selectedGroup);
 		}
 		
 		groupListAdapter.notifyDataSetChanged();

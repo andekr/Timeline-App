@@ -12,8 +12,8 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
+import android.content.DialogInterface.OnCancelListener;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -22,12 +22,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -420,8 +418,8 @@ public class DashboardActivity extends Activity {
 		timelineIntent.putExtra(Utilities.EXPERIENCECREATOR_REQUEST, timeLine.getUser().name);
 		
 		if(shared) {
-			timeLine.setSharingGroup(group);
-			timelineIntent.putExtra(Utilities.SHARED_WITH_REQUEST, timeLine.getSharingGroup().getId());
+			timeLine.setSharingGroupObject(group);
+			timelineIntent.putExtra(Utilities.SHARED_WITH_REQUEST, timeLine.getSharingGroupObject().getId());
 		}
 		
 		GAEHandler.addGroupToServer(group);
@@ -438,8 +436,10 @@ public class DashboardActivity extends Activity {
 	 */
 	private void addNewTimelineToTimelineDatabase(Experience experience) {
 		new TimelineDatabaseHelper(this, Utilities.ALL_TIMELINES_DATABASE_NAME);
+		new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
 		contentAdder.addExperienceToTimelineContentProvider(experience);
 		TimelineDatabaseHelper.getCurrentTimeLineDatabase().close();
+		UserGroupDatabaseHelper.getUserDatabase().close();
 	}
 
 	private void browseAllTimelines(boolean shared) {
@@ -466,6 +466,7 @@ public class DashboardActivity extends Activity {
 		// Hente inn experiencer som er delt - DONE
 		// Hente ut alle events i alle delte experiencer (kun de som ikke er låst) - DONE
 		new TimelineDatabaseHelper(this, Utilities.ALL_TIMELINES_DATABASE_NAME);
+		new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
 		ArrayList<Experience> sharedExperiences = contentLoader.LoadAllSharedExperiencesFromDatabase();
 		for (Experience experience : sharedExperiences) {
 			new DatabaseHelper(this, experience.getTitle());
@@ -481,11 +482,13 @@ public class DashboardActivity extends Activity {
 //		}
 	
 		TimelineDatabaseHelper.getCurrentTimeLineDatabase().close();
+		UserGroupDatabaseHelper.getUserDatabase().close();
 		
 
-		Experiences exps = Downloader.getAllSharedExperiencesFromServer();
+		Experiences exps = Downloader.getAllSharedExperiencesFromServer(user);
 		if(exps!=null){
 			for (Experience e : exps.getExperiences()) {
+				e.setSharingGroupObject(uGManager.getGroupFromDatabase(e.getSharingGroup()));
 				addNewTimelineToTimelineDatabase(e);
 			}
 		}

@@ -137,7 +137,7 @@ public class UserGroupManager {
 		return allConnectedGroups;
 	}
 
-	private Group getGroupFromDatabase(String groupID) {
+	public Group getGroupFromDatabase(String groupID) {
 		
 		String [] groupsTableColumns = new String[] {GroupColumns._ID, GroupColumns.GROUP_NAME};
 		Group group = null;

@@ -27,6 +27,7 @@ import com.fabula.android.timeline.adapters.TimelineListAdapter;
 import com.fabula.android.timeline.contentmanagers.ContentDeleter;
 import com.fabula.android.timeline.contentmanagers.ContentLoader;
 import com.fabula.android.timeline.database.TimelineDatabaseHelper;
+import com.fabula.android.timeline.database.UserGroupDatabaseHelper;
 import com.fabula.android.timeline.models.Experience;
 
 public class TimelineBrowserDialog extends Dialog {
@@ -52,12 +53,14 @@ public TimelineBrowserDialog(Context context, Intent receivedIntent, boolean sha
 		directory = new TimelineDirectory();
 		this.receivedIntent = receivedIntent;
 		new TimelineDatabaseHelper(context, Utilities.ALL_TIMELINES_DATABASE_NAME);
+		new UserGroupDatabaseHelper(context, Utilities.USER_GROUP_DATABASE_NAME);
 		ContentLoader contentLoader = new ContentLoader(context);
 		ArrayList<Experience> allExperiences = shared ? contentLoader.LoadAllSharedExperiencesFromDatabase() : contentLoader.LoadPrivateExperiencesFromDatabase();
 		for (Experience experience : allExperiences) {
 			Log.i("Alle experiences", experience.getTitle()+" Delt: "+experience.isShared());
 		}
 		TimelineDatabaseHelper.getCurrentTimeLineDatabase().close();	
+		UserGroupDatabaseHelper.getUserDatabase().close();
 		timelineAdapter = new TimelineListAdapter(context, allExperiences); 
 		
 

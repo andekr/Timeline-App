@@ -82,7 +82,7 @@ public class ContentLoader {
 		
 		ArrayList<Experience> allExperiences = new ArrayList<Experience>();
 		
-		String[] experienceTableColumns = new String[]{ExperienceColumns._ID, ExperienceColumns.EXPERIENCE_NAME, ExperienceColumns.EXPERIENCE_SHARED, ExperienceColumns.EXPERIENCE_CREATOR};
+		String[] experienceTableColumns = new String[]{ExperienceColumns._ID, ExperienceColumns.EXPERIENCE_NAME, ExperienceColumns.EXPERIENCE_SHARED, ExperienceColumns.EXPERIENCE_CREATOR, ExperienceColumns.EXPERIENCE_SHARED_WITH};
 		
 		Cursor c = context.getContentResolver().query(ExperienceColumns.CONTENT_URI, experienceTableColumns, null, null, null);
 		
@@ -94,7 +94,7 @@ public class ContentLoader {
 						new Account(c.getString(c.getColumnIndex(ExperienceColumns.EXPERIENCE_CREATOR)), "com.google"));
 				
 				if(experience.isShared()) {
-					experience.setSharingGroup(getGroupSharedWithExperience(c.getString(c.getColumnIndex(ExperienceColumns.EXPERIENCE_SHARED_WITH))));
+					experience.setSharingGroupObject(getGroupSharedWithExperience(c.getString(c.getColumnIndex(ExperienceColumns.EXPERIENCE_SHARED_WITH))));
 				}
 				allExperiences.add(experience);
 				System.out.println("Hentet experience med shared: "+experience.isShared());	
@@ -154,7 +154,7 @@ public class ContentLoader {
 		
 		ArrayList<Experience> allExperiences = new ArrayList<Experience>();
 		
-		String[] experienceTableColumns = new String[]{ExperienceColumns._ID, ExperienceColumns.EXPERIENCE_NAME, ExperienceColumns.EXPERIENCE_SHARED, ExperienceColumns.EXPERIENCE_CREATOR};
+		String[] experienceTableColumns = new String[]{ExperienceColumns._ID, ExperienceColumns.EXPERIENCE_NAME, ExperienceColumns.EXPERIENCE_SHARED, ExperienceColumns.EXPERIENCE_CREATOR, ExperienceColumns.EXPERIENCE_SHARED_WITH};
 		
 		whereStatement = ExperienceColumns.EXPERIENCE_SHARED +"='1'";
 		
@@ -166,6 +166,11 @@ public class ContentLoader {
 						c.getString(c.getColumnIndex(ExperienceColumns.EXPERIENCE_NAME)),
 						(c.getInt((c.getColumnIndex(ExperienceColumns.EXPERIENCE_SHARED)))==1) ? true : false,
 						new Account(c.getString(c.getColumnIndex(ExperienceColumns.EXPERIENCE_CREATOR)), "com.google"));
+				
+				if(experience.isShared()) {
+					experience.setSharingGroupObject(getGroupSharedWithExperience(c.getString(c.getColumnIndex(ExperienceColumns.EXPERIENCE_SHARED_WITH))));
+				}
+				
 				allExperiences.add(experience);
 			}while(c.moveToNext());
 		}

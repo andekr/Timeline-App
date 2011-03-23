@@ -26,7 +26,8 @@ public class Experience {
 	private String creator;
 	private List<Event> events;
 	private Uri uriToExperience;
-	private Group sharingGroup;
+	private transient Group sharingGroupObject;
+	private String sharingGroup;
 	
 	public Experience() {}
 
@@ -41,7 +42,7 @@ public class Experience {
 		this.id = UUID.randomUUID().toString();
 		this.title = title;
 		this.shared = shared;
-		this.setSharingGroup(group);
+		this.setSharingGroupObject(group);
 		setUser(user);
 	}
 	
@@ -125,13 +126,21 @@ public class Experience {
 		this.creator = creator;
 	}
 		
-	public Group getSharingGroup() {
-		return sharingGroup;
+
+	public Group getSharingGroupObject() {
+		return sharingGroupObject;
 	}
 
-	public void setSharingGroup(Group sharingGroup) {
-		this.sharingGroup = sharingGroup;
+	public void setSharingGroupObject(Group sharingGroupObject) {
+		this.sharingGroupObject = sharingGroupObject;
+		this.sharingGroup = sharingGroupObject.getId();
 	}
+
+
+	public String getSharingGroup() {
+		return sharingGroupObject.getId();
+	}
+
 
 	public float getTimeScopeOfExperience(){
 		float min=0, max=0, diff;//Min blir aldri satt!

@@ -157,7 +157,17 @@ public class Uploader {
 		final HttpHost targetHost = new HttpHost(Utilities.GOOGLE_APP_ENGINE_URL, 80, "http");
 		//using DELETE here
 		final HttpDelete httpDelete = new HttpDelete("/rest/group/"+groupToRemoveMember.getId()+"/user/"+userToRemoveFromGroup.getUserName()+"/");
-		makeHttpRequestContentTypeHeader(httpDelete);
+//		makeHttpRequestContentTypeHeader(httpDelete);
+		
+		sendDeleteRequestTOGAEServer("", targetHost, httpDelete);
+		
+	}
+	
+	public static void deleteUserFromGroupToGAE(Group selectedGroup) {
+		final HttpHost targetHost = new HttpHost(Utilities.GOOGLE_APP_ENGINE_URL, 80, "http");
+		//using DELETE here
+		final HttpDelete httpDelete = new HttpDelete("/rest/group/"+selectedGroup.getId()+"/");
+//		makeHttpRequestContentTypeHeader(httpDelete);
 		
 		sendDeleteRequestTOGAEServer("", targetHost, httpDelete);
 		
@@ -224,7 +234,7 @@ public class Uploader {
 				        // execute is a blocking call, it's best to call this code in a thread separate from the ui's
 				    HttpResponse response = httpClient.execute(targetHost, httpDelete);
 
-				    Log.v("Delete to GAE", response.getStatusLine().toString());
+				    Log.v("Delete to GAE", Utilities.convertStreamToString(response.getEntity().getContent()));
 				}
 				catch (Exception ex)
 				{
@@ -277,6 +287,7 @@ public class Uploader {
 	       return false;
 	    }
 	}
+
 
 	
 }

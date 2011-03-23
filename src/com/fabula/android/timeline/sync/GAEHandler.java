@@ -93,13 +93,15 @@ public class GAEHandler {
 		    if(object instanceof Experiences){
 		    	if(((Experiences) object).getExperiences()!=null){
 			    	for (Experience ex : ((Experiences) object).getExperiences()) {
-			    		for (Event event : ex.getEvents()) {
-				    		for (EventItem eventI : event.getEventItems()) {
-						    	if(eventI instanceof SimplePicture){
-						    		Uploader.uploadFile(Utilities.IMAGE_STORAGE_FILEPATH+((SimplePicture)eventI).getPictureFilename(), ((SimplePicture)eventI).getPictureFilename());
-						    	}
+			    		if(((Experience) ex).getEvents()!=null){
+				    		for (Event event : ex.getEvents()) {
+					    		for (EventItem eventI : event.getEventItems()) {
+							    	if(eventI instanceof SimplePicture){
+							    		Uploader.uploadFile(Utilities.IMAGE_STORAGE_FILEPATH+((SimplePicture)eventI).getPictureFilename(), ((SimplePicture)eventI).getPictureFilename());
+							    	}
+								}
 							}
-						}
+			    		}
 					}
 		    	}
 		    	
@@ -151,8 +153,12 @@ public class GAEHandler {
 		Uploader.putUserToGroupToGAE(groupToGetNewMember, userToAddToGroup);
 	}
 	
-	public static void removeUserFromGroupOnServer(Group groupToGetNewMember, User userToAddToGroup) {
-		Uploader.deleteUserFromGroupToGAE(groupToGetNewMember, userToAddToGroup);
+	public static void removeUserFromGroupOnServer(Group groupToRemoveMember, User userToRemoveFromGroup) {
+		Uploader.deleteUserFromGroupToGAE(groupToRemoveMember, userToRemoveFromGroup);
+	}
+	
+	public static void removeGroupFromDatabase(Group selectedGroup) {
+		Uploader.deleteUserFromGroupToGAE(selectedGroup);
 	}
 	
 	
@@ -179,6 +185,8 @@ public class GAEHandler {
 		    return new JsonParser().parse(gson.toJson(src));
 		  }
 		}
+
+
 
 
 }
