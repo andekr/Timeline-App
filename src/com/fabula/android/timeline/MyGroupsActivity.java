@@ -89,7 +89,6 @@ public class MyGroupsActivity extends Activity {
 //	set the selected group
 	private void setSelectedGroup(Group group) {
 		this.selectedGroup = group;
-		System.out.println("Dette er den valgte gruppa nå!   :  "+ selectedGroup);
 	}
 	
 	public Group getSelectedGroup() {
@@ -198,13 +197,11 @@ public class MyGroupsActivity extends Activity {
 		.setPositiveButton("Add users", addUserDialogListener)
 		.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 		public void onClick(DialogInterface dialog, int which) {
-//			setSelectedGroup(null);
 			dialog.dismiss();
 		}
 	})
 		.setOnCancelListener(new OnCancelListener() {
 		public void onCancel(DialogInterface dialog) {
-//			setSelectedGroup(null);
 			dialog.dismiss();					
 		}
 	});

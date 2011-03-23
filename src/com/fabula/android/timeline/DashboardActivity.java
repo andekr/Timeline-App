@@ -186,9 +186,9 @@ public class DashboardActivity extends Activity {
 	private void addUserToDatabaseIfNewUser() {
 		UserGroupDatabaseHelper helper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
 		
-		if(!uGManager.userExists(user)) {
+//		if(!uGManager.userExists(user)) {
 			uGManager.addUserToUserDatabase(user);
-		}
+//		}
 		helper.close();
 	}
 
