@@ -138,7 +138,7 @@ public class Experience {
 
 
 	public String getSharingGroup() {
-		return sharingGroupObject.getId();
+		return sharingGroup;
 	}
 
 

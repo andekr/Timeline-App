@@ -408,8 +408,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		// og merge //TODO
 		// Hente inn experiencer som er delt - DONE
 		// Hente ut alle events i alle delte experiencer (kun de som ikke er låst) - DONE
-		new TimelineDatabaseHelper(this, Utilities.ALL_TIMELINES_DATABASE_NAME);
-		new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
 		ArrayList<Experience> sharedExperiences = contentLoader.LoadAllSharedExperiencesFromDatabase();
 		for (Experience experience : sharedExperiences) {
 			new DatabaseHelper(this, experience.getTitle());
@@ -420,18 +418,9 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		Experiences experiences = new Experiences(sharedExperiences);
 		GAEHandler.send(experiences, this);
 		
-//		for (Experience experience : sharedExperiences) {
-//			GAEHandler.send(experience, this);
-//		}
-	
-		TimelineDatabaseHelper.getCurrentTimeLineDatabase().close();
-		UserGroupDatabaseHelper.getUserDatabase().close();
-		
-
 		Experiences exps = Downloader.getAllSharedExperiencesFromServer(user);
 		if(exps!=null){
 			for (Experience e : exps.getExperiences()) {
-
 				e.setSharingGroupObject(uGManager.getGroupFromDatabase(e.getSharingGroup()));
 				contentAdder.addExperienceToTimelineContentProvider(e);
 				addNewTimelineToTimelineDatabase(e);
