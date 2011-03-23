@@ -23,17 +23,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.view.View.OnClickListener;
 import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.fabula.android.timeline.Map.TimelineMapView;
 import com.fabula.android.timeline.adapters.GroupListAdapter;
@@ -88,11 +88,12 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 	Runnable syncThread, addGroupToServerThread, checkUserRunnable;
 	private long lastSynced=0;
 	boolean registered=false;
-	private UserGroupDatabaseHelper helper;
+	private UserGroupDatabaseHelper userGroupDatabaseHelper;
 	private UserGroupManager uGManager;
 	private GroupListAdapter groupListAdapter;
 	private ListView groupList;
 	private ProgressDialog progressDialog;
+	private TimelineDatabaseHelper timelineDatabaseHelper;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -102,19 +103,17 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		creator = Utilities.getUserAccount(this);
 		user = new User(creator.name);
 		
-		
 		//only used when a new timeline is created
 		selectedGroup = null;
 		
 		//Initializes the content managers
 		setupHelpers();
 		
-		addUserToDatabaseIfNewUser();
+		uGManager.addUserToUserDatabase(user);
 		
 		setupIntents();
 
 		//Check for Internet
-		
 		
 		progressDialog = new ProgressDialog(this);
 		
@@ -138,7 +137,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		
 		setupViews();
 		
-		
 		//If the application is started with a SEND- or share Intent, change the Intent to add to a timeline
 		if (getIntent().getAction().equals(Intent.ACTION_SEND)
 				|| getIntent().getAction().equals("share")) {
@@ -155,22 +153,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 			}
 		};
 		
-	}
-
-	private void setupIntents() {
-		myGroupsIntent = new Intent(this, MyGroupsActivity.class);
-		myGroupsIntent.putExtra("ACCOUNT", creator);
-		
-		profileIntent = new Intent(this, ProfileActivity.class);
-		timelineIntent = new Intent(this, TimelineActivity.class);
-		timelineIntent.setAction(Utilities.INTENT_ACTION_NEW_TIMELINE); //Default Intent action for TimelineActivity is to create/open a timeline.
-	}
-
-	private void setupHelpers() {
-		helper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
-		contentAdder = new ContentAdder(getApplicationContext());
-		contentLoader = new ContentLoader(getApplicationContext());
-		uGManager = new UserGroupManager(getApplicationContext());
 	}
 
 	private void checkIfUserIsRegisteredOnServer() {
@@ -196,46 +178,13 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 				}
 			});
 		}
-			
 		progressDialog.dismiss();
 	}
 	
-	private void addUserToDatabaseIfNewUser() {
-			uGManager.addUserToUserDatabase(user);
-	}
-
-	@Override
-	protected void onRestart() {
-		helper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
-		super.onRestart();
-		timelineIntent = new Intent(this, TimelineActivity.class);
-		timelineIntent.setAction("NEW");
-	}
-
-	/**
-	 * Sets up the views by getting the views from layout XML and attaching listeners to buttons. 
-	 * 
-	 */
-	private void setupViews() {
-		
-		newTimeLineButton = (ImageButton) findViewById(R.id.dash_new_timeline);
-		newTimeLineButton.setOnClickListener(newTimeLineListener);
-		browseMyTimelinesButton = (ImageButton) findViewById(R.id.dash_my_timelines);
-		browseMyTimelinesButton.setOnClickListener(browseTimeLineListener);
-		browseSharedTimelinesButton = (ImageButton) findViewById(R.id.dash_shared_timelines);
-		browseSharedTimelinesButton.setOnClickListener(browseSharedTimeLinesListener);
-		myGroupsButton = (ImageButton) findViewById(R.id.dash_my_groups);
-		myGroupsButton.setOnClickListener(openMyGroupsListener);
-		profileButton = (ImageButton) findViewById(R.id.dash_profile);
-		profileButton.setOnClickListener(viewProfileListener);
-		syncronizeButton = (ImageButton)findViewById(R.id.dash_sync);
-		syncronizeButton.setOnClickListener(syncListener);
-		
-		lastSyncedTextView = (TextView)findViewById(R.id.DashLastSyncedTextView);
-		setLastSyncedTextView();
-			
-	}
-
+//	private void addUserToDatabaseIfNewUser() {
+//		uGManager.addUserToUserDatabase(user);
+//	}
+	
 	private void setLastSyncedTextView() {
 		if(lastSynced!=0){
 			String lastSyncedFormattedString = DateFormat.format
@@ -263,7 +212,7 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		timelineNameInputDialog.setView(layout);
 		
 		groupList = (ListView) layout.findViewById(R.id.sharedtimelinegroupslist);
-		groupListAdapter = new GroupListAdapter(getApplicationContext(), getAllGroupsInDatabase());
+		groupListAdapter = new GroupListAdapter(getApplicationContext(), uGManager.getAllGroupsConnectedToAUser(user));
 		groupList.setAdapter(groupListAdapter);
 		
 		final ImageButton addGroupButton = (ImageButton) layout.findViewById(R.id.newgroupbutton_in_timelinedialog);
@@ -391,16 +340,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		group.addMembers(user);
 		GAEHandler.addGroupToServer(group);
 		Toast.makeText(this, "You have created the group: " +group.toString() , Toast.LENGTH_SHORT).show();
-		
-	}
-
-	/**
-	 * Retrieves all the groups in the database connected to the user using the application
-	 * @return An array of all the groups
-	 */
-	private ArrayList<Group> getAllGroupsInDatabase() {
-		ArrayList<Group> allGroups = uGManager.getAllGroupsConnectedToAUser(user);
-		return allGroups;
 	}
 
 	/**
@@ -423,13 +362,14 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		if(shared) {
 			timeLine.setSharingGroupObject(group);
 			timelineIntent.putExtra(Utilities.SHARED_WITH_REQUEST, timeLine.getSharingGroupObject().getId());
+			GAEHandler.addGroupToServer(group);
 		}
 		
-		GAEHandler.addGroupToServer(group);
-		addNewTimelineToTimelineDatabase(timeLine); 
+		contentAdder.addExperienceToTimelineContentProvider(timeLine);
 		new DatabaseHelper(this, databaseName);
 		startActivity(timelineIntent);
 	}
+
 
 	/**
 	 * Adds the new timeline to the database containing all the timelines.
@@ -445,6 +385,7 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		UserGroupDatabaseHelper.getUserDatabase().close();
 	}
 
+
 	private void browseAllTimelines(boolean shared) {
 		TimelineBrowserDialog dialog = new TimelineBrowserDialog(this,
 				timelineIntent, shared);
@@ -458,7 +399,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		}
 	}
 	
-
 	/**
 	 * Synchronize shared timelines with database.
 	 * 
@@ -491,13 +431,14 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		Experiences exps = Downloader.getAllSharedExperiencesFromServer(user);
 		if(exps!=null){
 			for (Experience e : exps.getExperiences()) {
+
 				e.setSharingGroupObject(uGManager.getGroupFromDatabase(e.getSharingGroup()));
+				contentAdder.addExperienceToTimelineContentProvider(e);
 				addNewTimelineToTimelineDatabase(e);
+
 			}
 		}
-		
 		runOnUiThread(confirmSync);
-		
 	}
 	
 	private void storeLastSynced(long lastSyncedInMillis){
@@ -514,7 +455,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 	
 	private long getLastSynced(){
@@ -531,7 +471,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 		return Long.valueOf(strContent.toString());
 	}
 	
@@ -547,21 +486,44 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
         		Toast.makeText(DashboardActivity.this, "Timelines synced!",Toast.LENGTH_SHORT).show();
 			} catch (Exception e) {
 			}
-        	
         }
-
       };
     
 	@Override
 	protected void onDestroy() {
-		helper.close();
+		closeDatabaseHelpers();
 		super.onDestroy();
 	}
 	
 	@Override
 	public void finish() {
-		helper.close();
+		closeDatabaseHelpers();
 		super.finish();
+	}
+	
+	@Override
+	protected void onPause() {
+		closeDatabaseHelpers();
+		super.onPause();
+	}
+	
+	@Override
+	protected void onResume() {
+		setupDatabaseHelpers();
+		super.onResume();
+	}
+	
+	@Override
+	protected void onRestart() {
+		super.onRestart();
+		setupDatabaseHelpers();
+		timelineIntent = new Intent(this, TimelineActivity.class);
+		timelineIntent.setAction("NEW");
+	}
+	
+	private void closeDatabaseHelpers() {
+		userGroupDatabaseHelper.close();
+		timelineDatabaseHelper.close();
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -634,8 +596,51 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 				shareThread.start();
 		}
 	};
+	
+	private void setupIntents() {
+		myGroupsIntent = new Intent(this, MyGroupsActivity.class);
+		myGroupsIntent.putExtra("ACCOUNT", creator);
+		
+		profileIntent = new Intent(this, ProfileActivity.class);
+		timelineIntent = new Intent(this, TimelineActivity.class);
+		timelineIntent.setAction(Utilities.INTENT_ACTION_NEW_TIMELINE); //Default Intent action for TimelineActivity is to create/open a timeline.
+	}
+
+	private void setupHelpers() {
+		setupDatabaseHelpers();
+		contentAdder = new ContentAdder(getApplicationContext());
+		contentLoader = new ContentLoader(getApplicationContext());
+		uGManager = new UserGroupManager(getApplicationContext());
+	}
+
+	private void setupDatabaseHelpers() {
+		userGroupDatabaseHelper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
+		timelineDatabaseHelper = new TimelineDatabaseHelper(this, Utilities.ALL_TIMELINES_DATABASE_NAME);
+	}
 
 	public void callBack() {
 		openDialogForTimelineNameInput();
+	}
+	
+	/**
+	 * Sets up the views by getting the views from layout XML and attaching listeners to buttons. 
+	 * 
+	 */
+	private void setupViews() {
+		
+		newTimeLineButton = (ImageButton) findViewById(R.id.dash_new_timeline);
+		newTimeLineButton.setOnClickListener(newTimeLineListener);
+		browseMyTimelinesButton = (ImageButton) findViewById(R.id.dash_my_timelines);
+		browseMyTimelinesButton.setOnClickListener(browseTimeLineListener);
+		browseSharedTimelinesButton = (ImageButton) findViewById(R.id.dash_shared_timelines);
+		browseSharedTimelinesButton.setOnClickListener(browseSharedTimeLinesListener);
+		myGroupsButton = (ImageButton) findViewById(R.id.dash_my_groups);
+		myGroupsButton.setOnClickListener(openMyGroupsListener);
+		profileButton = (ImageButton) findViewById(R.id.dash_profile);
+		profileButton.setOnClickListener(viewProfileListener);
+		syncronizeButton = (ImageButton)findViewById(R.id.dash_sync);
+		syncronizeButton.setOnClickListener(syncListener);
+		lastSyncedTextView = (TextView)findViewById(R.id.DashLastSyncedTextView);
+		setLastSyncedTextView();	
 	}
 }
