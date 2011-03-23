@@ -108,7 +108,7 @@ public class GAEHandler {
 		    }else if(object instanceof Event){
 		    	for (EventItem eventI : ((Event)object).getEventItems()) {
 			    	if(eventI instanceof SimplePicture){
-			    		Uploader.uploadFile(Utilities.getRealPathFromURI(((SimplePicture)eventI).getPictureUri(), a), ((SimplePicture)eventI).getPictureFilename());
+			    		Uploader.uploadFile(Utilities.IMAGE_STORAGE_FILEPATH+((SimplePicture)eventI).getPictureFilename(), ((SimplePicture)eventI).getPictureFilename());
 			    	}
 				}
 		    }
