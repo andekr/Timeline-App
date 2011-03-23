@@ -127,15 +127,11 @@ public class GAEHandler {
 	    Uploader.putGroupToGAE(jsonString);
 	    
 	    for (User user : groupToAdd.getMembers()) {
-			addUserGroupToServer(groupToAdd, user);
+			addUserToGroupOnServer(groupToAdd, user);
 		}
 	}
 	
-	public static void addUserGroupToServer(Group groupToAddUser, User userToAdd){
-		 System.out.println("Lagrer bruker til gruppe på Google App Engine");
-	    Uploader.putUserToGroupToGAE(groupToAddUser, userToAdd);
-	}
-	
+
 	public static void addUserToServer(User userToAdd){
 		Gson gson = new Gson();
 		String jsonString ="";
@@ -152,6 +148,10 @@ public class GAEHandler {
 	
 	public static void addUserToGroupOnServer(Group groupToGetNewMember, User userToAddToGroup) {
 		Uploader.putUserToGroupToGAE(groupToGetNewMember, userToAddToGroup);
+	}
+	
+	public static void removeUserFromGroupOnServer(Group groupToGetNewMember, User userToAddToGroup) {
+		Uploader.deleteUserFromGroupToGAE(groupToGetNewMember, userToAddToGroup);
 	}
 	
 	
