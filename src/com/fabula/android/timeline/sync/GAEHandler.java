@@ -147,6 +147,7 @@ public class GAEHandler {
 	}
 	
 	public static void addUserToGroupOnServer(Group groupToGetNewMember, User userToAddToGroup) {
+		System.out.println("Legger til "+ userToAddToGroup +"  til "+groupToGetNewMember.getName()+" på Google App Engine");
 		Uploader.putUserToGroupToGAE(groupToGetNewMember, userToAddToGroup);
 	}
 	
