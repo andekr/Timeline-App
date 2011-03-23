@@ -90,11 +90,12 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 	Runnable syncThread, addGroupToServerThread, checkUserRunnable;
 	private long lastSynced=0;
 	boolean registered=false;
-	private UserGroupDatabaseHelper helper;
+	private UserGroupDatabaseHelper userGroupDatabaseHelper;
 	private UserGroupManager uGManager;
 	private GroupListAdapter groupListAdapter;
 	private ListView groupList;
 	private ProgressDialog progressDialog;
+	private TimelineDatabaseHelper timelineDatabaseHelper;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -111,7 +112,7 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		//Initializes the content managers
 		setupHelpers();
 		
-		addUserToDatabaseIfNewUser();
+		uGManager.addUserToUserDatabase(user);
 		
 		setupIntents();
 
@@ -159,22 +160,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		
 	}
 
-	private void setupIntents() {
-		myGroupsIntent = new Intent(this, MyGroupsActivity.class);
-		myGroupsIntent.putExtra("ACCOUNT", creator);
-		
-		profileIntent = new Intent(this, ProfileActivity.class);
-		timelineIntent = new Intent(this, TimelineActivity.class);
-		timelineIntent.setAction(Utilities.INTENT_ACTION_NEW_TIMELINE); //Default Intent action for TimelineActivity is to create/open a timeline.
-	}
-
-	private void setupHelpers() {
-		helper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
-		contentAdder = new ContentAdder(getApplicationContext());
-		contentLoader = new ContentLoader(getApplicationContext());
-		uGManager = new UserGroupManager(getApplicationContext());
-	}
-
 	private void checkIfUserIsRegisteredOnServer() {
 		runOnUiThread(new Runnable() {
 			public void run() {
@@ -202,17 +187,9 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		progressDialog.dismiss();
 	}
 	
-	private void addUserToDatabaseIfNewUser() {
-			uGManager.addUserToUserDatabase(user);
-	}
-
-	@Override
-	protected void onRestart() {
-		helper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
-		super.onRestart();
-		timelineIntent = new Intent(this, TimelineActivity.class);
-		timelineIntent.setAction("NEW");
-	}
+//	private void addUserToDatabaseIfNewUser() {
+//		uGManager.addUserToUserDatabase(user);
+//	}
 
 	/**
 	 * Sets up the views by getting the views from layout XML and attaching listeners to buttons. 
@@ -265,7 +242,7 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		timelineNameInputDialog.setView(layout);
 		
 		groupList = (ListView) layout.findViewById(R.id.sharedtimelinegroupslist);
-		groupListAdapter = new GroupListAdapter(getApplicationContext(), getAllGroupsInDatabase());
+		groupListAdapter = new GroupListAdapter(getApplicationContext(), uGManager.getAllGroupsConnectedToAUser(user));
 		groupList.setAdapter(groupListAdapter);
 		
 		final ImageButton addGroupButton = (ImageButton) layout.findViewById(R.id.newgroupbutton_in_timelinedialog);
@@ -393,16 +370,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		group.addMembers(user);
 		GAEHandler.addGroupToServer(group);
 		Toast.makeText(this, "You have created the group: " +group.toString() , Toast.LENGTH_SHORT).show();
-		
-	}
-
-	/**
-	 * Retrieves all the groups in the database connected to the user using the application
-	 * @return An array of all the groups
-	 */
-	private ArrayList<Group> getAllGroupsInDatabase() {
-		ArrayList<Group> allGroups = uGManager.getAllGroupsConnectedToAUser(user);
-		return allGroups;
 	}
 
 	/**
@@ -425,25 +392,22 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		if(shared) {
 			timeLine.setSharingGroup(group);
 			timelineIntent.putExtra(Utilities.SHARED_WITH_REQUEST, timeLine.getSharingGroup().getId());
+			GAEHandler.addGroupToServer(group);
 		}
-		
-		GAEHandler.addGroupToServer(group);
-		addNewTimelineToTimelineDatabase(timeLine); 
+		contentAdder.addExperienceToTimelineContentProvider(timeLine);
 		new DatabaseHelper(this, databaseName);
 		startActivity(timelineIntent);
 	}
 
-	/**
-	 * Adds the new timeline to the database containing all the timelines.
-	 * 
-	 * 
-	 * @param experience The experience to add to database
-	 */
-	private void addNewTimelineToTimelineDatabase(Experience experience) {
-		new TimelineDatabaseHelper(this, Utilities.ALL_TIMELINES_DATABASE_NAME);
-		contentAdder.addExperienceToTimelineContentProvider(experience);
-		TimelineDatabaseHelper.getCurrentTimeLineDatabase().close();
-	}
+//	/**
+//	 * Adds the new timeline to the database containing all the timelines.
+//	 * 
+//	 * 
+//	 * @param experience The experience to add to database
+//	 */
+//	private void addNewTimelineToTimelineDatabase(Experience experience) {
+//		contentAdder.addExperienceToTimelineContentProvider(experience);
+//	}
 
 	private void browseAllTimelines(boolean shared) {
 		TimelineBrowserDialog dialog = new TimelineBrowserDialog(this,
@@ -489,12 +453,10 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		Experiences exps = Downloader.getAllSharedExperiencesFromServer();
 		if(exps!=null){
 			for (Experience e : exps.getExperiences()) {
-				addNewTimelineToTimelineDatabase(e);
+				contentAdder.addExperienceToTimelineContentProvider(e);
 			}
 		}
-		
 		runOnUiThread(confirmSync);
-		
 	}
 	
 	private void storeLastSynced(long lastSyncedInMillis){
@@ -511,7 +473,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 	
 	private long getLastSynced(){
@@ -528,7 +489,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 		return Long.valueOf(strContent.toString());
 	}
 	
@@ -544,21 +504,44 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
         		Toast.makeText(DashboardActivity.this, "Timelines synced!",Toast.LENGTH_SHORT).show();
 			} catch (Exception e) {
 			}
-        	
         }
-
       };
     
 	@Override
 	protected void onDestroy() {
-		helper.close();
+		closeDatabaseHelpers();
 		super.onDestroy();
 	}
 	
 	@Override
 	public void finish() {
-		helper.close();
+		closeDatabaseHelpers();
 		super.finish();
+	}
+	
+	@Override
+	protected void onPause() {
+		closeDatabaseHelpers();
+		super.onPause();
+	}
+	
+	@Override
+	protected void onResume() {
+		setupDatabaseHelpers();
+		super.onResume();
+	}
+	
+	@Override
+	protected void onRestart() {
+		super.onRestart();
+		setupDatabaseHelpers();
+		timelineIntent = new Intent(this, TimelineActivity.class);
+		timelineIntent.setAction("NEW");
+	}
+	
+	private void closeDatabaseHelpers() {
+		userGroupDatabaseHelper.close();
+		timelineDatabaseHelper.close();
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -631,6 +614,27 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 				shareThread.start();
 		}
 	};
+	
+	private void setupIntents() {
+		myGroupsIntent = new Intent(this, MyGroupsActivity.class);
+		myGroupsIntent.putExtra("ACCOUNT", creator);
+		
+		profileIntent = new Intent(this, ProfileActivity.class);
+		timelineIntent = new Intent(this, TimelineActivity.class);
+		timelineIntent.setAction(Utilities.INTENT_ACTION_NEW_TIMELINE); //Default Intent action for TimelineActivity is to create/open a timeline.
+	}
+
+	private void setupHelpers() {
+		setupDatabaseHelpers();
+		contentAdder = new ContentAdder(getApplicationContext());
+		contentLoader = new ContentLoader(getApplicationContext());
+		uGManager = new UserGroupManager(getApplicationContext());
+	}
+
+	private void setupDatabaseHelpers() {
+		userGroupDatabaseHelper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
+		timelineDatabaseHelper = new TimelineDatabaseHelper(this, Utilities.ALL_TIMELINES_DATABASE_NAME);
+	}
 
 	public void callBack() {
 		openDialogForTimelineNameInput();
