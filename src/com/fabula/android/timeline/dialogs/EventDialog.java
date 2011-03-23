@@ -103,14 +103,16 @@ public class EventDialog extends Dialog {
  		setupAddButtonQuickAction();
  		setupEmotionButtonQuickAction();
  		
- 		ToggleButton shareButton = (ToggleButton)findViewById(R.id.PopupShareButton);
+ 		final ToggleButton shareButton = (ToggleButton)findViewById(R.id.PopupShareButton);
  		shareButton.setTag(this.mEvent);
  		shareButton.setChecked(mEvent.isShared());
+		shareButton.setEnabled(!mEvent.isShared());
  		
  		shareButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 					mEvent.setShared(isChecked);
+					shareButton.setEnabled(!mEvent.isShared());
 					Thread shareThread = new Thread(shareEventThread, "shareThread");
 	 				shareThread.start();
 			}
