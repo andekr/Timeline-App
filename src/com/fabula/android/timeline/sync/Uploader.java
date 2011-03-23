@@ -10,7 +10,10 @@ import java.net.URL;
 
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
@@ -20,6 +23,8 @@ import com.fabula.android.timeline.Utilities;
 import com.fabula.android.timeline.models.Event;
 import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.models.Experiences;
+import com.fabula.android.timeline.models.Group;
+import com.fabula.android.timeline.models.User;
 
 public class Uploader {
 	
@@ -110,7 +115,7 @@ public class Uploader {
 		// Using PUT here
 		HttpPut httpPut = makeHttpPutBasedOnObjectType(o);
 		
-		makeHttpPutContentTypeHeader(httpPut);
+		makeHttpRequestContentTypeHeader(httpPut);
 		       
 		sendJSONTOGAEServer(jsonString, targetHost, httpPut);
 	}
@@ -131,27 +136,50 @@ public class Uploader {
 		final HttpHost targetHost = new HttpHost(Utilities.GOOGLE_APP_ENGINE_URL, 80, "http");
 		// Using PUT here
 		final HttpPut httpPut = new HttpPut("/rest/group/");
-		makeHttpPutContentTypeHeader(httpPut);
+		makeHttpRequestContentTypeHeader(httpPut);
 		
 		sendJSONTOGAEServer(jsonString, targetHost, httpPut);
 		
 	}
 	
+	public static void putUserToGroupToGAE(Group groupToAddUser, User userToAddToGroup){  
+		final HttpHost targetHost = new HttpHost(Utilities.GOOGLE_APP_ENGINE_URL, 80, "http");
+		// Using PUT here
+		final HttpPut httpPut = new HttpPut("/rest/group/"+groupToAddUser.getId()+"/user/"+userToAddToGroup.getUserName()+"/");
+		makeHttpRequestContentTypeHeader(httpPut);
+		
+		sendJSONTOGAEServer("", targetHost, httpPut);
+		
+	}
+	
+	public static void deleteUserFromGroupToGAE(Group groupToRemoveMember,
+			User userToRemoveFromGroup) {
+		final HttpHost targetHost = new HttpHost(Utilities.GOOGLE_APP_ENGINE_URL, 80, "http");
+		//using DELETE here
+		final HttpDelete httpDelete = new HttpDelete("/rest/group/"+groupToRemoveMember.getId()+"/user/"+userToRemoveFromGroup.getUserName()+"/");
+		makeHttpRequestContentTypeHeader(httpDelete);
+		
+		sendDeleteRequestTOGAEServer("", targetHost, httpDelete);
+		
+	}
+	
+	
+
 	public static void putUserToGAE(final String jsonString){  
 		final HttpHost targetHost = new HttpHost(Utilities.GOOGLE_APP_ENGINE_URL, 80, "http");
 		// Using PUT here
 		final HttpPut httpPut = new HttpPut("/rest/user/");
-		makeHttpPutContentTypeHeader(httpPut);
+		makeHttpRequestContentTypeHeader(httpPut);
 		
 		sendJSONTOGAEServer(jsonString, targetHost, httpPut);
 		
 	}
 
-	private static void makeHttpPutContentTypeHeader(HttpPut httpPut) {
+	private static void makeHttpRequestContentTypeHeader(HttpRequestBase httpRequest) {
 		// Make sure the server knows what kind of a response we will accept
-		httpPut.addHeader("Accept", "application/json");
+		httpRequest.addHeader("Accept", "application/json");
 		// Also be sure to tell the server what kind of content we are sending
-		httpPut.addHeader("Content-Type", "application/json");
+		httpRequest.addHeader("Content-Type", "application/json");
 	}
 	
 	private static void sendJSONTOGAEServer(final String jsonString,
@@ -179,9 +207,35 @@ public class Uploader {
 					}
 		};
 		
-		Thread thread =  new Thread(null, sendRunnable, "merkSettTraad");
+		Thread thread =  new Thread(null, sendRunnable, "putToGAE");
         thread.start();
 	
+	}
+	
+	private static void sendDeleteRequestTOGAEServer(String string,
+			final HttpHost targetHost, final HttpDelete httpDelete) {
+	Runnable sendRunnable = new Runnable() {
+			
+			public void run() {
+				try
+				{
+					DefaultHttpClient httpClient = new DefaultHttpClient();
+					
+				        // execute is a blocking call, it's best to call this code in a thread separate from the ui's
+				    HttpResponse response = httpClient.execute(targetHost, httpDelete);
+
+				    Log.v("Delete to GAE", response.getStatusLine().toString());
+				}
+				catch (Exception ex)
+				{
+				        ex.printStackTrace();
+				}
+					}
+		};
+		
+		Thread thread =  new Thread(null, sendRunnable, "deleteToGAE");
+        thread.start();
+		
 	}
 
 
@@ -223,4 +277,6 @@ public class Uploader {
 	       return false;
 	    }
 	}
+
+	
 }

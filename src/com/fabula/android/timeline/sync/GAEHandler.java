@@ -125,8 +125,13 @@ public class GAEHandler {
 		
 	    System.out.println("Lagrer JSON på Google App Engine: "+jsonString);
 	    Uploader.putGroupToGAE(jsonString);
+	    
+	    for (User user : groupToAdd.getMembers()) {
+			addUserToGroupOnServer(groupToAdd, user);
+		}
 	}
 	
+
 	public static void addUserToServer(User userToAdd){
 		Gson gson = new Gson();
 		String jsonString ="";
@@ -140,6 +145,15 @@ public class GAEHandler {
 	    System.out.println("Lagrer JSON på Google App Engine: "+jsonString);
 	    Uploader.putUserToGAE(jsonString);
 	}
+	
+	public static void addUserToGroupOnServer(Group groupToGetNewMember, User userToAddToGroup) {
+		Uploader.putUserToGroupToGAE(groupToGetNewMember, userToAddToGroup);
+	}
+	
+	public static void removeUserFromGroupOnServer(Group groupToGetNewMember, User userToAddToGroup) {
+		Uploader.deleteUserFromGroupToGAE(groupToGetNewMember, userToAddToGroup);
+	}
+	
 	
 	//Custom serializer to remove empty lists, which Google App Engine can't handle right.
 	
@@ -164,5 +178,6 @@ public class GAEHandler {
 		    return new JsonParser().parse(gson.toJson(src));
 		  }
 		}
+
 
 }

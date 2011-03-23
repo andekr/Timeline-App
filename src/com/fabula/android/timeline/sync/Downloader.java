@@ -4,8 +4,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -20,6 +18,7 @@ import android.util.Log;
 import com.fabula.android.timeline.Utilities;
 import com.fabula.android.timeline.models.EventItem;
 import com.fabula.android.timeline.models.Experiences;
+import com.fabula.android.timeline.models.Groups;
 import com.fabula.android.timeline.models.SimpleNote;
 import com.fabula.android.timeline.models.SimplePicture;
 import com.fabula.android.timeline.models.User;
@@ -93,6 +92,26 @@ public class Downloader {
 					return null;
 				}
 	 }
+	 
+	 public static Groups getGroupsFromServer(User user){
+			try {
+				Log.i("DOWNLOADER", "Json Parser started.. Getting all groups for the user "+user.getUserName());
+				Gson gson = new Gson();
+				
+				Reader r = new InputStreamReader(getJSONData("/rest/groups/"+user.getUserName()+"/")); 
+				Groups groups = null;
+				groups = gson.fromJson(r, Groups.class);
+				try {
+					Log.i("DOWNLOADER", "Fetched "+groups.getGroups().size()+" groups");
+				} catch (NullPointerException e) {
+					Log.i("DOWNLOADER", "No groups on server!");
+				}
+				return groups;
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+}
 	
 	/**
 	 * Method that fetches JSON-data from a URL

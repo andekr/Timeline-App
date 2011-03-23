@@ -57,6 +57,7 @@ public class UserGroupManager {
 	 * Add a group to the database
 	 * @param group The group to be added
 	 */
+
 	public void addGroupToGroupDatabase(Group group) {
 		ContentValues values = new ContentValues();
 		
@@ -252,4 +253,5 @@ public class UserGroupManager {
 		c.close();
 		return users;
 	}
+	
 }

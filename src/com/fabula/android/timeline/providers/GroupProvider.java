@@ -10,6 +10,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 
@@ -60,7 +61,7 @@ public class GroupProvider extends BaseContentProvider {
             values = new ContentValues();
         }
         
-        long rowId = super.getUserDatabase().insert(SQLStatements.GROUP_DATABASE_TABLE_NAME, "", values);
+        long rowId = super.getUserDatabase().insertWithOnConflict(SQLStatements.GROUP_DATABASE_TABLE_NAME, "", values, SQLiteDatabase.CONFLICT_REPLACE);
         
 		if (rowId > 0) {
 		    Uri groupUri = ContentUris.withAppendedId(GroupColumns.CONTENT_URI, rowId);
