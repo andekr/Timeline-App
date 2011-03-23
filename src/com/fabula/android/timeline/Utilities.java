@@ -31,6 +31,7 @@ import com.fabula.android.timeline.models.SimpleNote;
 import com.fabula.android.timeline.models.SimplePicture;
 import com.fabula.android.timeline.models.SimpleRecording;
 import com.fabula.android.timeline.models.SimpleVideo;
+import com.fabula.android.timeline.models.User;
 import com.fabula.android.timeline.models.Zoom;
 
 /**
@@ -337,7 +338,7 @@ public class Utilities {
 		    
 			return null;
 	}
-	
+		
 	public static String getExtension(String filename){
 		int dot = filename.lastIndexOf(".");
 		return filename.substring(dot);

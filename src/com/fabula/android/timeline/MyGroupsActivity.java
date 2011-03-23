@@ -31,14 +31,12 @@ import com.fabula.android.timeline.adapters.UserListAdapter;
 import com.fabula.android.timeline.contentmanagers.UserGroupManager;
 import com.fabula.android.timeline.database.UserGroupDatabaseHelper;
 import com.fabula.android.timeline.models.Group;
-import com.fabula.android.timeline.models.Groups;
 import com.fabula.android.timeline.models.User;
-
-import com.fabula.android.timeline.models.Users;
 import com.fabula.android.timeline.sync.Downloader;
 import com.fabula.android.timeline.sync.GAEHandler;
+import com.fabula.android.timeline.sync.UserAndGroupServiceHandler;
 
-public class MyGroupsActivity extends Activity {
+public class MyGroupsActivity extends Activity implements ProgressDialogActivity {
 	
 	private Account userAccount;
 	private ImageButton addNewGroupButton, homeButton;
@@ -52,96 +50,92 @@ public class MyGroupsActivity extends Activity {
 	private UserGroupDatabaseHelper helper;
 	private Runnable getUsersAndGroupsRunnable;
 	private ProgressDialog progressDialog;
+	private UserAndGroupServiceHandler userAndGroupServiceHandler;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.groupmenuscreen);
 		
-		
 		setupHelpers();
 		
-		progressDialog = new ProgressDialog(this);
+//		progressDialog = new ProgressDialog(this);
 		
-		getUsersAndGroupsRunnable = new Runnable(){
-            public void run() {
-            	getUsersAndGroupsAddToDatabase();
-            }
-
-			
-
-        };
+		userAndGroupServiceHandler = new UserAndGroupServiceHandler(this, this);
+//		getUsersAndGroupsRunnable = new Runnable(){
+//            public void run() {
+//            	getUsersAndGroupsAddToDatabase();
+//            }
+//        };
         
         
-        startDownloadUsersAndGroups();
-		
-		
-		
+//        startDownloadUsersAndGroups();
+			
 	}
 
 	
-    /**
-     * Metoden som starter tråden som henter serier fra serveren
-     * Kan vises uten progressDialog, som er hendig når man trykker seg tilbake til startskjermen.
-     * Evt. endring vil da reflekteres, men uten å hindre brukereren i se på lista. 
-     * 
-     * @param showProgressDialog Gir mulighet til å vise/ikke vise progressbar ved lasting av nye elementer.
-     */
-	private void startDownloadUsersAndGroups() {
-		Thread thread =  new Thread(null, getUsersAndGroupsRunnable, "getUsersAndGroups");
-        thread.start();
-        progressDialog = ProgressDialog.show(MyGroupsActivity.this,    
-              "", "", true);
-	}
-	
-	private void getUsersAndGroupsAddToDatabase() {
-		uGManager.truncateUserGroupDatabase();
-		getUsersAndAddToDatabase();
-    	getGroupsAndAddToDatabase();
-    	runOnUiThread(new Runnable() {
-			public void run() {
-				setupViews();
-			}
-		});
-	}
-	
-	private void getUsersAndAddToDatabase() {
-		runOnUiThread(new Runnable() {
-			
-			public void run() {
-				progressDialog.setMessage("Loading all users ...");
-			}
-		});
-		
-		Users selectableUsersFromServer = Downloader.getUsersFromServer();
-		if(selectableUsersFromServer!=null){
-			for (User user : selectableUsersFromServer.getUsers()) {
-				uGManager.addUserToUserDatabase(user);
-			}
-		}
-		
-		
-	}	
-	
-	private void getGroupsAndAddToDatabase() {
-		runOnUiThread(new Runnable() {
-			public void run() {
-				progressDialog.setMessage("Loading my groups ...");
-			}
-		});
-		Groups groupsUserIsConnectedToFromServer = Downloader.getGroupsFromServer(applicationUser);
-		
-		if(groupsUserIsConnectedToFromServer!=null){
-			for (Group groupToAddToDatabase : groupsUserIsConnectedToFromServer.getGroups()) {
-				uGManager.addGroupToGroupDatabase(groupToAddToDatabase);
-				for (User user : groupToAddToDatabase.getMembers()) {
-					uGManager.addUserToAGroupInTheDatabase(groupToAddToDatabase, user);
-				}
-			}
-		}
-		
-		
-	}
+//    /**
+//     * Metoden som starter tråden som henter serier fra serveren
+//     * Kan vises uten progressDialog, som er hendig når man trykker seg tilbake til startskjermen.
+//     * Evt. endring vil da reflekteres, men uten å hindre brukereren i se på lista. 
+//     * 
+//     * @param showProgressDialog Gir mulighet til å vise/ikke vise progressbar ved lasting av nye elementer.
+//     */
+//	private void startDownloadUsersAndGroups() {
+//		Thread thread =  new Thread(null, getUsersAndGroupsRunnable, "getUsersAndGroups");
+//        thread.start();
+//        progressDialog = ProgressDialog.show(MyGroupsActivity.this,    
+//              "", "", true);
+//	}
+//	
+//	private void getUsersAndGroupsAddToDatabase() {
+//		uGManager.truncateUserGroupDatabase();
+//		getUsersAndAddToDatabase();
+//    	getGroupsAndAddToDatabase();
+//    	runOnUiThread(new Runnable() {
+//			public void run() {
+//				setupViews();
+//			}
+//		});
+//	}
+//	
+//	private void getUsersAndAddToDatabase() {
+//		runOnUiThread(new Runnable() {
+//			
+//			public void run() {
+//				progressDialog.setMessage("Loading all users ...");
+//			}
+//		});
+//		
+//		Users selectableUsersFromServer = Downloader.getUsersFromServer();
+//		if(selectableUsersFromServer!=null){
+//			for (User user : selectableUsersFromServer.getUsers()) {
+//				uGManager.addUserToUserDatabase(user);
+//			}
+//		}
+//		
+//		
+//	}	
+//	
+//	private void getGroupsAndAddToDatabase() {
+//		runOnUiThread(new Runnable() {
+//			public void run() {
+//				progressDialog.setMessage("Loading my groups ...");
+//			}
+//		});
+//		Groups groupsUserIsConnectedToFromServer = Downloader.getGroupsFromServer(applicationUser);
+//		
+//		if(groupsUserIsConnectedToFromServer!=null){
+//			for (Group groupToAddToDatabase : groupsUserIsConnectedToFromServer.getGroups()) {
+//				uGManager.addGroupToGroupDatabase(groupToAddToDatabase);
+//				for (User user : groupToAddToDatabase.getMembers()) {
+//					uGManager.addUserToAGroupInTheDatabase(groupToAddToDatabase, user);
+//				}
+//			}
+//		}
+//		
+//		
+//	}
 	
 	/**
 	 * Add a new group to the database
@@ -476,7 +470,11 @@ public class MyGroupsActivity extends Activity {
 			}
 		});
 		
-		progressDialog.dismiss();
+	}
+
+	public void callBack() {
+		setupViews();
+		
 	}
 
 }
