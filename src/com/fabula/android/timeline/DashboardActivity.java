@@ -381,8 +381,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		new TimelineDatabaseHelper(this, Utilities.ALL_TIMELINES_DATABASE_NAME);
 		new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
 		contentAdder.addExperienceToTimelineContentProvider(experience);
-		TimelineDatabaseHelper.getCurrentTimeLineDatabase().close();
-		UserGroupDatabaseHelper.getUserDatabase().close();
 	}
 
 
@@ -412,7 +410,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		for (Experience experience : sharedExperiences) {
 			new DatabaseHelper(this, experience.getTitle());
 			experience.setEvents(contentLoader.LoadAllEventsFromDatabase());//TODO: Hente ut creator i contentLoader
-			DatabaseHelper.getCurrentTimelineDatabase().close();
 		}
 		
 		Experiences experiences = new Experiences(sharedExperiences);

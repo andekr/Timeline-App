@@ -52,15 +52,11 @@ public TimelineBrowserDialog(Context context, Intent receivedIntent, boolean sha
 		ListView view = new ListView(context);
 		directory = new TimelineDirectory();
 		this.receivedIntent = receivedIntent;
-		new TimelineDatabaseHelper(context, Utilities.ALL_TIMELINES_DATABASE_NAME);
-		new UserGroupDatabaseHelper(context, Utilities.USER_GROUP_DATABASE_NAME);
 		ContentLoader contentLoader = new ContentLoader(context);
 		ArrayList<Experience> allExperiences = shared ? contentLoader.LoadAllSharedExperiencesFromDatabase() : contentLoader.LoadPrivateExperiencesFromDatabase();
 		for (Experience experience : allExperiences) {
 			Log.i("Alle experiences", experience.getTitle()+" Delt: "+experience.isShared());
-		}
-		TimelineDatabaseHelper.getCurrentTimeLineDatabase().close();	
-		UserGroupDatabaseHelper.getUserDatabase().close();
+		}	
 		timelineAdapter = new TimelineListAdapter(context, allExperiences); 
 		
 
