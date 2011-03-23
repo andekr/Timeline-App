@@ -89,7 +89,7 @@ public class ContentAdder {
 		
 		 
 		 if (experience.isShared()) {
-			 values.put(ExperienceColumns.EXPERIENCE_SHARED_WITH, experience.getSharingGroup().getId());
+			 values.put(ExperienceColumns.EXPERIENCE_SHARED_WITH, experience.getSharingGroupObject().getId());
 		 }
 		 
 		 context.getContentResolver().insert(ExperienceColumns.CONTENT_URI, values);

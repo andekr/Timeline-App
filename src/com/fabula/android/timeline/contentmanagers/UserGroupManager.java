@@ -195,7 +195,7 @@ public class UserGroupManager {
 	 * @param groupID The ID checked against the database
 	 * @return The group with the given groupID
 	 */
-	private Group getGroupFromDatabase(String groupID) {
+	public Group getGroupFromDatabase(String groupID) {
 		
 		String [] groupsTableColumns = new String[] {GroupColumns._ID, GroupColumns.GROUP_NAME};
 		Group group = null;

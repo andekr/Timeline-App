@@ -12,8 +12,8 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
+import android.content.DialogInterface.OnCancelListener;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -22,10 +22,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.view.View.OnClickListener;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
@@ -360,24 +360,31 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		timelineIntent.putExtra(Utilities.EXPERIENCECREATOR_REQUEST, timeLine.getUser().name);
 		
 		if(shared) {
-			timeLine.setSharingGroup(group);
-			timelineIntent.putExtra(Utilities.SHARED_WITH_REQUEST, timeLine.getSharingGroup().getId());
+			timeLine.setSharingGroupObject(group);
+			timelineIntent.putExtra(Utilities.SHARED_WITH_REQUEST, timeLine.getSharingGroupObject().getId());
 			GAEHandler.addGroupToServer(group);
 		}
+		
 		contentAdder.addExperienceToTimelineContentProvider(timeLine);
 		new DatabaseHelper(this, databaseName);
 		startActivity(timelineIntent);
 	}
 
-//	/**
-//	 * Adds the new timeline to the database containing all the timelines.
-//	 * 
-//	 * 
-//	 * @param experience The experience to add to database
-//	 */
-//	private void addNewTimelineToTimelineDatabase(Experience experience) {
-//		contentAdder.addExperienceToTimelineContentProvider(experience);
-//	}
+
+	/**
+	 * Adds the new timeline to the database containing all the timelines.
+	 * 
+	 * 
+	 * @param experience The experience to add to database
+	 */
+	private void addNewTimelineToTimelineDatabase(Experience experience) {
+		new TimelineDatabaseHelper(this, Utilities.ALL_TIMELINES_DATABASE_NAME);
+		new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
+		contentAdder.addExperienceToTimelineContentProvider(experience);
+		TimelineDatabaseHelper.getCurrentTimeLineDatabase().close();
+		UserGroupDatabaseHelper.getUserDatabase().close();
+	}
+
 
 	private void browseAllTimelines(boolean shared) {
 		TimelineBrowserDialog dialog = new TimelineBrowserDialog(this,
@@ -402,6 +409,7 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		// Hente inn experiencer som er delt - DONE
 		// Hente ut alle events i alle delte experiencer (kun de som ikke er låst) - DONE
 		new TimelineDatabaseHelper(this, Utilities.ALL_TIMELINES_DATABASE_NAME);
+		new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
 		ArrayList<Experience> sharedExperiences = contentLoader.LoadAllSharedExperiencesFromDatabase();
 		for (Experience experience : sharedExperiences) {
 			new DatabaseHelper(this, experience.getTitle());
@@ -417,12 +425,17 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 //		}
 	
 		TimelineDatabaseHelper.getCurrentTimeLineDatabase().close();
+		UserGroupDatabaseHelper.getUserDatabase().close();
 		
 
-		Experiences exps = Downloader.getAllSharedExperiencesFromServer();
+		Experiences exps = Downloader.getAllSharedExperiencesFromServer(user);
 		if(exps!=null){
 			for (Experience e : exps.getExperiences()) {
+
+				e.setSharingGroupObject(uGManager.getGroupFromDatabase(e.getSharingGroup()));
 				contentAdder.addExperienceToTimelineContentProvider(e);
+				addNewTimelineToTimelineDatabase(e);
+
 			}
 		}
 		runOnUiThread(confirmSync);

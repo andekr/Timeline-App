@@ -32,7 +32,7 @@ import com.google.gson.JsonParseException;
 
 public class Downloader {
 	
-	public static Experiences getAllSharedExperiencesFromServer(){
+	public static Experiences getAllSharedExperiencesFromServer(User user){
 		
 		try {
 			Log.i("DOWNLOADER", "Json Parser started.. Getting all Experiences");
@@ -44,7 +44,7 @@ public class Downloader {
 			
 			Gson gson = gsonB.create();
 			
-			Reader r = new InputStreamReader(getJSONData("/rest/experiences/")); 
+			Reader r = new InputStreamReader(getJSONData("/rest/experiences/"+user.getUserName()+"/")); 
 			Experiences experiences = gson.fromJson(r, Experiences.class);
 			Log.i("DOWNLOADER", "Fetched "+experiences.getExperiences().size()+" experiences");
 			return experiences;
