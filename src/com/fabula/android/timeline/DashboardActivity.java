@@ -412,7 +412,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		for (Experience experience : sharedExperiences) {
 			new DatabaseHelper(this, experience.getTitle());
 			experience.setEvents(contentLoader.LoadAllEventsFromDatabase());//TODO: Hente ut creator i contentLoader
-			DatabaseHelper.getCurrentTimelineDatabase().close();
 		}
 		
 		Experiences experiences = new Experiences(sharedExperiences);
