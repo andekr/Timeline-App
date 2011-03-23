@@ -34,6 +34,7 @@ import com.fabula.android.timeline.NoteActivity;
 import com.fabula.android.timeline.R;
 import com.fabula.android.timeline.TimelineActivity;
 import com.fabula.android.timeline.Utilities;
+import com.fabula.android.timeline.contentmanagers.ContentUpdater;
 import com.fabula.android.timeline.models.Emotion;
 import com.fabula.android.timeline.models.Event;
 import com.fabula.android.timeline.models.EventItem;
@@ -162,6 +163,8 @@ public class EventDialog extends Dialog {
 			
 			public void run() {
 				GAEHandler.send(mEvent, mActivity);
+				ContentUpdater updater = new ContentUpdater(mContext);
+				updater.setEventShared(mEvent);
 			}
 		};
  		

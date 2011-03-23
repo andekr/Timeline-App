@@ -140,6 +140,10 @@ public class Event {
 	public void setShared(boolean shared) {
 		this.shared = shared;
 	}
+	
+	public int isSharedAsInt() {
+		return isShared() ? 1 : 0;
+	}
 
 
 
@@ -161,6 +165,8 @@ public class Event {
 		public static final String EVENT_TITLE = "event_title";
 		
 		public static final String EVENT_ITEMS_ID = "event_items_id";
+
+		public static final String IS_SHARED = "event_is_shared";
 	}
 	
 }

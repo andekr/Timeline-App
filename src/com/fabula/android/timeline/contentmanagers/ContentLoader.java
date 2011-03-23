@@ -51,7 +51,7 @@ public class ContentLoader {
 		
 		ArrayList<Event> allEvents = new ArrayList<Event>();
 		
-		String[] eventTableColumns = new String[]{EventColumns._ID, EventColumns.EVENT_EXPERIENCEID, EventColumns.EVENT_TITLE, EventColumns.EVENT_LOCATION_LAT, EventColumns.EVENT_LOCATION_LNG};
+		String[] eventTableColumns = new String[]{EventColumns._ID, EventColumns.EVENT_EXPERIENCEID, EventColumns.EVENT_TITLE, EventColumns.EVENT_LOCATION_LAT, EventColumns.EVENT_LOCATION_LNG, EventColumns.IS_SHARED};
 		
 		Cursor c = context.getContentResolver().query(EventColumns.CONTENT_URI, eventTableColumns, null, null, null);
 		
@@ -65,6 +65,7 @@ public class ContentLoader {
 						c.getString(c.getColumnIndex(EventColumns.EVENT_EXPERIENCEID)), 
 						createdDate,
 						location);	
+				event.setShared((c.getInt((c.getColumnIndex(EventColumns.IS_SHARED)))==1) ? true : false);
 				loadAllEmotions(event);
 				loadAllConnectedEventItems(event);
 				allEvents.add(event);

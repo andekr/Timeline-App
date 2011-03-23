@@ -40,6 +40,7 @@ public class ContentAdder {
 		 values.put(EventColumns._ID, event.getId());
 		 values.put(EventColumns.EVENT_EXPERIENCEID, event.getExperienceid());
 		 values.put(EventColumns.EVENT_TITLE, event.getDatetimemillis());
+		 values.put(EventColumns.IS_SHARED, event.isSharedAsInt());
 		 try {
 			 values.put(EventColumns.EVENT_LOCATION_LAT, event.getLatitude());
 			 values.put(EventColumns.EVENT_LOCATION_LNG, event.getLongitude());

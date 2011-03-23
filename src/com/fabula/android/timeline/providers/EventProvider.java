@@ -42,6 +42,7 @@ public class EventProvider extends BaseContentProvider {
        eventsProjectionMap.put(EventColumns.EVENT_ITEMS_ID, EventColumns.EVENT_ITEMS_ID);
        eventsProjectionMap.put(EventColumns.EVENT_LOCATION_LAT, EventColumns.EVENT_LOCATION_LAT);
        eventsProjectionMap.put(EventColumns.EVENT_LOCATION_LNG, EventColumns.EVENT_LOCATION_LNG);
+       eventsProjectionMap.put(EventColumns.IS_SHARED, EventColumns.IS_SHARED);
     }
     
 	//insert some element in the DB
@@ -110,31 +111,31 @@ public class EventProvider extends BaseContentProvider {
 		}
 	}
 
-	//update some element in the db
-	public int update(Uri uri, ContentValues values, String selection,
-			String[] selectionArgs) {
-		int count = 0;
-	      switch (uriMatcher.match(uri)){
-	         case EVENT:
-	            count = super.getDatabase().update(
-	            		SQLStatements.EVENT_DATABASE_TABLE_NAME, 
-	               values,
-	               selection, 
-	               selectionArgs);
-	            break;
-	         case EVENT_ID:                
-	            count = super.getDatabase().update(
-	            		SQLStatements.EVENT_DATABASE_TABLE_NAME, 
-	               values,
-	               EventColumns.EVENT_ID + " = " + uri.getPathSegments().get(1) + 
-	               (!TextUtils.isEmpty(selection) ? " AND (" + 
-	                  selection + ')' : ""), 
-	                selectionArgs);
-	            break;
-	         default: throw new IllegalArgumentException(
-	            "Unknown URI " + uri);    
-	      }       
-	      getContext().getContentResolver().notifyChange(uri, null);
-	      return count;
-	}
+//	//update some element in the db
+//	public int update(Uri uri, ContentValues values, String selection,
+//			String[] selectionArgs) {
+//		int count = 0;
+//	      switch (uriMatcher.match(uri)){
+//	         case EVENT:
+//	            count = super.getDatabase().update(
+//	            		SQLStatements.EVENT_DATABASE_TABLE_NAME, 
+//	               values,
+//	               selection, 
+//	               selectionArgs);
+//	            break;
+//	         case EVENT_ID:                
+//	            count = super.getDatabase().update(
+//	            		SQLStatements.EVENT_DATABASE_TABLE_NAME, 
+//	               values,
+//	               EventColumns.EVENT_ID + " = " + uri.getPathSegments().get(1) + 
+//	               (!TextUtils.isEmpty(selection) ? " AND (" + 
+//	                  selection + ')' : ""), 
+//	                selectionArgs);
+//	            break;
+//	         default: throw new IllegalArgumentException(
+//	            "Unknown URI " + uri);    
+//	      }       
+//	      getContext().getContentResolver().notifyChange(uri, null);
+//	      return count;
+//	}
 }
