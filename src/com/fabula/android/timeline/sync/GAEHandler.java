@@ -38,7 +38,7 @@ public class GAEHandler {
 //		Serializer serializer = new Persister();
 		GsonBuilder gsonB = new GsonBuilder();
 		gsonB.registerTypeAdapter(Experiences.class, new ExperiencesSerializer());
-//		gsonB.registerTypeAdapter(Event.class, new EventSerializer());
+		gsonB.registerTypeAdapter(Event.class, new EventSerializer());
 		
 		Gson gson = gsonB.create();
 //		File sdCardDirectory = Environment.getExternalStorageDirectory();
@@ -181,6 +181,16 @@ public class GAEHandler {
 				  }
 			  }
 			 
+			Gson gson = new Gson();
+		    return new JsonParser().parse(gson.toJson(src));
+		  }
+		}
+	
+	private static class EventSerializer implements JsonSerializer<Event> {
+		public JsonElement serialize(Event src, Type typeOfSrc, JsonSerializationContext context) {
+			  if(src.getEmotionList() !=null && src.getEmotionList().size()==0)
+				  src.setEmotionList(null);
+			  			 
 			Gson gson = new Gson();
 		    return new JsonParser().parse(gson.toJson(src));
 		  }

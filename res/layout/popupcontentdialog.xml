@@ -38,9 +38,8 @@
 			android:src="@drawable/ic_menu_add" android:id="@+id/PopupAddButton"
 			android:layout_width="fill_parent"></ImageButton>
 
-		<ToggleButton android:layout_height="wrap_content"
-			android:layout_below="@id/PopupAddButton" android:id="@+id/PopupShareButton"
-			android:layout_width="fill_parent" android:textOn="@string/Shared_label" android:textOff="@string/Not_shared_label" android:textSize="9dp"></ToggleButton>
+		<ToggleButton android:layout_below="@id/PopupAddButton" android:id="@+id/PopupShareButton"
+			android:layout_width="fill_parent" android:textOn="@string/Shared_label" android:textOff="@string/Not_shared_label" android:textSize="9dp" android:layout_height="50dip"></ToggleButton>
 			
 		<ImageButton android:layout_height="wrap_content"
 			android:src="@drawable/ic_menu_tag" android:id="@+id/PopuptagButton"
