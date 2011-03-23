@@ -33,10 +33,8 @@ import com.fabula.android.timeline.database.UserGroupDatabaseHelper;
 import com.fabula.android.timeline.models.Group;
 import com.fabula.android.timeline.models.Groups;
 import com.fabula.android.timeline.models.User;
-<<<<<<< HEAD
-=======
+
 import com.fabula.android.timeline.models.Users;
->>>>>>> bdf2fb5b2a89821298c50957e4f62388ba1bc9bd
 import com.fabula.android.timeline.sync.Downloader;
 import com.fabula.android.timeline.sync.GAEHandler;
 
@@ -97,6 +95,7 @@ public class MyGroupsActivity extends Activity {
 	}
 	
 	private void getUsersAndGroupsAddToDatabase() {
+		uGManager.truncateUserGroupDatabase();
 		getUsersAndAddToDatabase();
     	getGroupsAndAddToDatabase();
     	runOnUiThread(new Runnable() {

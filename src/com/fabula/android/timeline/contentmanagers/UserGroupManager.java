@@ -254,4 +254,13 @@ public class UserGroupManager {
 		return users;
 	}
 	
+	/**
+	 * Deletes all content of the user group database
+	 */
+	public void truncateUserGroupDatabase() {
+		context.getContentResolver().delete(GroupProvider.CONTENT_URI, null, null);
+		context.getContentResolver().delete(UserGroupProvider.CONTENT_URI, null, null);
+		context.getContentResolver().delete(UserProvider.CONTENT_URI, null, null);
+	}
+	
 }
