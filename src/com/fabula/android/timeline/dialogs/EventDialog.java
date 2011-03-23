@@ -1,6 +1,5 @@
 package com.fabula.android.timeline.dialogs;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.londatiga.android.ActionItem;
@@ -8,7 +7,6 @@ import net.londatiga.android.QuickAction;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,11 +20,14 @@ import android.view.View;
 import android.view.Window;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnCreateContextMenuListener;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout.LayoutParams;
 
 import com.fabula.android.timeline.NoteActivity;
@@ -37,7 +38,6 @@ import com.fabula.android.timeline.models.Emotion;
 import com.fabula.android.timeline.models.Event;
 import com.fabula.android.timeline.models.EventItem;
 import com.fabula.android.timeline.models.SimpleNote;
-import com.fabula.android.timeline.models.Emotion.EmotionColumns;
 import com.fabula.android.timeline.models.Emotion.EmotionEnum;
 import com.fabula.android.timeline.sync.GAEHandler;
 import com.fabula.android.timeline.utilities.MyLocation;
@@ -103,16 +103,27 @@ public class EventDialog extends Dialog {
  		setupAddButtonQuickAction();
  		setupEmotionButtonQuickAction();
  		
- 		ImageButton shareButton = (ImageButton)findViewById(R.id.PopupShareButton);
+ 		ToggleButton shareButton = (ToggleButton)findViewById(R.id.PopupShareButton);
  		shareButton.setTag(this.mEvent);
- 		shareButton.setOnClickListener(new View.OnClickListener() {
- 			
- 			public void onClick(View v) {
- 				Toast.makeText(mContext, "Sending event to server...", Toast.LENGTH_SHORT).show();
- 				Thread shareThread = new Thread(shareEventThread, "shareThread");
- 				shareThread.start();
- 				}
- 		});
+ 		shareButton.setChecked(mEvent.isShared());
+ 		
+ 		shareButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+					mEvent.setShared(isChecked);
+					Thread shareThread = new Thread(shareEventThread, "shareThread");
+	 				shareThread.start();
+			}
+		});
+ 		
+// 		shareButton.setOnClickListener(new View.OnClickListener() {
+// 			
+// 			public void onClick(View v) {
+// 				Toast.makeText(mContext, "Sending event to server...", Toast.LENGTH_SHORT).show();
+// 				Thread shareThread = new Thread(shareEventThread, "shareThread");
+// 				shareThread.start();
+// 				}
+// 		});
  		
  		ImageButton deleteButton = (ImageButton)findViewById(R.id.popupDeleteButton);
  		deleteButton.setTag(event);

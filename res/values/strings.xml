@@ -30,6 +30,8 @@
 	<string name="Last_synced_label">Last synced:</string>
 	<string name="Add_user_label">Add user</string>
 	<string name="Select_user_label">Select a user:</string>
+	<string name="Not_shared_label">Not shared</string>
+	<string name="Shared_label">Shared</string>
 
 
     <string name="picture">Picture</string>

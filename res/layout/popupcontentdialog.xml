@@ -1,37 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="wrap_content"
-  android:layout_height="wrap_content">
-<RelativeLayout android:layout_below="@id/TextView01" android:layout_width="wrap_content" android:id="@+id/PopupTitleRelativeLayout" android:layout_toLeftOf="@+id/PopupMoreActionsRelativeLayout" android:layout_height="50dip"><TextView android:layout_toRightOf="@+id/PopupDialogTypeIconImageView" android:layout_width="fill_parent" android:gravity="center" android:id="@+id/PopupDialogDateAndTimeTextView" android:text="Overskrift med dato og tid" android:textSize="24sp" android:textColor="@color/White" android:layout_height="wrap_content" android:layout_alignTop="@+id/PopupDialogTypeIconImageView"></TextView>
-<TextView android:layout_height="wrap_content" android:layout_below="@+id/PopupDialogDateAndTimeTextView" android:layout_alignLeft="@+id/PopupDialogDateAndTimeTextView" android:layout_width="fill_parent" android:layout_centerHorizontal="true" android:gravity="center" android:text="Lokasjon" android:id="@+id/PopupDialogLocationTextView"></TextView>
-<ImageView android:layout_height="40dp" android:id="@+id/PopupDialogTypeIconImageView" android:layout_width="40dp" android:layout_alignParentLeft="true" android:src="@drawable/ic_menu_camera"></ImageView>
-</RelativeLayout>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="wrap_content" android:layout_height="wrap_content">
+	<RelativeLayout android:layout_below="@id/TextView01"
+		android:layout_width="wrap_content" android:id="@+id/PopupTitleRelativeLayout"
+		android:layout_toLeftOf="@+id/PopupMoreActionsRelativeLayout"
+		android:layout_height="50dip">
+		<TextView android:layout_toRightOf="@+id/PopupDialogTypeIconImageView"
+			android:layout_width="fill_parent" android:gravity="center"
+			android:id="@+id/PopupDialogDateAndTimeTextView" android:text="Overskrift med dato og tid"
+			android:textSize="24sp" android:textColor="@color/White"
+			android:layout_height="wrap_content" android:layout_alignTop="@+id/PopupDialogTypeIconImageView"></TextView>
+		<TextView android:layout_height="wrap_content"
+			android:layout_below="@+id/PopupDialogDateAndTimeTextView"
+			android:layout_alignLeft="@+id/PopupDialogDateAndTimeTextView"
+			android:layout_width="fill_parent" android:layout_centerHorizontal="true"
+			android:gravity="center" android:text="Lokasjon"
+			android:id="@+id/PopupDialogLocationTextView"></TextView>
+		<ImageView android:layout_height="40dp"
+			android:id="@+id/PopupDialogTypeIconImageView" android:layout_width="40dp"
+			android:layout_alignParentLeft="true" android:src="@drawable/ic_menu_camera"></ImageView>
+	</RelativeLayout>
 
 
-<ScrollView android:id="@+id/PopupContentScrollView" android:layout_height="fill_parent" android:layout_width="fill_parent" android:layout_below="@+id/PopupTitleRelativeLayout" android:layout_toLeftOf="@+id/PopupMoreActionsRelativeLayout" android:layout_above="@+id/PopupEmotionHorizontalScrollView">
-<LinearLayout android:id="@+id/PopupContentLinearLayout" android:layout_height="fill_parent" android:layout_width="fill_parent" android:orientation="vertical"></LinearLayout>
-</ScrollView><RelativeLayout android:id="@+id/PopupMoreActionsRelativeLayout" android:layout_alignParentRight="true" android:layout_height="fill_parent" android:layout_width="50dip" android:layout_above="@+id/PopupEmotionHorizontalScrollView"><ImageButton android:layout_height="wrap_content" android:src="@drawable/ic_menu_add" android:id="@+id/PopupAddButton" android:layout_width="fill_parent"></ImageButton>
+	<ScrollView android:id="@+id/PopupContentScrollView"
+		android:layout_height="fill_parent" android:layout_width="fill_parent"
+		android:layout_below="@+id/PopupTitleRelativeLayout"
+		android:layout_toLeftOf="@+id/PopupMoreActionsRelativeLayout"
+		android:layout_above="@+id/PopupEmotionHorizontalScrollView">
+		<LinearLayout android:id="@+id/PopupContentLinearLayout"
+			android:layout_height="fill_parent" android:layout_width="fill_parent"
+			android:orientation="vertical"></LinearLayout>
+	</ScrollView>
+	<RelativeLayout android:id="@+id/PopupMoreActionsRelativeLayout"
+		android:layout_alignParentRight="true" android:layout_height="fill_parent"
+		android:layout_width="50dip" android:layout_above="@+id/PopupEmotionHorizontalScrollView">
+		<ImageButton android:layout_height="wrap_content"
+			android:src="@drawable/ic_menu_add" android:id="@+id/PopupAddButton"
+			android:layout_width="fill_parent"></ImageButton>
 
-<ImageButton android:layout_height="wrap_content" android:layout_below="@id/PopupAddButton" android:id="@+id/PopupShareButton" android:src="@drawable/ic_menu_share" android:layout_width="fill_parent"></ImageButton><ImageButton android:layout_height="wrap_content" android:src="@drawable/ic_menu_tag" android:id="@+id/PopuptagButton" android:layout_below="@+id/PopupShareButton" android:layout_width="fill_parent"></ImageButton>
+		<ToggleButton android:layout_height="wrap_content"
+			android:layout_below="@id/PopupAddButton" android:id="@+id/PopupShareButton"
+			android:layout_width="fill_parent" android:textOn="@string/Shared_label" android:textOff="@string/Not_shared_label" android:textSize="9dp"></ToggleButton>
+			
+		<ImageButton android:layout_height="wrap_content"
+			android:src="@drawable/ic_menu_tag" android:id="@+id/PopuptagButton"
+			android:layout_below="@+id/PopupShareButton" android:layout_width="fill_parent"></ImageButton>
 
-<ImageButton android:layout_below="@+id/PopuptagButton" android:layout_height="wrap_content" android:id="@+id/PopupEmotionButton" android:src="@drawable/ic_menu_emoticons" android:layout_width="fill_parent"></ImageButton><ImageButton android:layout_height="wrap_content" android:id="@+id/popupDeleteButton" android:src="@drawable/ic_menu_delete" android:layout_below="@+id/PopupEmotionButton" android:layout_width="fill_parent"></ImageButton>
-
-
-</RelativeLayout>
-
-<HorizontalScrollView android:layout_height="30dip" android:layout_width="fill_parent" android:layout_alignParentBottom="true" android:scrollbars="horizontal" android:background="@drawable/quickcontact_slider_background" android:id="@+id/PopupEmotionHorizontalScrollView"><LinearLayout android:id="@+id/PopupMenuDockLinearLayout" android:layout_height="fill_parent" android:fadingEdge="vertical" android:fadingEdgeLength="2dp" android:scrollbars="horizontal" android:layout_width="fill_parent">
-
-
-
-
-
-
-
-
+		<ImageButton android:layout_below="@+id/PopuptagButton"
+			android:layout_height="wrap_content" android:id="@+id/PopupEmotionButton"
+			android:src="@drawable/ic_menu_emoticons" android:layout_width="fill_parent"></ImageButton>
+		<ImageButton android:layout_height="wrap_content"
+			android:id="@+id/popupDeleteButton" android:src="@drawable/ic_menu_delete"
+			android:layout_below="@+id/PopupEmotionButton" android:layout_width="fill_parent"></ImageButton>
 
 
+	</RelativeLayout>
 
-</LinearLayout></HorizontalScrollView>
+	<HorizontalScrollView android:layout_height="30dip"
+		android:layout_width="fill_parent" android:layout_alignParentBottom="true"
+		android:scrollbars="horizontal" android:background="@drawable/quickcontact_slider_background"
+		android:id="@+id/PopupEmotionHorizontalScrollView">
+		<LinearLayout android:id="@+id/PopupMenuDockLinearLayout"
+			android:layout_height="fill_parent" android:fadingEdge="vertical"
+			android:fadingEdgeLength="2dp" android:scrollbars="horizontal"
+			android:layout_width="fill_parent">
+
+
+
+
+
+
+
+
+
+
+
+		</LinearLayout>
+	</HorizontalScrollView>
 
 </RelativeLayout>
