@@ -174,7 +174,7 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		}else{
 			runOnUiThread(new Runnable() {
 				public void run() {
-					Toast.makeText(DashboardActivity.this, "Registrert fra før!", Toast.LENGTH_LONG).show();
+					Toast.makeText(DashboardActivity.this, "Already registered!", Toast.LENGTH_LONG).show();
 				}
 			});
 		}
