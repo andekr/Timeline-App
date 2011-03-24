@@ -93,6 +93,7 @@ public class AttachmentAdapter extends BaseAdapter {
 	 class ViewHolder {
 		 ImageView icon;
 		 TextView text;
+		 TextView text2;
 		 CheckBox checkBox;
 		 }
 	 

@@ -28,15 +28,10 @@
         android:layout_marginRight="6dip"
 
         android:src="@drawable/icon" android:id="@+id/listIcon"/>
-
-    <TextView
-       	android:id="@android:id/text1"
-   		android:layout_width="fill_parent"
-    	android:textAppearance="?android:attr/textAppearanceLarge"
-   		android:gravity="center_vertical"
-    	android:paddingLeft="6dip"
-		android:textColor="@color/Black" 
-		android:layout_toRightOf="@+id/listIcon" android:layout_height="fill_parent"/>
+    <LinearLayout android:id="@+id/linearLayout1" android:layout_toRightOf="@+id/listIcon" android:layout_width="fill_parent" android:layout_height="fill_parent" android:orientation="vertical" android:paddingLeft="6dip">
+        <TextView android:text="TextView" android:layout_width="fill_parent" android:gravity="center_vertical" android:textColor="@color/Black" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_height="wrap_content" android:id="@+id/timelineTitle"></TextView>
+        <TextView android:layout_height="wrap_content" android:id="@+id/groupTitle" android:layout_width="fill_parent"></TextView>
+    </LinearLayout>
 
 
 </RelativeLayout>

@@ -55,7 +55,9 @@ public class TimelineListAdapter extends ArrayAdapter<Experience> {
 				 
 				 holder = new ViewHolder();
 				 holder.icon = (ImageView) convertView.findViewById(R.id.listIcon);
-				 holder.text = (TextView) convertView.findViewById(android.R.id.text1);
+				 holder.text = (TextView) convertView.findViewById(R.id.timelineTitle);
+				 holder.text2 = (TextView) convertView.findViewById(R.id.groupTitle);
+				 
 
 				 convertView.setTag(holder);
 				 
@@ -65,6 +67,7 @@ public class TimelineListAdapter extends ArrayAdapter<Experience> {
 				 
 				 setIconForTimeLineType(experiences.get(position), holder.icon);
 				 holder.text.setText(experiences.get(position).toString());
+				 holder.text2.setText("Shared with: "+experiences.get(position).getSharingGroupObject().toString());
 
 				 return convertView;
 		 }
