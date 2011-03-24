@@ -143,7 +143,7 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 			timelineIntent = getIntent();
 			timelineIntent.setAction(Utilities.INTENT_ACTION_ADD_TO_TIMELINE);
 			timelineIntent.setClass(this, TimelineActivity.class); //Changes the class to start
-			browseAllTimelines(false);
+			browseAllTimelines(Utilities.SHARED_ALL);
 		}
 		
  		syncThread = new Runnable() {
@@ -382,7 +382,7 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 	}
 
 
-	private void browseAllTimelines(boolean shared) {
+	private void browseAllTimelines(int shared) {
 		TimelineBrowserDialog dialog = new TimelineBrowserDialog(this,
 				timelineIntent, shared);
 
@@ -553,14 +553,14 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 	private OnClickListener browseTimeLineListener = new OnClickListener() {
 
 		public void onClick(View v) {
-			browseAllTimelines(false);
+			browseAllTimelines(Utilities.SHARED_FALSE);
 		}
 	};
 	
 	private OnClickListener browseSharedTimeLinesListener = new OnClickListener() {
 
 		public void onClick(View v) {
-			browseAllTimelines(true);		
+			browseAllTimelines(Utilities.SHARED_TRUE);		
 		}
 
 	};
