@@ -15,6 +15,7 @@ import com.fabula.android.timeline.Utilities;
 import com.fabula.android.timeline.TimelineActivity;
 import com.fabula.android.timeline.dialogs.EventDialog;
 import com.fabula.android.timeline.exceptions.MaxZoomedOutException;
+import com.fabula.android.timeline.models.BaseEvent;
 import com.fabula.android.timeline.models.Event;
 import com.fabula.android.timeline.models.Zoom;
 import android.app.Activity;
@@ -47,14 +48,14 @@ import android.widget.LinearLayout.LayoutParams;
  * @author andekr
  *
  */
-public class TimelineGridAdapter extends ArrayAdapter<Event> {
+public class TimelineGridAdapter extends ArrayAdapter<BaseEvent> {
 	
 
 	private Context mContext;
 	private Activity mActivity;
 	private EventDialog dialog;
 	LinearLayout mainLayout;
-	private HashMap<Integer, Event> displayedEvents;
+	private HashMap<Integer, BaseEvent> displayedEvents;
 	int slotNumber;
 	Date currentZoomDate, defaultZoomDate;
 	Zoom ZOOMTYPE;
@@ -63,7 +64,7 @@ public class TimelineGridAdapter extends ArrayAdapter<Event> {
 		super(context, 0);
 		mContext = context;
 		mActivity = activity;
-		displayedEvents = new HashMap<Integer, Event>();
+		displayedEvents = new HashMap<Integer, BaseEvent>();
 		defaultZoomDate = new Date();
 	}
 	
@@ -73,7 +74,7 @@ public class TimelineGridAdapter extends ArrayAdapter<Event> {
 	 * 
 	 * @param event The Event to be added
 	 */
-	public void addEvent(Event event) {
+	public void addEvent(BaseEvent event) {
 		super.add(event);
 		int hour = event.getDatetime().getHours();
 		int minute = event.getDatetime().getMinutes();
@@ -241,7 +242,7 @@ public class TimelineGridAdapter extends ArrayAdapter<Event> {
               imageView.setPadding(0, 0, 0, 0);
               
               if(displayedEvents.containsKey(Integer.valueOf(position))){
-            	  Event ex = displayedEvents.get(position);
+            	  Event ex = (Event) displayedEvents.get(position); //CASTED FROM BASEEVENT TO EVENT
             	  imageView.setTag(ex);
             	  imageView.setImageResource(Utilities.getImageIcon(ex));
             	  
@@ -358,7 +359,7 @@ public class TimelineGridAdapter extends ArrayAdapter<Event> {
 		dialog.updateMainview();
 	}
 
-	public HashMap<Integer, Event> getEvents() {
+	public HashMap<Integer, BaseEvent> getEvents() {
 		return displayedEvents;
 	}
 	
@@ -382,8 +383,9 @@ public class TimelineGridAdapter extends ArrayAdapter<Event> {
        return max;
 	}
 	
+	//CHANGED FROM EVENT TO BASEEVENT BENEATH
 	private void setEventsInHour(Date hour){
-		List<Event> allEvents = ((TimelineActivity)mActivity).getTimeline().getEvents();
+		List<BaseEvent> allEvents = ((TimelineActivity)mActivity).getTimeline().getEvents();
 		
 		if(hour==null){
 			hour = allEvents.get(0).getDatetime();
@@ -393,14 +395,14 @@ public class TimelineGridAdapter extends ArrayAdapter<Event> {
 		
 		displayedEvents.clear();
 		
-		for (Event event : allEvents) {
+		for (BaseEvent event : allEvents) {
 			if(Utilities.isSameHour(event.getDatetime(), hour))
 					addEvent(event);
 		}
 	}
 	
 	private void setEventsInDay(Date day) {
-		List<Event> allEvents = ((TimelineActivity)mActivity).getTimeline().getEvents();
+		List<BaseEvent> allEvents = ((TimelineActivity)mActivity).getTimeline().getEvents();
 		
 		
 		if(day==null){
@@ -408,7 +410,7 @@ public class TimelineGridAdapter extends ArrayAdapter<Event> {
 		}
 		displayedEvents.clear();
 		
-		for (Event events : allEvents) {
+		for (BaseEvent events : allEvents) {
 			Log.i("GRIDADAPTER - GETEXPEVENTSONDAYFROMEXPERIENCE", events.getDatetime().getDate()+" vs "+day);
 			if(Utilities.isSameDay(events.getDatetime(), day))
 				addEvent(events);
@@ -416,14 +418,14 @@ public class TimelineGridAdapter extends ArrayAdapter<Event> {
 	}
 	
 	private void setEventsInWeek(Date week){
-		List<Event> allEvents = ((TimelineActivity)mActivity).getTimeline().getEvents();
+		List<BaseEvent> allEvents = ((TimelineActivity)mActivity).getTimeline().getEvents();
 		if(week==null){
 			week = allEvents.get(0).getDatetime();
 		}
 			
 		displayedEvents.clear();
 
-		for (Event event : allEvents) {
+		for (BaseEvent event : allEvents) {
 			 Calendar cal1 = Calendar.getInstance();
 			  cal1.setTime(event.getDatetime());
 			  Log.i("GRIDADAPTER - GETEXPEVENTSONWEEKFROMEXPERIENCE", cal1.get(Calendar.WEEK_OF_YEAR)+" vs "+week);
@@ -433,7 +435,7 @@ public class TimelineGridAdapter extends ArrayAdapter<Event> {
 	}
 	
 	private void setEventsInMonth(Date month){
-		List<Event> allEvents = ((TimelineActivity)mActivity).getTimeline().getEvents();
+		List<BaseEvent> allEvents = ((TimelineActivity)mActivity).getTimeline().getEvents();
 		
 		if(month==null){
 			try {
@@ -446,7 +448,7 @@ public class TimelineGridAdapter extends ArrayAdapter<Event> {
 		}
 		displayedEvents.clear();
 
-		for (Event event : allEvents) {
+		for (BaseEvent event : allEvents) {
 			 Calendar cal1 = Calendar.getInstance();
 			 cal1.setTime(event.getDatetime());
 			 Log.i("GRIDADAPTER - GETEXPEVENTSONMONTHSFROMEXPERIENCE", cal1.get(Calendar.MONTH)+" mot "+month);
@@ -594,8 +596,8 @@ public class TimelineGridAdapter extends ArrayAdapter<Event> {
 	
 	private Date getHourAndDayZoom(){
 		Event ex = null;
-		 for(Map.Entry<Integer, Event> entry : displayedEvents.entrySet()){
-	        	ex= entry.getValue();
+		 for(Map.Entry<Integer, BaseEvent> entry : displayedEvents.entrySet()){
+	        	ex= (Event) entry.getValue(); //CASTED FROM BaseEvent to Event
 	        	break;
 	        }
 		 if(ex==null)

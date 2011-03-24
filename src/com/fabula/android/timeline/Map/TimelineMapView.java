@@ -11,6 +11,7 @@ import com.fabula.android.timeline.Utilities;
 import com.fabula.android.timeline.contentmanagers.ContentLoader;
 import com.fabula.android.timeline.database.DatabaseHelper;
 import com.fabula.android.timeline.database.TimelineDatabaseHelper;
+import com.fabula.android.timeline.models.BaseEvent;
 import com.fabula.android.timeline.models.Event;
 import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.utilities.MyLocation;
@@ -94,7 +95,7 @@ public class TimelineMapView extends MapActivity {
 	 * Loads all events in the timeline from the database
 	 * @return 
 	 */
-	private ArrayList <Event> loadEventsWithGeolocationFromDatabase() {
+	private ArrayList <BaseEvent> loadEventsWithGeolocationFromDatabase() {
 		contentLoader = new ContentLoader(this);
 		return contentLoader.LoadAllEventsFromDatabase();
 	}
@@ -103,12 +104,12 @@ public class TimelineMapView extends MapActivity {
 	 * Add events to the map overlay
 	 * @param allEvents
 	 */
-	private void addEventsToMap(ArrayList<Event> allEvents) {
+	private void addEventsToMap(ArrayList<BaseEvent> allEvents) {
 		
-		for (Event event : allEvents) {
+		for (BaseEvent event : allEvents) {
 			OverlayItem overlayItem = new OverlayItem(event.getGeoPointLocation(), "", event.getId());
 
-			drawable = this.getResources().getDrawable(Utilities.getMapImageIcon(event));
+			drawable = this.getResources().getDrawable(Utilities.getMapImageIcon((Event)event)); //CASTED FROM BASEEVENT TO EVENT
 			
 			itemizedOverlay = new TimelineMapItemizedOverlay(drawable, this);
 			itemizedOverlay.addOverlay(overlayItem);

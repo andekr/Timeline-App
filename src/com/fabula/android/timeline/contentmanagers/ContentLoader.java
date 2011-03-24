@@ -11,6 +11,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.util.Log;
 
+import com.fabula.android.timeline.models.BaseEvent;
 import com.fabula.android.timeline.models.Emotion;
 import com.fabula.android.timeline.models.Emotion.EmotionColumns;
 import com.fabula.android.timeline.models.Emotion.EmotionEnum;
@@ -47,9 +48,9 @@ public class ContentLoader {
 		this.context = context;
 	}
 	
-	public ArrayList <Event> LoadAllEventsFromDatabase() {
+	public ArrayList <BaseEvent> LoadAllEventsFromDatabase() {
 		
-		ArrayList<Event> allEvents = new ArrayList<Event>();
+		ArrayList<BaseEvent> allEvents = new ArrayList<BaseEvent>();
 		
 		String[] eventTableColumns = new String[]{EventColumns._ID, EventColumns.EVENT_EXPERIENCEID, EventColumns.EVENT_TITLE, EventColumns.EVENT_LOCATION_LAT, EventColumns.EVENT_LOCATION_LNG, EventColumns.IS_SHARED};
 		

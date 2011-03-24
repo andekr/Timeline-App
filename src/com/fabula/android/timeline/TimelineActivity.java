@@ -48,6 +48,7 @@ import com.fabula.android.timeline.database.DatabaseHelper;
 import com.fabula.android.timeline.dialogs.AttachmentAdder;
 import com.fabula.android.timeline.dialogs.EventDialog;
 import com.fabula.android.timeline.exceptions.MaxZoomedOutException;
+import com.fabula.android.timeline.models.BaseEvent;
 import com.fabula.android.timeline.models.Event;
 import com.fabula.android.timeline.models.EventItem;
 import com.fabula.android.timeline.models.Experience;
@@ -96,7 +97,8 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	public boolean sharedExperience;
 	private DatabaseHelper dbHelper;
 	
-	private ArrayList<Event> loadedEvents;
+	private ArrayList<BaseEvent> loadedEvents;
+//	private ArrayList<Event> loadedEvents;
 	private Experience timeline;
 	
 	private Uri imageUri;
@@ -188,10 +190,14 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 		return dbHelper;
 	}
 
-	private ArrayList<Event> loadEventItemsFromDatabase() {
+	private ArrayList<BaseEvent> loadEventItemsFromDatabase() {
 		contentLoader = new ContentLoader(getApplicationContext());
 		return contentLoader.LoadAllEventsFromDatabase();
 	}
+//	private ArrayList<Event> loadEventItemsFromDatabase() {
+//		contentLoader = new ContentLoader(getApplicationContext());
+//		return contentLoader.LoadAllEventsFromDatabase();
+//	}
 
 	@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -301,7 +307,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 			if(resultCode == RESULT_OK) {
 				
 				String id = data.getExtras().getString("EVENT_ID");
-				Event selectedEvent = timeline.getEvent(id);
+				Event selectedEvent = (Event) timeline.getEvent(id);   //CASTED FROM BASEEVENT TO EVENT
 				
 				if(selectedEvent != null) {
 				eventDialog = new EventDialog(this, selectedEvent, this, true);
