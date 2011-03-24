@@ -110,32 +110,20 @@ public class EventProvider extends BaseContentProvider {
 	          throw new IllegalArgumentException("Unsupported URI: " + uri); 
 		}
 	}
+	
+	
 
-//	//update some element in the db
-//	public int update(Uri uri, ContentValues values, String selection,
-//			String[] selectionArgs) {
-//		int count = 0;
-//	      switch (uriMatcher.match(uri)){
-//	         case EVENT:
-//	            count = super.getDatabase().update(
-//	            		SQLStatements.EVENT_DATABASE_TABLE_NAME, 
-//	               values,
-//	               selection, 
-//	               selectionArgs);
-//	            break;
-//	         case EVENT_ID:                
-//	            count = super.getDatabase().update(
-//	            		SQLStatements.EVENT_DATABASE_TABLE_NAME, 
-//	               values,
-//	               EventColumns.EVENT_ID + " = " + uri.getPathSegments().get(1) + 
-//	               (!TextUtils.isEmpty(selection) ? " AND (" + 
-//	                  selection + ')' : ""), 
-//	                selectionArgs);
-//	            break;
-//	         default: throw new IllegalArgumentException(
-//	            "Unknown URI " + uri);    
-//	      }       
-//	      getContext().getContentResolver().notifyChange(uri, null);
-//	      return count;
-//	}
+	@Override
+	public int update(Uri uri, ContentValues values, String selection,
+			String[] selectionArgs) {
+		int count = 0;
+	    count = super.getDatabase().update(
+	               SQLStatements.EVENT_DATABASE_TABLE_NAME, 
+	               values,
+	               selection, 
+	               selectionArgs);
+	    
+	      getContext().getContentResolver().notifyChange(uri, null);
+	      return count;
+	}
 }
