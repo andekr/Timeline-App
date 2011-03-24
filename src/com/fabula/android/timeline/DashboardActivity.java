@@ -124,10 +124,15 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 			}
 		};
 		
-		Thread checkUserThread = new Thread(checkUserRunnable, "checkUserThread");
-		checkUserThread.start();
-		progressDialog = ProgressDialog.show(DashboardActivity.this,    
-	              "", "", true);
+		if(Utilities.isConnectedToInternet(this)){
+			Thread checkUserThread = new Thread(checkUserRunnable, "checkUserThread");
+			checkUserThread.start();
+			progressDialog = ProgressDialog.show(DashboardActivity.this,    
+		              "", "", true);
+		}else{
+			Toast.makeText(this, "You are not connected to Internet. Some functions will not be availiable. But you can still collect your experiences!", Toast.LENGTH_LONG).show();
+		}
+		
 		
 		try {
 			lastSynced = getLastSynced();

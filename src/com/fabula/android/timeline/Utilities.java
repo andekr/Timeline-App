@@ -415,5 +415,12 @@ public class Utilities {
         }
         return sb.toString();
     }
+    
+	public static boolean isConnectedToInternet(Context c){
+		ConnectivityManager connec =  (ConnectivityManager)c.getSystemService(Context.CONNECTIVITY_SERVICE);
+           
+		return (connec.getNetworkInfo(0).isConnectedOrConnecting() ||  connec.getNetworkInfo(1).isConnectedOrConnecting())? true : false;
+		 
+	}
 	
 }

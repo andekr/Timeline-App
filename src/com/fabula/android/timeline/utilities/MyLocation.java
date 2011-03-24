@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import com.fabula.android.timeline.Utilities;
 import com.google.android.maps.GeoPoint;
 
 import android.content.Context;
@@ -100,7 +101,7 @@ public class MyLocation {
 	 * @throws IOException if the Geocoder fails
 	 */
 	public static Address getAddressForLocation(Context context, Location location) throws IOException{
-		if(isConnectedToInternet()){
+		if(Utilities.isConnectedToInternet(context)){
 		    if (location == null) {
 		        return null;
 		    }
@@ -126,13 +127,5 @@ public class MyLocation {
 		}else
 			return null;
 	}
-
-	public static boolean isConnectedToInternet(){
-		ConnectivityManager connec =  (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-           
-		return (connec.getNetworkInfo(0).isConnectedOrConnecting() ||  connec.getNetworkInfo(1).isConnectedOrConnecting())? true : false;
-		 
-	}
-
 
 }
