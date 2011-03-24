@@ -111,8 +111,6 @@ public class EventProvider extends BaseContentProvider {
 		}
 	}
 	
-	
-
 	@Override
 	public int update(Uri uri, ContentValues values, String selection,
 			String[] selectionArgs) {
