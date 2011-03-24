@@ -22,7 +22,7 @@ public class UserAndGroupServiceHandler {
 	public UserAndGroupServiceHandler(ProgressDialogActivity activity, Context context) {
 		this.mContext = context;
 		this.activity = activity;
-		progressDialog = new ProgressDialog(mContext);
+		
 		
 		uGManager = new UserGroupManager(mContext);
 		getUsersAndGroupsRunnable = new Runnable(){
@@ -31,16 +31,19 @@ public class UserAndGroupServiceHandler {
             }
         };
         
-        startDownloadUsersAndGroups();
+//        startDownloadUsersAndGroups();
 	}
     /**
      * Metoden som starter tråden som henter serier fra serveren
      * Kan vises uten progressDialog, som er hendig når man trykker seg tilbake til startskjermen.
      * Evt. endring vil da reflekteres, men uten å hindre brukereren i se på lista. 
+	 * Call this method when you don't want to handle progressbar and threading yourself.
+	 * 
      * 
      * @param showProgressDialog Gir mulighet til å vise/ikke vise progressbar ved lasting av nye elementer.
      */
-	private void startDownloadUsersAndGroups() {
+	public void startDownloadUsersAndGroups() {
+		progressDialog = new ProgressDialog(mContext);
 		Thread thread =  new Thread(null, getUsersAndGroupsRunnable, "getUsersAndGroups");
         thread.start();
         progressDialog = ProgressDialog.show(mContext,    
@@ -67,12 +70,15 @@ public class UserAndGroupServiceHandler {
 			}
 		});
 		
+		downloadUsers();	
+	}
+	private void downloadUsers() {
 		Users selectableUsersFromServer = Downloader.getUsersFromServer();
 		if(selectableUsersFromServer!=null){
 			for (User user : selectableUsersFromServer.getUsers()) {
 				uGManager.addUserToUserDatabase(user);
 			}
-		}	
+		}
 	}	
 	
 	private void getGroupsAndAddToDatabase() {
@@ -81,6 +87,11 @@ public class UserAndGroupServiceHandler {
 				progressDialog.setMessage("Loading my groups ...");
 			}
 		});
+		downloadGroups();
+	}
+	
+	
+	private void downloadGroups() {
 		Groups groupsUserIsConnectedToFromServer = Downloader.getGroupsFromServer(new User(Utilities.getUserAccount(mContext).name));
 		
 		if(groupsUserIsConnectedToFromServer!=null){
@@ -92,4 +103,15 @@ public class UserAndGroupServiceHandler {
 			}
 		}
 	}
+	
+	/**
+	 * Call this method when you handle progressbar and threading yourself.
+	 * 
+	 */
+	public void downloadUsersAndGroups(){
+		uGManager.truncateUserGroupDatabase();
+		downloadUsers();
+		downloadGroups();
+	}
+	
 }

@@ -62,6 +62,7 @@ public class MyGroupsActivity extends Activity implements ProgressDialogActivity
 //		progressDialog = new ProgressDialog(this);
 		
 		userAndGroupServiceHandler = new UserAndGroupServiceHandler(this, this);
+		userAndGroupServiceHandler.startDownloadUsersAndGroups();
 //		getUsersAndGroupsRunnable = new Runnable(){
 //            public void run() {
 //            	getUsersAndGroupsAddToDatabase();

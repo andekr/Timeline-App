@@ -404,6 +404,8 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		// og merge //TODO
 		// Hente inn experiencer som er delt - DONE
 		// Hente ut alle events i alle delte experiencer (kun de som ikke er låst) - DONE
+		UserAndGroupServiceHandler ugHandler =  new UserAndGroupServiceHandler(this, this);
+		ugHandler.downloadUsersAndGroups();
 		ArrayList<Experience> sharedExperiences = contentLoader.LoadAllSharedExperiencesFromDatabase();
 		for (Experience experience : sharedExperiences) {
 			new DatabaseHelper(this, experience.getTitle());
@@ -543,7 +545,8 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 	//listeners
 	private OnClickListener newTimeLineListener = new OnClickListener() {
 		public void onClick(View v) {
-			new UserAndGroupServiceHandler(DashboardActivity.this, DashboardActivity.this);
+			UserAndGroupServiceHandler ugHandler =  new UserAndGroupServiceHandler(DashboardActivity.this, DashboardActivity.this);
+			ugHandler.startDownloadUsersAndGroups();
 		}
 	};
 

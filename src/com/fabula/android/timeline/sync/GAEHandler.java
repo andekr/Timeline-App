@@ -188,7 +188,7 @@ public class GAEHandler {
 	
 	private static class EventSerializer implements JsonSerializer<Event> {
 		public JsonElement serialize(Event src, Type typeOfSrc, JsonSerializationContext context) {
-			  if(src.getEmotionList() !=null && src.getEmotionList().size()==0)
+			  if(src.getEmotionList().size()==0)
 				  src.setEmotionList(null);
 			  			 
 			Gson gson = new Gson();

@@ -126,6 +126,8 @@ public class Event {
 	}
 	
 	public List<Emotion> getEmotionList() {
+		if(emotionList==null)
+			emotionList = new ArrayList<Emotion>();
 		return emotionList;
 	}
 
