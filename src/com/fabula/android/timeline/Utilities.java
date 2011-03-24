@@ -90,6 +90,11 @@ public class Utilities {
     public static int EVENT_TAG_KEY = 100;
     public static int ACTIVITY_TAG_KEY = 101;
     
+    final public static int SHARED_FALSE = 0;
+    final public static int SHARED_TRUE = 1;
+    final public static int SHARED_ALL = 2;
+    
+    
     static File sdCardDirectory = Environment.getExternalStorageDirectory();
     public static String IMAGE_STORAGE_FILEPATH = sdCardDirectory.getPath()+"/data/com.fabula.android.timeline/images/";
     

@@ -46,14 +46,29 @@ public class TimelineBrowserDialog extends Dialog {
  * @param receivedIntent the {@link Intent} that will start {@link TimelineActivity}
  * @param shared Shows shared timelines if true, else all timelines are showed
  */
-public TimelineBrowserDialog(Context context, Intent receivedIntent, boolean shared) {
+public TimelineBrowserDialog(Context context, Intent receivedIntent, int shared) {
 		super(context);
 		this.context = context;
 		ListView view = new ListView(context);
 		directory = new TimelineDirectory();
 		this.receivedIntent = receivedIntent;
 		ContentLoader contentLoader = new ContentLoader(context);
-		ArrayList<Experience> allExperiences = shared ? contentLoader.LoadAllSharedExperiencesFromDatabase() : contentLoader.LoadPrivateExperiencesFromDatabase();
+		ArrayList<Experience> allExperiences =null;
+		switch (shared) {
+		case Utilities.SHARED_ALL:
+			allExperiences = contentLoader.LoadAllExperiencesFromDatabase();
+			break;
+		case Utilities.SHARED_TRUE:
+			allExperiences = contentLoader.LoadAllSharedExperiencesFromDatabase();
+			break;
+		case Utilities.SHARED_FALSE:
+			allExperiences = contentLoader.LoadPrivateExperiencesFromDatabase();
+			break;
+
+		default:
+			allExperiences = contentLoader.LoadAllExperiencesFromDatabase();
+			break;
+		}
 		for (Experience experience : allExperiences) {
 			Log.i("Alle experiences", experience.getTitle()+" Delt: "+experience.isShared());
 		}	
