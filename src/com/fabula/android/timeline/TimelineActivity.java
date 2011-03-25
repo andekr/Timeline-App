@@ -733,7 +733,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	 * @param evIt The {@link EventItem} to be added to the new {@link Event}
 	 */
 	private void createEventAndAddItem(EventItem evIt){
-		Event ev = new Event(timeline.getId(), myLocation.getLocation());
+		Event ev = new Event(timeline.getId(), myLocation.getLocation(), Utilities.getUserAccount(getApplicationContext()));
     	timeline.addEvent(ev);
     	ev.addEventItem(evIt);
     	EventAdapter.updateAdapter();
@@ -1001,11 +1001,12 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	private void setupMoodButtonQuickAction() {
 		final ActionItem veryHappy = new ActionItem();
 		
+		final Account user = Utilities.getUserAccount(getApplicationContext());
 		veryHappy.setIcon(this.getResources().getDrawable(MoodEnum.VERY_HAPPY.getIcon()));
 		veryHappy.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.VERY_HAPPY));
+				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.VERY_HAPPY, user));
 			}
 		});
 				
@@ -1016,7 +1017,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 		happy.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.HAPPY));
+				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.HAPPY, user));
 			}
 		});
 		
@@ -1026,7 +1027,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 		likewise.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.LIKEWISE));
+				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.LIKEWISE, user));
 			}
 		});
 		
@@ -1036,7 +1037,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 		sad.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.SAD));
+				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.SAD, user));
 			}
 		});
 		
@@ -1046,7 +1047,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 		verySad.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.VERY_SAD));
+				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.VERY_SAD, user));
 			}
 		});
         

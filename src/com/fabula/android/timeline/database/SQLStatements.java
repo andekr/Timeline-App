@@ -38,7 +38,8 @@ public class SQLStatements {
         EventColumns.EVENT_LOCATION_LAT + " varchar, " +
         EventColumns.EVENT_LOCATION_LNG + " varchar, " +
         EventColumns.EVENT_TITLE+" long not null, "+
-        EventColumns.IS_SHARED+" INTEGER"+");";
+        EventColumns.IS_SHARED+" INTEGER, "+
+        EventColumns.CREATOR+ " varchar not null"+");";
     
     public static final String EVENT_TO_EVENT_ITEM_DATABASE_CREATE =
         "create table " + EVENT_TO_EVENT_ITEM_DATABASE_TABLE_NAME + 

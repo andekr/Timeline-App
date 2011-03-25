@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import com.google.android.maps.GeoPoint;
 
+import android.accounts.Account;
 import android.location.Location;
 
 public class BaseEvent {
@@ -17,25 +18,29 @@ public class BaseEvent {
 	private double latitude;
 	private long datetimemillis;
 	private boolean shared;
+	private Account user;
+	private String creator;
 	
 	public BaseEvent() {	
 	}
 	
-	public BaseEvent(String exID, Location location) {
+	public BaseEvent(String exID, Location location, Account user) {
 		super();
 		id =  UUID.randomUUID().toString();
 		this.experienceid = exID;
 		
 		setDatetime(new Date());
 		setLocation(location);
+		setUser(user);
 	}
 	
-	public BaseEvent(String id, String exID, Date dateTime, Location location) {
+	public BaseEvent(String id, String exID, Date dateTime, Location location, Account user) {
 		super();
 		this.id = id;
 		this.experienceid = exID;
 		setDatetime(dateTime);
 		setLocation(location);
+		setUser(user);
 	}
 	
 	public String getId() {
@@ -93,9 +98,17 @@ public class BaseEvent {
 		return datetimemillis;
 	}
 
-//	public void setDatetimemillis(long datetimemillis) {
-//		this.datetimemillis = datetimemillis;
-//	}
+	private void setUser(Account user) {
+		this.creator = user.name;
+		this.user = user;
+		
+	}
+	
+	public Account getUser() {
+		if(user==null)
+			this.user = new Account(creator, "com.google");
+		return user;
+	}
 	
 	public GeoPoint getGeoPointLocation() {
 		return new GeoPoint((int)(getLatitude() * 1E6) , (int) (getLongitude() * 1E6));

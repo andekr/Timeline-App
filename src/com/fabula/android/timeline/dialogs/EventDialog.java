@@ -439,7 +439,7 @@ public class EventDialog extends Dialog {
 	}
 	
 	public void extractEventItem(EventItem exItem){
-		Event newEvent = new Event(mEvent.getExperienceid(), mEvent.getLocation());
+		Event newEvent = new Event(mEvent.getExperienceid(), mEvent.getLocation(), Utilities.getUserAccount(mContext));
 		newEvent.addEventItem(exItem);
 		((TimelineActivity)mActivity).addEvent(newEvent);
         if(items.size()==0){
