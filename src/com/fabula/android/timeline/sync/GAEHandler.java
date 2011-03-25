@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
-import android.location.Location;
 import android.util.Log;
 
 import com.fabula.android.timeline.Utilities;
@@ -42,6 +41,8 @@ public class GAEHandler {
 	public static void send(Object object, Activity a){
 //		Serializer serializer = new Persister();
 		GsonBuilder gsonB = new GsonBuilder();
+		gsonB.registerTypeAdapter(MoodEvent.class, new EventSerializer());
+		gsonB.registerTypeAdapter(Event.class, new EventSerializer());
 		gsonB.registerTypeAdapter(Experiences.class, new ExperiencesSerializer());
 		
 		Gson gson = gsonB.create();
@@ -167,7 +168,6 @@ public class GAEHandler {
 		Uploader.deleteUserFromGroupToGAE(selectedGroup);
 	}
 	
-	
 	//Custom serializer to remove empty lists, which Google App Engine can't handle right. Not good coding!
 	
 	private static class ExperiencesSerializer implements JsonSerializer<Experiences> {
@@ -182,9 +182,9 @@ public class GAEHandler {
 						  List<BaseEvent> baseEvents = new ArrayList<BaseEvent>();
 						  try {
 							  for (BaseEvent baseEvent : ex.getEvents()) {
+								  BaseEvent bEvent = new BaseEvent(baseEvent.getId(), baseEvent.getExperienceid(), 
+											baseEvent.getDatetime(), baseEvent.getLocation(), baseEvent.getUser());
 									if(baseEvent instanceof Event){
-										BaseEvent bEvent = new BaseEvent(baseEvent.getId(), baseEvent.getExperienceid(), 
-												baseEvent.getDatetime(), baseEvent.getLocation(), baseEvent.getUser());
 										bEvent.setClassName(baseEvent.getClassName());
 										if(((Event)baseEvent).getEmotionList().size()==0)
 											bEvent.setEmotionList(null);
@@ -200,8 +200,6 @@ public class GAEHandler {
 										
 										baseEvents.add(bEvent);
 									}else if (baseEvent instanceof MoodEvent){
-										BaseEvent bEvent = new BaseEvent(baseEvent.getId(), baseEvent.getExperienceid(), 
-										baseEvent.getDatetime(), baseEvent.getLocation(), baseEvent.getUser());
 										bEvent.setClassName(((MoodEvent)baseEvent).getClassName());
 										bEvent.setMoodInt(((MoodEvent)baseEvent).getMood().getMoodInt());
 										bEvent.setShared(((MoodEvent)baseEvent).isShared());
@@ -220,6 +218,36 @@ public class GAEHandler {
 			 
 			Gson gson = new Gson();
 		    return new JsonParser().parse(gson.toJson(src));
+		  }
+		}
+	
+	private static class EventSerializer implements JsonSerializer<BaseEvent> {
+		  public JsonElement serialize(BaseEvent baseEvent, Type typeOfSrc, JsonSerializationContext context) {
+			  BaseEvent bEvent = new BaseEvent(baseEvent.getId(), baseEvent.getExperienceid(), 
+						baseEvent.getDatetime(), baseEvent.getLocation(), baseEvent.getUser());
+			  if(baseEvent instanceof Event){
+				bEvent.setClassName(baseEvent.getClassName());
+				if(((Event)baseEvent).getEmotionList().size()==0)
+					bEvent.setEmotionList(null);
+				else
+					bEvent.setEmotionList(baseEvent.getEmotionList());
+				
+				if(((Event)baseEvent).getEventItems().size()==0)
+					bEvent.setEventItems(null);
+				else
+					bEvent.setEventItems(((Event)baseEvent).getEventItems());
+				
+				bEvent.setShared(((Event)baseEvent).isShared());
+				
+			}else if (baseEvent instanceof MoodEvent){
+				bEvent.setClassName(((MoodEvent)baseEvent).getClassName());
+				bEvent.setMoodInt(((MoodEvent)baseEvent).getMood().getMoodInt());
+				bEvent.setShared(((MoodEvent)baseEvent).isShared());
+				
+			}
+			 
+			Gson gson = new Gson();
+		    return new JsonParser().parse(gson.toJson(bEvent));
 		  }
 		}
 	

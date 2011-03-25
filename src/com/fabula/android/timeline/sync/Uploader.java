@@ -20,6 +20,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import android.util.Log;
 
 import com.fabula.android.timeline.Utilities;
+import com.fabula.android.timeline.models.BaseEvent;
 import com.fabula.android.timeline.models.Event;
 import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.models.Experiences;
@@ -126,7 +127,7 @@ public class Uploader {
 			httpPut = new HttpPut("/rest/experiences/");
 		else if(o instanceof Experience)
 			httpPut = new HttpPut("/rest/experience/");
-		else if(o instanceof Event)
+		else if(o instanceof BaseEvent)
 			httpPut = new HttpPut("/rest/event/");
 		return httpPut;
 	}
@@ -184,7 +185,7 @@ public class Uploader {
 		sendJSONTOGAEServer(jsonString, targetHost, httpPut);
 		
 	}
-
+	
 	private static void makeHttpRequestContentTypeHeader(HttpRequestBase httpRequest) {
 		// Make sure the server knows what kind of a response we will accept
 		httpRequest.addHeader("Accept", "application/json");

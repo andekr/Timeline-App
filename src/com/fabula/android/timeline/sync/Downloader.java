@@ -58,6 +58,7 @@ public class Downloader {
 			List<BaseEvent> baseEvents = new ArrayList<BaseEvent>();
 			for (Experience experience : experiences.getExperiences()) {
 				for (BaseEvent be : experience.getEvents()) {
+					
 					 Location location = new Location("");
 					 location.setLatitude(be.getLatitude());
 					 location.setLongitude(be.getLongitude());

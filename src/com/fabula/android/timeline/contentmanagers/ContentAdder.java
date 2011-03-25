@@ -111,7 +111,7 @@ public class ContentAdder {
 		 
 		 if(experience.getEvents()!=null){
 			 for (BaseEvent e : experience.getEvents()) {
-				DatabaseHelper eventDatabaseHelper = new DatabaseHelper(context, experience.getTitle());
+				DatabaseHelper eventDatabaseHelper = new DatabaseHelper(context, experience.getTitle()+".db");
 				addEventToEventContentProvider(e);
 				eventDatabaseHelper.close();
 			}
