@@ -744,7 +744,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	private void addMoodEventToTimeline(MoodEvent moodEvent) {
 		timeline.addEvent(moodEvent);
 		EventAdapter.updateAdapter();
-		//TODO add to database aswell
+		contentAdder.addEventToEventContentProvider(moodEvent);
 	}
 	
 	/**

@@ -3,9 +3,13 @@ package com.fabula.android.timeline.models;
 import java.util.Date;
 
 import com.fabula.android.timeline.R;
+import com.fabula.android.timeline.providers.EventProvider;
 
 import android.accounts.Account;
 import android.location.Location;
+import android.net.Uri;
+import android.provider.BaseColumns;
+import android.util.Xml.Encoding;
 
 public class MoodEvent extends BaseEvent{
 	
@@ -40,20 +44,33 @@ public class MoodEvent extends BaseEvent{
 		this.className = className;
 	}
 
-	public enum MoodEnum{
-		VERY_HAPPY(R.drawable.emo_im_happy, 5), HAPPY(R.drawable.emo_im_cool,4), LIKEWISE(R.drawable.emo_im_dislike,3), SAD(R.drawable.emo_im_sad,2), VERY_SAD(R.drawable.emo_im_sad, 1);
+	public enum MoodEnum {
+		VERY_HAPPY(2), HAPPY(1), LIKEWISE(0), SAD(-1), VERY_SAD(-2);
 
-		private int icon;
 		private int type;
 		
-		MoodEnum(int icon, int type){
-			this.icon = icon;
+		MoodEnum(int type){
 			this.type = type;
 		}
 		
 		public int getIcon(){
-			return icon;
+			
+			switch (this) {
+			case VERY_HAPPY:
+				 return R.drawable.emo_im_happy;
+			case HAPPY:
+				return R.drawable.emo_im_cool;
+			case LIKEWISE:
+				 return R.drawable.emo_im_dislike;
+			case SAD:
+				 return R.drawable.emo_im_sad;
+			case VERY_SAD:
+				return R.drawable.emo_im_sad;
+			default:
+				return R.drawable.emo_im_happy;
+			}
 		}
+		
 		public int getMoodInt() {
 			return type;
 		}
@@ -61,8 +78,25 @@ public class MoodEvent extends BaseEvent{
 		public String getName(){
 			return name();
 		}
+		
+		public static MoodEnum getType(int type) {
+			
+			switch (type) {
+			case 2:
+				return MoodEnum.VERY_HAPPY;
+			case 1:
+				return MoodEnum.HAPPY;
+			case 0: 
+				return MoodEnum.LIKEWISE;
+			case -1:
+				return MoodEnum.SAD;
+			case -2:
+				return MoodEnum.VERY_SAD;
+			default:
+				return MoodEnum.VERY_HAPPY;
+			}
+		}
+		
 	}
 	
-	
-
 }

@@ -30,6 +30,8 @@ public class SQLStatements {
 	public static final String USER_DATABASE_TABLE_NAME = "users";
 	public static final String GROUP_DATABASE_TABLE_NAME = "groups";
 	public static final String USER_GROUP_DATABASE_TABLE_NAME = "user_groups";
+	public static final String MOOD_DATABASE_NAME= "mood_events";
+	
 	
     public static final String EVENT_DATABASE_CREATE =
         "create table " + EVENT_DATABASE_TABLE_NAME + 
@@ -39,7 +41,19 @@ public class SQLStatements {
         EventColumns.EVENT_LOCATION_LNG + " varchar, " +
         EventColumns.EVENT_TITLE+" long not null, "+
         EventColumns.IS_SHARED+" INTEGER, "+
-        EventColumns.CREATOR+ " varchar not null"+");";
+        EventColumns.CREATOR+ " varchar not null, "+
+        EventColumns.MOOD + " INTEGER" +");";
+    
+//    public static final String MOOD_EVENT_DATABASE_CREATE =
+//        "create table " + MOOD_DATABASE_NAME + 
+//        " (" + EventColumns.EVENT_ID + " varchar primary key, " +
+//        EventColumns.EVENT_EXPERIENCEID + " varchar, " +
+//        EventColumns.EVENT_LOCATION_LAT + " varchar, " +
+//        EventColumns.EVENT_LOCATION_LNG + " varchar, " +
+//        EventColumns.EVENT_TITLE+" long not null, "+
+//        EventColumns.IS_SHARED+" INTEGER, "+
+//        EventColumns.CREATOR+ " varchar not null, "+
+//        MoodColumns.MOOD+ " varchar not null"+");";
     
     public static final String EVENT_TO_EVENT_ITEM_DATABASE_CREATE =
         "create table " + EVENT_TO_EVENT_ITEM_DATABASE_TABLE_NAME + 
