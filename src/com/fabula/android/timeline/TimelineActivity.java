@@ -451,9 +451,14 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	 */
 	
 	public void openMapView() {
-		Intent mapViewIntent = new Intent(this, TimelineMapView.class);	
-		mapViewIntent.setAction(Utilities.INTENT_ACTION_OPEN_MAP_VIEW_FROM_TIMELINE);
-		startActivityForResult(mapViewIntent, Utilities.MAP_VIEW_ACTIVITY_REQUEST_CODE);
+		if(Utilities.isConnectedToInternet(getApplicationContext())) {
+			Intent mapViewIntent = new Intent(this, TimelineMapView.class);	
+			mapViewIntent.setAction(Utilities.INTENT_ACTION_OPEN_MAP_VIEW_FROM_TIMELINE);
+			startActivityForResult(mapViewIntent, Utilities.MAP_VIEW_ACTIVITY_REQUEST_CODE);
+		}
+		else {
+			Toast.makeText(getApplicationContext(), "You have to be connected to the internett to use this functionality", Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	/**

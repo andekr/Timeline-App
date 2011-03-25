@@ -234,6 +234,7 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		final EditText inputTextField = (EditText)layout.findViewById(R.id.TimelineNameEditText);
 		final ToggleButton shareToggle = (ToggleButton)layout.findViewById(R.id.ShareTimelineToggleButton);
 		
+		shareToggle.setEnabled(Utilities.isConnectedToInternet(mContext));
 		groupList.setOnItemClickListener(new OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> arg0, View view, int position,
@@ -552,8 +553,14 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 	//listeners
 	private OnClickListener newTimeLineListener = new OnClickListener() {
 		public void onClick(View v) {
-			UserAndGroupServiceHandler ugHandler =  new UserAndGroupServiceHandler(DashboardActivity.this, DashboardActivity.this);
-			ugHandler.startDownloadUsersAndGroups();
+				if(Utilities.isConnectedToInternet(getApplicationContext())) {
+					UserAndGroupServiceHandler ugHandler =  new UserAndGroupServiceHandler(DashboardActivity.this, DashboardActivity.this);
+					ugHandler.startDownloadUsersAndGroups();
+				}
+				else {
+					Toast.makeText(getApplicationContext(), "You can only create private timelines in offline mode", Toast.LENGTH_SHORT).show();
+					openDialogForTimelineNameInput();
+				}
 		}
 	};
 
@@ -574,7 +581,12 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 	
 	private OnClickListener openMyGroupsListener = new OnClickListener() {
 		public void onClick(View v) {
-			startActivity(myGroupsIntent);
+			if(Utilities.isConnectedToInternet(getApplicationContext())) {
+				startActivity(myGroupsIntent);
+			}
+			else {
+				Toast.makeText(getApplicationContext(), "You have to be connected to internett to use this functionality", Toast.LENGTH_SHORT).show();
+			}
 		}
 	};
 	
@@ -586,9 +598,15 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 	
 	private OnClickListener syncListener = new OnClickListener() {
 		public void onClick(View v) {
-			Toast.makeText(DashboardActivity.this, "Syncronizing shared timelines with server...", Toast.LENGTH_SHORT).show();
+			
+			if(Utilities.isConnectedToInternet(getApplicationContext())) {
+				Toast.makeText(DashboardActivity.this, "Syncronizing shared timelines with server...", Toast.LENGTH_SHORT).show();
 				Thread shareThread = new Thread(syncThread, "shareThread");
 				shareThread.start();
+			}
+			else {
+				Toast.makeText(getApplicationContext(), "You have to be connected to internett to use this functionaltiy", Toast.LENGTH_SHORT).show();
+			}
 		}
 	};
 	

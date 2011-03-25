@@ -2,6 +2,7 @@ package com.fabula.android.timeline.sync;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.widget.Toast;
 
 import com.fabula.android.timeline.ProgressDialogActivity;
 import com.fabula.android.timeline.Utilities;
@@ -23,15 +24,12 @@ public class UserAndGroupServiceHandler {
 		this.mContext = context;
 		this.activity = activity;
 		
-		
-		uGManager = new UserGroupManager(mContext);
-		getUsersAndGroupsRunnable = new Runnable(){
-            public void run() {
-            	getUsersAndGroupsAddToDatabase();
-            }
-        };
-        
-//        startDownloadUsersAndGroups();
+			uGManager = new UserGroupManager(mContext);
+			getUsersAndGroupsRunnable = new Runnable(){
+	            public void run() {
+	            	getUsersAndGroupsAddToDatabase();
+	            }
+	        };
 	}
     /**
      * Metoden som starter tråden som henter serier fra serveren
