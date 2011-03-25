@@ -1,8 +1,11 @@
 package com.fabula.android.timeline.sync;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
+import android.location.Location;
 import android.util.Log;
 
 import com.fabula.android.timeline.Utilities;
@@ -12,6 +15,7 @@ import com.fabula.android.timeline.models.EventItem;
 import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.models.Experiences;
 import com.fabula.android.timeline.models.Group;
+import com.fabula.android.timeline.models.MoodEvent;
 import com.fabula.android.timeline.models.SimplePicture;
 import com.fabula.android.timeline.models.User;
 import com.google.gson.Gson;
@@ -39,7 +43,6 @@ public class GAEHandler {
 //		Serializer serializer = new Persister();
 		GsonBuilder gsonB = new GsonBuilder();
 		gsonB.registerTypeAdapter(Experiences.class, new ExperiencesSerializer());
-		gsonB.registerTypeAdapter(Event.class, new EventSerializer());
 		
 		Gson gson = gsonB.create();
 //		File sdCardDirectory = Environment.getExternalStorageDirectory();
@@ -96,15 +99,16 @@ public class GAEHandler {
 			    	for (Experience ex : ((Experiences) object).getExperiences()) {
 			    		if(((Experience) ex).getEvents()!=null){
 				    		for (BaseEvent baseEvent : ex.getEvents()) {
-				    			Event event = (Event) baseEvent; //CASTED FROM BASEEVENT TO EVENT
-					    		for (EventItem eventI : event.getEventItems()) {
-							    	if(eventI instanceof SimplePicture){
-							    		Uploader.uploadFile(Utilities.IMAGE_STORAGE_FILEPATH+((SimplePicture)eventI).getPictureFilename(), ((SimplePicture)eventI).getPictureFilename());
-							    	}
-								}
+				    			if(baseEvent.getEventItems()!=null){
+						    		for (EventItem eventI : baseEvent.getEventItems()) {
+								    	if(eventI instanceof SimplePicture){
+								    		Uploader.uploadFile(Utilities.IMAGE_STORAGE_FILEPATH+((SimplePicture)eventI).getPictureFilename(), ((SimplePicture)eventI).getPictureFilename());
+								    	}
+									}
+				    			}
 							}
 			    		}
-					}
+					} 
 		    	}
 		    	
 		    }else if(object instanceof Event){
@@ -164,7 +168,7 @@ public class GAEHandler {
 	}
 	
 	
-	//Custom serializer to remove empty lists, which Google App Engine can't handle right.
+	//Custom serializer to remove empty lists, which Google App Engine can't handle right. Not good coding!
 	
 	private static class ExperiencesSerializer implements JsonSerializer<Experiences> {
 		  public JsonElement serialize(Experiences src, Type typeOfSrc, JsonSerializationContext context) {
@@ -175,11 +179,41 @@ public class GAEHandler {
 					 if(ex.getEvents().size()==0)
 						 ex.setEvents(null);
 					  else{
-						  for (BaseEvent baseEvent : ex.getEvents()) {
-							  Event event = (Event) baseEvent;   //CASTED FROM EVENT TO BASEEVENT
-							  if(event.getEmotionList().size()==0)
-								   event.setEmotionList(null);
+						  List<BaseEvent> baseEvents = new ArrayList<BaseEvent>();
+						  try {
+							  for (BaseEvent baseEvent : ex.getEvents()) {
+									if(baseEvent instanceof Event){
+										BaseEvent bEvent = new BaseEvent(baseEvent.getId(), baseEvent.getExperienceid(), 
+												baseEvent.getDatetime(), baseEvent.getLocation(), baseEvent.getUser());
+										bEvent.setClassName(baseEvent.getClassName());
+										if(((Event)baseEvent).getEmotionList().size()==0)
+											bEvent.setEmotionList(null);
+										else
+											bEvent.setEmotionList(baseEvent.getEmotionList());
+										
+										if(((Event)baseEvent).getEventItems().size()==0)
+											bEvent.setEventItems(null);
+										else
+											bEvent.setEventItems(((Event)baseEvent).getEventItems());
+										
+										bEvent.setShared(((Event)baseEvent).isShared());
+										
+										baseEvents.add(bEvent);
+									}else if (baseEvent instanceof MoodEvent){
+										BaseEvent bEvent = new BaseEvent(baseEvent.getId(), baseEvent.getExperienceid(), 
+										baseEvent.getDatetime(), baseEvent.getLocation(), baseEvent.getUser());
+										bEvent.setClassName(((MoodEvent)baseEvent).getClassName());
+										bEvent.setMoodInt(((MoodEvent)baseEvent).getMood().getMoodInt());
+										bEvent.setShared(((MoodEvent)baseEvent).isShared());
+										
+										baseEvents.add(bEvent);
+									}
+							}
+							  ex.setEvents(baseEvents);
+						} catch (Exception e) {
+							e.printStackTrace();
 						}
+						
 					  }
 				  }
 			  }
@@ -189,15 +223,8 @@ public class GAEHandler {
 		  }
 		}
 	
-	private static class EventSerializer implements JsonSerializer<Event> {
-		public JsonElement serialize(Event src, Type typeOfSrc, JsonSerializationContext context) {
-			  if(src.getEmotionList().size()==0)
-				  src.setEmotionList(null);
-			  			 
-			Gson gson = new Gson();
-		    return new JsonParser().parse(gson.toJson(src));
-		  }
-		}
+	
+	
 
 
 

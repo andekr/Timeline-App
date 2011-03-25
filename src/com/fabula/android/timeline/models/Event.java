@@ -26,9 +26,12 @@ public class Event extends BaseEvent {
 //	private long datetimemillis;
 	private List<EventItem> eventItems;
 	private List<Emotion> emotionList;
+	private String className;
 //	private boolean shared;
 	
-	public Event(){}
+	public Event(){
+		className = this.getClass().getSimpleName();
+	}
 	
 	public Event(String exID, Location location, Account user) {
 		super(exID, location, user);
@@ -36,6 +39,7 @@ public class Event extends BaseEvent {
 //		this.experienceid = exID;
 		eventItems = new ArrayList<EventItem>();
 		emotionList = new ArrayList<Emotion>();
+		className = this.getClass().getSimpleName();
 //		setLocation(location);
 	}
 	
@@ -45,6 +49,7 @@ public class Event extends BaseEvent {
 //		this.experienceid = exID;
 		eventItems = new ArrayList<EventItem>();
 		emotionList = new ArrayList<Emotion>();
+		className = this.getClass().getSimpleName();
 //		setDatetime(dateTime);
 //		setLocation(location);
 	}
@@ -141,6 +146,14 @@ public class Event extends BaseEvent {
 //	public int isSharedAsInt() {
 //		return isShared() ? 1 : 0;
 //	}
+
+	public String getClassName() {
+		return className;
+	}
+
+	public void setClassName(String className) {
+		this.className = className;
+	}
 
 	public static final class EventColumns implements BaseColumns {
 		

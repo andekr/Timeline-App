@@ -1,8 +1,10 @@
 package com.fabula.android.timeline.models;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
+import com.fabula.android.timeline.models.MoodEvent.MoodEnum;
 import com.google.android.maps.GeoPoint;
 
 import android.accounts.Account;
@@ -17,9 +19,14 @@ public class BaseEvent {
 	private double longitude;
 	private double latitude;
 	private long datetimemillis;
-	private boolean shared;
-	private Account user;
+	protected boolean shared;
+	private transient Account user;
 	private String creator;
+	//For GSON
+	private String className;
+	private int mood;
+	private List<EventItem> eventItems;
+	private List<Emotion> emotionList;
 	
 	public BaseEvent() {	
 	}
@@ -125,5 +132,38 @@ public class BaseEvent {
 	public int isSharedAsInt() {
 		return isShared() ? 1 : 0;
 	}
+
+	public String getClassName() {
+		return className;
+	}
+
+	public void setClassName(String className) {
+		this.className = className;
+	}
+
+	public int getMoodInt() {
+		return mood;
+	}
+
+	public void setMoodInt(int mood) {
+		this.mood = mood;
+	}
+
+	public List<EventItem> getEventItems() {
+		return eventItems;
+	}
+
+	public void setEventItems(List<EventItem> eventItems) {
+		this.eventItems = eventItems;
+	}
+
+	public List<Emotion> getEmotionList() {
+		return emotionList;
+	}
+
+	public void setEmotionList(List<Emotion> emotionList) {
+		this.emotionList = emotionList;
+	}
+	
 
 }
