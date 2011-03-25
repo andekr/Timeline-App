@@ -52,7 +52,7 @@ public class ContentLoader {
 		
 		ArrayList<BaseEvent> allEvents = new ArrayList<BaseEvent>();
 		
-		String[] eventTableColumns = new String[]{EventColumns._ID, EventColumns.EVENT_EXPERIENCEID, EventColumns.EVENT_TITLE, EventColumns.EVENT_LOCATION_LAT, EventColumns.EVENT_LOCATION_LNG, EventColumns.IS_SHARED};
+		String[] eventTableColumns = new String[]{EventColumns._ID, EventColumns.EVENT_EXPERIENCEID, EventColumns.EVENT_TITLE, EventColumns.EVENT_LOCATION_LAT, EventColumns.EVENT_LOCATION_LNG, EventColumns.IS_SHARED, EventColumns.CREATOR};
 		
 		Cursor c = context.getContentResolver().query(EventColumns.CONTENT_URI, eventTableColumns, null, null, null);
 		
@@ -62,7 +62,6 @@ public class ContentLoader {
 				Location location = new Location("");
 				location.setLatitude(Double.parseDouble(c.getString(c.getColumnIndex(EventColumns.EVENT_LOCATION_LAT))));
 				location.setLongitude(Double.parseDouble(c.getString(c.getColumnIndex(EventColumns.EVENT_LOCATION_LNG))));
-				System.out.println("CREATOR OF EVENT: " +c.getString(c.getColumnIndex(EventColumns.CREATOR)));
 				Event event = new Event(c.getString(c.getColumnIndex(EventColumns._ID)),
 						c.getString(c.getColumnIndex(EventColumns.EVENT_EXPERIENCEID)), 
 						createdDate,
