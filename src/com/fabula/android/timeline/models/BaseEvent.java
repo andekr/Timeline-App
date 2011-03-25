@@ -19,12 +19,12 @@ public class BaseEvent {
 	private double longitude;
 	private double latitude;
 	private long datetimemillis;
-	private boolean shared;
+	protected boolean shared;
 	private transient Account user;
 	private String creator;
 	//For GSON
 	private String className;
-	private MoodEnum mood;
+	private int mood;
 	private List<EventItem> eventItems;
 	private List<Emotion> emotionList;
 	
@@ -141,11 +141,11 @@ public class BaseEvent {
 		this.className = className;
 	}
 
-	public MoodEnum getMood() {
+	public int getMoodInt() {
 		return mood;
 	}
 
-	public void setMood(MoodEnum mood) {
+	public void setMoodInt(int mood) {
 		this.mood = mood;
 	}
 

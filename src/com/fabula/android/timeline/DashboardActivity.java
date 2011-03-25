@@ -414,8 +414,9 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		ugHandler.downloadUsersAndGroups();
 		ArrayList<Experience> sharedExperiences = contentLoader.LoadAllSharedExperiencesFromDatabase();
 		for (Experience experience : sharedExperiences) {
-			new DatabaseHelper(this, experience.getTitle());
-			experience.setEvents(contentLoader.LoadAllEventsFromDatabase());//TODO: Hente ut creator i contentLoader
+			new DatabaseHelper(this, experience.getTitle()+".db");
+			experience.setEvents(contentLoader.LoadAllEventsFromDatabase());
+			//TODO: Hente ut creator i contentLoader
 			DatabaseHelper.getCurrentTimelineDatabase().close();
 		}
 		

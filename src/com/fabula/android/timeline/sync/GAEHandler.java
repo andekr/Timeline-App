@@ -1,8 +1,11 @@
 package com.fabula.android.timeline.sync;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
+import android.location.Location;
 import android.util.Log;
 
 import com.fabula.android.timeline.Utilities;
@@ -105,7 +108,7 @@ public class GAEHandler {
 				    			}
 							}
 			    		}
-					}
+					} 
 		    	}
 		    	
 		    }else if(object instanceof Event){
@@ -176,29 +179,41 @@ public class GAEHandler {
 					 if(ex.getEvents().size()==0)
 						 ex.setEvents(null);
 					  else{
-						  for (BaseEvent baseEvent : ex.getEvents()) {
-								if(baseEvent instanceof Event){
-									BaseEvent bEvent = new BaseEvent(baseEvent.getId(), baseEvent.getExperienceid(), 
-											baseEvent.getDatetime(), baseEvent.getLocation(), baseEvent.getUser());
-									bEvent.setClassName(baseEvent.getClassName());
-									if(((Event)baseEvent).getEmotionList().size()==0)
-										bEvent.setEmotionList(null);
-									else
-										bEvent.setEmotionList(baseEvent.getEmotionList());
-									
-									if(((Event)baseEvent).getEventItems().size()==0)
-										bEvent.setEventItems(null);
-									else
-										bEvent.setEventItems(((Event)baseEvent).getEventItems());
-									
-									ex.getEvents().add(bEvent);
-									ex.getEvents().remove(baseEvent);
-								}else if (baseEvent instanceof MoodEvent){
-									baseEvent = (BaseEvent)baseEvent;
-									baseEvent.setClassName(((MoodEvent)baseEvent).getClassName());
-									baseEvent.setMood(((MoodEvent)baseEvent).getMood());
-								}
+						  List<BaseEvent> baseEvents = new ArrayList<BaseEvent>();
+						  try {
+							  for (BaseEvent baseEvent : ex.getEvents()) {
+									if(baseEvent instanceof Event){
+										BaseEvent bEvent = new BaseEvent(baseEvent.getId(), baseEvent.getExperienceid(), 
+												baseEvent.getDatetime(), baseEvent.getLocation(), baseEvent.getUser());
+										bEvent.setClassName(baseEvent.getClassName());
+										if(((Event)baseEvent).getEmotionList().size()==0)
+											bEvent.setEmotionList(null);
+										else
+											bEvent.setEmotionList(baseEvent.getEmotionList());
+										
+										if(((Event)baseEvent).getEventItems().size()==0)
+											bEvent.setEventItems(null);
+										else
+											bEvent.setEventItems(((Event)baseEvent).getEventItems());
+										
+										bEvent.setShared(((Event)baseEvent).isShared());
+										
+										baseEvents.add(bEvent);
+									}else if (baseEvent instanceof MoodEvent){
+										BaseEvent bEvent = new BaseEvent(baseEvent.getId(), baseEvent.getExperienceid(), 
+										baseEvent.getDatetime(), baseEvent.getLocation(), baseEvent.getUser());
+										bEvent.setClassName(((MoodEvent)baseEvent).getClassName());
+										bEvent.setMoodInt(((MoodEvent)baseEvent).getMood().getMoodInt());
+										bEvent.setShared(((MoodEvent)baseEvent).isShared());
+										
+										baseEvents.add(bEvent);
+									}
+							}
+							  ex.setEvents(baseEvents);
+						} catch (Exception e) {
+							e.printStackTrace();
 						}
+						
 					  }
 				  }
 			  }

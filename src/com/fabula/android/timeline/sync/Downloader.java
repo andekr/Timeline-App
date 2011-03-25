@@ -4,6 +4,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -13,16 +16,22 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.accounts.Account;
+import android.location.Location;
 import android.util.Log;
 
 import com.fabula.android.timeline.Utilities;
+import com.fabula.android.timeline.models.BaseEvent;
+import com.fabula.android.timeline.models.Event;
 import com.fabula.android.timeline.models.EventItem;
+import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.models.Experiences;
 import com.fabula.android.timeline.models.Groups;
+import com.fabula.android.timeline.models.MoodEvent;
 import com.fabula.android.timeline.models.SimpleNote;
 import com.fabula.android.timeline.models.SimplePicture;
 import com.fabula.android.timeline.models.User;
 import com.fabula.android.timeline.models.Users;
+import com.fabula.android.timeline.models.MoodEvent.MoodEnum;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -46,6 +55,28 @@ public class Downloader {
 			
 			Reader r = new InputStreamReader(getJSONData("/rest/experiences/"+user.getUserName()+"/")); 
 			Experiences experiences = gson.fromJson(r, Experiences.class);
+			List<BaseEvent> baseEvents = new ArrayList<BaseEvent>();
+			for (Experience experience : experiences.getExperiences()) {
+				for (BaseEvent be : experience.getEvents()) {
+					 Location location = new Location("");
+					 location.setLatitude(be.getLatitude());
+					 location.setLongitude(be.getLongitude());
+					if(be.getClassName().equals(Event.class.getSimpleName())){
+						BaseEvent bEvent = new BaseEvent(be.getId(), be.getExperienceid(), 
+								new Date(be.getDatetimemillis()),location, be.getUser());
+						bEvent.setEmotionList(be.getEmotionList());
+						bEvent.setEventItems(be.getEventItems());
+						bEvent.setShared(be.isShared());
+						baseEvents.add(bEvent);
+					}else if(be.getClassName().equals(MoodEvent.class.getSimpleName())){
+						MoodEvent me = new MoodEvent(be.getId(), be.getExperienceid(), 
+								new Date(be.getDatetimemillis()), location, MoodEnum.getType(be.getMoodInt()) , be.getUser());
+						be.setShared(be.isShared());
+						baseEvents.add(me);
+					}
+				}
+				experience.setEvents(baseEvents);
+			}
 			Log.i("DOWNLOADER", "Fetched "+experiences.getExperiences().size()+" experiences");
 			return experiences;
 		} catch (Exception e) {
@@ -168,5 +199,38 @@ public class Downloader {
 		  }
 		}
 	
+//	public static class EventDeserializer implements JsonDeserializer<BaseEvent> {
+//		  public BaseEvent deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+//		      throws JsonParseException {
+//			  
+//			 String className = json.getAsJsonObject().get("className").getAsString();
+//			 String id = json.getAsJsonObject().get("id").getAsString();
+//			 String exID = json.getAsJsonObject().get("experienceid").getAsString();
+//			 double latitude = json.getAsJsonObject().get("latitude").getAsDouble();
+//			 double longitude = json.getAsJsonObject().get("longitude").getAsDouble();
+//			 Date dateTime = new Date(json.getAsJsonObject().get("datetimemillis").getAsLong());
+//			 Location location = new Location("");
+//			 location.setLatitude(latitude);
+//			 location.setLongitude(longitude);
+//			 Account user = new Account(json.getAsJsonObject().get("creator").getAsString(), "com.google");
+//			 json.getAsJsonObject().getAsJsonArray("datetimemillis");
+//			 
+//			 BaseEvent be;
+//			if(className.equals("Event")){
+//				be = new Event(id, exID, dateTime, location, user);
+//				be.setEmotionList(emotionList)
+//				be.setEventItems(eventItems)
+//				  return ei;
+//			}else if(className.equals("SimpleNote")){
+//				String noteTitle = json.getAsJsonObject().get("noteTitle").getAsString();
+//				String noteText = json.getAsJsonObject().get("noteText").getAsString();
+//				ei = new SimpleNote(id, noteTitle, noteText, creator);
+//				  return ei;
+//			} else 
+//				  return null;
+//			  
+//		  }
+//		}
+
 
 }

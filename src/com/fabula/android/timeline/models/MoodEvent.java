@@ -2,30 +2,33 @@ package com.fabula.android.timeline.models;
 
 import java.util.Date;
 
-import com.fabula.android.timeline.R;
-import com.fabula.android.timeline.providers.EventProvider;
-
 import android.accounts.Account;
 import android.location.Location;
-import android.net.Uri;
-import android.provider.BaseColumns;
-import android.util.Xml.Encoding;
+
+import com.fabula.android.timeline.R;
 
 public class MoodEvent extends BaseEvent{
 	
 	private MoodEnum mood;
 	private String className;
+	
+	public MoodEvent(){
+		className = this.getClass().getSimpleName();
+		setShared(true);
+	}
 
 	public MoodEvent(String experienceID, Location location, MoodEnum mood, Account user) {
 		super(experienceID, location, user);
 		this.mood = mood;
 		className = this.getClass().getSimpleName();
+		setShared(true);
 	}
 	
 	public MoodEvent(String id, String experienceID, Date dateTime, Location location, MoodEnum mood, Account user) {
 		super(id, experienceID, dateTime, location, user);
 		this.mood = mood;
 		className = this.getClass().getSimpleName();
+		setShared(true);
 	}
 
 	public MoodEnum getMood() {
@@ -42,6 +45,14 @@ public class MoodEvent extends BaseEvent{
 
 	public void setClassName(String className) {
 		this.className = className;
+	}
+
+	public boolean isShared() {
+		return shared;
+	}
+
+	public void setShared(boolean shared) {
+		this.shared = shared;
 	}
 
 	public enum MoodEnum {
