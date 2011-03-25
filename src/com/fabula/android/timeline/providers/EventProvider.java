@@ -43,6 +43,7 @@ public class EventProvider extends BaseContentProvider {
        eventsProjectionMap.put(EventColumns.EVENT_LOCATION_LAT, EventColumns.EVENT_LOCATION_LAT);
        eventsProjectionMap.put(EventColumns.EVENT_LOCATION_LNG, EventColumns.EVENT_LOCATION_LNG);
        eventsProjectionMap.put(EventColumns.IS_SHARED, EventColumns.IS_SHARED);
+       eventsProjectionMap.put(EventColumns.CREATOR, EventColumns.CREATOR);
     }
     
 	//insert some element in the DB

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+
+import android.accounts.Account;
 import android.location.Location;
 import android.net.Uri;
 import android.provider.BaseColumns;
@@ -28,8 +30,8 @@ public class Event extends BaseEvent {
 	
 	public Event(){}
 	
-	public Event(String exID, Location location) {
-		super(exID, location);
+	public Event(String exID, Location location, Account user) {
+		super(exID, location, user);
 //		super(exID, location);
 //		this.experienceid = exID;
 		eventItems = new ArrayList<EventItem>();
@@ -37,8 +39,8 @@ public class Event extends BaseEvent {
 //		setLocation(location);
 	}
 	
-	public Event(String id, String exID, Date dateTime, Location location) {
-		super(id, exID, dateTime, location);
+	public Event(String id, String exID, Date dateTime, Location location, Account user) {
+		super(id, exID, dateTime, location, user);
 //		this.id = id;
 //		this.experienceid = exID;
 		eventItems = new ArrayList<EventItem>();
@@ -152,6 +154,7 @@ public class Event extends BaseEvent {
 		public static final String EVENT_TITLE = "event_title";
 		public static final String EVENT_ITEMS_ID = "event_items_id";
 		public static final String IS_SHARED = "event_is_shared";
+		public static final String CREATOR = "event_creator";
 	}
 	
 }

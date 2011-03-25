@@ -67,7 +67,12 @@ public class TimelineListAdapter extends ArrayAdapter<Experience> {
 				 
 				 setIconForTimeLineType(experiences.get(position), holder.icon);
 				 holder.text.setText(experiences.get(position).toString());
-				 holder.text2.setText("Shared with: "+experiences.get(position).getSharingGroupObject().toString());
+				 try {
+					 holder.text2.setText("Shared with: "+experiences.get(position).getSharingGroupObject().toString());
+				} catch (NullPointerException e) {
+					 holder.text2.setText("Private timeline");
+				}
+				
 
 				 return convertView;
 		 }

@@ -62,10 +62,13 @@ public class ContentLoader {
 				Location location = new Location("");
 				location.setLatitude(Double.parseDouble(c.getString(c.getColumnIndex(EventColumns.EVENT_LOCATION_LAT))));
 				location.setLongitude(Double.parseDouble(c.getString(c.getColumnIndex(EventColumns.EVENT_LOCATION_LNG))));
+				System.out.println("CREATOR OF EVENT: " +c.getString(c.getColumnIndex(EventColumns.CREATOR)));
 				Event event = new Event(c.getString(c.getColumnIndex(EventColumns._ID)),
 						c.getString(c.getColumnIndex(EventColumns.EVENT_EXPERIENCEID)), 
 						createdDate,
-						location);	
+						location,
+						new Account(c.getString(c.getColumnIndex(EventColumns.CREATOR)), "com.google"));
+				
 				event.setShared((c.getInt((c.getColumnIndex(EventColumns.IS_SHARED)))==1) ? true : false);
 				loadAllEmotions(event);
 				loadAllConnectedEventItems(event);

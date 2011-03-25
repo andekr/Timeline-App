@@ -46,11 +46,11 @@ public class GroupListAdapter extends ArrayAdapter<Group> {
 		
 		if (convertView == null) {
 			
-			 convertView = mInflater.inflate(R.layout.list_timeline_view, null, false);
+			 convertView = mInflater.inflate(R.layout.group_list_view, null, false);
 			 
 			 holder = new ViewHolder();
-			 holder.icon = (ImageView) convertView.findViewById(R.id.listIcon);
-			 holder.text = (TextView) convertView.findViewById(android.R.id.text1);		 
+			 holder.icon = (ImageView) convertView.findViewById(R.id.groupListIcon);
+			 holder.text = (TextView) convertView.findViewById(R.id.titleOfGroupInList);		 
 			 convertView.setTag(holder);
 			 
 		 } else {

@@ -4,19 +4,20 @@ import java.util.Date;
 
 import com.fabula.android.timeline.R;
 
+import android.accounts.Account;
 import android.location.Location;
 
 public class MoodEvent extends BaseEvent{
 	
 	private MoodEnum mood;
 
-	public MoodEvent(String experienceID, Location location, MoodEnum veryHappy) {
-		super(experienceID, location);
-		this.mood = veryHappy;
+	public MoodEvent(String experienceID, Location location, MoodEnum mood, Account user) {
+		super(experienceID, location, user);
+		this.mood = mood;
 	}
 	
-	public MoodEvent(String id, String experienceID, Date dateTime, Location location, MoodEnum mood) {
-		super(id, experienceID, dateTime, location);
+	public MoodEvent(String id, String experienceID, Date dateTime, Location location, MoodEnum mood, Account user) {
+		super(id, experienceID, dateTime, location, user);
 		this.mood = mood;
 	}
 
