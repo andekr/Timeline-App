@@ -1008,6 +1008,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 			
 			public void onClick(View v) {
 				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.VERY_HAPPY, user));
+				qa.dismiss();
 			}
 		});
 				
@@ -1019,6 +1020,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 			
 			public void onClick(View v) {
 				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.HAPPY, user));
+				qa.dismiss();
 			}
 		});
 		
@@ -1029,6 +1031,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 			
 			public void onClick(View v) {
 				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.LIKEWISE, user));
+				qa.dismiss();
 			}
 		});
 		
@@ -1039,6 +1042,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 			
 			public void onClick(View v) {
 				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.SAD, user));
+				qa.dismiss();
 			}
 		});
 		
@@ -1049,6 +1053,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 			
 			public void onClick(View v) {
 				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.VERY_SAD, user));
+				qa.dismiss();
 			}
 		});
         
