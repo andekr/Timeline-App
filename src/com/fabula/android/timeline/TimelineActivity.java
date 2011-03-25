@@ -155,6 +155,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
         timeline = new Experience(experienceID, databaseName, sharedExperience, new Account(experienceCreator, "com.google"));
         
         timeline.setEvents(loadedEvents);
+        System.out.println("ANTALL HENTEDE EVENTS! : " + timeline.getEvents().size());
         
         setupViews(); 
         setupMoodButtonQuickAction();
