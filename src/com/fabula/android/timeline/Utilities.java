@@ -118,21 +118,26 @@ public class Utilities {
 		return R.drawable.ic_menu_archive;
 	}
 	
-	public static int getMapImageIcon(Event ex) {
+	public static int getMapImageIcon(BaseEvent ex) {
 		
-		if(ex.getEventItems().size()==1){
-			if(ex.getEventItems().get(0) instanceof SimplePicture){
-				return R.drawable.mapicon_photo;
-			}else if(ex.getEventItems().get(0) instanceof SimpleRecording){
-				return R.drawable.mapicon_audio;
-			}else if(ex.getEventItems().get(0) instanceof SimpleVideo){
-				return R.drawable.mapicon_video;
-			}else if(ex.getEventItems().get(0) instanceof SimpleAttachment){
-				return R.drawable.mapicon_note;
-			}else if(ex.getEventItems().get(0) instanceof SimpleNote){
-				return R.drawable.mapicon_note;
+		if(ex instanceof Event) {
+			if(ex.getEventItems().size()==1){
+				if(ex.getEventItems().get(0) instanceof SimplePicture){
+					return R.drawable.mapicon_photo;
+				}else if(ex.getEventItems().get(0) instanceof SimpleRecording){
+					return R.drawable.mapicon_audio;
+				}else if(ex.getEventItems().get(0) instanceof SimpleVideo){
+					return R.drawable.mapicon_video;
+				}else if(ex.getEventItems().get(0) instanceof SimpleAttachment){
+					return R.drawable.mapicon_note;
+				}else if(ex.getEventItems().get(0) instanceof SimpleNote){
+					return R.drawable.mapicon_note;
+				}
 			}
+		}else {
+			return R.drawable.ic_menu_emoticons;
 		}
+
 		return R.drawable.mapicon_note;
 	}
 	

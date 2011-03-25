@@ -50,6 +50,7 @@ import com.fabula.android.timeline.contentmanagers.ContentUpdater;
 import com.fabula.android.timeline.database.DatabaseHelper;
 import com.fabula.android.timeline.dialogs.AttachmentAdder;
 import com.fabula.android.timeline.dialogs.EventDialog;
+import com.fabula.android.timeline.dialogs.MoodDialog;
 import com.fabula.android.timeline.exceptions.MaxZoomedOutException;
 import com.fabula.android.timeline.models.BaseEvent;
 import com.fabula.android.timeline.models.Emotion;
@@ -118,6 +119,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	
 	private SimpleGestureFilter detector;
 	private EventDialog eventDialog;
+	private MoodDialog moodDialog;
 
 	/** Called when the activity is first created. */
     @Override
@@ -318,11 +320,17 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 			if(resultCode == RESULT_OK) {
 				
 				String id = data.getExtras().getString("EVENT_ID");
-				Event selectedEvent = (Event) timeline.getEvent(id);   //CASTED FROM BASEEVENT TO EVENT
+				BaseEvent selectedEvent =  timeline.getEvent(id);   //CASTED FROM BASEEVENT TO EVENT
 				
 				if(selectedEvent != null) {
-				eventDialog = new EventDialog(this, selectedEvent, this, true);
-				eventDialog.show();
+					if (selectedEvent instanceof Event) {
+						eventDialog = new EventDialog(this, (Event)selectedEvent, this, true);
+						eventDialog.show();
+					}
+					else {
+						moodDialog = new MoodDialog(this, (MoodEvent) selectedEvent);
+						moodDialog.show();
+					}
 				}
 			}
 
@@ -452,9 +460,14 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	 */
 	
 	public void openMapView() {
-		Intent mapViewIntent = new Intent(this, TimelineMapView.class);	
-		mapViewIntent.setAction(Utilities.INTENT_ACTION_OPEN_MAP_VIEW_FROM_TIMELINE);
-		startActivityForResult(mapViewIntent, Utilities.MAP_VIEW_ACTIVITY_REQUEST_CODE);
+		if(Utilities.isConnectedToInternet(getApplicationContext())) {
+			Intent mapViewIntent = new Intent(this, TimelineMapView.class);	
+			mapViewIntent.setAction(Utilities.INTENT_ACTION_OPEN_MAP_VIEW_FROM_TIMELINE);
+			startActivityForResult(mapViewIntent, Utilities.MAP_VIEW_ACTIVITY_REQUEST_CODE);
+		}
+		else {
+			Toast.makeText(getApplicationContext(), "You have to be connected to the internett to use this functionality", Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	/**

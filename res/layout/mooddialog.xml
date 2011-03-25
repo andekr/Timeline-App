@@ -12,6 +12,6 @@
 <LinearLayout
   android:orientation="vertical" android:background="@color/White" android:layout_below="@+id/mooddialogheader" android:layout_height="fill_parent" android:layout_width="fill_parent">
     <ImageView android:src="@drawable/icon" android:id="@+id/mooddialogpicture" android:layout_gravity="center_horizontal" android:layout_height="fill_parent" android:layout_width="fill_parent" android:scaleType="fitXY"></ImageView>
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/mooddialogcreator" android:textColorHighlight="@color/Grey" android:textSize="14dip" android:paddingLeft="10dip" android:layout_gravity="center_horizontal"></TextView>
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/mooddialogcreator" android:textColorHighlight="@color/Grey" android:textSize="14dip" android:paddingLeft="10dip" android:layout_gravity="center_horizontal" android:text="TEST"></TextView>
 </LinearLayout>
 </RelativeLayout>

@@ -31,8 +31,5 @@ public class MoodDialog extends Dialog{
 		creatorText.setText("Added by: " +moodEvent.getUser().name);
 		this.mContext = context;
 		this.moodEvent = moodEvent;
-		
-		
 	}
-
 }

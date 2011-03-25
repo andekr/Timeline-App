@@ -107,8 +107,14 @@ public class EventDialog extends Dialog {
  		final ToggleButton shareButton = (ToggleButton)findViewById(R.id.PopupShareButton);
  		shareButton.setTag(this.mEvent);
  		shareButton.setChecked(mEvent.isShared());
-		shareButton.setEnabled(!mEvent.isShared());
  		
+ 		if(((TimelineActivity)activity).getTimeline().isShared() && Utilities.isConnectedToInternet(mContext)) {
+ 			shareButton.setEnabled(!mEvent.isShared());
+ 		}
+ 		else {
+ 			shareButton.setEnabled(false);
+ 		}
+		
  		shareButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

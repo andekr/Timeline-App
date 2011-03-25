@@ -109,7 +109,7 @@ public class TimelineMapView extends MapActivity {
 		for (BaseEvent event : allEvents) {
 			OverlayItem overlayItem = new OverlayItem(event.getGeoPointLocation(), "", event.getId());
 
-			drawable = this.getResources().getDrawable(Utilities.getMapImageIcon((Event)event)); //CASTED FROM BASEEVENT TO EVENT
+			drawable = this.getResources().getDrawable(Utilities.getMapImageIcon(event)); //CASTED FROM BASEEVENT TO EVENT
 			
 			itemizedOverlay = new TimelineMapItemizedOverlay(drawable, this);
 			itemizedOverlay.addOverlay(overlayItem);
