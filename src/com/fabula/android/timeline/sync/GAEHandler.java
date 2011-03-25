@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.util.Log;
 
 import com.fabula.android.timeline.Utilities;
+import com.fabula.android.timeline.models.BaseEvent;
 import com.fabula.android.timeline.models.Event;
 import com.fabula.android.timeline.models.EventItem;
 import com.fabula.android.timeline.models.Experience;
@@ -94,7 +95,8 @@ public class GAEHandler {
 		    	if(((Experiences) object).getExperiences()!=null){
 			    	for (Experience ex : ((Experiences) object).getExperiences()) {
 			    		if(((Experience) ex).getEvents()!=null){
-				    		for (Event event : ex.getEvents()) {
+				    		for (BaseEvent baseEvent : ex.getEvents()) {
+				    			Event event = (Event) baseEvent; //CASTED FROM BASEEVENT TO EVENT
 					    		for (EventItem eventI : event.getEventItems()) {
 							    	if(eventI instanceof SimplePicture){
 							    		Uploader.uploadFile(Utilities.IMAGE_STORAGE_FILEPATH+((SimplePicture)eventI).getPictureFilename(), ((SimplePicture)eventI).getPictureFilename());
@@ -173,7 +175,8 @@ public class GAEHandler {
 					 if(ex.getEvents().size()==0)
 						 ex.setEvents(null);
 					  else{
-						  for (Event event : ex.getEvents()) {
+						  for (BaseEvent baseEvent : ex.getEvents()) {
+							  Event event = (Event) baseEvent;   //CASTED FROM EVENT TO BASEEVENT
 							  if(event.getEmotionList().size()==0)
 								   event.setEmotionList(null);
 						}

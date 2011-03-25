@@ -4,6 +4,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 
+import net.londatiga.android.ActionItem;
+import net.londatiga.android.QuickAction;
+
 import android.accounts.Account;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -48,14 +51,19 @@ import com.fabula.android.timeline.database.DatabaseHelper;
 import com.fabula.android.timeline.dialogs.AttachmentAdder;
 import com.fabula.android.timeline.dialogs.EventDialog;
 import com.fabula.android.timeline.exceptions.MaxZoomedOutException;
+import com.fabula.android.timeline.models.BaseEvent;
+import com.fabula.android.timeline.models.Emotion;
 import com.fabula.android.timeline.models.Event;
 import com.fabula.android.timeline.models.EventItem;
 import com.fabula.android.timeline.models.Experience;
+import com.fabula.android.timeline.models.MoodEvent;
+import com.fabula.android.timeline.models.MoodEvent.MoodEnum;
 import com.fabula.android.timeline.models.SimpleNote;
 import com.fabula.android.timeline.models.SimplePicture;
 import com.fabula.android.timeline.models.SimpleRecording;
 import com.fabula.android.timeline.models.SimpleVideo;
 import com.fabula.android.timeline.models.Zoom;
+import com.fabula.android.timeline.models.Emotion.EmotionEnum;
 import com.fabula.android.timeline.utilities.MyLocation;
 
 
@@ -73,7 +81,7 @@ import com.fabula.android.timeline.utilities.MyLocation;
  */
 public class TimelineActivity extends Activity implements SimpleGestureListener {
 	
-	private LinearLayout cameraButton, videoCameraButton, audioRecorderButton, createNoteButton, attachmentButton, openMapViewButton;
+	private LinearLayout cameraButton, videoCameraButton, audioRecorderButton, createNoteButton, attachmentButton, moodButton;
 	private TextView screenTitle;
 	private TimelineGridAdapter EventAdapter;
 	private Event selectedEvent;
@@ -91,12 +99,14 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	private ImageButton homeButton;
 	private int backCounter = 0;
 	private String intentFilename;
+	private QuickAction qa;
 
 	public String databaseName, experienceID, experienceCreator;
 	public boolean sharedExperience;
 	private DatabaseHelper dbHelper;
 	
-	private ArrayList<Event> loadedEvents;
+	private ArrayList<BaseEvent> loadedEvents;
+//	private ArrayList<Event> loadedEvents;
 	private Experience timeline;
 	
 	private Uri imageUri;
@@ -145,8 +155,9 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
         timeline = new Experience(experienceID, databaseName, sharedExperience, new Account(experienceCreator, "com.google"));
         
         timeline.setEvents(loadedEvents);
-         
+        
         setupViews(); 
+        setupMoodButtonQuickAction();
        
         //If the activity is started with a send-Intent(e.g. via share button in the Gallery), the item is added to the Timeline
         if(getIntent().getAction().equals(Utilities.INTENT_ACTION_ADD_TO_TIMELINE)){
@@ -188,10 +199,14 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 		return dbHelper;
 	}
 
-	private ArrayList<Event> loadEventItemsFromDatabase() {
+	private ArrayList<BaseEvent> loadEventItemsFromDatabase() {
 		contentLoader = new ContentLoader(getApplicationContext());
 		return contentLoader.LoadAllEventsFromDatabase();
 	}
+//	private ArrayList<Event> loadEventItemsFromDatabase() {
+//		contentLoader = new ContentLoader(getApplicationContext());
+//		return contentLoader.LoadAllEventsFromDatabase();
+//	}
 
 	@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -301,7 +316,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 			if(resultCode == RESULT_OK) {
 				
 				String id = data.getExtras().getString("EVENT_ID");
-				Event selectedEvent = timeline.getEvent(id);
+				Event selectedEvent = (Event) timeline.getEvent(id);   //CASTED FROM BASEEVENT TO EVENT
 				
 				if(selectedEvent != null) {
 				eventDialog = new EventDialog(this, selectedEvent, this, true);
@@ -507,7 +522,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
     		
     	attachmentButton = (LinearLayout)findViewById(R.id.MenuAttachmentButton);
     	attachmentButton.setOnClickListener(addAttachmentListener);
-    	
+     	
     	scrollview = (HorizontalScrollView) findViewById(R.id.HorizontalScrollView01);
     	scrollview.setScrollContainer(true);
     	
@@ -620,6 +635,14 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 			startAttachmentDialog();
 		}
 	};
+	
+//	private OnClickListener addMoodListener = new OnClickListener() {
+//		
+//		public void onClick(View v) {
+//			
+//			
+//		}
+//	};
 		
 
 	
@@ -715,6 +738,12 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
     	ev.addEventItem(evIt);
     	EventAdapter.updateAdapter();
     	contentAdder.addEventToEventContentProvider(ev);
+	}
+	
+	private void addMoodEventToTimeline(MoodEvent moodEvent) {
+		timeline.addEvent(moodEvent);
+		EventAdapter.updateAdapter();
+		//TODO add to database aswell
 	}
 	
 	/**
@@ -964,10 +993,81 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	    return true;
 	}
 	
-  @Override
-public void onConfigurationChanged(Configuration newConfig) {
-	super.onConfigurationChanged(newConfig);
-}
+	  @Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+	}
+	  
+	private void setupMoodButtonQuickAction() {
+		final ActionItem veryHappy = new ActionItem();
+		
+		veryHappy.setIcon(this.getResources().getDrawable(MoodEnum.VERY_HAPPY.getIcon()));
+		veryHappy.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.VERY_HAPPY));
+			}
+		});
+				
+				
+		final ActionItem happy = new ActionItem();
+		
+		happy.setIcon(this.getResources().getDrawable(MoodEnum.HAPPY.getIcon()));
+		happy.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.HAPPY));
+			}
+		});
+		
+		final ActionItem likewise = new ActionItem();
+		
+		likewise.setIcon(this.getResources().getDrawable(MoodEnum.LIKEWISE.getIcon()));
+		likewise.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.LIKEWISE));
+			}
+		});
+		
+		final ActionItem sad = new ActionItem();
+		
+		sad.setIcon(this.getResources().getDrawable(MoodEnum.SAD.getIcon()));
+		sad.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.SAD));
+			}
+		});
+		
+		final ActionItem verySad = new ActionItem();
+		
+		verySad.setIcon(this.getResources().getDrawable(MoodEnum.VERY_SAD.getIcon()));
+		verySad.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.VERY_SAD));
+			}
+		});
+        
+    	moodButton = (LinearLayout) findViewById(R.id.MenuMoodButton);
+		moodButton.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				qa = new QuickAction(v);
+				
+				qa.addActionItem(veryHappy);
+				qa.addActionItem(happy);
+				qa.addActionItem(likewise);
+				qa.addActionItem(sad);
+				qa.addActionItem(verySad);
+				qa.setAnimStyle(QuickAction.ANIM_AUTO);
+				qa.show();
+				
+			}
+		});
+		
+	}	
   
 	
 }

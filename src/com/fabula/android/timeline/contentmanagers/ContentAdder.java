@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.fabula.android.timeline.database.DatabaseHelper;
+import com.fabula.android.timeline.models.BaseEvent;
 import com.fabula.android.timeline.models.Emotion;
 import com.fabula.android.timeline.models.Event;
 import com.fabula.android.timeline.models.EventItem;
@@ -33,7 +34,7 @@ public class ContentAdder {
 		this.context = context;
 	}
 	
-	public void addEventToEventContentProvider(Event event) {
+	public void addEventToEventContentProvider(BaseEvent event) {
 		
 		 ContentValues values = new ContentValues();
 		 
@@ -51,7 +52,7 @@ public class ContentAdder {
 		 
 		 context.getContentResolver().insert(EventColumns.CONTENT_URI, values);
 		 
-		 addEventItemsToDB(event);
+		 addEventItemsToDB((Event)event); //Casted from BaseEvent to Event
 		 
 		 Log.i("CONTENT ADDER", "Added event to DB: " + event.getId());
 	}
@@ -96,7 +97,7 @@ public class ContentAdder {
 		 context.getContentResolver().insert(ExperienceColumns.CONTENT_URI, values);
 		 
 		 if(experience.getEvents()!=null){
-			 for (Event e : experience.getEvents()) {
+			 for (BaseEvent e : experience.getEvents()) {
 				DatabaseHelper eventDatabaseHelper = new DatabaseHelper(context, experience.getTitle());
 				addEventToEventContentProvider(e);
 				eventDatabaseHelper.close();

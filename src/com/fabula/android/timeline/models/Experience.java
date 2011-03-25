@@ -24,7 +24,7 @@ public class Experience {
 	private boolean shared;
 	private transient Account user;
 	private String creator;
-	private List<Event> events;
+	private List<BaseEvent> events;
 	private Uri uriToExperience;
 	private transient Group sharingGroupObject;
 	private String sharingGroup;
@@ -72,17 +72,17 @@ public class Experience {
 	public void setShared(boolean shared) {
 		this.shared = shared;
 	}
-	public List<Event> getEvents() {
+	public List<BaseEvent> getEvents() {
 		return events;
 	}
-	public void setEvents(List<Event> events) {
+	public void setEvents(List<BaseEvent> events) {
 		this.events = events;
 	}
-	public void addEvent(Event event){
+	public void addEvent(BaseEvent event){
 		this.events.add(event);
 	}
 	
-	public void removeEvent(Event event){
+	public void removeEvent(BaseEvent event){
 		this.events.remove(event);
 	}
 	
@@ -93,9 +93,9 @@ public class Experience {
 		return uriToExperience;
 	}
 	
-	public Event getEvent(String eventId) {
+	public BaseEvent getEvent(String eventId) {
 		
-		for (Event event : events) {
+		for (BaseEvent event : events) {
 			if(event.getId().equals(eventId)) 
 				return event;
 		}
@@ -145,7 +145,7 @@ public class Experience {
 	public float getTimeScopeOfExperience(){
 		float min=0, max=0, diff;//Min blir aldri satt!
 		
-		for (Event event : events) {
+		for (BaseEvent event : events) {
 			if(min==0)
 				min = event.getDatetimemillis();
 			
@@ -165,7 +165,7 @@ public class Experience {
 		Date min = null, max = null;
 		
 		
-		for (Event event : events) {
+		for (BaseEvent event : events) {
 			if(min==null)
 				min = event.getDatetime();
 			if(max==null)
