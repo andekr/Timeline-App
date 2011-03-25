@@ -65,15 +65,15 @@ public class SimpleNote extends EventItem{
         noteTextView.setTag(this);
         noteTextView.setText(noteText);
         noteTextView.setTextSize(20);
-        noteTextView.setTextColor(context.getResources().getColor(R.color.White));
-        noteTextView.setLinkTextColor(context.getResources().getColor(R.color.White));
+        noteTextView.setTextColor(context.getResources().getColor(R.color.Black));
+        noteTextView.setLinkTextColor(context.getResources().getColor(R.color.Black));
         Linkify.addLinks( noteTextView, Linkify.ALL);
         
         TextView noteTitleTextView = new TextView(context);
         noteTitleTextView.setTag(this);
         noteTitleTextView.setText(noteTitle);
         noteTitleTextView.setTextSize(14);
-        noteTitleTextView.setTextColor(context.getResources().getColor(R.color.White));
+        noteTitleTextView.setTextColor(context.getResources().getColor(R.color.Black));
         
 
         textLayout.setClickable(true);
