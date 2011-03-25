@@ -368,7 +368,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		if(shared) {
 			timeLine.setSharingGroupObject(group);
 			timelineIntent.putExtra(Utilities.SHARED_WITH_REQUEST, timeLine.getSharingGroupObject().getId());
-			GAEHandler.addGroupToServer(group);
 		}
 		
 		contentAdder.addExperienceToTimelineContentProvider(timeLine);
