@@ -373,6 +373,7 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		contentAdder.addExperienceToTimelineContentProvider(timeLine);
 		new DatabaseHelper(this, databaseName);
 		startActivity(timelineIntent);
+		DatabaseHelper.getCurrentTimelineDatabase().close();
 	}
 
 
@@ -489,20 +490,21 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 	
 	@Override
 	public void finish() {
-		closeDatabaseHelpers();
 		super.finish();
+		closeDatabaseHelpers();
 	}
 	
 	@Override
 	protected void onPause() {
-		closeDatabaseHelpers();
 		super.onPause();
+		closeDatabaseHelpers();
 	}
 	
 	@Override
 	protected void onResume() {
-		setupDatabaseHelpers();
 		super.onResume();
+		setupDatabaseHelpers();
+		
 	}
 	
 	@Override

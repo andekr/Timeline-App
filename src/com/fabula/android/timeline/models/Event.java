@@ -155,6 +155,7 @@ public class Event extends BaseEvent {
 		public static final String EVENT_ITEMS_ID = "event_items_id";
 		public static final String IS_SHARED = "event_is_shared";
 		public static final String CREATOR = "event_creator";
+		public static final String MOOD = "mood";
 	}
 	
 }

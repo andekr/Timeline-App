@@ -613,9 +613,9 @@ public class TimelineGridAdapter extends ArrayAdapter<BaseEvent> {
 	}
 	
 	private Date getHourAndDayZoom(){
-		Event ex = null;
+		BaseEvent ex = null;
 		 for(Map.Entry<Integer, BaseEvent> entry : displayedEvents.entrySet()){
-	        	ex= (Event) entry.getValue(); //CASTED FROM BaseEvent to Event
+	        	ex =  entry.getValue(); //CASTED FROM BaseEvent to Event
 	        	break;
 	        }
 		 if(ex==null)

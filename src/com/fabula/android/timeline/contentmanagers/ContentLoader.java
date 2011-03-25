@@ -23,6 +23,8 @@ import com.fabula.android.timeline.models.Group;
 import com.fabula.android.timeline.models.Group.GroupColumns;
 import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.models.ModelType;
+import com.fabula.android.timeline.models.MoodEvent;
+import com.fabula.android.timeline.models.MoodEvent.MoodEnum;
 import com.fabula.android.timeline.models.SimpleNote;
 import com.fabula.android.timeline.models.SimpleNote.NoteColumns;
 import com.fabula.android.timeline.models.SimplePicture;
@@ -52,7 +54,7 @@ public class ContentLoader {
 		
 		ArrayList<BaseEvent> allEvents = new ArrayList<BaseEvent>();
 		
-		String[] eventTableColumns = new String[]{EventColumns._ID, EventColumns.EVENT_EXPERIENCEID, EventColumns.EVENT_TITLE, EventColumns.EVENT_LOCATION_LAT, EventColumns.EVENT_LOCATION_LNG, EventColumns.IS_SHARED, EventColumns.CREATOR};
+		String[] eventTableColumns = new String[]{EventColumns._ID, EventColumns.EVENT_EXPERIENCEID, EventColumns.EVENT_TITLE, EventColumns.EVENT_LOCATION_LAT, EventColumns.EVENT_LOCATION_LNG, EventColumns.IS_SHARED, EventColumns.CREATOR, EventColumns.MOOD};
 		
 		Cursor c = context.getContentResolver().query(EventColumns.CONTENT_URI, eventTableColumns, null, null, null);
 		
@@ -62,17 +64,27 @@ public class ContentLoader {
 				Location location = new Location("");
 				location.setLatitude(Double.parseDouble(c.getString(c.getColumnIndex(EventColumns.EVENT_LOCATION_LAT))));
 				location.setLongitude(Double.parseDouble(c.getString(c.getColumnIndex(EventColumns.EVENT_LOCATION_LNG))));
-				Event event = new Event(c.getString(c.getColumnIndex(EventColumns._ID)),
-						c.getString(c.getColumnIndex(EventColumns.EVENT_EXPERIENCEID)), 
-						createdDate,
-						location,
-						new Account(c.getString(c.getColumnIndex(EventColumns.CREATOR)), "com.google"));
 				
-				event.setShared((c.getInt((c.getColumnIndex(EventColumns.IS_SHARED)))==1) ? true : false);
-				loadAllEmotions(event);
-				loadAllConnectedEventItems(event);
-				allEvents.add(event);
-						
+				if(((Integer) c.getInt(c.getColumnIndex(EventColumns.MOOD)) == 1000)) {
+					Event event = new Event(c.getString(c.getColumnIndex(EventColumns._ID)),
+							c.getString(c.getColumnIndex(EventColumns.EVENT_EXPERIENCEID)), 
+							createdDate,
+							location,
+							new Account(c.getString(c.getColumnIndex(EventColumns.CREATOR)), "com.google"));
+					
+					event.setShared((c.getInt((c.getColumnIndex(EventColumns.IS_SHARED)))==1) ? true : false);
+					loadAllEmotions(event);
+					loadAllConnectedEventItems(event);
+					allEvents.add(event);
+				}else {
+					MoodEvent moodEvent = new MoodEvent(c.getString(c.getColumnIndex(EventColumns._ID)),
+							c.getString(c.getColumnIndex(EventColumns.EVENT_EXPERIENCEID)), 
+							createdDate,
+							location,
+							MoodEnum.getType(c.getInt(c.getColumnIndex(EventColumns.MOOD))),
+							new Account(c.getString(c.getColumnIndex(EventColumns.CREATOR)), "com.google"));
+					allEvents.add(moodEvent);
+				}	
 			}while(c.moveToNext());
 		}
 		c.close();
