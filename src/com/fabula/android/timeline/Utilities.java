@@ -25,7 +25,9 @@ import android.net.NetworkInfo.State;
 import android.os.Environment;
 import android.provider.MediaStore;
 
+import com.fabula.android.timeline.models.BaseEvent;
 import com.fabula.android.timeline.models.Event;
+import com.fabula.android.timeline.models.MoodEvent;
 import com.fabula.android.timeline.models.SimpleAttachment;
 import com.fabula.android.timeline.models.SimpleNote;
 import com.fabula.android.timeline.models.SimplePicture;
@@ -99,6 +101,7 @@ public class Utilities {
     public static String IMAGE_STORAGE_FILEPATH = sdCardDirectory.getPath()+"/data/com.fabula.android.timeline/images/";
     
 	public static int getImageIcon(Event ex){
+		
 		if(ex.getEventItems().size()==1){
 			if(ex.getEventItems().get(0) instanceof SimplePicture){
 				return R.drawable.ic_menu_camera;
@@ -422,5 +425,6 @@ public class Utilities {
 		return (connec.getNetworkInfo(0).isConnectedOrConnecting() ||  connec.getNetworkInfo(1).isConnectedOrConnecting())? true : false;
 		 
 	}
+
 	
 }

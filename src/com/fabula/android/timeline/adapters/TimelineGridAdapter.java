@@ -14,9 +14,11 @@ import com.fabula.android.timeline.R;
 import com.fabula.android.timeline.Utilities;
 import com.fabula.android.timeline.TimelineActivity;
 import com.fabula.android.timeline.dialogs.EventDialog;
+import com.fabula.android.timeline.dialogs.MoodDialog;
 import com.fabula.android.timeline.exceptions.MaxZoomedOutException;
 import com.fabula.android.timeline.models.BaseEvent;
 import com.fabula.android.timeline.models.Event;
+import com.fabula.android.timeline.models.MoodEvent;
 import com.fabula.android.timeline.models.Zoom;
 import android.app.Activity;
 import android.content.Context;
@@ -31,6 +33,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnCreateContextMenuListener;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
@@ -59,6 +62,7 @@ public class TimelineGridAdapter extends ArrayAdapter<BaseEvent> {
 	int slotNumber;
 	Date currentZoomDate, defaultZoomDate;
 	Zoom ZOOMTYPE;
+	private MoodDialog moodDialog;
 
 	public TimelineGridAdapter(Context context, Activity activity) {
 		super(context, 0);
@@ -242,9 +246,16 @@ public class TimelineGridAdapter extends ArrayAdapter<BaseEvent> {
               imageView.setPadding(0, 0, 0, 0);
               
               if(displayedEvents.containsKey(Integer.valueOf(position))){
-            	  Event ex = (Event) displayedEvents.get(position); //CASTED FROM BASEEVENT TO EVENT
+            	  BaseEvent ex = displayedEvents.get(position); //CASTED FROM BASEEVENT TO EVENT
             	  imageView.setTag(ex);
-            	  imageView.setImageResource(Utilities.getImageIcon(ex));
+            	  if(ex instanceof Event) {
+            		  imageView.setImageResource(Utilities.getImageIcon((Event)ex));
+            	  }
+            	  else if(ex instanceof MoodEvent) {
+            		  imageView.setImageResource(((MoodEvent) ex).getMood().getIcon());
+            	  }
+
+            	  
             	  
             	  imageView.setOnClickListener(new View.OnClickListener() {
 				
@@ -299,13 +310,20 @@ public class TimelineGridAdapter extends ArrayAdapter<BaseEvent> {
     		}
     		if(!showing){
             //set up dialog
-            dialog = new EventDialog(mContext,(Event)v.getTag(),mActivity, false);
-            dialog.setOnCancelListener(new OnCancelListener() {
-    			public void onCancel(DialogInterface dialog) {
-    				((TimelineActivity)mActivity).setSelectedEvent(null);
-    			}
-    		});
-            dialog.show();
+    		if((BaseEvent) v.getTag() instanceof Event) {
+                dialog = new EventDialog(mContext,(Event)v.getTag(),mActivity, false);
+                dialog.setOnCancelListener(new OnCancelListener() {
+        			public void onCancel(DialogInterface dialog) {
+        				((TimelineActivity)mActivity).setSelectedEvent(null);
+        			}
+        		});
+                dialog.show();
+    		}
+    		else if((BaseEvent) v.getTag() instanceof MoodEvent) {
+    			moodDialog = new MoodDialog(mContext, (MoodEvent)v.getTag());
+    			moodDialog.show();
+    		}
+
     		}
     	}else if (v instanceof TextView){
     		switch (ZOOMTYPE.getType()) {
