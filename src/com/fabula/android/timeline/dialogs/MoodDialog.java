@@ -28,6 +28,7 @@ public class MoodDialog extends Dialog{
 		
 		titleText.setText("Your Mood");
 		moodPicture.setImageResource(moodEvent.getMood().getIcon());
+		creatorText.setText("Added by: " +moodEvent.getUser().name);
 		this.mContext = context;
 		this.moodEvent = moodEvent;
 		
