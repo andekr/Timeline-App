@@ -10,15 +10,18 @@ import android.location.Location;
 public class MoodEvent extends BaseEvent{
 	
 	private MoodEnum mood;
+	private String className;
 
 	public MoodEvent(String experienceID, Location location, MoodEnum mood, Account user) {
 		super(experienceID, location, user);
 		this.mood = mood;
+		className = this.getClass().getSimpleName();
 	}
 	
 	public MoodEvent(String id, String experienceID, Date dateTime, Location location, MoodEnum mood, Account user) {
 		super(id, experienceID, dateTime, location, user);
 		this.mood = mood;
+		className = this.getClass().getSimpleName();
 	}
 
 	public MoodEnum getMood() {
@@ -29,6 +32,14 @@ public class MoodEvent extends BaseEvent{
 		this.mood = mood;
 	}
 	
+	public String getClassName() {
+		return className;
+	}
+
+	public void setClassName(String className) {
+		this.className = className;
+	}
+
 	public enum MoodEnum{
 		VERY_HAPPY(R.drawable.emo_im_happy, 5), HAPPY(R.drawable.emo_im_cool,4), LIKEWISE(R.drawable.emo_im_dislike,3), SAD(R.drawable.emo_im_sad,2), VERY_SAD(R.drawable.emo_im_sad, 1);
 

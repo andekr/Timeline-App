@@ -119,7 +119,7 @@ public TimelineBrowserDialog(Context context, Intent receivedIntent, int shared)
 	};
 	
 	protected void openExperience(Experience experience) {
-		String databaseName = experience.getTitle();
+		String databaseName = experience.getTitle() + ".db";
 		boolean shared = experience.isShared();
 		String id = experience.getId();
 		
