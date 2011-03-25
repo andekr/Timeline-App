@@ -130,9 +130,9 @@ public class GAEHandler {
 	    System.out.println("Lagrer JSON på Google App Engine: "+jsonString);
 	    Uploader.putGroupToGAE(jsonString);
 	    
-	    for (User user : groupToAdd.getMembers()) {
-			addUserToGroupOnServer(groupToAdd, user);
-		}
+//	    for (User user : groupToAdd.getMembers()) {
+//			addUserToGroupOnServer(groupToAdd, user);
+//		}
 	}
 	
 
