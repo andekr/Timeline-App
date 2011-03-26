@@ -26,7 +26,7 @@ public class MoodDialog extends Dialog{
 		moodPicture = (ImageView) findViewById(R.id.mooddialogpicture);
 		
 		dateText.setText(DateFormat.format
-       		 ("dd MMMM yyyy "+DateFormat.HOUR_OF_DAY+":mm:ss",moodEvent.getDatetime()));
+       		 ("dd MM yy "+DateFormat.HOUR_OF_DAY+":mm:ss",moodEvent.getDatetime()));
 		if(moodEvent.isAverage())
 			creatorText.setText("Current average");
 		else
