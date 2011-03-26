@@ -4,11 +4,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import com.fabula.android.timeline.models.MoodEvent.MoodEnum;
-import com.google.android.maps.GeoPoint;
-
 import android.accounts.Account;
 import android.location.Location;
+
+import com.google.android.maps.GeoPoint;
 
 public class BaseEvent {
 	
@@ -27,6 +26,7 @@ public class BaseEvent {
 	private int mood;
 	private List<EventItem> eventItems;
 	private List<Emotion> emotionList;
+	private boolean average;
 	
 	public BaseEvent() {	
 	}
@@ -163,6 +163,14 @@ public class BaseEvent {
 
 	public void setEmotionList(List<Emotion> emotionList) {
 		this.emotionList = emotionList;
+	}
+
+	public boolean isAverage() {
+		return average;
+	}
+
+	public void setAverage(boolean average) {
+		this.average = average;
 	}
 	
 

@@ -39,58 +39,22 @@ public class GAEHandler {
 	 * @param a Needs {@link Activity} to get the path of the content?
 	 */
 	public static void send(Object object, Activity a){
-//		Serializer serializer = new Persister();
 		GsonBuilder gsonB = new GsonBuilder();
 		gsonB.registerTypeAdapter(MoodEvent.class, new EventSerializer());
 		gsonB.registerTypeAdapter(Event.class, new EventSerializer());
 		gsonB.registerTypeAdapter(Experiences.class, new ExperiencesSerializer());
 		
 		Gson gson = gsonB.create();
-//		File sdCardDirectory = Environment.getExternalStorageDirectory();
-//		File result = new File(sdCardDirectory.getPath()+"/experiences.txt");
 		String jsonString ="";
 
 		try {
 			jsonString = gson.toJson(object, object.getClass());
-//			serializer.write(object, result);
 		} catch (Exception e) {
 			Log.e("save", e.getMessage());
 		}
-//		
-//		 FileInputStream fis = null;
-//		    BufferedInputStream bis = null;
-//		    DataInputStream dis = null;
-//
-//		
-//		 try {
-//		      fis = new FileInputStream(result);
-//
-//		      // Here BufferedInputStream is added for fast reading.
-//		      bis = new BufferedInputStream(fis);
-//		      dis = new DataInputStream(bis);
-//
-//		      // dis.available() returns 0 if the file does not have more lines.
-//		      while (dis.available() != 0) {
-//
-//		      // this statement reads the line from the file and print it to
-//		        // the console.
-//		        System.out.println(dis.readLine());
-//		      }
-//
-//		      // dispose all the resources after using them.
-//		      fis.close();
-//		      bis.close();
-//		      dis.close();
-//
-//		    } catch (FileNotFoundException e) {
-//		      e.printStackTrace();
-//		    } catch (IOException e) {
-//		      e.printStackTrace();
-//		    }
 		
 		    //Saving json to server
 		    System.out.println("Lagrer JSON på Google App Engine: "+jsonString);
-//		    Uploader.uploadFile(result.getPath(), result.getPath());
 		    Uploader.putToGAE(object, jsonString);
 		    
 		    //Saving pictures to server
@@ -135,9 +99,6 @@ public class GAEHandler {
 	    System.out.println("Lagrer JSON på Google App Engine: "+jsonString);
 	    Uploader.putGroupToGAE(jsonString);
 	    
-//	    for (User user : groupToAdd.getMembers()) {
-//			addUserToGroupOnServer(groupToAdd, user);
-//		}
 	}
 	
 
@@ -166,6 +127,10 @@ public class GAEHandler {
 	
 	public static void removeGroupFromDatabase(Group selectedGroup) {
 		Uploader.deleteUserFromGroupToGAE(selectedGroup);
+	}
+	
+	public static int getAverageMoodForExperience(Experience experience){
+		return Downloader.getAverageMoodForExperience(experience);
 	}
 	
 	//Custom serializer to remove empty lists, which Google App Engine can't handle right. Not good coding!
@@ -203,7 +168,7 @@ public class GAEHandler {
 										bEvent.setClassName(((MoodEvent)baseEvent).getClassName());
 										bEvent.setMoodInt(((MoodEvent)baseEvent).getMood().getMoodInt());
 										bEvent.setShared(((MoodEvent)baseEvent).isShared());
-										
+										bEvent.setAverage((((MoodEvent)baseEvent).isAverage()));
 										baseEvents.add(bEvent);
 									}
 							}

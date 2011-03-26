@@ -11,10 +11,12 @@ public class MoodEvent extends BaseEvent{
 	
 	private MoodEnum mood;
 	private String className;
+	private boolean average;
 	
 	public MoodEvent(){
 		className = this.getClass().getSimpleName();
 		setShared(true);
+		setAverage(false);
 	}
 
 	public MoodEvent(String experienceID, Location location, MoodEnum mood, Account user) {
@@ -22,6 +24,7 @@ public class MoodEvent extends BaseEvent{
 		this.mood = mood;
 		className = this.getClass().getSimpleName();
 		setShared(true);
+		setAverage(false);
 	}
 	
 	public MoodEvent(String id, String experienceID, Date dateTime, Location location, MoodEnum mood, Account user) {
@@ -29,6 +32,7 @@ public class MoodEvent extends BaseEvent{
 		this.mood = mood;
 		className = this.getClass().getSimpleName();
 		setShared(true);
+		setAverage(false);
 	}
 
 	public MoodEnum getMood() {
@@ -54,6 +58,16 @@ public class MoodEvent extends BaseEvent{
 	public void setShared(boolean shared) {
 		this.shared = shared;
 	}
+	
+	public boolean isAverage() {
+		return average;
+	}
+
+	public void setAverage(boolean average) {
+		this.average = average;
+	}
+
+
 
 	public enum MoodEnum {
 		VERY_HAPPY(2), HAPPY(1), LIKEWISE(0), SAD(-1), VERY_SAD(-2);
@@ -68,17 +82,17 @@ public class MoodEvent extends BaseEvent{
 			
 			switch (this) {
 			case VERY_HAPPY:
-				 return R.drawable.emo_im_happy;
+				 return R.drawable.mood_very_happy;
 			case HAPPY:
-				return R.drawable.emo_im_cool;
+				return R.drawable.mood_happy;
 			case LIKEWISE:
-				 return R.drawable.emo_im_dislike;
+				 return R.drawable.mood_likewise;
 			case SAD:
-				 return R.drawable.emo_im_sad;
+				 return R.drawable.mood_sad;
 			case VERY_SAD:
-				return R.drawable.emo_im_sad;
+				return R.drawable.mood_very_sad;
 			default:
-				return R.drawable.emo_im_happy;
+				return R.drawable.mood_happy;
 			}
 		}
 		

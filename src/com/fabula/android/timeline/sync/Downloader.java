@@ -47,8 +47,6 @@ public class Downloader {
 			Log.i("DOWNLOADER", "Json Parser started.. Getting all Experiences");
 			GsonBuilder gsonB = new GsonBuilder();
 			gsonB.registerTypeAdapter(EventItem.class, new EventItemDeserializer());
-//			gsonB.registerTypeAdapter(Emotion.class, new EmotionDeserializer());
-//			gsonB.registerTypeAdapter(EventItem.class, new EventItemInstanceCreator());
 			gsonB.serializeNulls();
 			
 			Gson gson = gsonB.create();
@@ -72,7 +70,8 @@ public class Downloader {
 					}else if(be.getClassName().equals(MoodEvent.class.getSimpleName())){
 						MoodEvent me = new MoodEvent(be.getId(), be.getExperienceid(), 
 								new Date(be.getDatetimemillis()), location, MoodEnum.getType(be.getMoodInt()) , be.getUser());
-						be.setShared(be.isShared());
+						me.setShared(true);
+						me.setAverage(be.isAverage());
 						baseEvents.add(me);
 					}
 				}
@@ -143,7 +142,17 @@ public class Downloader {
 				e.printStackTrace();
 				return null;
 			}
-}
+	 }
+	 
+
+	public static int getAverageMoodForExperience(Experience experience) {
+		 InputStream is = getJSONData("/rest/mood/experience/id/"+experience.getId()+"/");
+		 int average = 0;
+		 if(is!=null){
+			 average = Integer.valueOf(Utilities.convertStreamToString(is));
+		 }
+		return average;
+	}
 	
 	/**
 	 * Method that fetches JSON-data from a URL
@@ -199,7 +208,7 @@ public class Downloader {
 			  
 		  }
 		}
-	
+
 //	public static class EventDeserializer implements JsonDeserializer<BaseEvent> {
 //		  public BaseEvent deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 //		      throws JsonParseException {

@@ -6,7 +6,6 @@ import java.util.Date;
 
 import net.londatiga.android.ActionItem;
 import net.londatiga.android.QuickAction;
-
 import android.accounts.Account;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -53,18 +52,16 @@ import com.fabula.android.timeline.dialogs.EventDialog;
 import com.fabula.android.timeline.dialogs.MoodDialog;
 import com.fabula.android.timeline.exceptions.MaxZoomedOutException;
 import com.fabula.android.timeline.models.BaseEvent;
-import com.fabula.android.timeline.models.Emotion;
 import com.fabula.android.timeline.models.Event;
 import com.fabula.android.timeline.models.EventItem;
 import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.models.MoodEvent;
-import com.fabula.android.timeline.models.MoodEvent.MoodEnum;
 import com.fabula.android.timeline.models.SimpleNote;
 import com.fabula.android.timeline.models.SimplePicture;
 import com.fabula.android.timeline.models.SimpleRecording;
 import com.fabula.android.timeline.models.SimpleVideo;
 import com.fabula.android.timeline.models.Zoom;
-import com.fabula.android.timeline.models.Emotion.EmotionEnum;
+import com.fabula.android.timeline.models.MoodEvent.MoodEnum;
 import com.fabula.android.timeline.sync.GAEHandler;
 import com.fabula.android.timeline.utilities.MyLocation;
 

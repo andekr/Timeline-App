@@ -111,8 +111,8 @@
 			
 			<ImageView android:id="@+id/icon"
 				android:scrollbarAlwaysDrawHorizontalTrack="true"
-				android:src="@drawable/ic_menu_emoticons" android:layout_width="40dp"
-				android:layout_height="fill_parent" />
+				android:layout_width="40dp"
+				android:layout_height="fill_parent" android:src="@drawable/mood_happy"/>
 				
 			</LinearLayout>
 		<ZoomControls android:id="@+id/ZoomControls01"
