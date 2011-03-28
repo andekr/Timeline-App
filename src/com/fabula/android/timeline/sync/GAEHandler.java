@@ -63,7 +63,7 @@ public class GAEHandler {
 			    	for (Experience ex : ((Experiences) object).getExperiences()) {
 			    		if(((Experience) ex).getEvents()!=null){
 				    		for (BaseEvent baseEvent : ex.getEvents()) {
-				    			if(baseEvent.getEventItems()!=null){
+				    			if(baseEvent.getEventItems()!=null && baseEvent.isShared()){
 						    		for (EventItem eventI : baseEvent.getEventItems()) {
 								    	if(eventI instanceof SimplePicture){
 								    		Uploader.uploadFile(Utilities.IMAGE_STORAGE_FILEPATH+((SimplePicture)eventI).getPictureFilename(), ((SimplePicture)eventI).getPictureFilename());

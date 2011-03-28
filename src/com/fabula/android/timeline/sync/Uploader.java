@@ -3,8 +3,11 @@ package com.fabula.android.timeline.sync;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
@@ -31,7 +34,7 @@ public class Uploader {
 		if(!saveFilename.contains("."))
 			saveFilename = saveFilename+Utilities.getExtension(locationFilename);
 		
-//		if(exists("http://folk.ntnu.no/andekr/upload/files/"+saveFilename)){
+		if(!exists("http://folk.ntnu.no/andekr/upload/files/"+saveFilename)){
 		
 			HttpURLConnection connection = null;
 			DataOutputStream outputStream = null;
@@ -102,10 +105,10 @@ public class Uploader {
 			{
 			//Exception handling
 			}
-//		}
-//		else{
-//			System.out.println("image exists on server");
-//		}
+		}
+		else{
+			System.out.println("image exists on server");
+		}
 	}
 	
 	public static void putToGAE(Object o, String jsonString){       
@@ -254,20 +257,52 @@ public class Uploader {
 	}
 	
 	public static boolean exists(String URLName){
-	    try {
-	      HttpURLConnection.setFollowRedirects(false);
-	      // note : you may also need
-	      //        HttpURLConnection.setInstanceFollowRedirects(false)
-	      HttpURLConnection con =
-	         (HttpURLConnection) new URL(URLName).openConnection();
-	      con.setRequestMethod("HEAD");
-	      return (con.getResponseCode() == HttpURLConnection.HTTP_OK);
-	    }
-	    catch (Exception e) {
-	       e.printStackTrace();
-	       return false;
-	    }
+		URL url;
+		try {
+			url = new URL(URLName);
+			URLConnection connection = url.openConnection();
+
+				connection.connect();
+			
+			// Cast to a HttpURLConnection
+			if ( connection instanceof HttpURLConnection)
+			{
+			   HttpURLConnection httpConnection = (HttpURLConnection) connection;
+
+			   int code = httpConnection.getResponseCode();
+
+			   if(code==200)
+				   return true;
+			}
+			else
+			{
+			   System.err.println ("error - not a http request!");
+			}
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return false;
+
+//	    try {
+//	      HttpURLConnection.setFollowRedirects(false);
+//	      // note : you may also need
+//	      //        HttpURLConnection.setInstanceFollowRedirects(false)
+//	      HttpURLConnection con =
+//	         (HttpURLConnection) new URL(URLName).openConnection();
+//	      con.setRequestMethod("HEAD");
+//	      return (con.getResponseCode() == HttpURLConnection.HTTP_OK);
+//	    }
+//	    catch (Exception e) {
+//	       e.printStackTrace();
+//	       return false;
+//	    }
 	}
+	
 
 
 	
