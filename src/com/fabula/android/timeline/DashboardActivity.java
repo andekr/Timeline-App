@@ -406,10 +406,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 	 * 
 	 */
 	private void syncTimelines() {
-		//Hente ned fra server
-		// og merge //TODO
-		// Hente inn experiencer som er delt - DONE
-		// Hente ut alle events i alle delte experiencer (kun de som ikke er låst) - DONE
 		UserAndGroupServiceHandler ugHandler =  new UserAndGroupServiceHandler(this, this);
 		ugHandler.downloadUsersAndGroups();
 		ArrayList<Experience> sharedExperiences = contentLoader.LoadAllSharedExperiencesFromDatabase();
@@ -477,6 +473,7 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
         public void run(){
         	try {
         		storeLastSynced(new Date().getTime());
+        		progressDialog.dismiss();
         		Toast.makeText(DashboardActivity.this, "Timelines synced!",Toast.LENGTH_SHORT).show();
 			} catch (Exception e) {
 			}
@@ -600,7 +597,9 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		public void onClick(View v) {
 			
 			if(Utilities.isConnectedToInternet(getApplicationContext())) {
-				Toast.makeText(DashboardActivity.this, "Syncronizing shared timelines with server", Toast.LENGTH_SHORT).show();
+				progressDialog = ProgressDialog.show(DashboardActivity.this,    
+			              "", "", true);
+				progressDialog.setMessage("Syncronizing timelines");
 				Thread shareThread = new Thread(syncThread, "shareThread");
 				shareThread.start();
 			}
