@@ -54,6 +54,8 @@ public class Downloader {
 			Reader r = new InputStreamReader(getJSONData("/rest/experiences/"+user.getUserName()+"/")); 
 			Experiences experiences = gson.fromJson(r, Experiences.class);
 			
+			if(experiences.getExperiences() != null) {
+				
 			for (Experience experience : experiences.getExperiences()) {
 				List<BaseEvent> baseEvents = new ArrayList<BaseEvent>();
 				if(experience.getEvents()!=null){
@@ -79,6 +81,7 @@ public class Downloader {
 				}
 				experience.setEvents(baseEvents);
 			}
+		}
 			Log.i("DOWNLOADER", "Fetched "+experiences.getExperiences().size()+" experiences");
 			return experiences;
 		} catch (Exception e) {

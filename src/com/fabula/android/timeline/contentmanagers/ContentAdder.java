@@ -122,6 +122,8 @@ public class ContentAdder {
 	
 	private void addEventItemsToDB(Event event) {
 		
+		if(event.getEventItems() != null) {
+			
 		for (EventItem item : event.getEventItems()) { 
 			connectEventWithEventItemInDatabase(event, item);
 			
@@ -142,7 +144,7 @@ public class ContentAdder {
 				addVideoToVideoContentProvider(event, video);
 			}
 		}
-		
+		}
 		if(event.getEmotionList()!=null){
 			for (Emotion emo : event.getEmotionList()) {
 				addEmotionToDatabase(event, emo);

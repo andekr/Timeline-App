@@ -10,6 +10,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnCancelListener;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.text.format.DateFormat;
@@ -117,22 +118,35 @@ public class EventDialog extends Dialog {
 		
  		shareButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-					mEvent.setShared(isChecked);
-					shareButton.setEnabled(!mEvent.isShared());
-					Thread shareThread = new Thread(shareEventThread, "shareThread");
-	 				shareThread.start();
+			public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked) {
+				
+				AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+				builder.setMessage("Do you really want to share this event to all group members? You won't be able to undo this later")
+				.setPositiveButton(R.string.yes_label, new DialogInterface.OnClickListener() {
+					
+					public void onClick(DialogInterface dialog, int which) {
+						mEvent.setShared(isChecked);
+						shareButton.setEnabled(!mEvent.isShared());
+						Thread shareThread = new Thread(shareEventThread, "shareThread");
+		 				shareThread.start();
+		 				dialog.dismiss();
+					}
+				})
+				.setNegativeButton(R.string.no_label, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+			})
+				.setOnCancelListener(new OnCancelListener() {
+				public void onCancel(DialogInterface dialog) {
+					dialog.dismiss();					
+				}
+			});
+				AlertDialog confirmation = builder.create();
+				confirmation.show();
+				
 			}
 		});
- 		
-// 		shareButton.setOnClickListener(new View.OnClickListener() {
-// 			
-// 			public void onClick(View v) {
-// 				Toast.makeText(mContext, "Sending event to server...", Toast.LENGTH_SHORT).show();
-// 				Thread shareThread = new Thread(shareEventThread, "shareThread");
-// 				shareThread.start();
-// 				}
-// 		});
  		
  		ImageButton deleteButton = (ImageButton)findViewById(R.id.popupDeleteButton);
  		deleteButton.setTag(event);

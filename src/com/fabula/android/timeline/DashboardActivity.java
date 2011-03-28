@@ -412,7 +412,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		for (Experience experience : sharedExperiences) {
 			new DatabaseHelper(this, experience.getTitle()+".db");
 			experience.setEvents(contentLoader.LoadAllEventsFromDatabase());
-			//TODO: Hente ut creator i contentLoader
 			DatabaseHelper.getCurrentTimelineDatabase().close();
 		}
 		
@@ -482,8 +481,8 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
     
 	@Override
 	protected void onDestroy() {
-		closeDatabaseHelpers();
 		super.onDestroy();
+		closeDatabaseHelpers();
 	}
 	
 	@Override
@@ -502,15 +501,25 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 	protected void onResume() {
 		super.onResume();
 		setupDatabaseHelpers();
-		
+	}
+	
+	@Override
+	protected void onStop() {
+		closeDatabaseHelpers();
+		super.onStop();
 	}
 	
 	@Override
 	protected void onRestart() {
 		super.onRestart();
-		setupDatabaseHelpers();
+//		setupDatabaseHelpers();
 		timelineIntent = new Intent(this, TimelineActivity.class);
 		timelineIntent.setAction("NEW");
+	}
+	
+	private void setupDatabaseHelpers() {
+		userGroupDatabaseHelper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
+		timelineDatabaseHelper = new TimelineDatabaseHelper(this, Utilities.ALL_TIMELINES_DATABASE_NAME);
 	}
 	
 	private void closeDatabaseHelpers() {
@@ -580,6 +589,7 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		public void onClick(View v) {
 			if(Utilities.isConnectedToInternet(getApplicationContext())) {
 				startActivity(myGroupsIntent);
+				closeDatabaseHelpers();
 			}
 			else {
 				Toast.makeText(getApplicationContext(), "You have to be connected to internett to use this functionality", Toast.LENGTH_SHORT).show();
@@ -625,13 +635,9 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		uGManager = new UserGroupManager(getApplicationContext());
 	}
 
-	private void setupDatabaseHelpers() {
-		userGroupDatabaseHelper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
-		timelineDatabaseHelper = new TimelineDatabaseHelper(this, Utilities.ALL_TIMELINES_DATABASE_NAME);
-	}
-
 	public void callBack() {
 		openDialogForTimelineNameInput();
+//		closeDatabaseHelpers();
 	}
 	
 	/**

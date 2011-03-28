@@ -56,84 +56,9 @@ public class MyGroupsActivity extends Activity implements ProgressDialogActivity
 		
 		setupHelpers();
 		
-//		progressDialog = new ProgressDialog(this);
-		
 		userAndGroupServiceHandler = new UserAndGroupServiceHandler(this, this);
 		userAndGroupServiceHandler.startDownloadUsersAndGroups();
-//		getUsersAndGroupsRunnable = new Runnable(){
-//            public void run() {
-//            	getUsersAndGroupsAddToDatabase();
-//            }
-//        };
-        
-        
-//        startDownloadUsersAndGroups();
-			
 	}
-
-	
-//    /**
-//     * Metoden som starter tråden som henter serier fra serveren
-//     * Kan vises uten progressDialog, som er hendig når man trykker seg tilbake til startskjermen.
-//     * Evt. endring vil da reflekteres, men uten å hindre brukereren i se på lista. 
-//     * 
-//     * @param showProgressDialog Gir mulighet til å vise/ikke vise progressbar ved lasting av nye elementer.
-//     */
-//	private void startDownloadUsersAndGroups() {
-//		Thread thread =  new Thread(null, getUsersAndGroupsRunnable, "getUsersAndGroups");
-//        thread.start();
-//        progressDialog = ProgressDialog.show(MyGroupsActivity.this,    
-//              "", "", true);
-//	}
-//	
-//	private void getUsersAndGroupsAddToDatabase() {
-//		uGManager.truncateUserGroupDatabase();
-//		getUsersAndAddToDatabase();
-//    	getGroupsAndAddToDatabase();
-//    	runOnUiThread(new Runnable() {
-//			public void run() {
-//				setupViews();
-//			}
-//		});
-//	}
-//	
-//	private void getUsersAndAddToDatabase() {
-//		runOnUiThread(new Runnable() {
-//			
-//			public void run() {
-//				progressDialog.setMessage("Loading all users ...");
-//			}
-//		});
-//		
-//		Users selectableUsersFromServer = Downloader.getUsersFromServer();
-//		if(selectableUsersFromServer!=null){
-//			for (User user : selectableUsersFromServer.getUsers()) {
-//				uGManager.addUserToUserDatabase(user);
-//			}
-//		}
-//		
-//		
-//	}	
-//	
-//	private void getGroupsAndAddToDatabase() {
-//		runOnUiThread(new Runnable() {
-//			public void run() {
-//				progressDialog.setMessage("Loading my groups ...");
-//			}
-//		});
-//		Groups groupsUserIsConnectedToFromServer = Downloader.getGroupsFromServer(applicationUser);
-//		
-//		if(groupsUserIsConnectedToFromServer!=null){
-//			for (Group groupToAddToDatabase : groupsUserIsConnectedToFromServer.getGroups()) {
-//				uGManager.addGroupToGroupDatabase(groupToAddToDatabase);
-//				for (User user : groupToAddToDatabase.getMembers()) {
-//					uGManager.addUserToAGroupInTheDatabase(groupToAddToDatabase, user);
-//				}
-//			}
-//		}
-//		
-//		
-//	}
 	
 	/**
 	 * Add a new group to the database
@@ -443,6 +368,8 @@ public class MyGroupsActivity extends Activity implements ProgressDialogActivity
 		userAccount = (Account) getIntent().getParcelableExtra("ACCOUNT");
 		applicationUser = new User(userAccount.name);
 	}
+	
+	
 	
 	/**
 	 * Setup views and instansiate objects the activity is going to use
