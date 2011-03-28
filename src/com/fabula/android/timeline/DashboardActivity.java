@@ -412,7 +412,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		for (Experience experience : sharedExperiences) {
 			new DatabaseHelper(this, experience.getTitle()+".db");
 			experience.setEvents(contentLoader.LoadAllEventsFromDatabase());
-			//TODO: Hente ut creator i contentLoader
 			DatabaseHelper.getCurrentTimelineDatabase().close();
 		}
 		
@@ -513,7 +512,7 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 	@Override
 	protected void onRestart() {
 		super.onRestart();
-		setupDatabaseHelpers();
+//		setupDatabaseHelpers();
 		timelineIntent = new Intent(this, TimelineActivity.class);
 		timelineIntent.setAction("NEW");
 	}
@@ -590,6 +589,7 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		public void onClick(View v) {
 			if(Utilities.isConnectedToInternet(getApplicationContext())) {
 				startActivity(myGroupsIntent);
+				closeDatabaseHelpers();
 			}
 			else {
 				Toast.makeText(getApplicationContext(), "You have to be connected to internett to use this functionality", Toast.LENGTH_SHORT).show();
