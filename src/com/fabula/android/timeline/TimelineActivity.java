@@ -757,7 +757,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
  		Runnable SendMoodEventRunnable = new Runnable() {
 			
 			public void run() {
-				GAEHandler.send(moodEvent, TimelineActivity.this);
+				GAEHandler.persistTimelineObject(moodEvent);
 			}
 		};
 		

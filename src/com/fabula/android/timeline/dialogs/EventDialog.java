@@ -170,7 +170,7 @@ public class EventDialog extends Dialog {
  		shareEventThread = new Runnable() {
 			
 			public void run() {
-				GAEHandler.send(mEvent, mActivity);
+				GAEHandler.persistTimelineObject(mEvent);
 				ContentUpdater updater = new ContentUpdater(mContext);
 				updater.setEventShared(mEvent);
 			}

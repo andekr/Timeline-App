@@ -18,22 +18,18 @@ import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.Uri;
-import android.net.NetworkInfo.State;
 import android.os.Environment;
 import android.provider.MediaStore;
 
 import com.fabula.android.timeline.models.BaseEvent;
 import com.fabula.android.timeline.models.Event;
-import com.fabula.android.timeline.models.MoodEvent;
 import com.fabula.android.timeline.models.SimpleAttachment;
 import com.fabula.android.timeline.models.SimpleNote;
 import com.fabula.android.timeline.models.SimplePicture;
 import com.fabula.android.timeline.models.SimpleRecording;
 import com.fabula.android.timeline.models.SimpleVideo;
-import com.fabula.android.timeline.models.User;
 import com.fabula.android.timeline.models.Zoom;
 
 /**

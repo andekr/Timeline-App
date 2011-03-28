@@ -53,26 +53,28 @@ public class Downloader {
 			
 			Reader r = new InputStreamReader(getJSONData("/rest/experiences/"+user.getUserName()+"/")); 
 			Experiences experiences = gson.fromJson(r, Experiences.class);
-			List<BaseEvent> baseEvents = new ArrayList<BaseEvent>();
+			
 			for (Experience experience : experiences.getExperiences()) {
-				for (BaseEvent be : experience.getEvents()) {
-					
-					 Location location = new Location("");
-					 location.setLatitude(be.getLatitude());
-					 location.setLongitude(be.getLongitude());
-					if(be.getClassName().equals(Event.class.getSimpleName())){
-						BaseEvent bEvent = new BaseEvent(be.getId(), be.getExperienceid(), 
-								new Date(be.getDatetimemillis()),location, be.getUser());
-						bEvent.setEmotionList(be.getEmotionList());
-						bEvent.setEventItems(be.getEventItems());
-						bEvent.setShared(be.isShared());
-						baseEvents.add(bEvent);
-					}else if(be.getClassName().equals(MoodEvent.class.getSimpleName())){
-						MoodEvent me = new MoodEvent(be.getId(), be.getExperienceid(), 
-								new Date(be.getDatetimemillis()), location, MoodEnum.getType(be.getMoodInt()) , be.getUser());
-						me.setShared(true);
-						me.setAverage(be.isAverage());
-						baseEvents.add(me);
+				List<BaseEvent> baseEvents = new ArrayList<BaseEvent>();
+				if(experience.getEvents()!=null){
+					for (BaseEvent be : experience.getEvents()) {
+						 Location location = new Location("");
+						 location.setLatitude(be.getLatitude());
+						 location.setLongitude(be.getLongitude());
+						if(be.getClassName().equals(Event.class.getSimpleName())){
+							Event event = new Event(be.getId(), be.getExperienceid(), 
+									new Date(be.getDatetimemillis()),location, be.getUser());
+							event.setEmotionList(be.getEmotionList());
+							event.setEventItems(be.getEventItems());
+							event.setShared(be.isShared());
+							baseEvents.add(event);
+						}else if(be.getClassName().equals(MoodEvent.class.getSimpleName())){
+							MoodEvent me = new MoodEvent(be.getId(), be.getExperienceid(), 
+									new Date(be.getDatetimemillis()), location, MoodEnum.getType(be.getMoodInt()) , be.getUser());
+							me.setShared(true);
+							me.setAverage(be.isAverage());
+							baseEvents.add(me);
+						}
 					}
 				}
 				experience.setEvents(baseEvents);

@@ -421,7 +421,7 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		}
 		
 		Experiences experiences = new Experiences(sharedExperiences);
-		GAEHandler.send(experiences, this);
+		GAEHandler.persistTimelineObject(experiences);
 		
 		Experiences exps = Downloader.getAllSharedExperiencesFromServer(user);
 		if(exps!=null){
@@ -610,7 +610,7 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		public void onClick(View v) {
 			
 			if(Utilities.isConnectedToInternet(getApplicationContext())) {
-				Toast.makeText(DashboardActivity.this, "Syncronizing shared timelines with server...", Toast.LENGTH_SHORT).show();
+				Toast.makeText(DashboardActivity.this, "Syncronizing shared timelines with server", Toast.LENGTH_SHORT).show();
 				Thread shareThread = new Thread(syncThread, "shareThread");
 				shareThread.start();
 			}

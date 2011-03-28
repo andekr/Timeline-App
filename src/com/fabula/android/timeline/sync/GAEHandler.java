@@ -4,7 +4,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.util.Log;
 
 import com.fabula.android.timeline.Utilities;
@@ -31,14 +30,14 @@ import com.google.gson.JsonSerializer;
  */
 public class GAEHandler {
 	
-	
+
+	//ADDERS
 	/**
+	 * Sends an entire object to persist on server
 	 * 
-	 * 
-	 * @param object The object to send
-	 * @param a Needs {@link Activity} to get the path of the content?
+	 * @param object The object to send. Experiences, experience or event
 	 */
-	public static void send(Object object, Activity a){
+	public static void persistTimelineObject(Object object){
 		GsonBuilder gsonB = new GsonBuilder();
 		gsonB.registerTypeAdapter(MoodEvent.class, new EventSerializer());
 		gsonB.registerTypeAdapter(Event.class, new EventSerializer());
@@ -57,7 +56,7 @@ public class GAEHandler {
 		    System.out.println("Lagrer JSON på Google App Engine: "+jsonString);
 		    Uploader.putToGAE(object, jsonString);
 		    
-		    //Saving pictures to server
+		    //Saving pictures to server. Any better way to do this than the almighty nesting going on here?
 		    System.out.println("Lagrer bilder på server");
 		    if(object instanceof Experiences){
 		    	if(((Experiences) object).getExperiences()!=null){
@@ -85,6 +84,7 @@ public class GAEHandler {
 		    }
 		  
 	}
+	
 	
 	public static void addGroupToServer(Group groupToAdd){
 		Gson gson = new Gson();
@@ -121,6 +121,8 @@ public class GAEHandler {
 		Uploader.putUserToGroupToGAE(groupToGetNewMember, userToAddToGroup);
 	}
 	
+	
+	//REMOVERS
 	public static void removeUserFromGroupOnServer(Group groupToRemoveMember, User userToRemoveFromGroup) {
 		Uploader.deleteUserFromGroupToGAE(groupToRemoveMember, userToRemoveFromGroup);
 	}
@@ -129,12 +131,18 @@ public class GAEHandler {
 		Uploader.deleteUserFromGroupToGAE(selectedGroup);
 	}
 	
+	//GETTERS
+	
 	public static int getAverageMoodForExperience(Experience experience){
 		return Downloader.getAverageMoodForExperience(experience);
 	}
 	
-	//Custom serializer to remove empty lists, which Google App Engine can't handle right. Not good coding!
+	//
 	
+	/**
+	 * Custom serializer for {@link Gson} to remove empty lists, which Google App Engine can't handle right. Not good coding!
+	 * 
+	 */
 	private static class ExperiencesSerializer implements JsonSerializer<Experiences> {
 		  public JsonElement serialize(Experiences src, Type typeOfSrc, JsonSerializationContext context) {
 			  if(src.getExperiences().size()==0)
@@ -147,28 +155,12 @@ public class GAEHandler {
 						  List<BaseEvent> baseEvents = new ArrayList<BaseEvent>();
 						  try {
 							  for (BaseEvent baseEvent : ex.getEvents()) {
-								  BaseEvent bEvent = new BaseEvent(baseEvent.getId(), baseEvent.getExperienceid(), 
-											baseEvent.getDatetime(), baseEvent.getLocation(), baseEvent.getUser());
+								  BaseEvent bEvent = null;
 									if(baseEvent instanceof Event){
-										bEvent.setClassName(baseEvent.getClassName());
-										if(((Event)baseEvent).getEmotionList().size()==0)
-											bEvent.setEmotionList(null);
-										else
-											bEvent.setEmotionList(baseEvent.getEmotionList());
-										
-										if(((Event)baseEvent).getEventItems().size()==0)
-											bEvent.setEventItems(null);
-										else
-											bEvent.setEventItems(((Event)baseEvent).getEventItems());
-										
-										bEvent.setShared(((Event)baseEvent).isShared());
-										
+										bEvent = convertEventToBaseEvent(baseEvent);
 										baseEvents.add(bEvent);
 									}else if (baseEvent instanceof MoodEvent){
-										bEvent.setClassName(((MoodEvent)baseEvent).getClassName());
-										bEvent.setMoodInt(((MoodEvent)baseEvent).getMood().getMoodInt());
-										bEvent.setShared(((MoodEvent)baseEvent).isShared());
-										bEvent.setAverage((((MoodEvent)baseEvent).isAverage()));
+										bEvent = convertMoodEventToBaseEvent(baseEvent);
 										baseEvents.add(bEvent);
 									}
 							}
@@ -188,38 +180,49 @@ public class GAEHandler {
 	
 	private static class EventSerializer implements JsonSerializer<BaseEvent> {
 		  public JsonElement serialize(BaseEvent baseEvent, Type typeOfSrc, JsonSerializationContext context) {
-			  BaseEvent bEvent = new BaseEvent(baseEvent.getId(), baseEvent.getExperienceid(), 
-						baseEvent.getDatetime(), baseEvent.getLocation(), baseEvent.getUser());
+			  BaseEvent bEvent = null;
 			  if(baseEvent instanceof Event){
-				bEvent.setClassName(baseEvent.getClassName());
-				if(((Event)baseEvent).getEmotionList().size()==0)
-					bEvent.setEmotionList(null);
-				else
-					bEvent.setEmotionList(baseEvent.getEmotionList());
-				
-				if(((Event)baseEvent).getEventItems().size()==0)
-					bEvent.setEventItems(null);
-				else
-					bEvent.setEventItems(((Event)baseEvent).getEventItems());
-				
-				bEvent.setShared(((Event)baseEvent).isShared());
+				bEvent = convertEventToBaseEvent(baseEvent);
 				
 			}else if (baseEvent instanceof MoodEvent){
-				bEvent.setClassName(((MoodEvent)baseEvent).getClassName());
-				bEvent.setMoodInt(((MoodEvent)baseEvent).getMood().getMoodInt());
-				bEvent.setShared(((MoodEvent)baseEvent).isShared());
-				
+				bEvent = convertMoodEventToBaseEvent(baseEvent);
 			}
 			 
 			Gson gson = new Gson();
 		    return new JsonParser().parse(gson.toJson(bEvent));
 		  }
-		}
-	
-	
-	
 
+	}
+	
+	private static BaseEvent convertEventToBaseEvent(BaseEvent baseEvent) {
+		BaseEvent bEvent = new BaseEvent(baseEvent.getId(), baseEvent.getExperienceid(), 
+				baseEvent.getDatetime(), baseEvent.getLocation(), baseEvent.getUser());
+		
+		bEvent.setClassName(baseEvent.getClassName());
+		if(((Event)baseEvent).getEmotionList().size()==0)
+			bEvent.setEmotionList(null);
+		else
+			bEvent.setEmotionList(baseEvent.getEmotionList());
+		
+		if(((Event)baseEvent).getEventItems().size()==0)
+			bEvent.setEventItems(null);
+		else
+			bEvent.setEventItems(((Event)baseEvent).getEventItems());
+		
+		bEvent.setShared(((Event)baseEvent).isShared());
+		
+		return bEvent;
+	}
 
+	private static BaseEvent convertMoodEventToBaseEvent(BaseEvent baseEvent) {
+		BaseEvent moodBaseEvent = new BaseEvent(baseEvent.getId(), baseEvent.getExperienceid(), 
+				baseEvent.getDatetime(), baseEvent.getLocation(), baseEvent.getUser());
+		moodBaseEvent.setClassName(((MoodEvent)baseEvent).getClassName());
+		moodBaseEvent.setMoodInt(((MoodEvent)baseEvent).getMood().getMoodInt());
+		moodBaseEvent.setShared(((MoodEvent)baseEvent).isShared());
+		moodBaseEvent.setAverage(((MoodEvent)baseEvent).isAverage());
+		return moodBaseEvent;
+	}
 
 
 }

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import android.accounts.Account;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
@@ -48,8 +47,6 @@ public class MyGroupsActivity extends Activity implements ProgressDialogActivity
 	private ExpandableListView myGroupsList;
 	private ExpandableGroupsListViewAdapter groupListAdapter;
 	private UserGroupDatabaseHelper helper;
-	private Runnable getUsersAndGroupsRunnable;
-	private ProgressDialog progressDialog;
 	private UserAndGroupServiceHandler userAndGroupServiceHandler;
 	
 	@Override
