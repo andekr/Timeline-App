@@ -78,7 +78,8 @@ public class TimelineMapView extends MapActivity {
 		UserGroupDatabaseHelper.getUserDatabase().close();
 		
 		for (Experience experience : experiences) {
-			eventDatabaseHelper = new DatabaseHelper(this, experience.getTitle());
+			eventDatabaseHelper = new DatabaseHelper(this, experience.getTitle()+".db");
+			System.out.println(experience.getTitle());
 			addEventsToMap(loadEventsWithGeolocationFromDatabase());
 			eventDatabaseHelper.close();
 		}
