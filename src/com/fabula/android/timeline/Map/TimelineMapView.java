@@ -11,6 +11,7 @@ import com.fabula.android.timeline.Utilities;
 import com.fabula.android.timeline.contentmanagers.ContentLoader;
 import com.fabula.android.timeline.database.DatabaseHelper;
 import com.fabula.android.timeline.database.TimelineDatabaseHelper;
+import com.fabula.android.timeline.database.UserGroupDatabaseHelper;
 import com.fabula.android.timeline.models.BaseEvent;
 import com.fabula.android.timeline.models.Event;
 import com.fabula.android.timeline.models.Experience;
@@ -71,15 +72,17 @@ public class TimelineMapView extends MapActivity {
 	private void addAllTimelineAppEventsToMap() {
 		new TimelineDatabaseHelper(this, Utilities.ALL_TIMELINES_DATABASE_NAME);
 		contentLoader = new ContentLoader(this);
-		
+		new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
 		ArrayList<Experience> experiences = contentLoader.LoadAllExperiencesFromDatabase();
 		TimelineDatabaseHelper.getCurrentTimeLineDatabase().close();
+		UserGroupDatabaseHelper.getUserDatabase().close();
 		
 		for (Experience experience : experiences) {
 			eventDatabaseHelper = new DatabaseHelper(this, experience.getTitle());
 			addEventsToMap(loadEventsWithGeolocationFromDatabase());
 			eventDatabaseHelper.close();
 		}
+		
 	}
 	
 	private void setupViews() {
