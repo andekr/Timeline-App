@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import com.fabula.android.timeline.sync.GAEHandler;
-
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;

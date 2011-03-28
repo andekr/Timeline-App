@@ -1,17 +1,15 @@
 package com.fabula.android.timeline.sync;
 
-import java.io.BufferedInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 import org.apache.http.HttpHost;
+import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.StringEntity;
@@ -21,7 +19,6 @@ import android.util.Log;
 
 import com.fabula.android.timeline.Utilities;
 import com.fabula.android.timeline.models.BaseEvent;
-import com.fabula.android.timeline.models.Event;
 import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.models.Experiences;
 import com.fabula.android.timeline.models.Group;
@@ -115,12 +112,60 @@ public class Uploader {
 		HttpHost targetHost = new HttpHost(Utilities.GOOGLE_APP_ENGINE_URL, 80, "http");
 		// Using PUT here
 		HttpPut httpPut = makeHttpPutBasedOnObjectType(o);
-		
-		makeHttpRequestContentTypeHeader(httpPut);
-		       
+		makeJSONHttpRequestContentTypeHeader(httpPut);
 		sendJSONTOGAEServer(jsonString, targetHost, httpPut);
 	}
 
+	
+	public static void putGroupToGAE(final String jsonString){  
+		final HttpHost targetHost = new HttpHost(Utilities.GOOGLE_APP_ENGINE_URL, 80, "http");
+		// Using PUT here
+		final HttpPut httpPut = new HttpPut("/rest/group/");
+		makeJSONHttpRequestContentTypeHeader(httpPut);
+		sendJSONTOGAEServer(jsonString, targetHost, httpPut);
+	}
+	
+	public static void putUserToGroupToGAE(Group groupToAddUser, User userToAddToGroup){  
+		final HttpHost targetHost = new HttpHost(Utilities.GOOGLE_APP_ENGINE_URL, 80, "http");
+		// Using PUT here
+		final HttpPut httpPut = new HttpPut("/rest/group/"+groupToAddUser.getId()+"/user/"+userToAddToGroup.getUserName()+"/");
+		makeJSONHttpRequestContentTypeHeader(httpPut);
+		sendJSONTOGAEServer("", targetHost, httpPut);
+	}
+	
+	public static void deleteUserFromGroupToGAE(Group groupToRemoveMember,
+			User userToRemoveFromGroup) {
+		final HttpHost targetHost = new HttpHost(Utilities.GOOGLE_APP_ENGINE_URL, 80, "http");
+		//using DELETE here
+		final HttpDelete httpDelete = new HttpDelete("/rest/group/"+groupToRemoveMember.getId()+"/user/"+userToRemoveFromGroup.getUserName()+"/");
+		sendDeleteRequestTOGAEServer("", targetHost, httpDelete);
+	}
+	
+	public static void deleteUserFromGroupToGAE(Group selectedGroup) {
+		final HttpHost targetHost = new HttpHost(Utilities.GOOGLE_APP_ENGINE_URL, 80, "http");
+		//using DELETE here
+		final HttpDelete httpDelete = new HttpDelete("/rest/group/"+selectedGroup.getId()+"/");
+		
+		sendDeleteRequestTOGAEServer("", targetHost, httpDelete);
+		
+	}
+
+	public static void putUserToGAE(final String jsonString){  
+		final HttpHost targetHost = new HttpHost(Utilities.GOOGLE_APP_ENGINE_URL, 80, "http");
+		// Using PUT here
+		final HttpPut httpPut = new HttpPut("/rest/user/");
+		makeJSONHttpRequestContentTypeHeader(httpPut);
+		
+		sendJSONTOGAEServer(jsonString, targetHost, httpPut);
+		
+	}
+
+	/**
+	 * Sets the uri of the host based on the kind of {@link Object} to persist.
+	 * 
+	 * @param o The object to persist
+	 * @return {@link HttpPut} containing the string uri of the REST service to address.
+	 */
 	private static HttpPut makeHttpPutBasedOnObjectType(Object o) {
 		HttpPut httpPut = null;
 		if(o instanceof Experiences)
@@ -132,67 +177,26 @@ public class Uploader {
 		return httpPut;
 	}
 	
-	
-	public static void putGroupToGAE(final String jsonString){  
-		final HttpHost targetHost = new HttpHost(Utilities.GOOGLE_APP_ENGINE_URL, 80, "http");
-		// Using PUT here
-		final HttpPut httpPut = new HttpPut("/rest/group/");
-		makeHttpRequestContentTypeHeader(httpPut);
-		
-		sendJSONTOGAEServer(jsonString, targetHost, httpPut);
-		
-	}
-	
-	public static void putUserToGroupToGAE(Group groupToAddUser, User userToAddToGroup){  
-		final HttpHost targetHost = new HttpHost(Utilities.GOOGLE_APP_ENGINE_URL, 80, "http");
-		// Using PUT here
-		final HttpPut httpPut = new HttpPut("/rest/group/"+groupToAddUser.getId()+"/user/"+userToAddToGroup.getUserName()+"/");
-		makeHttpRequestContentTypeHeader(httpPut);
-		
-		sendJSONTOGAEServer("", targetHost, httpPut);
-		
-	}
-	
-	public static void deleteUserFromGroupToGAE(Group groupToRemoveMember,
-			User userToRemoveFromGroup) {
-		final HttpHost targetHost = new HttpHost(Utilities.GOOGLE_APP_ENGINE_URL, 80, "http");
-		//using DELETE here
-		final HttpDelete httpDelete = new HttpDelete("/rest/group/"+groupToRemoveMember.getId()+"/user/"+userToRemoveFromGroup.getUserName()+"/");
-//		makeHttpRequestContentTypeHeader(httpDelete);
-		
-		sendDeleteRequestTOGAEServer("", targetHost, httpDelete);
-		
-	}
-	
-	public static void deleteUserFromGroupToGAE(Group selectedGroup) {
-		final HttpHost targetHost = new HttpHost(Utilities.GOOGLE_APP_ENGINE_URL, 80, "http");
-		//using DELETE here
-		final HttpDelete httpDelete = new HttpDelete("/rest/group/"+selectedGroup.getId()+"/");
-//		makeHttpRequestContentTypeHeader(httpDelete);
-		
-		sendDeleteRequestTOGAEServer("", targetHost, httpDelete);
-		
-	}
-	
-	
-
-	public static void putUserToGAE(final String jsonString){  
-		final HttpHost targetHost = new HttpHost(Utilities.GOOGLE_APP_ENGINE_URL, 80, "http");
-		// Using PUT here
-		final HttpPut httpPut = new HttpPut("/rest/user/");
-		makeHttpRequestContentTypeHeader(httpPut);
-		
-		sendJSONTOGAEServer(jsonString, targetHost, httpPut);
-		
-	}
-	
-	private static void makeHttpRequestContentTypeHeader(HttpRequestBase httpRequest) {
+	/**
+	 * Sets the content header of the HTTP request to send and accept JSON.
+	 * 
+	 * @param httpRequest The {@link HttpRequest} to add headers.
+	 */
+	private static void makeJSONHttpRequestContentTypeHeader(HttpRequestBase httpRequest) {
 		// Make sure the server knows what kind of a response we will accept
 		httpRequest.addHeader("Accept", "application/json");
 		// Also be sure to tell the server what kind of content we are sending
 		httpRequest.addHeader("Content-Type", "application/json");
 	}
 	
+
+	/**
+	 * Sends a JSON-string to the Google App Engine Server. This runs async in a separate thread.
+	 * 
+	 * @param jsonString Content of HTTP request, as JSON.
+	 * @param targetHost The host of the server
+	 * @param httpPut The HTTP PUT request.
+	 */
 	private static void sendJSONTOGAEServer(final String jsonString,
 			final HttpHost targetHost, final HttpPut httpPut) {
 		Runnable sendRunnable = new Runnable() {
@@ -247,30 +251,6 @@ public class Uploader {
 		Thread thread =  new Thread(null, sendRunnable, "deleteToGAE");
         thread.start();
 		
-	}
-
-
-	
-	
-	
-	/**
-	 * Convert XML to String
-	 * 
-	 * @param filePath
-	 * @return
-	 * @throws java.io.IOException
-	 */
-	@SuppressWarnings("unused")
-	private static String readFileAsString(String filePath) throws java.io.IOException{
-	    byte[] buffer = new byte[(int) new File(filePath).length()];
-	    BufferedInputStream f = null;
-	    try {
-	        f = new BufferedInputStream(new FileInputStream(filePath));
-	        f.read(buffer);
-	    } finally {
-	        if (f != null) try { f.close(); } catch (IOException ignored) { }
-	    }
-	    return new String(buffer);
 	}
 	
 	public static boolean exists(String URLName){
