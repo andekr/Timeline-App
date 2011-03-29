@@ -87,7 +87,9 @@
         <provider
             android:authorities="com.fabula.android.timeline.providers.userprovider" android:name="com.fabula.android.timeline.providers.UserProvider"></provider>    
    		<provider
-            android:authorities="com.fabula.android.timeline.providers.usergroupprovider" android:name="com.fabula.android.timeline.providers.UserGroupProvider"></provider>    
+            android:authorities="com.fabula.android.timeline.providers.usergroupprovider" android:name="com.fabula.android.timeline.providers.UserGroupProvider"></provider>   
+        <provider
+            android:authorities="com.fabula.android.timeline.providers.tagprovider" android:name="com.fabula.android.timeline.providers.TagProvider"></provider>  
 </application>
     <uses-sdk android:minSdkVersion="7"/>
     <uses-permission android:name="android.permission.CAMERA"/>

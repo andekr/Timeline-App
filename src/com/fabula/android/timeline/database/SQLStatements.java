@@ -4,6 +4,7 @@ import com.fabula.android.timeline.models.Emotion.EmotionColumns;
 import com.fabula.android.timeline.models.Event.EventColumns;
 import com.fabula.android.timeline.models.EventItem.EventItemsColumns;
 import com.fabula.android.timeline.models.Experience.ExperienceColumns;
+import com.fabula.android.timeline.models.Experience.TagColumns;
 import com.fabula.android.timeline.models.Group.GroupColumns;
 import com.fabula.android.timeline.models.SimpleNote.NoteColumns;
 import com.fabula.android.timeline.models.SimplePicture.PictureColumns;
@@ -31,6 +32,8 @@ public class SQLStatements {
 	public static final String GROUP_DATABASE_TABLE_NAME = "groups";
 	public static final String USER_GROUP_DATABASE_TABLE_NAME = "user_groups";
 	public static final String MOOD_DATABASE_NAME= "mood_events";
+	public static final String TAG_DATABASE_TABLE = "tags";
+	public static final String TAG_EVENT_DATABASE_TABLE = "tagged_events";
 	
 	
     public static final String EVENT_DATABASE_CREATE =
@@ -43,17 +46,6 @@ public class SQLStatements {
         EventColumns.IS_SHARED+" INTEGER, "+
         EventColumns.CREATOR+ " varchar not null, "+
         EventColumns.MOOD + " INTEGER" +");";
-    
-//    public static final String MOOD_EVENT_DATABASE_CREATE =
-//        "create table " + MOOD_DATABASE_NAME + 
-//        " (" + EventColumns.EVENT_ID + " varchar primary key, " +
-//        EventColumns.EVENT_EXPERIENCEID + " varchar, " +
-//        EventColumns.EVENT_LOCATION_LAT + " varchar, " +
-//        EventColumns.EVENT_LOCATION_LNG + " varchar, " +
-//        EventColumns.EVENT_TITLE+" long not null, "+
-//        EventColumns.IS_SHARED+" INTEGER, "+
-//        EventColumns.CREATOR+ " varchar not null, "+
-//        MoodColumns.MOOD+ " varchar not null"+");";
     
     public static final String EVENT_TO_EVENT_ITEM_DATABASE_CREATE =
         "create table " + EVENT_TO_EVENT_ITEM_DATABASE_TABLE_NAME + 
@@ -118,5 +110,13 @@ public class SQLStatements {
 		+GroupColumns._ID+ " VARCHAR,"
 		+UserColumns.USER_NAME+ " VARCHAR, "
 		+"primary key("+GroupColumns._ID+" ,"+ UserColumns.USER_NAME+"));";
+	
+	public static final String TAG_DATABASE_CREATE = "CREATE TABLE " + TAG_DATABASE_TABLE+"("
+		+TagColumns.TAG_ID+ " INTEGER PRIMARY KEY AUTOINCREMENT,"
+		+TagColumns.TAG_NAME+ " VARCHAR "+");";
 		
+	public static final String TAGGED_EVENTS_DATABASE_CREATE = "CREATE TABLE " + TAG_EVENT_DATABASE_TABLE+"("
+		+TagColumns.TAG_ID+ " INTEGER, "
+		+EventColumns._ID+ " VARCHAR, "
+		+"primary key("+TagColumns.TAG_ID+" ,"+ EventColumns._ID+"));";
 }

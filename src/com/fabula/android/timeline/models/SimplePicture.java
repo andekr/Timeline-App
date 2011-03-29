@@ -168,7 +168,7 @@ public class SimplePicture extends EventItem {
         try {
                 URL url = new URL("http://folk.ntnu.no/andekr/upload/files/" + imageURL); //you can write here any link
                 File file = new File(fileName);
-                
+                System.out.println("THE FILENAME IS "+fileName);
                 if(!file.exists()){
 	                long startTime = System.currentTimeMillis();
 	                Log.d("ImageManager", "download begining");

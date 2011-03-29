@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
+import android.location.Location;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -39,11 +40,14 @@ import com.fabula.android.timeline.Map.TimelineMapView;
 import com.fabula.android.timeline.adapters.GroupListAdapter;
 import com.fabula.android.timeline.contentmanagers.ContentAdder;
 import com.fabula.android.timeline.contentmanagers.ContentLoader;
+import com.fabula.android.timeline.contentmanagers.TagManager;
 import com.fabula.android.timeline.contentmanagers.UserGroupManager;
 import com.fabula.android.timeline.database.DatabaseHelper;
 import com.fabula.android.timeline.database.TimelineDatabaseHelper;
 import com.fabula.android.timeline.database.UserGroupDatabaseHelper;
 import com.fabula.android.timeline.dialogs.TimelineBrowserDialog;
+import com.fabula.android.timeline.models.BaseEvent;
+import com.fabula.android.timeline.models.Event;
 import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.models.Experiences;
 import com.fabula.android.timeline.models.Group;
@@ -108,6 +112,7 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		
 		//Initializes the content managers
 		setupHelpers();
+//		testTag();
 		
 		uGManager.addUserToUserDatabase(user);
 		
@@ -159,6 +164,17 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		};
 		
 	}
+
+//	private void testTag() {
+//		TagManager tagManager = new TagManager(getApplicationContext());
+//		
+//		tagManager.addTagToDatabase("EIT");
+//		tagManager.addTagToDatabase("SPORT");
+//		tagManager.addTagToDatabase("NY TAG");
+//		
+//		System.out.println("TAGMANAGER!");
+//		
+//	}
 
 	private void checkIfUserIsRegisteredOnServer() {
 		runOnUiThread(new Runnable() {
