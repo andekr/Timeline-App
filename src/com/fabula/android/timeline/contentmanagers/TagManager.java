@@ -2,15 +2,14 @@ package com.fabula.android.timeline.contentmanagers;
 
 import java.util.ArrayList;
 
-import com.fabula.android.timeline.models.BaseEvent;
-import com.fabula.android.timeline.models.Event;
-import com.fabula.android.timeline.models.Event.EventColumns;
-import com.fabula.android.timeline.models.Experience.TagColumns;
-import com.fabula.android.timeline.models.Experience.TaggedEventsColumns;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+
+import com.fabula.android.timeline.models.BaseEvent;
+import com.fabula.android.timeline.models.Event.EventColumns;
+import com.fabula.android.timeline.models.Experience.TagColumns;
+import com.fabula.android.timeline.models.Experience.TaggedEventsColumns;
 
 public class TagManager {
 
