@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -68,20 +69,18 @@ public class TagListAdapter extends ArrayAdapter<String> {
 	}
 	
 
-	public View getView(final int position, View convertView, ViewGroup parent) {
+	public View getView(int position, View convertView, ViewGroup parent) {
 
 		final ViewHolder holder;
 		
 		if (convertView == null) {
-			 convertView = mInflater.inflate(R.layout.list_tags_view, null, false);
+			 convertView = mInflater.inflate(R.layout.list_tags_view, null);
 			 holder = new ViewHolder();
 			 holder.text = (TextView) convertView.findViewById(R.id.taglist_text);
 			 holder.checkBox = (CheckBox) convertView.findViewById(R.id.tag_list_checkbox);
 			 holder.checkBox.setTag(position);
-			 
-				
-		
-			holder.checkBox.setOnClickListener(l);
+  			holder.checkBox.setOnClickListener(l);
+			
 			convertView.setTag(holder);
 			 
 		 } else {
@@ -92,9 +91,7 @@ public class TagListAdapter extends ArrayAdapter<String> {
 			 holder.text.setText(tags.get(position).toString());
 //			 holder.checkBox.setChecked(isAlreadyPartOfGroup(users.get(position), group));
 			holder.checkBox.setChecked(checkedTags.contains(tags.get(position)));
-			
-
-			 Log.i(this.getClass().getSimpleName(), "checked tags getView: "+this.checkedTags.size());
+			convertView.setOnClickListener(l);
 			 return convertView;
 	 }
 	
@@ -118,11 +115,15 @@ public class TagListAdapter extends ArrayAdapter<String> {
 	};
 	
 	private void listClickAction(View v) {
+		boolean checked = false;
 		if(v instanceof RelativeLayout){
 			v = ((ViewHolder)v.getTag()).checkBox;
+			checked = !((CheckBox)v).isChecked();
+		}else{
+			checked = ((CheckBox)v).isChecked();
 		}
 		Integer myPosition = (Integer)v.getTag();
-		boolean checked = ((CheckBox)v).isChecked();
+		
 		if(checked){
 			checkedTags.add(getItem(myPosition));
 		}else{

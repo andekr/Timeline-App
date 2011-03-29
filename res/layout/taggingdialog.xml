@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@color/White" android:id="@+id/tagDialogRelativeLayout">
+	android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/tagDialogRelativeLayout" android:background="@color/White">
 	
 	<RelativeLayout android:layout_below="@id/TextView01"
 		android:layout_width="wrap_content" android:id="@+id/PopupTitleRelativeLayout"
