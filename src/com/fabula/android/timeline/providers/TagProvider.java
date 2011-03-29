@@ -87,6 +87,7 @@ public class TagProvider extends BaseContentProvider {
 		case TAGGED_EVENT_ITEM:
 			rowId = super.getTimelinesDatabase().insertWithOnConflict(SQLStatements.TAG_EVENT_DATABASE_TABLE, null, values, SQLiteDatabase.CONFLICT_IGNORE);
 		default:
+			 System.out.println("Antall satt inn: "+rowId);
 			break;
 		}
         

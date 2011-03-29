@@ -28,11 +28,21 @@ public class TagManager {
 		 ContentValues values = new ContentValues();
 		 values.put(TagColumns.TAG_NAME, name);
 		 
-		 if(getTagID(name) != 0) {
+
+		 if(!tagAlreadyExists(name)) {
 			 context.getContentResolver().insert(TagColumns.CONTENT_URI, values);
 		 }
 	}
 	
+	private boolean tagAlreadyExists(String name) {
+		String[] tagColumnProjection = new String[]{TagColumns.TAG_NAME };
+		String where = TagColumns.TAG_NAME+ " = '"+ name+ "'";
+		
+		Cursor c = context.getContentResolver().query(TagColumns.CONTENT_URI, tagColumnProjection, where, null, null);
+		 
+		return c.getCount() != 0;
+	}
+
 	/**
 	 * Adds a tag to an event and saves it in the database
 	 * @param tagName name of the tag
@@ -64,7 +74,8 @@ public class TagManager {
 			if(c.moveToFirst()) {
 			id = c.getInt(c.getColumnIndex(TagColumns.TAG_ID));
 			}
-			
+		
+			c.close();
 		return id;
 		}
 	
@@ -84,6 +95,7 @@ public class TagManager {
 		if(c.moveToNext()) {
 			tag = c.getString(c.getColumnIndex(TagColumns.TAG_NAME));
 		}
+		c.close();
 		return tag;
 	}
 	
@@ -104,6 +116,7 @@ public class TagManager {
 				allTags.add(c.getString(c.getColumnIndex(TagColumns.TAG_NAME)));
 			} while (c.moveToNext());
 		}
+		c.close();
 		return allTags;
 	}
 	
@@ -125,7 +138,7 @@ public class TagManager {
 				allEventID.add(c.getString(c.getColumnIndex(EventColumns._ID)));
 			} while (c.moveToNext());
 		}
-		
+		c.close();
 		return allEventID;
 	}
 	
@@ -147,6 +160,7 @@ public class TagManager {
 				allTags.add(getTag(c.getInt(c.getColumnIndex(TagColumns.TAG_ID))));
 			} while (c.moveToNext());
 		}
+		c.close();
 		return allTags;
 	}
 	
