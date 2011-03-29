@@ -44,6 +44,7 @@ import com.fabula.android.timeline.TimelineActivity;
 import com.fabula.android.timeline.Utilities;
 import com.fabula.android.timeline.adapters.TagListAdapter;
 import com.fabula.android.timeline.contentmanagers.ContentUpdater;
+import com.fabula.android.timeline.contentmanagers.TagManager;
 import com.fabula.android.timeline.models.Emotion;
 import com.fabula.android.timeline.models.Event;
 import com.fabula.android.timeline.models.EventItem;
@@ -581,6 +582,12 @@ public class EventDialog extends Dialog {
 		
 		public void onClick(View arg0) {
 			mEvent.setTags(taglistAdapter.getCheckedTags());
+//			TagManager tagManager = new TagManager(mContext);
+//			
+//			for (String tag : mEvent.getTags()) {
+//				tagManager.addTagToEventInDatabase(tag, mEvent);
+//			}
+			
 			tagDialog.dismiss();
 			
 		}

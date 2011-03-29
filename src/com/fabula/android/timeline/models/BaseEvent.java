@@ -185,6 +185,15 @@ public class BaseEvent {
 		this.tags = tags;
 	}
 	
+	public boolean hasTag(String tagName) {
+		for (String tag : getTags()) {
+			if(tag.equals(tagName)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	
 
 }
