@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@color/White" android:id="@+id/tagDialogRelativeLayout">
+	
+	<RelativeLayout android:layout_below="@id/TextView01"
+		android:layout_width="wrap_content" android:id="@+id/PopupTitleRelativeLayout"
+		android:layout_toLeftOf="@+id/PopupMoreActionsRelativeLayout"
+		android:layout_height="50dip" android:background="@color/Header">
+		<TextView android:layout_toRightOf="@+id/PopupDialogTypeIconImageView"
+			android:layout_width="fill_parent" android:gravity="center"
+			android:textSize="24sp" android:textColor="@color/White"
+			android:layout_height="wrap_content" android:layout_alignTop="@+id/PopupDialogTypeIconImageView" android:id="@+id/PopupDialogTagEventTitleTextView" android:text="Add tags to your event"></TextView>
+		<ImageView android:layout_height="40dp"
+			android:id="@+id/PopupDialogTypeIconImageView" android:layout_width="40dp"
+			android:layout_alignParentLeft="true" android:src="@drawable/ic_menu_tag"></ImageView>
+	</RelativeLayout>
+	<ListView android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@+id/PopupTitleRelativeLayout" android:id="@+id/tagListlistView" android:layout_above="@+id/popupTagButtonBarLinearLayout"></ListView>
+	<LinearLayout android:layout_height="wrap_content" android:id="@+id/popupTagButtonBarLinearLayout" android:layout_alignParentBottom="true" android:layout_width="fill_parent" android:weightSum="100">
+		<Button android:layout_height="wrap_content" android:text="OK" android:id="@+id/tagsOKButton" android:layout_width="0dip" android:layout_weight="33"></Button>
+		<Button android:layout_height="wrap_content" android:id="@+id/tagCancelButton" android:text="Cancel" android:layout_width="0dip" android:layout_weight="33"></Button>
+		<Button android:layout_height="wrap_content" android:id="@+id/tagManageButton" android:layout_weight="33" android:layout_width="0dip" android:text="Create new tag"></Button>
+	</LinearLayout>
+
+</RelativeLayout>
