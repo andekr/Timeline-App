@@ -3,14 +3,13 @@ package com.fabula.android.timeline.models;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import android.accounts.Account;
 import android.location.Location;
 import android.net.Uri;
 import android.provider.BaseColumns;
+
 import com.fabula.android.timeline.providers.EventProvider;
-import com.google.android.maps.GeoPoint;
 
 public class Event extends BaseEvent {
 	
@@ -31,6 +30,7 @@ public class Event extends BaseEvent {
 	
 	public Event(){
 		className = this.getClass().getSimpleName();
+		setTags(new ArrayList<String>());
 	}
 	
 	public Event(String exID, Location location, Account user) {
@@ -40,6 +40,7 @@ public class Event extends BaseEvent {
 		eventItems = new ArrayList<EventItem>();
 		emotionList = new ArrayList<Emotion>();
 		className = this.getClass().getSimpleName();
+		setTags(new ArrayList<String>());
 //		setLocation(location);
 	}
 	
@@ -50,6 +51,7 @@ public class Event extends BaseEvent {
 		eventItems = new ArrayList<EventItem>();
 		emotionList = new ArrayList<Emotion>();
 		className = this.getClass().getSimpleName();
+		setTags(new ArrayList<String>());
 //		setDatetime(dateTime);
 //		setLocation(location);
 	}

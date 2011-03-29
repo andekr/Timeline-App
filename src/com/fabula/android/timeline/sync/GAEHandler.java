@@ -209,6 +209,11 @@ public class GAEHandler {
 		else
 			bEvent.setEventItems(((Event)baseEvent).getEventItems());
 		
+		if(((Event)baseEvent).getTags().size()==0)
+			bEvent.setTags(null);
+		else
+			bEvent.setTags(((Event)baseEvent).getTags());
+		
 		bEvent.setShared(((Event)baseEvent).isShared());
 		
 		return bEvent;

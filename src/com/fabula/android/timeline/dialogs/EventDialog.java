@@ -1,5 +1,6 @@
 package com.fabula.android.timeline.dialogs;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.londatiga.android.ActionItem;
@@ -10,24 +11,30 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.DialogInterface.OnCancelListener;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnCreateContextMenuListener;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout.LayoutParams;
 
@@ -35,6 +42,7 @@ import com.fabula.android.timeline.NoteActivity;
 import com.fabula.android.timeline.R;
 import com.fabula.android.timeline.TimelineActivity;
 import com.fabula.android.timeline.Utilities;
+import com.fabula.android.timeline.adapters.TagListAdapter;
 import com.fabula.android.timeline.contentmanagers.ContentUpdater;
 import com.fabula.android.timeline.models.Emotion;
 import com.fabula.android.timeline.models.Event;
@@ -64,6 +72,9 @@ public class EventDialog extends Dialog {
 	private String addressString="";
 	private Address address;
 	private boolean fromMap;
+	private ImageButton tagButton;
+	private TagListAdapter taglistAdapter;
+	private Dialog tagDialog;
 
 	public EventDialog(Context context, Event event, Activity activity, boolean fromMap){
 		super(context);
@@ -180,6 +191,10 @@ public class EventDialog extends Dialog {
  				confirmation.show();
  			}
  		});
+ 		
+ 		
+ 		tagButton = (ImageButton)findViewById(R.id.PopuptagButton);
+ 		tagButton.setOnClickListener(tagClickListener);
  		
  		shareEventThread = new Runnable() {
 			
@@ -495,6 +510,87 @@ public class EventDialog extends Dialog {
 //		
 //		mContext.getContentResolver().insert(EmotionColumns.CONTENT_URI, values);
 //	}
+	
+	public android.view.View.OnClickListener tagClickListener = new View.OnClickListener() {
+		
+		public void onClick(View arg0) {
+			//Open tagging dialog
+			openSelectTagsToAddDialog();
+		}
+	};
+
+	/**
+	 * Dialog for selecting which tags to add to the event
+	 */
+	public void openSelectTagsToAddDialog() {
+		tagDialog = new Dialog(mContext);
+		tagDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		ArrayList<String> allTags = new ArrayList<String>();
+		allTags.add("School");
+		allTags.add("Sport");
+		allTags.add("Leisure");
+		allTags.add("Computers");
+		allTags.add("Trivial");
+		allTags.add("Link");
+		allTags.add("Funny");
+		
+		LayoutInflater inflater = LayoutInflater.from(mContext);
+		RelativeLayout tagDialogRelativeLayout = (RelativeLayout) inflater.inflate(R.layout.taggingdialog, null, false);
+		ListView tagList = (ListView)tagDialogRelativeLayout.findViewById(R.id.tagListlistView);
+		taglistAdapter = new TagListAdapter(mActivity, allTags, mEvent.getTags());
+		tagList.setAdapter(taglistAdapter);
+		tagList.setOnItemClickListener(new OnItemClickListener() {
+
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				Toast.makeText(mContext, "YO", Toast.LENGTH_SHORT).show();
+			}
+		});
+		tagDialog.addContentView(tagDialogRelativeLayout, new android.widget.AbsListView.LayoutParams(android.widget.AbsListView.LayoutParams.FILL_PARENT, android.widget.AbsListView.LayoutParams.FILL_PARENT));
+		
+		Button okButton = (Button)tagDialogRelativeLayout.findViewById(R.id.tagsOKButton);
+		okButton.setOnClickListener(addTagDialogListener);
+		
+		Button cancelButton = (Button)tagDialogRelativeLayout.findViewById(R.id.tagCancelButton);
+		cancelButton.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View arg0) {
+				taglistAdapter.setCheckedTags(mEvent.getTags());
+				tagDialog.dismiss();		
+			}
+		});
+		
+////		builder.setMessage("Select tags to add:")
+//		.setPositiveButton("Add tags", addTagDialogListener)
+//		.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//		public void onClick(DialogInterface dialog, int which) {
+//			taglistAdapter.setCheckedTags(mEvent.getTags());
+//			dialog.dismiss();
+//		}
+//	})
+//		.setOnCancelListener(new OnCancelListener() {
+//		public void onCancel(DialogInterface dialog) {
+//			taglistAdapter.setCheckedTags(mEvent.getTags());
+//			dialog.dismiss();					
+//		}
+//	});
+//		
+//		AlertDialog tagDialog = builder.create();
+		tagDialog.show();
+	}
+	
+	/**
+	 * Add tag dialog listener
+	 */
+	private android.view.View.OnClickListener addTagDialogListener = new View.OnClickListener() {
+		
+		public void onClick(View arg0) {
+			mEvent.setTags(taglistAdapter.getCheckedTags());
+			tagDialog.dismiss();
+			
+		}
+	};
+	
 	
 	@Override
 	public void onBackPressed() {

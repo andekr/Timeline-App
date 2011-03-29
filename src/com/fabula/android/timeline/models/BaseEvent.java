@@ -1,5 +1,6 @@
 package com.fabula.android.timeline.models;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -21,6 +22,7 @@ public class BaseEvent {
 	protected boolean shared;
 	private transient Account user;
 	private String creator;
+	private List<String> tags;
 	//For GSON
 	private String className;
 	private int mood;
@@ -172,6 +174,17 @@ public class BaseEvent {
 	public void setAverage(boolean average) {
 		this.average = average;
 	}
+
+	public List<String> getTags() {
+		if(tags==null)
+			tags = new ArrayList<String>();
+		return tags;
+	}
+
+	public void setTags(List<String> tags) {
+		this.tags = tags;
+	}
+	
 	
 
 }

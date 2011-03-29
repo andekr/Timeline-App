@@ -1095,7 +1095,14 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 			}
 		});
 		
+	}
+
+	public ContentLoader getContentLoader() {
+		return contentLoader;
 	}	
+	
+	
+	
   
 	
 }

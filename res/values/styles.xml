@@ -38,4 +38,10 @@
 		<item name="@android:windowExitAnimation">@anim/shrink_from_top</item>
 	</style>
 	
+	 <style name="SmallCheckBox">
+ 
+        <item name="android:button">@drawable/checkbox</item>
+ 
+    </style>
+	
 </resources>
