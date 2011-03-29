@@ -24,6 +24,7 @@ public class TagManager {
 	 * @param name. The name of the tag to be added
 	 */
 	public void addTagToDatabase(String name) {
+		System.out.println("Adder "+name+" til database");
 		 ContentValues values = new ContentValues();
 		 values.put(TagColumns.TAG_NAME, name);
 		 
@@ -90,7 +91,9 @@ public class TagManager {
 	 * Gets all the tags saved in the database
 	 * @return a list of all the tags in the database
 	 */
-	public ArrayList<String> getTagAllTags() {
+
+	public ArrayList<String> getAllTags() {
+
 		
 		String[] tagColumnsProjection = new String[]{TagColumns.TAG_NAME};
 		ArrayList<String> allTags = new ArrayList<String>();

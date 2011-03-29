@@ -84,6 +84,7 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 	private Intent timelineIntent;
 	private Intent profileIntent;
 	private Intent myGroupsIntent;
+	private Intent tagsIntent;
 	private ContentAdder contentAdder;
 	private ContentLoader contentLoader;
 	private Account creator;
@@ -615,7 +616,8 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 	
 	private OnClickListener viewProfileListener = new OnClickListener() {
 		public void onClick(View v) {
-			startActivity(profileIntent);
+//			startActivity(profileIntent);
+			startActivity(tagsIntent);
 		}
 	};
 	
@@ -642,6 +644,7 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		profileIntent = new Intent(this, ProfileActivity.class);
 		timelineIntent = new Intent(this, TimelineActivity.class);
 		timelineIntent.setAction(Utilities.INTENT_ACTION_NEW_TIMELINE); //Default Intent action for TimelineActivity is to create/open a timeline.
+		tagsIntent = new Intent(this, MyTagsActivity.class);
 	}
 
 	private void setupHelpers() {
