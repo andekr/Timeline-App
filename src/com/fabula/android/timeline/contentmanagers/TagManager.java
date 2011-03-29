@@ -20,6 +20,7 @@ public class TagManager {
 	}
 	
 	public void addTagToDatabase(String name) {
+		System.out.println("Adder "+name+" til database");
 		 ContentValues values = new ContentValues();
 		 values.put(TagColumns.TAG_NAME, name);
 		 
@@ -66,7 +67,7 @@ public class TagManager {
 		return tag;
 	}
 	
-	public ArrayList<String> getTagAllTags() {
+	public ArrayList<String> getAllTags() {
 		
 		String[] tagColumnsProjection = new String[]{TagColumns.TAG_NAME};
 		ArrayList<String> allTags = new ArrayList<String>();
