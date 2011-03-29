@@ -7,7 +7,7 @@
 	</ImageButton>
   </LinearLayout>
   
-	<ListView android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@+id/PopupTitleRelativeLayout" android:id="@+id/tagListlistView" android:layout_above="@+id/popupTagButtonBarLinearLayout"></ListView>
+	<ListView android:layout_width="fill_parent" android:id="@+id/tagListlistView" android:layout_below="@+id/tag_header_row" android:layout_height="fill_parent" android:layout_above="@+id/TagButtonBarLinearLayout"></ListView>
 	<LinearLayout android:layout_height="wrap_content" android:layout_alignParentBottom="true" android:layout_width="fill_parent" android:weightSum="100" android:id="@+id/TagButtonBarLinearLayout">
 		<Button android:layout_height="wrap_content" android:layout_width="0dip" android:layout_weight="50" android:id="@+id/tagsCreateButton" android:text="Create new tag"></Button>
 		<Button android:layout_height="wrap_content" android:layout_width="0dip" android:layout_weight="50" android:text="Show in a timeline" android:id="@+id/tagShowInTimelineButton"></Button>
