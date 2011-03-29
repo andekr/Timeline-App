@@ -126,36 +126,38 @@ public class EventDialog extends Dialog {
  		else {
  			shareButton.setEnabled(false);
  		}
-		
+
  		shareButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			
 			public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked) {
 				
-				AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-				builder.setMessage("Do you really want to share this event to all group members? You won't be able to undo this later")
-				.setPositiveButton(R.string.yes_label, new DialogInterface.OnClickListener() {
-					
-					public void onClick(DialogInterface dialog, int which) {
+//				AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+//				builder.setMessage("Do you really want to share this event to all group members? You won't be able to undo this later.")
+//				.setPositiveButton(R.string.yes_label, new DialogInterface.OnClickListener() {
+//					
+//					public void onClick(DialogInterface dialog, int which) {
 						mEvent.setShared(isChecked);
 						shareButton.setEnabled(!mEvent.isShared());
 						Thread shareThread = new Thread(shareEventThread, "shareThread");
 		 				shareThread.start();
-		 				dialog.dismiss();
-					}
-				})
-				.setNegativeButton(R.string.no_label, new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
-				}
-			})
-				.setOnCancelListener(new OnCancelListener() {
-				public void onCancel(DialogInterface dialog) {
-					dialog.dismiss();					
-				}
-			});
-				AlertDialog confirmation = builder.create();
-				confirmation.show();
-				
+//		 				dialog.dismiss();
+//					}
+//				})
+//				.setNegativeButton(R.string.no_label, new DialogInterface.OnClickListener() {
+//				public void onClick(DialogInterface dialog, int which) {
+//					shareButton.setChecked(mEvent.isShared());
+//					dialog.dismiss();
+//				}
+//			})
+//				.setOnCancelListener(new OnCancelListener() {
+//				public void onCancel(DialogInterface dialog) {
+//					shareButton.setChecked(mEvent.isShared());
+//					dialog.dismiss();					
+//				}
+//			});
+//				AlertDialog confirmation = builder.create();
+//				confirmation.show();
+//				
 			}
 		});
  		

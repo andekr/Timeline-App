@@ -37,15 +37,16 @@ public class TimelineDatabaseHelper extends SQLiteOpenHelper{
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(SQLStatements.TIMELINES_DATABASE_CREATE);
+		db.execSQL(SQLStatements.TAG_DATABASE_CREATE);
+		db.execSQL(SQLStatements.TAGGED_EVENTS_DATABASE_CREATE);
 		DatabaseHelper.backupDBToSDcard(db, this.databaseName);
-		
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		db.execSQL("DROP TABLE IF EXISTS " + SQLStatements.TIMELINES_DATABASE_TABLE_NAME);
+		db.execSQL("DROP TABLE IF EXISTS " + SQLStatements.TAG_DATABASE_TABLE);
+		db.execSQL("DROP TABLE IF EXISTS " + SQLStatements.TAG_EVENT_DATABASE_TABLE);
 		onCreate(db);
-		
 	}
-
 }
