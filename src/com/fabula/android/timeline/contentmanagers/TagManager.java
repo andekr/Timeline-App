@@ -19,6 +19,10 @@ public class TagManager {
 		this.context = context;
 	}
 	
+	/**
+	 * Adds a new tag to the database if it doesn't exists from before
+	 * @param name. The name of the tag to be added
+	 */
 	public void addTagToDatabase(String name) {
 		 ContentValues values = new ContentValues();
 		 values.put(TagColumns.TAG_NAME, name);
@@ -27,6 +31,12 @@ public class TagManager {
 			 context.getContentResolver().insert(TagColumns.CONTENT_URI, values);
 		 }
 	}
+	
+	/**
+	 * Adds a tag to an event and saves it in the database
+	 * @param tagName name of the tag
+	 * @param event the event to tag
+	 */
 	
 	public void addTagToEventInDatabase(String tagName, BaseEvent event) {
 		ContentValues values = new ContentValues();
@@ -37,6 +47,11 @@ public class TagManager {
 		context.getContentResolver().insert(TaggedEventsColumns.CONTENT_URI, values);
 	}
 	
+	/**
+	 * Returns the ID of a tag
+	 * @param tagName The name of the tag
+	 * @return the tag id
+	 */
 	public int getTagID(String tagName) {
 		
 		String[] tagColumnProjection = new String[]{TagColumns.TAG_ID };
@@ -52,6 +67,11 @@ public class TagManager {
 		return id;
 		}
 	
+	/**
+	 * Return a tag based on a tag id
+	 * @param tagID id of the tag
+	 * @return the tag connected to the id
+	 */
 	public String getTag(int tagID) {
 		String[] tagColumnProjection = new String[]{TagColumns.TAG_NAME };
 		
@@ -66,6 +86,10 @@ public class TagManager {
 		return tag;
 	}
 	
+	/**
+	 * Gets all the tags saved in the database
+	 * @return a list of all the tags in the database
+	 */
 	public ArrayList<String> getTagAllTags() {
 		
 		String[] tagColumnsProjection = new String[]{TagColumns.TAG_NAME};
@@ -80,6 +104,11 @@ public class TagManager {
 		return allTags;
 	}
 	
+	/**
+	 * Gets all events associated with a tag
+	 * @param tagName The tag
+	 * @return A list of all the event id's connected to the tag
+	 */
 	public ArrayList<String> getAllEventsConnectedToTag(String tagName) {
 		ArrayList<String> allEventID = new ArrayList<String>();
 		String[] tagColumnsProjection = new String[]{EventColumns._ID};
@@ -97,6 +126,11 @@ public class TagManager {
 		return allEventID;
 	}
 	
+	/**
+	 * Get all tags conntected to a given event
+	 * @param eventID the eventID of the event to be checked
+	 * @return a list of all the tags connected to the event
+	 */
 	public ArrayList<String> getAllTagsConnectedToEvent(String eventID) {
 		ArrayList<String> allTags = new ArrayList<String>();
 		String[] tagColumnsProjection = new String[]{TagColumns.TAG_ID};
@@ -113,6 +147,10 @@ public class TagManager {
 		return allTags;
 	}
 	
+	/**
+	 * Deletes a tag from the database
+	 * @param tagName the name of the tag to be deleted
+	 */
 	public void DeleteTag(String tagName) {
 		
 		String where = TagColumns.TAG_NAME + " = '" +tagName +"'";
@@ -122,6 +160,10 @@ public class TagManager {
 		deleteEventTags(tagName);
 	}
 
+	/**
+	 * Delete event to tag connection from the database based on the tagName
+	 * @param tagName the name of the tag to delete
+	 */
 	private void deleteEventTags(String tagName) {
 
 		String where = TaggedEventsColumns.TAG_ID +" = '"+getTagID(tagName)+"'";
