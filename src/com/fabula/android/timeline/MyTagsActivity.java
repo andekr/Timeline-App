@@ -147,10 +147,8 @@ public class MyTagsActivity extends Activity {
 	private android.view.View.OnClickListener showInTimelineButtonListener = new View.OnClickListener() {
 		
 		public void onClick(View v) {
-			createAndOpenNewExperienceBasedOnSelectedTags();
-		}
-
-		
+				createAndOpenNewExperienceBasedOnSelectedTags();
+		}	
 	};
 	
 	private void createAndOpenNewExperienceBasedOnSelectedTags() {
@@ -158,34 +156,42 @@ public class MyTagsActivity extends Activity {
 		List<BaseEvent> eventsTaggedWithSelectedTags = tagManager.getAllEventsConnectedToTag(selectedTagsName);
 		Log.i(this.getClass().getSimpleName(), "Got "+eventsTaggedWithSelectedTags.size()+" connected to tags");
 		
-		String experienceTitle = "Tags: ";
-		for (int i = 0; i < Math.min(3, selectedTagsName.size()); i++) {
-			experienceTitle +=selectedTagsName.get(i)+" ";
-		}
-		Experience tagExperience = new Experience(experienceTitle.trim(), false, Utilities.getUserAccount(this));
-		for (BaseEvent baseEvent : eventsTaggedWithSelectedTags) {
-			baseEvent.setExperienceid(tagExperience.getId());
-			baseEvent.generateNewId();
-			tagExperience.addEvent(baseEvent);
-		}
-			
-		String databaseName = tagExperience.getTitle() + ".db";
+		if(!tagListAdapter.getCheckedTags().isEmpty() && !eventsTaggedWithSelectedTags.isEmpty()) {
+			String experienceTitle = "Tags: ";
+			for (int i = 0; i < Math.min(3, selectedTagsName.size()); i++) {
+				experienceTitle +=selectedTagsName.get(i)+" ";
+			}
+			Experience tagExperience = new Experience(experienceTitle.trim(), false, Utilities.getUserAccount(this));
+			for (BaseEvent baseEvent : eventsTaggedWithSelectedTags) {
+				baseEvent.setExperienceid(tagExperience.getId());
+				baseEvent.generateNewId();
+				tagExperience.addEvent(baseEvent);
+			}
+				
+			String databaseName = tagExperience.getTitle() + ".db";
 
-		Intent timelineIntent = new Intent(this, TimelineActivity.class);
-		timelineIntent.setAction(Utilities.INTENT_ACTION_NEW_TIMELINE);
-		timelineIntent.putExtra(Utilities.DATABASENAME_REQUEST, databaseName);
-		timelineIntent.putExtra(Utilities.SHARED_REQUEST, tagExperience.isShared());
-		timelineIntent.putExtra(Utilities.EXPERIENCEID_REQUEST, tagExperience.getId());
-		timelineIntent.putExtra(Utilities.EXPERIENCECREATOR_REQUEST, tagExperience.getUser().name);
-		
-		new TimelineDatabaseHelper(this, Utilities.ALL_TIMELINES_DATABASE_NAME);
-		new DatabaseHelper(this, databaseName);
-		ContentAdder adder = new ContentAdder(this);
-		adder.addExperienceToTimelineContentProvider(tagExperience);
-		DatabaseHelper.getCurrentTimelineDatabase().close();
-		TimelineDatabaseHelper.getCurrentTimeLineDatabase().close();
-		startActivity(timelineIntent);
-		finish();
+			Intent timelineIntent = new Intent(this, TimelineActivity.class);
+			timelineIntent.setAction(Utilities.INTENT_ACTION_NEW_TIMELINE);
+			timelineIntent.putExtra(Utilities.DATABASENAME_REQUEST, databaseName);
+			timelineIntent.putExtra(Utilities.SHARED_REQUEST, tagExperience.isShared());
+			timelineIntent.putExtra(Utilities.EXPERIENCEID_REQUEST, tagExperience.getId());
+			timelineIntent.putExtra(Utilities.EXPERIENCECREATOR_REQUEST, tagExperience.getUser().name);
+			
+			new TimelineDatabaseHelper(this, Utilities.ALL_TIMELINES_DATABASE_NAME);
+			new DatabaseHelper(this, databaseName);
+			ContentAdder adder = new ContentAdder(this);
+			adder.addExperienceToTimelineContentProvider(tagExperience);
+			DatabaseHelper.getCurrentTimelineDatabase().close();
+			TimelineDatabaseHelper.getCurrentTimeLineDatabase().close();
+			startActivity(timelineIntent);
+			finish();
+		}
+		else if(tagListAdapter.getCheckedTags().isEmpty()) {
+			Toast.makeText(getApplicationContext(), "No tag selected! Select one or more tags to use this functionality", Toast.LENGTH_SHORT).show();
+		}
+		else if(eventsTaggedWithSelectedTags.isEmpty()) {
+			Toast.makeText(getApplicationContext(), "The tag(s) you have selected has no attached events!", Toast.LENGTH_SHORT).show();
+		}
 	}
 	
 	private void setupHelpers() {

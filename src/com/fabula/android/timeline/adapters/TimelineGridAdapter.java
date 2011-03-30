@@ -1,7 +1,6 @@
 package com.fabula.android.timeline.adapters;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -130,9 +129,9 @@ public class TimelineGridAdapter extends ArrayAdapter<BaseEvent> {
 
             key=(Integer)m.getKey();
             System.out.println(event.getId());
-            System.out.println(((Event)m.getValue()).getId());
+            System.out.println(((BaseEvent)m.getValue()).getId());
 
-            if(event.getId().equals(((Event)m.getValue()).getId())){
+            if(event.getId().equals(((BaseEvent)m.getValue()).getId())){
             	break;
             }
         }
@@ -263,7 +262,8 @@ public class TimelineGridAdapter extends ArrayAdapter<BaseEvent> {
 					handleClick(v);
 				}
 			});
-            	  
+            	  if(imageView.getTag() instanceof Event) {
+            		  
             	  imageView.setOnCreateContextMenuListener(new OnCreateContextMenuListener() {
 				
 				public void onCreateContextMenu(ContextMenu menu, View v,
@@ -271,20 +271,20 @@ public class TimelineGridAdapter extends ArrayAdapter<BaseEvent> {
 					menu.add(R.id.MENU_DELETE_EVENT, 0 , 0, R.string.Delete_event_label);
 				}
 			});
-         	
+         	    
             	  imageView.setOnLongClickListener(new View.OnLongClickListener() {
 				
 				public boolean onLongClick(View v) {
-					((TimelineActivity)mActivity).setSelectedEvent((Event)v.getTag());
-					Log.i(TimelineGridAdapter.class.toString(), "LongClick - selected Event set: "+((Event)v.getTag()).getId());
+						((TimelineActivity)mActivity).setSelectedEvent((Event)v.getTag());
+						Log.i(TimelineGridAdapter.class.toString(), "LongClick - selected Event set: "+((Event)v.getTag()).getId());
 					return false;
 				}
 			});
-         	
+            	  
               }
-//          } else {
-//              imageView = (ImageView) convertView;
-//          }
+         	
+          }
+
               return imageView;
     	}
     	}
