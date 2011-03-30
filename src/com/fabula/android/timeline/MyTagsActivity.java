@@ -1,18 +1,20 @@
 package com.fabula.android.timeline;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -20,8 +22,12 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.fabula.android.timeline.adapters.TagListAdapter;
+import com.fabula.android.timeline.contentmanagers.ContentAdder;
 import com.fabula.android.timeline.contentmanagers.TagManager;
+import com.fabula.android.timeline.database.DatabaseHelper;
 import com.fabula.android.timeline.database.TimelineDatabaseHelper;
+import com.fabula.android.timeline.models.BaseEvent;
+import com.fabula.android.timeline.models.Experience;
 
 public class MyTagsActivity extends Activity {
 
@@ -128,6 +134,50 @@ public class MyTagsActivity extends Activity {
 		}
 	};
 	
+	private android.view.View.OnClickListener showInTimelineButtonListener = new View.OnClickListener() {
+		
+		public void onClick(View v) {
+			createAndOpenNewExperienceBasedOnSelectedTags();
+		}
+
+		
+	};
+	
+	private void createAndOpenNewExperienceBasedOnSelectedTags() {
+		List<String> selectedTagsName = tagListAdapter.getCheckedTags();
+		List<BaseEvent> eventsTaggedWithSelectedTags = tagManager.getAllEventsConnectedToTag(selectedTagsName);
+		Log.i(this.getClass().getSimpleName(), "Got "+eventsTaggedWithSelectedTags.size()+" connected to tags");
+		
+		String experienceTitle = "";
+		for (int i = 0; i < Math.min(3, selectedTagsName.size()); i++) {
+			experienceTitle +=selectedTagsName.get(i)+" ";
+		}
+		Experience tagExperience = new Experience(experienceTitle.trim(), false, Utilities.getUserAccount(this));
+		for (BaseEvent baseEvent : eventsTaggedWithSelectedTags) {
+			baseEvent.setExperienceid(tagExperience.getId());
+			baseEvent.generateNewId();
+			tagExperience.addEvent(baseEvent);
+		}
+			
+		String databaseName = tagExperience.getTitle() + ".db";
+
+		Intent timelineIntent = new Intent(this, TimelineActivity.class);
+		timelineIntent.setAction(Utilities.INTENT_ACTION_NEW_TIMELINE);
+		timelineIntent.putExtra(Utilities.DATABASENAME_REQUEST, databaseName);
+		timelineIntent.putExtra(Utilities.SHARED_REQUEST, tagExperience.isShared());
+		timelineIntent.putExtra(Utilities.EXPERIENCEID_REQUEST, tagExperience.getId());
+		timelineIntent.putExtra(Utilities.EXPERIENCECREATOR_REQUEST, tagExperience.getUser().name);
+		
+		new TimelineDatabaseHelper(this, Utilities.ALL_TIMELINES_DATABASE_NAME);
+		new DatabaseHelper(this, databaseName);
+		ContentAdder adder = new ContentAdder(this);
+		adder.addExperienceToTimelineContentProvider(tagExperience);
+		DatabaseHelper.getCurrentTimelineDatabase().close();
+		TimelineDatabaseHelper.getCurrentTimeLineDatabase().close();
+		startActivity(timelineIntent);
+		
+	}
+	
 	private void setupHelpers() {
 		new TimelineDatabaseHelper(this, Utilities.ALL_TIMELINES_DATABASE_NAME);
 		tagManager = new TagManager(this);
@@ -146,7 +196,7 @@ public class MyTagsActivity extends Activity {
 		
 		
 		showInTimelineButton = (Button) findViewById(R.id.tagShowInTimelineButton);
-//		showInTimelineButton.setOnClickListener(newTagButtonListener);
+		showInTimelineButton.setOnClickListener(showInTimelineButtonListener);
 		
 		allTags = tagManager.getAllTags();
 		System.out.println("Antall tags: "+allTags.size());

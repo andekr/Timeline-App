@@ -1,6 +1,7 @@
 package com.fabula.android.timeline.contentmanagers;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,6 +10,7 @@ import android.database.Cursor;
 import com.fabula.android.timeline.Utilities;
 import com.fabula.android.timeline.database.DatabaseHelper;
 import com.fabula.android.timeline.database.TimelineDatabaseHelper;
+import com.fabula.android.timeline.database.UserGroupDatabaseHelper;
 import com.fabula.android.timeline.models.BaseEvent;
 import com.fabula.android.timeline.models.Event.EventColumns;
 import com.fabula.android.timeline.models.Experience;
@@ -147,7 +149,7 @@ public class TagManager {
 		return allEventID;
 	}
 	
-	public ArrayList<BaseEvent> getAllEventsConnectedToTag(ArrayList <String> tagNames) {
+	public ArrayList<BaseEvent> getAllEventsConnectedToTag(List<String> tagNames) {
 		
 		ArrayList<BaseEvent> allEventsConnectedToTag = new ArrayList<BaseEvent>();
 		
@@ -165,6 +167,7 @@ public class TagManager {
 		ArrayList<BaseEvent> allEventsConnectedToTag = new ArrayList<BaseEvent>();
 		ContentLoader contentLoader = new ContentLoader(context);
 		
+		new UserGroupDatabaseHelper(context, Utilities.USER_GROUP_DATABASE_NAME);
 		new TimelineDatabaseHelper(context, Utilities.ALL_TIMELINES_DATABASE_NAME);
 		ArrayList<Experience> allExperiencesInDatabase = contentLoader.LoadAllExperiencesFromDatabase();
 		TimelineDatabaseHelper.getCurrentTimeLineDatabase().close();
@@ -180,6 +183,7 @@ public class TagManager {
 			}
 		DatabaseHelper.getCurrentTimelineDatabase().close();
 		}
+		UserGroupDatabaseHelper.getUserDatabase().close();
 		
 		return allEventsConnectedToTag;
 	}
@@ -190,6 +194,7 @@ public class TagManager {
 	 * @return a list of all the tags connected to the event
 	 */
 	public ArrayList<String> getAllTagsConnectedToEvent(String eventID) {
+		new TimelineDatabaseHelper(context, Utilities.ALL_TIMELINES_DATABASE_NAME);
 		ArrayList<String> allTags = new ArrayList<String>();
 		String[] tagColumnsProjection = new String[]{TagColumns.TAG_ID};
 		
@@ -202,6 +207,7 @@ public class TagManager {
 				allTags.add(getTag(c.getInt(c.getColumnIndex(TagColumns.TAG_ID))));
 			} while (c.moveToNext());
 		}
+		TimelineDatabaseHelper.getCurrentTimeLineDatabase().close();
 		c.close();
 		return allTags;
 	}

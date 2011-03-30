@@ -28,11 +28,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private String databaseName;
 
 	public DatabaseHelper(Context context, String databaseName) {
-		super(context, databaseName, null, Utilities.DATABASE_VERSION);
-		if(!databaseName.endsWith(".db"))
+		super(context, (databaseName.trim().endsWith(".db"))? databaseName : databaseName+".db", null, Utilities.DATABASE_VERSION);
+		if(!databaseName.trim().endsWith(".db"))
 			databaseName = databaseName+".db";
 		this.databaseName = databaseName;
-		
 //		File sdCardDirectory = Environment.getExternalStorageDirectory();
 	
 		timelineDatabase = this.getWritableDatabase();

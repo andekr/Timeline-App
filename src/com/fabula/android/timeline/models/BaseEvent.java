@@ -59,6 +59,10 @@ public class BaseEvent {
 	public void setId(String id) {
 		this.id = id;
 	}
+	
+	public void generateNewId() {
+		id =  UUID.randomUUID().toString();
+	}
 
 	public String getExperienceid() {
 		return experienceid;
