@@ -1,5 +1,6 @@
 package com.fabula.android.timeline.models;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -36,6 +37,7 @@ public class Experience {
 		this.id = UUID.randomUUID().toString();
 		this.title = title;
 		this.shared = shared;
+		events = new ArrayList<BaseEvent>();
 		setUser(user);
 	}
 	
@@ -44,6 +46,7 @@ public class Experience {
 		this.title = title;
 		this.shared = shared;
 		this.setSharingGroupObject(group);
+		events = new ArrayList<BaseEvent>();
 		setUser(user);
 	}
 	
@@ -51,6 +54,7 @@ public class Experience {
 		this.id = id;
 		this.title = title;
 		this.shared = shared;
+		events = new ArrayList<BaseEvent>();
 		setUser(user);
 	}
 	

@@ -370,7 +370,6 @@ public class MyGroupsActivity extends Activity implements ProgressDialogActivity
 	}
 	
 	
-	
 	/**
 	 * Setup views and instansiate objects the activity is going to use
 	 */

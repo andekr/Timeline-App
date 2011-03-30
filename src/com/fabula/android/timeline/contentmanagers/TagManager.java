@@ -206,7 +206,7 @@ public class TagManager {
 				allTags.add(getTag(c.getInt(c.getColumnIndex(TagColumns.TAG_ID))));
 			} while (c.moveToNext());
 		}
-		TimelineDatabaseHelper.getCurrentTimeLineDatabase().close();
+//		TimelineDatabaseHelper.getCurrentTimeLineDatabase().close();
 		c.close();
 		return allTags;
 	}

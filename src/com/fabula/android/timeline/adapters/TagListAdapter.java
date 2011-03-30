@@ -6,10 +6,13 @@ import java.util.List;
 import android.content.Context;
 import android.graphics.LightingColorFilter;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
+import android.view.View.OnCreateContextMenuListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -20,6 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.fabula.android.timeline.MyGroupsActivity;
@@ -39,7 +43,7 @@ public class TagListAdapter extends ArrayAdapter<String> {
 		 this.mContext = context;
 		 this.tags = allTags;
 		 this.checkedTags = checkedTags;
-		 mInflater = LayoutInflater.from(mContext); 
+		 mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		 setNotifyOnChange(true);
 	 }
 
@@ -88,6 +92,16 @@ public class TagListAdapter extends ArrayAdapter<String> {
 			 holder.text = (TextView) convertView.findViewById(R.id.taglist_text);
 			 holder.checkBox = (CheckBox) convertView.findViewById(R.id.tag_list_checkbox);
 			 holder.checkBox.setTag(position);
+			 
+				OnClickListener l= new OnClickListener() {
+					
+					public void onClick(View v) {
+						listClickAction(v);
+
+					}
+
+				};
+			 
   			holder.checkBox.setOnClickListener(l);
   			convertView.setOnClickListener(l);
 			convertView.setTag(holder);
@@ -104,15 +118,9 @@ public class TagListAdapter extends ArrayAdapter<String> {
 			 return convertView;
 	 }
 	
-	public OnClickListener l= new OnClickListener() {
-		
-		public void onClick(View v) {
-			listClickAction(v);
 
-		}
-
-	};
 	
+
 	
 	private void listClickAction(View v) {
 		boolean checked = false;

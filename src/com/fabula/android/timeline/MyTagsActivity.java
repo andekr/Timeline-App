@@ -12,14 +12,23 @@ import android.content.DialogInterface.OnCancelListener;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.View.OnCreateContextMenuListener;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 
 import com.fabula.android.timeline.adapters.TagListAdapter;
 import com.fabula.android.timeline.contentmanagers.ContentAdder;
@@ -148,7 +157,7 @@ public class MyTagsActivity extends Activity {
 		List<BaseEvent> eventsTaggedWithSelectedTags = tagManager.getAllEventsConnectedToTag(selectedTagsName);
 		Log.i(this.getClass().getSimpleName(), "Got "+eventsTaggedWithSelectedTags.size()+" connected to tags");
 		
-		String experienceTitle = "";
+		String experienceTitle = "Tags: ";
 		for (int i = 0; i < Math.min(3, selectedTagsName.size()); i++) {
 			experienceTitle +=selectedTagsName.get(i)+" ";
 		}
@@ -175,7 +184,7 @@ public class MyTagsActivity extends Activity {
 		DatabaseHelper.getCurrentTimelineDatabase().close();
 		TimelineDatabaseHelper.getCurrentTimeLineDatabase().close();
 		startActivity(timelineIntent);
-		
+		finish();
 	}
 	
 	private void setupHelpers() {
@@ -201,8 +210,10 @@ public class MyTagsActivity extends Activity {
 		allTags = tagManager.getAllTags();
 		System.out.println("Antall tags: "+allTags.size());
 		tagListAdapter = new TagListAdapter(this, allTags, new ArrayList<String>());
-		
+		registerForContextMenu(myTagsList);
 		myTagsList.setAdapter(tagListAdapter);
+		myte
+//		myTagsList.setOnItemLongClickListener(openItemLongClickMenuListener);
 		
 		homeButton = (ImageButton)findViewById(R.id.TagHomeButton);
 		homeButton.setOnClickListener(new View.OnClickListener() {
@@ -213,5 +224,94 @@ public class MyTagsActivity extends Activity {
 		});
 		
 	}
+	/**
+	 * Lager en contextmeny som inneholder ett element
+	 * - "Merk som sett"
+	 * 
+	 */
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		Toast.makeText(this, "Context", Toast.LENGTH_SHORT).show();
+		MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.tagcontextmenu, menu);
+	}
+	
+	
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		Toast.makeText(this, item.getItemId()+"", Toast.LENGTH_SHORT).show();
+		switch (item.getItemId()) {
+		
+		case R.id.MENU_DELETE_ITEM:
+			Toast.makeText(this, item.getItemId()+"", Toast.LENGTH_SHORT).show();
+			item.getItemId();
+//			deleteTagConfirmationDialog();
+			break;
+		}
+		return false;
+	}
+	
+
+	
+//	/**
+//	 * Listener for a long click on an Item in the group list view
+//	 */
+//	private OnItemLongClickListener openItemLongClickMenuListener = new OnItemLongClickListener() {
+//
+//		public boolean onItemLongClick(AdapterView<?> view, View arg1,
+//				final int position, long arg3) {
+//					
+//			view.setOnCreateContextMenuListener(new OnCreateContextMenuListener() {
+//				
+//				public void onCreateContextMenu(ContextMenu menu, View v,
+//						ContextMenuInfo menuInfo) {
+//										
+//					
+//				}
+//			});
+//			return false;
+//		}
+//	};
+	
+//	/**
+//	 * Confirmation dialog that pops when you tries to leave a group
+//	 */
+//	
+//	private void deleteTagConfirmationDialog() {
+//		
+//		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//		builder.setMessage("Do you really want to delete tag " +selectedGroup.toString()+"?")
+//		.setPositiveButton(R.string.yes_label, leaveGroupConfirmationListener)
+//		.setNegativeButton(R.string.no_label, new DialogInterface.OnClickListener() {
+//		public void onClick(DialogInterface dialog, int which) {
+//			setSelectedGroup(null);
+//			dialog.dismiss();
+//		}
+//	})
+//		.setOnCancelListener(new OnCancelListener() {
+//		public void onCancel(DialogInterface dialog) {
+//			setSelectedGroup(null);
+//			dialog.dismiss();					
+//		}
+//	});
+//		AlertDialog confirmation = builder.create();
+//		confirmation.show();
+//	}
+//	
+//	/**
+//	 * Confirmation dialog listener
+//	 */
+//	private android.content.DialogInterface.OnClickListener leaveGroupConfirmationListener = new DialogInterface.OnClickListener() {
+//		
+//		public void onClick(DialogInterface dialog, int which) {
+//			
+//			leaveGroup();
+//			Toast.makeText(MyGroupsActivity.this.getApplicationContext(), "You have left group: "+selectedGroup.toString() , Toast.LENGTH_SHORT).show();
+//			setSelectedGroup(null);
+//			dialog.dismiss();
+//		}
+//	};
 
 }
