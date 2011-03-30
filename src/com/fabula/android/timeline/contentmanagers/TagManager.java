@@ -147,6 +147,18 @@ public class TagManager {
 		return allEventID;
 	}
 	
+	public ArrayList<BaseEvent> getAllEventsConnectedToTag(ArrayList <String> tagNames) {
+		
+		ArrayList<BaseEvent> allEventsConnectedToTag = new ArrayList<BaseEvent>();
+		
+		for (String tagName : tagNames) {
+			for (BaseEvent baseEvent : getAllEventsConnectedToTag(tagName)) {
+				allEventsConnectedToTag.add(baseEvent);
+			}
+		}
+		return allEventsConnectedToTag;
+	}
+	
 	public ArrayList<BaseEvent> getAllEventsConnectedToTag(String tagName) {
 		
 		ArrayList<String> allEventIDsConnectedToTag = getAllEventIDsConnectedToTag(tagName);
