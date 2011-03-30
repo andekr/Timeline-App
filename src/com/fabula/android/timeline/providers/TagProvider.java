@@ -108,7 +108,7 @@ public class TagProvider extends BaseContentProvider {
 		case TAG_ITEM:
 			return super.getTimelinesDatabase().delete(SQLStatements.TAG_DATABASE_TABLE, where, whereArgs);
 		case TAGGED_EVENT_ITEM:
-			return super.getTimelinesDatabase().delete(SQLStatements.TAGGED_EVENTS_DATABASE_CREATE, where, whereArgs);
+			return super.getTimelinesDatabase().delete(SQLStatements.TAG_EVENT_DATABASE_TABLE, where, whereArgs);
 		default:
 			return count;
 		}

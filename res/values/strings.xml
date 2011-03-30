@@ -8,6 +8,7 @@
 	<string name="discard_label">Discard</string>
 	<string name="Edit_label">Edit</string>
 	<string name="Delete_item_label">Delete item</string>
+	<string name="Delete_tag_label">Delete tag</string>
 	<string name="Delete_event_label">Delete event</string>
 	<string name="Delete_event_title">Delete?</string>
 	<string name="Delete_event_confirmation">Do you really want to delete entire event?</string>

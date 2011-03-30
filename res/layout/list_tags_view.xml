@@ -8,6 +8,6 @@
        	android:paddingLeft="6dip"
 		android:layout_toRightOf="@+id/userlisticon" android:gravity="center_vertical" android:layout_width="wrap_content" android:text="Test" android:width="200dip" android:textColor="@color/Black" android:id="@+id/taglist_text" android:textSize="20dip" android:layout_height="wrap_content" android:layout_centerVertical="true"/>
 		
-    <CheckBox android:layout_alignParentRight="true" android:id="@+id/tag_list_checkbox" style="@style/SmallCheckBox" android:layout_height="fill_parent" android:layout_centerVertical="false" android:layout_width="35dip"></CheckBox>
+    <CheckBox android:layout_alignParentRight="true" android:id="@+id/tag_list_checkbox" style="@style/SmallCheckBox" android:layout_height="fill_parent" android:layout_width="35dip"></CheckBox>
 		
   </RelativeLayout>
