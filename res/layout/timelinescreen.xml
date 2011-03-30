@@ -19,19 +19,18 @@
 			android:id="@+id/TimelineLabel" android:textColor="@color/White"></TextView>
 	</LinearLayout>
 	<HorizontalScrollView android:id="@+id/HorizontalScrollView01"
-		android:layout_width="wrap_content" android:layout_height="fill_parent"
+		android:layout_height="fill_parent"
 		android:layout_above="@+id/TimelineMenuDockLinearLayout"
-		android:persistentDrawingCache="scrolling" android:layout_below="@+id/TimeLineHeaderLinearLayout">
+		android:persistentDrawingCache="scrolling" android:layout_below="@+id/TimeLineHeaderLinearLayout" android:layout_width="fill_parent" android:layout_centerHorizontal="true">
 		<LinearLayout android:id="@+id/LinearLayout01"
-			android:layout_width="fill_parent" android:layout_height="fill_parent">
+			android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_gravity="center_horizontal|fill_horizontal">
 			<GridView android:id="@+id/GridView01"
 				android:layout_height="fill_parent" android:padding="0dp"
 				android:horizontalSpacing="0dp" android:gravity="center"
 				android:verticalSpacing="0dp" android:layout_above="@+id/TimelineMenuDockLinearLayout"
-				android:layout_width="1000dp" android:minWidth="1000dp"
 				android:numColumns="24" android:listSelector="@drawable/customcircleselector"
 				android:stretchMode="columnWidth" android:scrollbars="horizontal|vertical"
-				android:scrollbarFadeDuration="100" android:cacheColorHint="#00000000">
+				android:scrollbarFadeDuration="100" android:cacheColorHint="#00000000" android:layout_width="fill_parent" android:minWidth="2000dip" android:layout_gravity="center_horizontal" android:layout_weight="100">
 			</GridView>
 
 

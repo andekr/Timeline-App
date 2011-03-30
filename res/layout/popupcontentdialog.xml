@@ -34,7 +34,7 @@
 	</ScrollView>
 	<RelativeLayout android:id="@+id/PopupMoreActionsRelativeLayout"
 		android:layout_alignParentRight="true" android:layout_height="fill_parent"
-		android:layout_width="50dip" android:layout_above="@+id/PopupEmotionHorizontalScrollView" android:background="@color/Header">
+		android:layout_above="@+id/PopupEmotionHorizontalScrollView" android:background="@color/Header" android:layout_width="60dip">
 		<ImageButton android:layout_height="wrap_content"
 			android:src="@drawable/ic_menu_add" android:id="@+id/PopupAddButton"
 			android:layout_width="fill_parent"></ImageButton>

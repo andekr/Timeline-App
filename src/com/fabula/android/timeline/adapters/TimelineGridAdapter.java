@@ -215,7 +215,7 @@ public class TimelineGridAdapter extends ArrayAdapter<BaseEvent> {
 					textView.setText("");
 				}
     			
-    			
+					
     			textView.setGravity(Gravity.CENTER);
         		textView.setTextSize(18);
         		textView.setPadding(10, 6, 10, 6);
