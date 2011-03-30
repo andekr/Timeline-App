@@ -22,7 +22,7 @@ public class BaseEvent {
 	protected boolean shared;
 	private transient Account user;
 	private String creator;
-	private List<String> tags;
+	private transient List<String> tags;
 	//For GSON
 	private String className;
 	private int mood;
