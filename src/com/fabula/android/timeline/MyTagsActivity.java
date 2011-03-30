@@ -147,6 +147,9 @@ public class MyTagsActivity extends Activity {
 	private android.view.View.OnClickListener showInTimelineButtonListener = new View.OnClickListener() {
 		
 		public void onClick(View v) {
+			if(tagListAdapter.getCheckedTags().isEmpty()) {
+				Toast.makeText(getApplicationContext(), "No tags checked. Please select one or more tags", Toast.LENGTH_SHORT).show();
+			}
 			createAndOpenNewExperienceBasedOnSelectedTags();
 		}
 

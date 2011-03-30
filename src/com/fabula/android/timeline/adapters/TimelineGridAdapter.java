@@ -130,9 +130,9 @@ public class TimelineGridAdapter extends ArrayAdapter<BaseEvent> {
 
             key=(Integer)m.getKey();
             System.out.println(event.getId());
-            System.out.println(((Event)m.getValue()).getId());
+            System.out.println(((BaseEvent)m.getValue()).getId());
 
-            if(event.getId().equals(((Event)m.getValue()).getId())){
+            if(event.getId().equals(((BaseEvent)m.getValue()).getId())){
             	break;
             }
         }
