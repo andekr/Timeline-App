@@ -348,7 +348,8 @@ public class Utilities {
 		    	return account;
 		    }
 		    
-			return null;
+		    Account nonRegisteredAccount = new Account("test@timelineapp.no", "com.google");
+			return nonRegisteredAccount;
 	}
 		
 	public static String getExtension(String filename){

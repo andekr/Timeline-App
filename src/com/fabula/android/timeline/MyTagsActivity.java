@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface.OnClickListener;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
@@ -209,10 +210,8 @@ public class MyTagsActivity extends Activity {
 		
 		allTags = tagManager.getAllTags();
 		System.out.println("Antall tags: "+allTags.size());
-		tagListAdapter = new TagListAdapter(this, allTags, new ArrayList<String>());
-		registerForContextMenu(myTagsList);
+		tagListAdapter = new TagListAdapter(this, R.layout.list_tags_view , allTags, new ArrayList<String>());
 		myTagsList.setAdapter(tagListAdapter);
-//		myTagsList.setOnItemLongClickListener(openItemLongClickMenuListener);
 		
 		homeButton = (ImageButton)findViewById(R.id.TagHomeButton);
 		homeButton.setOnClickListener(new View.OnClickListener() {
@@ -222,6 +221,7 @@ public class MyTagsActivity extends Activity {
 			}
 		});
 		
+		registerForContextMenu(myTagsList);
 	}
 	/**
 	 * Lager en contextmeny som inneholder ett element
@@ -232,7 +232,6 @@ public class MyTagsActivity extends Activity {
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-		Toast.makeText(this, "Context", Toast.LENGTH_SHORT).show();
 		MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.tagcontextmenu, menu);
 	}
@@ -240,13 +239,17 @@ public class MyTagsActivity extends Activity {
 	
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		Toast.makeText(this, item.getItemId()+"", Toast.LENGTH_SHORT).show();
+		AdapterView.AdapterContextMenuInfo info;
 		switch (item.getItemId()) {
 		
 		case R.id.MENU_DELETE_ITEM:
-			Toast.makeText(this, item.getItemId()+"", Toast.LENGTH_SHORT).show();
-			item.getItemId();
-//			deleteTagConfirmationDialog();
+			try {
+				info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+			} catch (Exception e) {
+				Log.e("ERROR", "bad menuInfo", e);
+			    return false;
+			}
+			deleteTagConfirmationDialog(tagListAdapter.getItem(info.position));
 			break;
 		}
 		return false;
@@ -274,43 +277,33 @@ public class MyTagsActivity extends Activity {
 //		}
 //	};
 	
-//	/**
-//	 * Confirmation dialog that pops when you tries to leave a group
-//	 */
-//	
-//	private void deleteTagConfirmationDialog() {
-//		
-//		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//		builder.setMessage("Do you really want to delete tag " +selectedGroup.toString()+"?")
-//		.setPositiveButton(R.string.yes_label, leaveGroupConfirmationListener)
-//		.setNegativeButton(R.string.no_label, new DialogInterface.OnClickListener() {
-//		public void onClick(DialogInterface dialog, int which) {
-//			setSelectedGroup(null);
-//			dialog.dismiss();
-//		}
-//	})
-//		.setOnCancelListener(new OnCancelListener() {
-//		public void onCancel(DialogInterface dialog) {
-//			setSelectedGroup(null);
-//			dialog.dismiss();					
-//		}
-//	});
-//		AlertDialog confirmation = builder.create();
-//		confirmation.show();
-//	}
-//	
-//	/**
-//	 * Confirmation dialog listener
-//	 */
-//	private android.content.DialogInterface.OnClickListener leaveGroupConfirmationListener = new DialogInterface.OnClickListener() {
-//		
-//		public void onClick(DialogInterface dialog, int which) {
-//			
-//			leaveGroup();
-//			Toast.makeText(MyGroupsActivity.this.getApplicationContext(), "You have left group: "+selectedGroup.toString() , Toast.LENGTH_SHORT).show();
-//			setSelectedGroup(null);
-//			dialog.dismiss();
-//		}
-//	};
+	/**
+	 * Confirmation dialog that pops when you tries to leave a group
+	 */
+	
+	private void deleteTagConfirmationDialog(final String tagName) {
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage("Do you really want to delete tag \"" +tagName+"\"?")
+		.setPositiveButton(R.string.yes_label, new OnClickListener() {
+			
+			public void onClick(DialogInterface arg0, int arg1) {
+				tagListAdapter.remove(tagName);
+				tagManager.DeleteTag(tagName);
+			}
+		})
+		.setNegativeButton(R.string.no_label, new DialogInterface.OnClickListener() {
+		public void onClick(DialogInterface dialog, int which) {
+			dialog.dismiss();
+		}
+	})
+		.setOnCancelListener(new OnCancelListener() {
+		public void onCancel(DialogInterface dialog) {
+			dialog.dismiss();					
+		}
+	});
+		AlertDialog confirmation = builder.create();
+		confirmation.show();
+	}
 
 }

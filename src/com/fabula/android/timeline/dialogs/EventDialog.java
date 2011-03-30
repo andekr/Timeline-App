@@ -539,7 +539,7 @@ public class EventDialog extends Dialog {
 		LayoutInflater inflater = LayoutInflater.from(mContext);
 		RelativeLayout tagDialogRelativeLayout = (RelativeLayout) inflater.inflate(R.layout.taggingdialog, null);
 		ListView tagList = (ListView)tagDialogRelativeLayout.findViewById(R.id.tagListlistView);
-		taglistAdapter = new TagListAdapter(mActivity, allTags, mEvent.getTags());
+		taglistAdapter = new TagListAdapter(mActivity, R.layout.list_tags_view, allTags, mEvent.getTags());
 		tagList.setAdapter(taglistAdapter);
 		tagDialog.addContentView(tagDialogRelativeLayout, new android.widget.AbsListView.LayoutParams(android.widget.AbsListView.LayoutParams.FILL_PARENT, android.widget.AbsListView.LayoutParams.FILL_PARENT));
 		
