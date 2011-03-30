@@ -6,10 +6,15 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
+import com.fabula.android.timeline.Utilities;
+import com.fabula.android.timeline.database.DatabaseHelper;
+import com.fabula.android.timeline.database.TimelineDatabaseHelper;
 import com.fabula.android.timeline.models.BaseEvent;
 import com.fabula.android.timeline.models.Event.EventColumns;
+import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.models.Experience.TagColumns;
 import com.fabula.android.timeline.models.Experience.TaggedEventsColumns;
+import com.fabula.android.timeline.models.Experiences;
 
 public class TagManager {
 
@@ -125,7 +130,7 @@ public class TagManager {
 	 * @param tagName The tag
 	 * @return A list of all the event id's connected to the tag
 	 */
-	public ArrayList<String> getAllEventsConnectedToTag(String tagName) {
+	public ArrayList<String> getAllEventIDsConnectedToTag(String tagName) {
 		ArrayList<String> allEventID = new ArrayList<String>();
 		String[] tagColumnsProjection = new String[]{EventColumns._ID};
 		
@@ -140,6 +145,31 @@ public class TagManager {
 		}
 		c.close();
 		return allEventID;
+	}
+	
+	public ArrayList<BaseEvent> getAllEventsConnectedToTag(String tagName) {
+		
+		ArrayList<String> allEventIDsConnectedToTag = getAllEventIDsConnectedToTag(tagName);
+		ArrayList<BaseEvent> allEventsConnectedToTag = new ArrayList<BaseEvent>();
+		ContentLoader contentLoader = new ContentLoader(context);
+		
+		new TimelineDatabaseHelper(context, Utilities.ALL_TIMELINES_DATABASE_NAME);
+		ArrayList<Experience> allExperiencesInDatabase = contentLoader.LoadAllExperiencesFromDatabase();
+		TimelineDatabaseHelper.getCurrentTimeLineDatabase().close();
+		
+		for (Experience experience : allExperiencesInDatabase) {
+			new DatabaseHelper(context, experience.getTitle());
+			experience.setEvents(contentLoader.LoadAllEventsFromDatabase());
+			for (String eventID : allEventIDsConnectedToTag) {
+				 for (BaseEvent event : experience.getEvents()) {
+					if(event.getId().equals(eventID));
+					allEventsConnectedToTag.add(event);
+				}
+			}
+		DatabaseHelper.getCurrentTimelineDatabase().close();
+		}
+		
+		return allEventsConnectedToTag;
 	}
 	
 	/**
