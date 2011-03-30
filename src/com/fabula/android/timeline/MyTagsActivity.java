@@ -212,7 +212,6 @@ public class MyTagsActivity extends Activity {
 		tagListAdapter = new TagListAdapter(this, allTags, new ArrayList<String>());
 		registerForContextMenu(myTagsList);
 		myTagsList.setAdapter(tagListAdapter);
-		myte
 //		myTagsList.setOnItemLongClickListener(openItemLongClickMenuListener);
 		
 		homeButton = (ImageButton)findViewById(R.id.TagHomeButton);
