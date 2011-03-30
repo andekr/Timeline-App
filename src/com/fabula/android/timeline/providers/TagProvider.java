@@ -30,10 +30,11 @@ public class TagProvider extends BaseContentProvider {
 		
 		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 		Cursor cursorOnRetriewedRows = null;
-		queryBuilder.setTables(SQLStatements.TAG_DATABASE_TABLE);
+		
 		
 		switch (uriMatcher.match(uri)) {
 		case TAG_ITEM:
+			queryBuilder.setTables(SQLStatements.TAG_DATABASE_TABLE);
 			queryBuilder.setProjectionMap(tagColumnsMapping);
 			
 			cursorOnRetriewedRows = queryBuilder.query(
@@ -49,6 +50,7 @@ public class TagProvider extends BaseContentProvider {
 			
 			return cursorOnRetriewedRows;
 		case TAGGED_EVENT_ITEM:
+			queryBuilder.setTables(SQLStatements.TAG_EVENT_DATABASE_TABLE);
 			queryBuilder.setProjectionMap(tagEventsColumnMapping);
 			cursorOnRetriewedRows = queryBuilder.query(
 					super.getTimelinesDatabase(), 
@@ -144,7 +146,7 @@ public class TagProvider extends BaseContentProvider {
 		
 		tagEventsColumnMapping = new HashMap<String, String>();
 		tagEventsColumnMapping.put(TagColumns.TAG_ID, TagColumns.TAG_ID);
-		tagEventsColumnMapping.put(EventColumns.EVENT_ID, EventColumns.EVENT_ID);
+		tagEventsColumnMapping.put(EventColumns._ID, EventColumns._ID);
 		
 		uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 		uriMatcher.addURI(AUTHORITY, SQLStatements.TAG_DATABASE_TABLE, TAG_ITEM);

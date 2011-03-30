@@ -45,9 +45,11 @@ public class ContentLoader {
 	
 	private Context context;
 	private String whereStatement;
+	private TagManager tagManager;
 
 	public ContentLoader(Context context) {
 		this.context = context;
+		tagManager = new TagManager(context);
 	}
 	
 	public ArrayList <BaseEvent> LoadAllEventsFromDatabase() {
@@ -75,6 +77,7 @@ public class ContentLoader {
 					event.setShared((c.getInt((c.getColumnIndex(EventColumns.IS_SHARED)))==1) ? true : false);
 					loadAllEmotions(event);
 					loadAllConnectedEventItems(event);
+					event.setTags(tagManager.getAllTagsConnectedToEvent(event.getId()));
 					allEvents.add(event);
 				}else {
 					MoodEvent moodEvent = new MoodEvent(c.getString(c.getColumnIndex(EventColumns._ID)),

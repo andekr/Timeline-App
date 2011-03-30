@@ -17,8 +17,8 @@
     <TextView
        	android:id="@+id/userlist_text"
    		android:paddingLeft="6dip"
-		android:layout_toRightOf="@+id/userlisticon" android:layout_height="fill_parent" android:gravity="center_vertical" android:layout_width="wrap_content" android:text="Test" android:textSize="16dip" android:width="200dip" android:textColor="@color/Black"/>
+		android:layout_toRightOf="@+id/userlisticon" android:layout_width="wrap_content" android:text="Test" android:textSize="16dip" android:width="200dip" android:textColor="@color/Black" android:hapticFeedbackEnabled="true" android:gravity="center_vertical" android:layout_height="wrap_content" android:layout_centerVertical="true"/>
 		
-    <CheckBox android:layout_height="wrap_content" android:id="@+id/user_list_checkbox" android:layout_width="wrap_content" android:layout_alignParentRight="true"></CheckBox>
+    <CheckBox android:layout_height="wrap_content" android:id="@+id/user_list_checkbox" android:layout_width="wrap_content" android:layout_alignParentRight="true" style="@style/SmallCheckBox"></CheckBox>
 		
   </RelativeLayout>

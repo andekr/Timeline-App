@@ -162,7 +162,7 @@ public class Event extends BaseEvent {
 		private EventColumns(){}
 		public static final Uri CONTENT_URI = Uri.parse("content://" +EventProvider.AUTHORITY+ "/events");
 		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.fabula.events";
-		public static final String EVENT_ID = "_id";
+//		public static final String EVENT_ID = "_id";
 		public static final String EVENT_EXPERIENCEID = "experienceid";
 		public static final String EVENT_LOCATION_LAT = "latitude";
 		public static final String EVENT_LOCATION_LNG = "longitude";

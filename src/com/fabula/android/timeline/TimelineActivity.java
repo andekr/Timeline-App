@@ -47,6 +47,7 @@ import com.fabula.android.timeline.contentmanagers.ContentDeleter;
 import com.fabula.android.timeline.contentmanagers.ContentLoader;
 import com.fabula.android.timeline.contentmanagers.ContentUpdater;
 import com.fabula.android.timeline.database.DatabaseHelper;
+import com.fabula.android.timeline.database.TimelineDatabaseHelper;
 import com.fabula.android.timeline.dialogs.AttachmentAdder;
 import com.fabula.android.timeline.dialogs.EventDialog;
 import com.fabula.android.timeline.dialogs.MoodDialog;
@@ -149,7 +150,9 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
         
         //Instantiates database helper and loads events from database
         new DatabaseHelper(this, databaseName);
+        new TimelineDatabaseHelper(this, Utilities.ALL_TIMELINES_DATABASE_NAME);
         loadedEvents = loadEventItemsFromDatabase();
+        TimelineDatabaseHelper.getCurrentTimeLineDatabase().close();
         
         //Creates the experience and loads it with events
         timeline = new Experience(experienceID, databaseName, sharedExperience, new Account(experienceCreator, "com.google"));
@@ -292,6 +295,19 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	    	        Toast.makeText(this, "Note was not edited", Toast.LENGTH_SHORT).show();
 	    	    } else {
 	    	        Toast.makeText(this, "Note was not edited", Toast.LENGTH_SHORT).show();
+	    	    }
+			break;
+			
+		case Utilities.NEW_TAG_REQUESTCODE:
+			   if (resultCode == RESULT_OK) {
+	    	        //use data here to access the audio
+	    	    
+	    	    updateTags();
+
+	    	    } else if (resultCode == RESULT_CANCELED) {
+	    	        Toast.makeText(this, "Tag was not added", Toast.LENGTH_SHORT).show();
+	    	    } else {
+	    	        Toast.makeText(this, "Tag was not added", Toast.LENGTH_SHORT).show();
 	    	    }
 			break;
 			case Utilities.SELECT_PICTURE:
@@ -799,6 +815,9 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 		contentUpdater.updateNoteInDB(note);
 		EventAdapter.updateDialog();
 }
+	private void updateTags(){
+		EventAdapter.updateTagDialog();
+	}
 	
     public Event getSelectedEvent() {
 		return selectedEvent;

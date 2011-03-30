@@ -39,7 +39,6 @@ public class TagListAdapter extends ArrayAdapter<String> {
 		 this.mContext = context;
 		 this.tags = allTags;
 		 this.checkedTags = checkedTags;
-		 Log.i(this.getClass().getSimpleName(), "checked tags init: "+this.checkedTags.size());
 		 mInflater = LayoutInflater.from(mContext); 
 		 setNotifyOnChange(true);
 	 }
@@ -68,6 +67,16 @@ public class TagListAdapter extends ArrayAdapter<String> {
 		return checkedTags.size();
 	}
 	
+	
+
+	public List<String> getTags() {
+		return tags;
+	}
+
+	public void setTags(List<String> tags) {
+		this.tags = tags;
+		notifyDataSetChanged();
+	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -80,7 +89,7 @@ public class TagListAdapter extends ArrayAdapter<String> {
 			 holder.checkBox = (CheckBox) convertView.findViewById(R.id.tag_list_checkbox);
 			 holder.checkBox.setTag(position);
   			holder.checkBox.setOnClickListener(l);
-			
+  			convertView.setOnClickListener(l);
 			convertView.setTag(holder);
 			 
 		 } else {
@@ -91,7 +100,7 @@ public class TagListAdapter extends ArrayAdapter<String> {
 			 holder.text.setText(tags.get(position).toString());
 //			 holder.checkBox.setChecked(isAlreadyPartOfGroup(users.get(position), group));
 			holder.checkBox.setChecked(checkedTags.contains(tags.get(position)));
-			convertView.setOnClickListener(l);
+			
 			 return convertView;
 	 }
 	
@@ -104,15 +113,6 @@ public class TagListAdapter extends ArrayAdapter<String> {
 
 	};
 	
-	public OnItemClickListener itemClickListener = new OnItemClickListener() {
-
-		public void onItemClick(AdapterView<?> arg0, View v, int arg2,
-				long arg3) {
-			Toast.makeText(mContext, "YO", Toast.LENGTH_SHORT).show();
-			listClickAction(v);
-			
-		}
-	};
 	
 	private void listClickAction(View v) {
 		boolean checked = false;

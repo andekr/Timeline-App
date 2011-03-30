@@ -219,9 +219,9 @@ public class Experience {
 	public static final class TaggedEventsColumns implements BaseColumns {
 		private TaggedEventsColumns() {}
 		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.fabula.taggedevents";
-		public static final Uri CONTENT_URI = Uri.parse("content://" + TagProvider.AUTHORITY+ "/taggedEvents");
+		public static final Uri CONTENT_URI = Uri.parse("content://" + TagProvider.AUTHORITY+ "/tagged_events");
 		public static final String TAG_ID = "tag_id";
-		public static final String EVENT_ID = "event_id";
+		public static final String _ID = "_id";
 	}
 
 	public int isSharedAsInt() {

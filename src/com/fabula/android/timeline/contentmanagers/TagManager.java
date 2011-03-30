@@ -151,7 +151,7 @@ public class TagManager {
 		ArrayList<String> allTags = new ArrayList<String>();
 		String[] tagColumnsProjection = new String[]{TagColumns.TAG_ID};
 		
-		String where = EventColumns.EVENT_ID + " = '"+ eventID+"'";
+		String where = EventColumns._ID + " = '"+ eventID+"'";
 		
 		Cursor c = context.getContentResolver().query(TaggedEventsColumns.CONTENT_URI, tagColumnsProjection, where, null, null);
 		

@@ -46,6 +46,7 @@ public class Utilities {
 	public static final String INTENT_ACTION_ADD_TO_TIMELINE = "com.fabula.android.timeline.intent.ADD_TIMELINE";
 	public static final String INTENT_ACTION_OPEN_MAP_VIEW_FROM_TIMELINE = "com.fabula.android.intent.OPEN_MAP_TIMELINE";
 	public static final String INTENT_ACTION_OPEN_MAP_VIEW_FROM_DASHBOARD = "com.fabula.android.intent.OPEN_MAP_DASHBOARD";
+	public static final String INTENT_ACTION_NEW_TAG = "com.fabula.android.intent.NEWTAG";
 	
     public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 0;
     public static final int CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE = 1;
@@ -91,6 +92,8 @@ public class Utilities {
     final public static int SHARED_FALSE = 0;
     final public static int SHARED_TRUE = 1;
     final public static int SHARED_ALL = 2;
+
+	final public static int NEW_TAG_REQUESTCODE = 746;
     
     
     static File sdCardDirectory = Environment.getExternalStorageDirectory();

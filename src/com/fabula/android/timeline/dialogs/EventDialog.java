@@ -16,14 +16,12 @@ import android.location.Address;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.ContextMenu;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnCreateContextMenuListener;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
@@ -34,10 +32,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout.LayoutParams;
 
+import com.fabula.android.timeline.MyTagsActivity;
 import com.fabula.android.timeline.NoteActivity;
 import com.fabula.android.timeline.R;
 import com.fabula.android.timeline.TimelineActivity;
@@ -45,6 +43,7 @@ import com.fabula.android.timeline.Utilities;
 import com.fabula.android.timeline.adapters.TagListAdapter;
 import com.fabula.android.timeline.contentmanagers.ContentUpdater;
 import com.fabula.android.timeline.contentmanagers.TagManager;
+import com.fabula.android.timeline.database.TimelineDatabaseHelper;
 import com.fabula.android.timeline.models.Emotion;
 import com.fabula.android.timeline.models.Event;
 import com.fabula.android.timeline.models.EventItem;
@@ -76,6 +75,7 @@ public class EventDialog extends Dialog {
 	private ImageButton tagButton;
 	private TagListAdapter taglistAdapter;
 	private Dialog tagDialog;
+	private TagManager tagManager;
 
 	public EventDialog(Context context, Event event, Activity activity, boolean fromMap){
 		super(context);
@@ -86,6 +86,8 @@ public class EventDialog extends Dialog {
 		this.setContentView(R.layout.popupcontentdialog);
 		this.setCancelable(true);
 		this.fromMap = fromMap;
+		
+		setupHelpers();
 		
 		 dialogIcon = (ImageView)findViewById(R.id.PopupDialogTypeIconImageView);
          dialogIcon.setImageResource(Utilities.getImageIcon(this.mEvent));
@@ -526,16 +528,13 @@ public class EventDialog extends Dialog {
 	 * Dialog for selecting which tags to add to the event
 	 */
 	public void openSelectTagsToAddDialog() {
+		if(tagDialog!=null){
+			tagDialog.dismiss();
+		}
 		tagDialog = new Dialog(mContext);
 		tagDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		ArrayList<String> allTags = new ArrayList<String>();
-		allTags.add("School");
-		allTags.add("Sport");
-		allTags.add("Leisure");
-		allTags.add("Computers");
-		allTags.add("Trivial");
-		allTags.add("Link");
-		allTags.add("Funny");
+		
+		ArrayList<String> allTags = tagManager.getAllTags();
 		
 		LayoutInflater inflater = LayoutInflater.from(mContext);
 		RelativeLayout tagDialogRelativeLayout = (RelativeLayout) inflater.inflate(R.layout.taggingdialog, null);
@@ -547,6 +546,9 @@ public class EventDialog extends Dialog {
 		Button okButton = (Button)tagDialogRelativeLayout.findViewById(R.id.tagsOKButton);
 		okButton.setOnClickListener(addTagDialogListener);
 		
+		Button manageButton = (Button)tagDialogRelativeLayout.findViewById(R.id.tagManageButton);
+		manageButton.setOnClickListener(manageTagsListener);
+		
 		Button cancelButton = (Button)tagDialogRelativeLayout.findViewById(R.id.tagCancelButton);
 		cancelButton.setOnClickListener(new View.OnClickListener() {
 			
@@ -556,47 +558,48 @@ public class EventDialog extends Dialog {
 			}
 		});
 		
-////		builder.setMessage("Select tags to add:")
-//		.setPositiveButton("Add tags", addTagDialogListener)
-//		.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//		public void onClick(DialogInterface dialog, int which) {
-//			taglistAdapter.setCheckedTags(mEvent.getTags());
-//			dialog.dismiss();
-//		}
-//	})
-//		.setOnCancelListener(new OnCancelListener() {
-//		public void onCancel(DialogInterface dialog) {
-//			taglistAdapter.setCheckedTags(mEvent.getTags());
-//			dialog.dismiss();					
-//		}
-//	});
-//		
-//		AlertDialog tagDialog = builder.create();
 		tagDialog.show();
 	}
 	
 	/**
 	 * Add tag dialog listener
 	 */
-	private android.view.View.OnClickListener addTagDialogListener = new View.OnClickListener() {
+	private View.OnClickListener addTagDialogListener = new View.OnClickListener() {
 		
 		public void onClick(View arg0) {
 			mEvent.setTags(taglistAdapter.getCheckedTags());
-//			TagManager tagManager = new TagManager(mContext);
-//			
-//			for (String tag : mEvent.getTags()) {
-//				tagManager.addTagToEventInDatabase(tag, mEvent);
-//			}
 			
+			for (String tag : mEvent.getTags()) {
+				tagManager.addTagToEventInDatabase(tag, mEvent);
+			}
 			tagDialog.dismiss();
 			
 		}
 	};
 	
+	private View.OnClickListener manageTagsListener = new View.OnClickListener() {
+		
+		public void onClick(View arg0) {
+			Intent tagIntent = new Intent(mActivity.getBaseContext(), MyTagsActivity.class);
+			tagIntent.setAction(Utilities.INTENT_ACTION_NEW_TAG);
+			
+			mActivity.startActivityForResult(tagIntent, Utilities.NEW_TAG_REQUESTCODE); 
+			
+		}
+	};
+	
+	public void updateTagDialog(){
+		openSelectTagsToAddDialog();
+	}
+	
+	private void setupHelpers() {
+		new TimelineDatabaseHelper(mContext, Utilities.ALL_TIMELINES_DATABASE_NAME);
+		tagManager = new TagManager(mContext);
+	}
 	
 	@Override
 	public void onBackPressed() {
-		
+		TimelineDatabaseHelper.getCurrentTimeLineDatabase().close();
 		if(fromMap) {
 			((TimelineActivity) mActivity).openMapView();
 		}

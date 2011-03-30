@@ -38,7 +38,7 @@ public class SQLStatements {
 	
     public static final String EVENT_DATABASE_CREATE =
         "create table " + EVENT_DATABASE_TABLE_NAME + 
-        " (" + EventColumns.EVENT_ID + " varchar primary key, " +
+        " (" + EventColumns._ID + " varchar primary key, " +
         EventColumns.EVENT_EXPERIENCEID + " varchar, " +
         EventColumns.EVENT_LOCATION_LAT + " varchar, " +
         EventColumns.EVENT_LOCATION_LNG + " varchar, " +

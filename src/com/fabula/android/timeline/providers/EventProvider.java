@@ -10,7 +10,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import android.text.TextUtils;
 
 import com.fabula.android.timeline.database.SQLStatements;
 import com.fabula.android.timeline.models.Event.EventColumns;
@@ -71,7 +70,7 @@ public class EventProvider extends BaseContentProvider {
 	      if (uriMatcher.match(uri) == EVENT_ID)
 	         
 	         sqlBuilder.appendWhere(
-	            EventColumns.EVENT_ID + " = " + uri.getPathSegments().get(1));                
+	            EventColumns._ID + " = " + uri.getPathSegments().get(1));                
 	       
 	      if (sortOrder==null || sortOrder=="")
 	         sortOrder = EventColumns.EVENT_TITLE;

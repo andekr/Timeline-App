@@ -7,12 +7,15 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -23,6 +26,7 @@ import com.fabula.android.timeline.database.TimelineDatabaseHelper;
 public class MyTagsActivity extends Activity {
 
 	private Button addNewTagButton, showInTimelineButton;
+	private ImageButton homeButton;
 	private ArrayList <String> allTags;
 	private TagManager tagManager;
 	private ListView myTagsList;
@@ -36,6 +40,16 @@ public class MyTagsActivity extends Activity {
 		setupHelpers();
 		setupViews();
 		
+		
+		if(isNewTagIntent()){
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+			openNewTagNameInputDialog();
+		}
+		
+	}
+
+	private boolean isNewTagIntent() {
+		return getIntent().getAction()!= null && getIntent().getAction().equals(Utilities.INTENT_ACTION_NEW_TAG);
 	}
 	
 	/**
@@ -46,7 +60,13 @@ public class MyTagsActivity extends Activity {
 	protected void addNewTag(String tagName) {
 		tagManager.addTagToDatabase(tagName);
 		Toast.makeText(MyTagsActivity.this.getApplicationContext(), "You have created the tag: " +tagName , Toast.LENGTH_SHORT).show();
-		setupViews();
+		if(isNewTagIntent()){
+	        setResult(RESULT_OK, getIntent());
+			finish();
+		}
+			
+		else
+			setupViews();
 	}
 	
 
@@ -101,9 +121,6 @@ public class MyTagsActivity extends Activity {
 	 */
 	
 	//listeners
-
-
-	
 	private android.view.View.OnClickListener newTagButtonListener = new View.OnClickListener() {
 		
 		public void onClick(View v) {
@@ -137,14 +154,13 @@ public class MyTagsActivity extends Activity {
 		
 		myTagsList.setAdapter(tagListAdapter);
 		
-//		homeButton = (ImageButton)findViewById(R.id.GroupHomeButto);
-//		homeButton.setOnClickListener(new View.OnClickListener() {
-//			
-//			public void onClick(View v) {
-//				helper.close();
-//				finish();
-//			}
-//		});
+		homeButton = (ImageButton)findViewById(R.id.TagHomeButton);
+		homeButton.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				finish();
+			}
+		});
 		
 	}
 

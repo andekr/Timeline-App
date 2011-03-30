@@ -376,6 +376,10 @@ public class TimelineGridAdapter extends ArrayAdapter<BaseEvent> {
 	public void updateDialog(){
 		dialog.updateMainview();
 	}
+	
+	public void updateTagDialog(){
+		dialog.updateTagDialog();
+	}
 
 	public HashMap<Integer, BaseEvent> getEvents() {
 		return displayedEvents;
