@@ -151,19 +151,18 @@ public class TagManager {
 	
 	public ArrayList<BaseEvent> getAllEventsConnectedToTag(List<String> tagNames) {
 		
-		ArrayList<BaseEvent> allEventsConnectedToTag = new ArrayList<BaseEvent>();
+		ArrayList<BaseEvent> allEventsConnectedToTags = new ArrayList<BaseEvent>();
 		
 		for (String tagName : tagNames) {
 			for (BaseEvent baseEvent : getAllEventsConnectedToTag(tagName)) {
-				allEventsConnectedToTag.add(baseEvent);
+				allEventsConnectedToTags.add(baseEvent);
 			}
 		}
-		return allEventsConnectedToTag;
+		return allEventsConnectedToTags;
 	}
 	
 	public ArrayList<BaseEvent> getAllEventsConnectedToTag(String tagName) {
 		
-		ArrayList<String> allEventIDsConnectedToTag = getAllEventIDsConnectedToTag(tagName);
 		ArrayList<BaseEvent> allEventsConnectedToTag = new ArrayList<BaseEvent>();
 		ContentLoader contentLoader = new ContentLoader(context);
 		
@@ -175,10 +174,10 @@ public class TagManager {
 		for (Experience experience : allExperiencesInDatabase) {
 			new DatabaseHelper(context, experience.getTitle());
 			experience.setEvents(contentLoader.LoadAllEventsFromDatabase());
-			for (String eventID : allEventIDsConnectedToTag) {
-				 for (BaseEvent event : experience.getEvents()) {
-					if(event.getId().equals(eventID));
-					allEventsConnectedToTag.add(event);
+			
+			for (BaseEvent baseEvent : experience.getEvents()) {
+				if(baseEvent.hasTag(tagName)) {
+					allEventsConnectedToTag.add(baseEvent);
 				}
 			}
 		DatabaseHelper.getCurrentTimelineDatabase().close();
