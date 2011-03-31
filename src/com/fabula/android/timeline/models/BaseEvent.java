@@ -77,9 +77,14 @@ public class BaseEvent {
 	}
 
 	public void setLocation(Location location) {
-		this.longitude = location.getLongitude();
-		this.latitude = location.getLatitude();
-		this.location = location;
+		try {
+			this.longitude = location.getLongitude();
+			this.latitude = location.getLatitude();
+			this.location = location;
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	
 	}
 
 	public Date getDatetime() {
