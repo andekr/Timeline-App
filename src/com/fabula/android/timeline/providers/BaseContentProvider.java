@@ -96,10 +96,10 @@ public class BaseContentProvider extends ContentProvider{
 			return notifyContentResolver(uri, rowId);
 			
 		case RECORDING_ITEM:
-			rowId = DatabaseHelper.getCurrentTimelineDatabase().insert(SQLStatements.RECORDINGS_DATABASE_TABLE_NAME, "", values);
+			rowId = DatabaseHelper.getCurrentTimelineDatabase().insertWithOnConflict(SQLStatements.RECORDINGS_DATABASE_TABLE_NAME, "", values, SQLiteDatabase.CONFLICT_REPLACE);
 			return notifyContentResolver(uri, rowId);
 		case VIDEO_ITEM:
-			rowId = DatabaseHelper.getCurrentTimelineDatabase().insert(SQLStatements.VIDEO_DATABASE_TABLE_NAME,"",values);
+			rowId = DatabaseHelper.getCurrentTimelineDatabase().insertWithOnConflict(SQLStatements.VIDEO_DATABASE_TABLE_NAME,"",values, SQLiteDatabase.CONFLICT_REPLACE);
 			return notifyContentResolver(uri, rowId);
 			
 		default:
