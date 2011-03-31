@@ -34,24 +34,21 @@
 	</ScrollView>
 	<RelativeLayout android:id="@+id/PopupMoreActionsRelativeLayout"
 		android:layout_alignParentRight="true" android:layout_height="fill_parent"
-		android:layout_above="@+id/PopupEmotionHorizontalScrollView" android:background="@color/Header" android:layout_width="60dip">
-		<ImageButton android:layout_height="wrap_content"
-			android:src="@drawable/ic_menu_add" android:id="@+id/PopupAddButton"
-			android:layout_width="fill_parent"></ImageButton>
+		android:layout_above="@+id/PopupEmotionHorizontalScrollView" android:background="@color/Header" android:layout_width="65dip">
+		<ImageButton android:src="@drawable/ic_menu_add" android:id="@+id/PopupAddButton"
+			android:layout_width="fill_parent" android:layout_height="50dip"></ImageButton>
 
 		<ToggleButton android:layout_below="@id/PopupAddButton" android:id="@+id/PopupShareButton"
-			android:layout_width="fill_parent" android:textOn="@string/Shared_label" android:textOff="@string/Not_shared_label" android:textSize="9dp" android:layout_height="50dip"></ToggleButton>
+			android:layout_width="fill_parent" android:textOn="@string/Shared_label" android:textOff="@string/Not_shared_label" android:textSize="9dp" android:layout_height="55dip"></ToggleButton>
 			
-		<ImageButton android:layout_height="wrap_content"
-			android:src="@drawable/ic_menu_tag" android:id="@+id/PopuptagButton"
-			android:layout_below="@+id/PopupShareButton" android:layout_width="fill_parent"></ImageButton>
+		<ImageButton android:src="@drawable/ic_menu_tag" android:id="@+id/PopuptagButton"
+			android:layout_below="@+id/PopupShareButton" android:layout_width="fill_parent" android:layout_height="50dip"></ImageButton>
 
 		<ImageButton android:layout_below="@+id/PopuptagButton"
-			android:layout_height="wrap_content" android:id="@+id/PopupEmotionButton"
-			android:src="@drawable/ic_menu_emoticons" android:layout_width="fill_parent"></ImageButton>
-		<ImageButton android:layout_height="wrap_content"
-			android:id="@+id/popupDeleteButton" android:src="@drawable/ic_menu_delete"
-			android:layout_below="@+id/PopupEmotionButton" android:layout_width="fill_parent"></ImageButton>
+			android:id="@+id/PopupEmotionButton"
+			android:src="@drawable/ic_menu_emoticons" android:layout_width="fill_parent" android:layout_height="50dip"></ImageButton>
+		<ImageButton android:id="@+id/popupDeleteButton" android:src="@drawable/ic_menu_delete"
+			android:layout_below="@+id/PopupEmotionButton" android:layout_width="fill_parent" android:layout_height="50dip"></ImageButton>
 
 
 	</RelativeLayout>
