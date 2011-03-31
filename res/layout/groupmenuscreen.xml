@@ -16,8 +16,8 @@
       <ExpandableListView android:layout_width="match_parent" android:id="@+id/groupsList"  android:cacheColorHint="#00000000" android:scrollbars="vertical" android:background="@color/White" android:fadingEdge="vertical" android:layout_height="wrap_content"></ExpandableListView>
   </LinearLayout>
   
-  <LinearLayout android:id="@+id/buttonRow" android:layout_width="fill_parent" android:layout_alignParentBottom="true" android:layout_height="wrap_content">
-  <ImageButton android:layout_marginLeft="100dip" android:id="@+id/my_groups" android:layout_width="wrap_content" android:layout_height="75dip" android:layout_gravity="bottom|center" android:background="@drawable/add_group_button"></ImageButton>
+  <LinearLayout android:id="@+id/buttonRow" android:layout_width="fill_parent" android:layout_alignParentBottom="true" android:layout_height="wrap_content" android:gravity="center_horizontal">
+  <ImageButton android:id="@+id/my_groups" android:layout_width="wrap_content" android:layout_height="75dip" android:background="@drawable/add_group_button"></ImageButton>
   </LinearLayout>
 
 </RelativeLayout>
