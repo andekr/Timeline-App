@@ -85,7 +85,6 @@ public class SimpleRecording extends EventItem{
 		playButton = (RelativeLayout)inflater.inflate(R.layout.imageandtextbutton, null);
 		ImageView icon = (ImageView)playButton.findViewById(R.id.CustomButtonIcon);
 		icon.setImageResource(R.drawable.ic_menu_audio);
-		
 //		ImageButton playButton = new ImageButton(context);
 //		playButton.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_menu_play_clip));
         playButton.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
@@ -118,6 +117,7 @@ public class SimpleRecording extends EventItem{
 			}
 		});
 		
+
 		return playButton;
 	}
 

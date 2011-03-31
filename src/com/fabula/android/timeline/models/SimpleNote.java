@@ -81,7 +81,7 @@ public class SimpleNote extends EventItem{
         textLayout.addView(noteTitleTextView);
         textLayout.addView(noteTextView);
         textLayout.setTag(this);
-
+        textLayout.setPadding(10, 10, 0, 0);
         
         return textLayout;
 	}
@@ -105,11 +105,6 @@ public class SimpleNote extends EventItem{
         public static final String CREATED_DATE = "created";
         public static final String MODIFIED_DATE = "modified";
     }
-
-
-
-
-
 }
 
 
