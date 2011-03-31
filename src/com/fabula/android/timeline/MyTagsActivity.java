@@ -199,8 +199,6 @@ public class MyTagsActivity extends Activity {
 		tagManager = new TagManager(this);
 	}
 	
-	
-	
 	/**
 	 * Setup views and instansiate objects the activity is going to use
 	 */

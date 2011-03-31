@@ -25,6 +25,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
@@ -101,10 +102,12 @@ public class SimplePicture extends EventItem {
         bm.recycle();
         image.setTag(this);
 
+//        FrameLayout.LayoutParams pictureLayout = new FrameLayout.LayoutParams(new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.TOP));
         image.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.TOP));
-        
+        image.setPadding(10, 10, 0, 0);
         return image;
 	}
+	
 	@Override
 	public Intent getIntent(){
 		Intent intent = new Intent(Intent.ACTION_VIEW);
