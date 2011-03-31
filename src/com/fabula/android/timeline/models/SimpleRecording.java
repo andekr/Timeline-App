@@ -32,19 +32,19 @@ public class SimpleRecording extends EventItem{
 		className = "SimpleRecording";
 	}
 	
-	public SimpleRecording(String id, Uri uri, Account u, String videoFilename){
+	public SimpleRecording(String id, Uri uri, Account u, String recordingFilename){
 		super(id,u);
 		className = "SimpleRecording";
 		this.recordingUri = uri;
-		filename = videoFilename;
+		filename = recordingFilename;
 	}
 	
-	public SimpleRecording(String id, Account u, String videoFilename) {
+	public SimpleRecording(String id, Account u, String recordingFilename) {
 		super(id, u);
 		className = "SimpleRecording";
-		File file = Utilities.DownloadFromUrl(filename, Utilities.RECORDING_STORAGE_FILEPATH+videoFilename);
+		File file = Utilities.DownloadFromUrl(recordingFilename, Utilities.RECORDING_STORAGE_FILEPATH+recordingFilename);
 		this.recordingUri = Uri.fromFile(file);
-		filename = videoFilename;
+		filename = recordingFilename;
 	}
 	
 	
@@ -60,9 +60,9 @@ public class SimpleRecording extends EventItem{
 		return recordingUri;
 	}
 
-	public void setRecordingUri(Uri recordingUri, String videoFilename) {
+	public void setRecordingUri(Uri recordingUri, String recordingFilename) {
 		this.recordingUri = recordingUri;
-		filename = videoFilename;
+		filename = recordingFilename;
 	}
 	
 	public String getRecordingFilename(){
