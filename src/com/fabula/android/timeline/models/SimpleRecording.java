@@ -42,6 +42,9 @@ public class SimpleRecording extends EventItem{
 	public SimpleRecording(String id, Account u, String recordingFilename) {
 		super(id, u);
 		className = "SimpleRecording";
+		if(!(new File(Utilities.RECORDING_STORAGE_FILEPATH)).exists()) {
+			(new File(Utilities.RECORDING_STORAGE_FILEPATH)).mkdirs();
+		}
 		File file = Utilities.DownloadFromUrl(recordingFilename, Utilities.RECORDING_STORAGE_FILEPATH+recordingFilename);
 		this.recordingUri = Uri.fromFile(file);
 		filename = recordingFilename;
