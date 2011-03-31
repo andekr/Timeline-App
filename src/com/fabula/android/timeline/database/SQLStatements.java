@@ -76,6 +76,7 @@ public class SQLStatements {
 		+RecordingColumns.FILE_URI +" VARCHAR NOT NULL,"
 		+RecordingColumns.DESCRIPTION +" TEXT,"
 		+EventItemsColumns.USERNAME+" VARCHAR,"
+		+RecordingColumns.FILENAME+" VARCHAR,"
 		+RecordingColumns.CREATED_DATE +" LONG"+");" ;
 	
 	public static final String VIDEO_DATABASE_CREATE = "CREATE TABLE " + VIDEO_DATABASE_TABLE_NAME +"("
@@ -83,6 +84,7 @@ public class SQLStatements {
 		+VideoColumns.FILE_PATH + " VARCHAR NOT NULL,"
 		+VideoColumns.DESCRIPTION + " TEXT,"
 		+EventItemsColumns.USERNAME+" VARCHAR,"
+		+VideoColumns.FILENAME+" VARCHAR,"
 		+VideoColumns.CREATED_DATE +" LONG"+");";
 	
 	public static final String EMOTIONS_DATABASE_CREATE = "CREATE TABLE " + EMOTIONS_DATABASE_TABLE_NAME+"("

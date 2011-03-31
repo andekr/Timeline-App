@@ -78,6 +78,7 @@ public class RecordingProvider extends BaseContentProvider {
 		recordingColumnMapping.put(RecordingColumns.DESCRIPTION, RecordingColumns.DESCRIPTION);
 		recordingColumnMapping.put(RecordingColumns.FILE_URI, RecordingColumns.FILE_URI);
 		recordingColumnMapping.put(RecordingColumns.CREATED_DATE, RecordingColumns.CREATED_DATE);
+		recordingColumnMapping.put(RecordingColumns.FILENAME, RecordingColumns.FILENAME);
 		recordingColumnMapping.put(EventItemsColumns.USERNAME, EventItemsColumns.USERNAME);
 	}
 }

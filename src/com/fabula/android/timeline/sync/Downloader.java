@@ -29,6 +29,8 @@ import com.fabula.android.timeline.models.Groups;
 import com.fabula.android.timeline.models.MoodEvent;
 import com.fabula.android.timeline.models.SimpleNote;
 import com.fabula.android.timeline.models.SimplePicture;
+import com.fabula.android.timeline.models.SimpleRecording;
+import com.fabula.android.timeline.models.SimpleVideo;
 import com.fabula.android.timeline.models.User;
 import com.fabula.android.timeline.models.Users;
 import com.fabula.android.timeline.models.MoodEvent.MoodEnum;
@@ -201,7 +203,7 @@ public class Downloader {
 			 Account creator = new Account(json.getAsJsonObject().get("creator").getAsString(), "com.google");
 			 EventItem ei;
 			if(className.equals("SimplePicture")){
-				 String filename = json.getAsJsonObject().get("pictureFilename").getAsString();
+				 String filename = json.getAsJsonObject().get("filename").getAsString();
 				ei = new SimplePicture(id, creator, filename);
 				  return ei;
 			}else if(className.equals("SimpleNote")){
@@ -209,7 +211,15 @@ public class Downloader {
 				String noteText = json.getAsJsonObject().get("noteText").getAsString();
 				ei = new SimpleNote(id, noteTitle, noteText, creator);
 				  return ei;
-			} else 
+			} else if(className.equals("SimpleRecording")){
+				 String filename = json.getAsJsonObject().get("filename").getAsString();
+					ei = new SimpleRecording(id, creator, filename);
+					return ei;
+			}else if(className.equals("SimpleVideo")){
+				 String filename = json.getAsJsonObject().get("filename").getAsString();
+					ei = new SimpleVideo(id, creator, filename);
+					return ei;
+			}else 
 				  return null;
 			  
 		  }

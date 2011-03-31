@@ -1,5 +1,7 @@
 package com.fabula.android.timeline.models;
 
+import java.io.File;
+
 import android.accounts.Account;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +14,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 
 import com.fabula.android.timeline.R;
+import com.fabula.android.timeline.Utilities;
 import com.fabula.android.timeline.providers.VideoProvider;
 
 
@@ -20,33 +23,40 @@ public class SimpleVideo extends EventItem {
 
 	public SimpleVideo(Context c) {
 		super(c);
+		className = "SimpleVideo";
 	}
-	public SimpleVideo(String id, Uri uri, Account u) {
+	public SimpleVideo(String id, Uri uri, Account u, String videoFilename) {
 		super(id, u);
+		className = "SimplePicture";
 		this.videoURI = uri;
+		filename = videoFilename;
 	}
-	private String videoFileName;
-	private String videoDesciption;
+	
+	public SimpleVideo(String id, Account u, String videoFilename) {
+		super(id, u);
+		className = "SimpleVideo";
+		File file = Utilities.DownloadFromUrl(filename, Utilities.VIDEO_STORAGE_FILEPATH+videoFilename);
+		this.videoURI = Uri.fromFile(file);
+		filename = videoFilename;
+	}
+	
+	
 	public Uri videoURI;
 	
 
-	public String getVideoFileName() {
-		return videoFileName;
+	public String getVideoFilename() {
+		return filename;
 	}
-	public void setVideoFileName(String videoFileName) {
-		this.videoFileName = videoFileName;
+	public void setVideoFilename(String videoFileName) {
+		this.filename = videoFileName;
 	}
-	public String getVideoDesciption() {
-		return videoDesciption;
-	}
-	public void setVideoDesciption(String videoDesciption) {
-		this.videoDesciption = videoDesciption;
-	}
+
 	public Uri getVideoUri() {
 		return videoURI;
 	}
-	public void setVideoUri(Uri video) {
+	public void setVideoUri(Uri video, String videoFilename) {
 		this.videoURI = video;
+		filename = videoFilename;
 	}
 	@Override
 	public View getView(Context context) {
@@ -97,6 +107,8 @@ public class SimpleVideo extends EventItem {
         public static final String DEFAULT_SORT_ORDER = "created DESC";
 
         public static final String FILE_PATH = "file_path";
+        
+        public static final String FILENAME = "filename";
         
         public static final String DESCRIPTION = "description";
 

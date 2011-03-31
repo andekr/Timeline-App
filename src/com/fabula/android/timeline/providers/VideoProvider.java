@@ -49,6 +49,7 @@ public class VideoProvider extends BaseContentProvider {
 		videoColumnMapping.put(VideoColumns.FILE_PATH, VideoColumns.FILE_PATH);
 		videoColumnMapping.put(VideoColumns.CREATED_DATE, VideoColumns.CREATED_DATE);
 		videoColumnMapping.put(VideoColumns.DESCRIPTION, VideoColumns.CREATED_DATE);
+		videoColumnMapping.put(VideoColumns.FILENAME, VideoColumns.FILENAME);
 		videoColumnMapping.put(EventItemsColumns.USERNAME, EventItemsColumns.USERNAME);
 	}
 }

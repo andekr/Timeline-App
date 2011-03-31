@@ -15,6 +15,8 @@ import com.fabula.android.timeline.models.Experiences;
 import com.fabula.android.timeline.models.Group;
 import com.fabula.android.timeline.models.MoodEvent;
 import com.fabula.android.timeline.models.SimplePicture;
+import com.fabula.android.timeline.models.SimpleRecording;
+import com.fabula.android.timeline.models.SimpleVideo;
 import com.fabula.android.timeline.models.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -67,6 +69,10 @@ public class GAEHandler {
 						    		for (EventItem eventI : baseEvent.getEventItems()) {
 								    	if(eventI instanceof SimplePicture){
 								    		Uploader.uploadFile(Utilities.IMAGE_STORAGE_FILEPATH+((SimplePicture)eventI).getPictureFilename(), ((SimplePicture)eventI).getPictureFilename());
+								    	}else if(eventI instanceof SimpleVideo){
+								    		Uploader.uploadFile(Utilities.VIDEO_STORAGE_FILEPATH+((SimpleVideo)eventI).getVideoFilename(), ((SimpleVideo)eventI).getVideoFilename());
+								    	}else if(eventI instanceof SimpleRecording){
+								    		Uploader.uploadFile(Utilities.RECORDING_STORAGE_FILEPATH+((SimpleRecording)eventI).getRecordingFilename(), ((SimpleRecording)eventI).getRecordingFilename());
 								    	}
 									}
 				    			}
@@ -79,6 +85,10 @@ public class GAEHandler {
 		    	for (EventItem eventI : ((Event)object).getEventItems()) {
 			    	if(eventI instanceof SimplePicture){
 			    		Uploader.uploadFile(Utilities.IMAGE_STORAGE_FILEPATH+((SimplePicture)eventI).getPictureFilename(), ((SimplePicture)eventI).getPictureFilename());
+			    	}else if(eventI instanceof SimpleVideo){
+			    		Uploader.uploadFile(Utilities.VIDEO_STORAGE_FILEPATH+((SimpleVideo)eventI).getVideoFilename(), ((SimpleVideo)eventI).getVideoFilename());
+			    	}else if(eventI instanceof SimpleRecording){
+			    		Uploader.uploadFile(Utilities.RECORDING_STORAGE_FILEPATH+((SimpleRecording)eventI).getRecordingFilename(), ((SimpleRecording)eventI).getRecordingFilename());
 			    	}
 				}
 		    }

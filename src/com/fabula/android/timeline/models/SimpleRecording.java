@@ -1,5 +1,6 @@
 package com.fabula.android.timeline.models;
 
+import java.io.File;
 import java.io.IOException;
 
 import android.accounts.Account;
@@ -16,23 +17,36 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 
 import com.fabula.android.timeline.R;
+import com.fabula.android.timeline.Utilities;
 import com.fabula.android.timeline.providers.RecordingProvider;
 
 public class SimpleRecording extends EventItem{
 
 	private String recordingDescription;
-	private Uri recordingUri;
+	private transient Uri recordingUri;
 	MediaPlayer mp;
 	
 	
 	public SimpleRecording(Context c) {
 		super(c);
+		className = "SimpleRecording";
 	}
 	
-	public SimpleRecording(String id, Uri uri, Account u){
+	public SimpleRecording(String id, Uri uri, Account u, String videoFilename){
 		super(id,u);
+		className = "SimpleRecording";
 		this.recordingUri = uri;
+		filename = videoFilename;
 	}
+	
+	public SimpleRecording(String id, Account u, String videoFilename) {
+		super(id, u);
+		className = "SimpleRecording";
+		File file = Utilities.DownloadFromUrl(filename, Utilities.RECORDING_STORAGE_FILEPATH+videoFilename);
+		this.recordingUri = Uri.fromFile(file);
+		filename = videoFilename;
+	}
+	
 	
 	public void setRecordingDescription(String recordingDescription) {
 		this.recordingDescription = recordingDescription;
@@ -46,8 +60,17 @@ public class SimpleRecording extends EventItem{
 		return recordingUri;
 	}
 
-	public void setRecordingUri(Uri recordingUri) {
+	public void setRecordingUri(Uri recordingUri, String videoFilename) {
 		this.recordingUri = recordingUri;
+		filename = videoFilename;
+	}
+	
+	public String getRecordingFilename(){
+		return filename;
+	}
+	
+	public void setRecoridingFilename(String recordingFilename){
+		filename=recordingFilename;
 	}
 
 	public MediaPlayer getMp() {
@@ -126,6 +149,8 @@ public static final class RecordingColumns implements BaseColumns {
         public static final String DESCRIPTION = "description";
 
         public static final String CREATED_DATE = "created";
+        
+        public static final String FILENAME = "filename";
 
 	}		
 }

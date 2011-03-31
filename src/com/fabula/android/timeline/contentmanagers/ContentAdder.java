@@ -199,6 +199,7 @@ public class ContentAdder {
 		values.put(RecordingColumns._ID, recording.getId());
 		values.put(RecordingColumns.FILE_URI, recording.getRecordingUri().toString());
 		values.put(EventItemsColumns.USERNAME, recording.getCreator());
+		values.put(RecordingColumns.FILENAME, recording.getRecordingFilename());
 		values.put(RecordingColumns.DESCRIPTION, recording.getRecordingDescription());
 		
 		context.getContentResolver().insert(RecordingColumns.CONTENT_URI, values);
@@ -209,6 +210,7 @@ public class ContentAdder {
 		
 		values.put(VideoColumns._ID, video.getId());
 		values.put(VideoColumns.FILE_PATH, video.getVideoUri().toString());
+		values.put(VideoColumns.FILENAME, video.getVideoFilename());
 		values.put(EventItemsColumns.USERNAME, video.getCreator());
 		
 		context.getContentResolver().insert(VideoColumns.CONTENT_URI, values);

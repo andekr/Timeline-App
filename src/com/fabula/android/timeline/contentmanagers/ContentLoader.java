@@ -285,7 +285,7 @@ public class ContentLoader {
 
 	private void addVideoItemToEvent(Event event, String eventItemID) {
 		
-		String [] videoColumns = new String[] {VideoColumns._ID, VideoColumns.FILE_PATH, EventItemsColumns.USERNAME};
+		String [] videoColumns = new String[] {VideoColumns._ID, VideoColumns.FILE_PATH, EventItemsColumns.USERNAME, VideoColumns.FILENAME};
 		String whereStatement = VideoColumns._ID+"='"+eventItemID+"'";
 		
 		Cursor cursorOnVideoList = context.getContentResolver().query(VideoColumns.CONTENT_URI, videoColumns, whereStatement, null, null);
@@ -296,7 +296,9 @@ public class ContentLoader {
 				SimpleVideo video = new SimpleVideo(
 						cursorOnVideoList.getString(cursorOnVideoList.getColumnIndex(VideoColumns._ID)),
 						Uri.parse(cursorOnVideoList.getString(cursorOnVideoList.getColumnIndex(VideoColumns.FILE_PATH))), 
-						new Account(cursorOnVideoList.getString(cursorOnVideoList.getColumnIndex(EventItemsColumns.USERNAME)), "com.google"));
+						new Account(cursorOnVideoList.getString(cursorOnVideoList.getColumnIndex(EventItemsColumns.USERNAME)), "com.google"),
+						cursorOnVideoList.getString(cursorOnVideoList.getColumnIndex(RecordingColumns.FILENAME))
+				);
 				
 				event.addEventItem(video);
 			}while(cursorOnVideoList.moveToNext());
@@ -308,7 +310,7 @@ public class ContentLoader {
 
 	private void addRecordingItemToEvent(Event event, String eventItemID) {
 		
-		String [] recordingColumns = new String[] {RecordingColumns._ID, RecordingColumns.FILE_URI, EventItemsColumns.USERNAME};
+		String [] recordingColumns = new String[] {RecordingColumns._ID, RecordingColumns.FILE_URI, EventItemsColumns.USERNAME,RecordingColumns.FILENAME };
 		String whereStatement = RecordingColumns._ID+"='"+eventItemID+"'";
 		
 		Cursor cursorOnRecordingList = context.getContentResolver().query(RecordingColumns.CONTENT_URI, recordingColumns, whereStatement, null, null);
@@ -319,7 +321,9 @@ public class ContentLoader {
 				SimpleRecording recording = new SimpleRecording(
 						cursorOnRecordingList.getString(cursorOnRecordingList.getColumnIndex(RecordingColumns._ID)),
 						Uri.parse(cursorOnRecordingList.getString(cursorOnRecordingList.getColumnIndex(RecordingColumns.FILE_URI))), 
-						new Account(cursorOnRecordingList.getString(cursorOnRecordingList.getColumnIndex(EventItemsColumns.USERNAME)), "com.google"));
+						new Account(cursorOnRecordingList.getString(cursorOnRecordingList.getColumnIndex(EventItemsColumns.USERNAME)), "com.google"),
+						cursorOnRecordingList.getString(cursorOnRecordingList.getColumnIndex(RecordingColumns.FILENAME))		
+						);
 				
 				event.addEventItem(recording);
 			}while(cursorOnRecordingList.moveToNext());

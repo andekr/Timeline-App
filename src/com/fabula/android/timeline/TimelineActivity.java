@@ -173,10 +173,14 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
         	}
         	else if(getIntent().getType().contains("video/")){
         			videoUri = (Uri) getIntent().getExtras().get(Intent.EXTRA_STREAM);
-        			addVideoToTimeline();
+        			String filename =(Utilities.getUserAccount(this).name+new Date().getTime()).hashCode()+Utilities.getExtension(Utilities.getRealPathFromURI(videoUri, this));
+    				Utilities.copyFile(Utilities.getRealPathFromURI(videoUri, this), Utilities.VIDEO_STORAGE_FILEPATH, filename);
+        			addVideoToTimeline(filename);
         	}else if(getIntent().getType().contains("audio/")){
         			audioUri = (Uri) getIntent().getExtras().get(Intent.EXTRA_STREAM);
-        			addAudioToTimeline();
+        			String filename =(Utilities.getUserAccount(this).name+new Date().getTime()).hashCode()+Utilities.getExtension(Utilities.getRealPathFromURI(audioUri, this));
+    				Utilities.copyFile(Utilities.getRealPathFromURI(audioUri, this), Utilities.RECORDING_STORAGE_FILEPATH, filename);
+        			addAudioToTimeline(filename);
         	}
         	else if(getIntent().getType().contains("text/plain")){
         			addNoteToTimeline(getIntent());
@@ -240,7 +244,9 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 				Toast.makeText(this, "Video recording created", Toast.LENGTH_SHORT).show();
 				   
 	   	    	videoUri = data.getData();
-	   	    	addVideoToTimeline();
+    			String filename =(Utilities.getUserAccount(this).name+new Date().getTime()).hashCode()+Utilities.getExtension(Utilities.getRealPathFromURI(videoUri, this));
+				Utilities.copyFile(Utilities.getRealPathFromURI(videoUri, this), Utilities.VIDEO_STORAGE_FILEPATH, filename);
+				addVideoToTimeline(filename);
 	   	    	
 	    	    } else if (resultCode == RESULT_CANCELED) {
 	    	        Toast.makeText(this, "Video was not taken", Toast.LENGTH_SHORT).show();
@@ -255,8 +261,10 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 				   
 				   Toast.makeText(this, "Audio recording created", Toast.LENGTH_SHORT).show();
 				  
-				   audioUri = data.getData();
-				   addAudioToTimeline();
+				    audioUri = data.getData();
+	       			String filename =(Utilities.getUserAccount(this).name+new Date().getTime()).hashCode()+Utilities.getExtension(Utilities.getRealPathFromURI(audioUri, this));
+	   				Utilities.copyFile(Utilities.getRealPathFromURI(audioUri, this), Utilities.RECORDING_STORAGE_FILEPATH, filename);
+	       			addAudioToTimeline(filename);
 
 	    	    } else if (resultCode == RESULT_CANCELED) {
 	    	        Toast.makeText(this, "Audio was not recorded", Toast.LENGTH_SHORT).show();
@@ -702,10 +710,10 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	 * the method creates a new {@link Event}.
 	 * 
 	 */
-	private void addVideoToTimeline(){
+	private void addVideoToTimeline(String filename){
 		
 		SimpleVideo sVideo = new SimpleVideo(this);
-		sVideo.setVideoUri(videoUri);
+		sVideo.setVideoUri(videoUri, filename);
 			
     	if(selectedEvent!=null){
     		addItemToExistingEvent(sVideo);
@@ -721,9 +729,9 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	 * the method creates a new {@link Event}.
 	 * 
 	 */
-	private void addAudioToTimeline() {
+	private void addAudioToTimeline(String filename) {
 		 SimpleRecording sRecordring = new SimpleRecording(this);
-		 sRecordring.setRecordingUri(audioUri);
+		 sRecordring.setRecordingUri(audioUri, filename);
 		
 		if(selectedEvent!=null){
 				addItemToExistingEvent(sRecordring);

@@ -1,5 +1,6 @@
 package com.fabula.android.timeline;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,11 +8,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.channels.FileChannel;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
+
+import org.apache.http.util.ByteArrayBuffer;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -22,6 +27,7 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import com.fabula.android.timeline.models.BaseEvent;
 import com.fabula.android.timeline.models.Event;
@@ -94,10 +100,16 @@ public class Utilities {
     final public static int SHARED_ALL = 2;
 
 	final public static int NEW_TAG_REQUESTCODE = 746;
+
+	
+
+	
     
     
     static File sdCardDirectory = Environment.getExternalStorageDirectory();
     public static String IMAGE_STORAGE_FILEPATH = sdCardDirectory.getPath()+"/data/com.fabula.android.timeline/images/";
+    public static String VIDEO_STORAGE_FILEPATH = sdCardDirectory.getPath()+"/data/com.fabula.android.timeline/videos/";
+    public static String RECORDING_STORAGE_FILEPATH = sdCardDirectory.getPath()+"/data/com.fabula.android.timeline/recordings/";
     
 	public static int getImageIcon(Event ex){
 		
@@ -430,6 +442,54 @@ public class Utilities {
 		return (connec.getNetworkInfo(0).isConnectedOrConnecting() ||  connec.getNetworkInfo(1).isConnectedOrConnecting())? true : false;
 		 
 	}
+	
+    public static File DownloadFromUrl(String imageURL, String fileName) {  //this is the downloader method
+        try {
+                URL url = new URL("http://folk.ntnu.no/andekr/upload/files/" + imageURL); //you can write here any link
+                File file = new File(fileName);
+                System.out.println("THE FILENAME IS "+fileName);
+                if(!file.exists()){
+	                long startTime = System.currentTimeMillis();
+	                Log.d("ImageManager", "download begining");
+	                Log.d("ImageManager", "download url:" + url);
+	                Log.d("ImageManager", "downloaded file name:" + fileName);
+	                /* Open a connection to that URL. */
+	                URLConnection ucon = url.openConnection();
+	
+	                /*
+	                 * Define InputStreams to read from the URLConnection.
+	                 */
+	                InputStream is = ucon.getInputStream();
+	                BufferedInputStream bis = new BufferedInputStream(is);
+	
+	                /*
+	                 * Read bytes to the Buffer until there is nothing more to read(-1).
+	                 */
+	                ByteArrayBuffer baf = new ByteArrayBuffer(50);
+	                int current = 0;
+	                while ((current = bis.read()) != -1) {
+	                        baf.append((byte) current);
+	                }
+	
+	                /* Convert the Bytes read to a String. */
+	                FileOutputStream fos = new FileOutputStream(file);
+	               
+	                fos.write(baf.toByteArray());
+	                fos.close();
+	                Log.d("ImageManager", "download ready in"
+	                                + ((System.currentTimeMillis() - startTime) / 1000)
+	                                + " sec");
+                }else{
+                	 Log.d("ImageManager", "file exists!");
+                }
+                return file;
+
+        } catch (IOException e) {
+                Log.d("ImageManager", "Error: " + e);
+                return null;
+        }
+
+    }
 
 	
 }
