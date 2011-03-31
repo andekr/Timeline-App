@@ -91,7 +91,7 @@
 		</LinearLayout>
 
 	</TableRow>
-	<TableRow android:id="@+id/DashTableRow" android:layout_height="0dip" android:layout_weight="5" android:layout_width="fill_parent">
+	<TableRow android:id="@+id/DashTableRow" android:layout_height="0dip" android:layout_weight="5" android:layout_width="fill_parent" android:gravity="center_horizontal">
 		<TextView android:layout_height="wrap_content" android:id="@+id/DashLastSyncedTextView"
 			android:gravity="center" android:layout_width="fill_parent"
 			android:text="@string/Last_synced_label" android:textSize="16dip"></TextView>
