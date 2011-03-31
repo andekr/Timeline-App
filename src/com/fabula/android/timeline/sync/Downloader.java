@@ -216,7 +216,7 @@ public class Downloader {
 					ei = new SimpleRecording(id, creator, filename);
 					return ei;
 			}else if(className.equals("SimpleVideo")){
-				 String filename = json.getAsJsonObject().get("filename").getAsString();
+				    String filename = json.getAsJsonObject().get("filename").getAsString();
 					ei = new SimpleVideo(id, creator, filename);
 					return ei;
 			}else 
