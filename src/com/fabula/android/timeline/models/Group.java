@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.fabula.android.timeline.providers.GroupProvider;
-import com.fabula.android.timeline.providers.UserProvider;
-
 import android.net.Uri;
 import android.provider.BaseColumns;
+
+import com.fabula.android.timeline.providers.GroupProvider;
 
 public class Group {
 	
