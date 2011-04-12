@@ -1,8 +1,13 @@
 package com.fabula.android.timeline.providers;
 
+import java.util.ArrayList;
+
 import android.content.ContentProvider;
+import android.content.ContentProviderOperation;
+import android.content.ContentProviderResult;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.OperationApplicationException;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -151,5 +156,5 @@ public class BaseContentProvider extends ContentProvider{
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
+	
 }

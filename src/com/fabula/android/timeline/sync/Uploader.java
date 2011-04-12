@@ -210,7 +210,6 @@ public class Uploader {
 					DefaultHttpClient httpClient = new DefaultHttpClient();
 					
 				    StringEntity entity = new StringEntity(jsonString, "UTF-8");
-				    entity.setContentType("application/json");
 				    httpPut.setEntity(entity);
 				   
 				        // execute is a blocking call, it's best to call this code in a thread separate from the ui's

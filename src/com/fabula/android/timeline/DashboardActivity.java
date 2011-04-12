@@ -428,7 +428,10 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		ArrayList<Experience> sharedExperiences = contentLoader.LoadAllSharedExperiencesFromDatabase();
 		for (Experience experience : sharedExperiences) {
 			new DatabaseHelper(this, experience.getTitle()+".db");
+			DatabaseHelper.getCurrentTimelineDatabase().beginTransaction();
 			experience.setEvents(contentLoader.LoadAllEventsFromDatabase());
+			DatabaseHelper.getCurrentTimelineDatabase().setTransactionSuccessful();
+			DatabaseHelper.getCurrentTimelineDatabase().endTransaction();
 			DatabaseHelper.getCurrentTimelineDatabase().close();
 		}
 		

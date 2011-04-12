@@ -282,6 +282,16 @@ public class EventDialog extends Dialog {
 			emotionLayout.addView(emotionIcon);
 		}
 		
+		Runnable SendEventRunnable = new Runnable() {
+			
+			public void run() {
+				GAEHandler.persistTimelineObject(mEvent);
+			}
+		};	
+    	//A little overkill to send the whole event. TODO: Make similar for EventItem
+    	Thread sendEventThread = new Thread(SendEventRunnable, "shareThread");
+		sendEventThread.start();
+		
 	}
 	
 	@Override

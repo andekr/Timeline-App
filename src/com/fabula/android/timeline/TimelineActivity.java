@@ -568,7 +568,9 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
     	
     	
     	try {
-    		EventAdapter.setZoomType(Utilities.convertTimeScopeInMillisToZoomType(timeline.getMinAndMaxDate()), null);
+    		Date[] dates = timeline.getMinAndMaxDate();
+    		//Sets adapter to zoom to the type most appropriate to the timespan of events, and that the default view includes the last event.
+    		EventAdapter.setZoomType(Utilities.convertTimeScopeInMillisToZoomType(dates), dates[1]);
 		} catch (NullPointerException e) {
 			//No experienceevents in TimeLine
 //			Log.e(e.getStackTrace()[1].getMethodName(), e.getMessage());
@@ -769,7 +771,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	 * @param evIt The {@link EventItem} to be added to the new {@link Event}
 	 */
 	private void createEventAndAddItem(EventItem evIt){
-		Event ev = new Event(timeline.getId(), myLocation.getLocation(), Utilities.getUserAccount(getApplicationContext()));
+		final Event ev = new Event(timeline.getId(), myLocation.getLocation(), Utilities.getUserAccount(getApplicationContext()));
     	timeline.addEvent(ev);
     	ev.addEventItem(evIt);
     	EventAdapter.updateAdapter();

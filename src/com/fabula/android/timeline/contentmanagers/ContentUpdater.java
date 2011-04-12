@@ -1,8 +1,10 @@
 package com.fabula.android.timeline.contentmanagers;
 
 import com.fabula.android.timeline.models.Event;
+import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.models.SimpleNote;
 import com.fabula.android.timeline.models.Event.EventColumns;
+import com.fabula.android.timeline.models.Experience.ExperienceColumns;
 import com.fabula.android.timeline.models.SimpleNote.NoteColumns;
 
 import android.content.ContentValues;
@@ -43,5 +45,16 @@ public class ContentUpdater {
 		context.getContentResolver().update(EventColumns.CONTENT_URI, values, where, null);
 		
 	}
+	
+	public void setExperienceShareStatus(Experience	experience) {
+		
+		ContentValues values = new ContentValues();
+		values.put(ExperienceColumns.EXPERIENCE_SHARED, experience.isSharedAsInt());
+		String where = ExperienceColumns._ID+ " = '" +experience.getId()+"'"; 
+		context.getContentResolver().update(ExperienceColumns.CONTENT_URI, values, where, null);
+		
+	}
+	
+	
 
 }

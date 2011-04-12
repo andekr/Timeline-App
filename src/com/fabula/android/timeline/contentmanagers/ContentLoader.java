@@ -201,6 +201,38 @@ public class ContentLoader {
 		
 	}
 	
+	public ArrayList<Experience> LoadAllSharedExperiencesOnGroupFromDatabase(Group group){
+		
+		ArrayList<Experience> allExperiences = new ArrayList<Experience>();
+		
+		String[] experienceTableColumns = new String[]{ExperienceColumns._ID, ExperienceColumns.EXPERIENCE_NAME, ExperienceColumns.EXPERIENCE_SHARED, ExperienceColumns.EXPERIENCE_CREATOR, ExperienceColumns.EXPERIENCE_SHARED_WITH};
+		
+		whereStatement = ExperienceColumns.EXPERIENCE_SHARED +"='1' AND "+ExperienceColumns.EXPERIENCE_SHARED_WITH+"='"+group.getId()+"'";
+		
+		Cursor c = context.getContentResolver().query(ExperienceColumns.CONTENT_URI, experienceTableColumns, whereStatement, null, null);
+		
+		if(c.moveToFirst()) {
+			do{
+				Experience experience = new Experience(c.getString(c.getColumnIndex(ExperienceColumns._ID)), 
+						c.getString(c.getColumnIndex(ExperienceColumns.EXPERIENCE_NAME)),
+						(c.getInt((c.getColumnIndex(ExperienceColumns.EXPERIENCE_SHARED)))==1) ? true : false,
+						new Account(c.getString(c.getColumnIndex(ExperienceColumns.EXPERIENCE_CREATOR)), "com.google"));
+				
+				if(experience.isShared()) {
+					experience.setSharingGroupObject(getGroupSharedWithExperience(c.getString(c.getColumnIndex(ExperienceColumns.EXPERIENCE_SHARED_WITH))));
+				}
+				
+				allExperiences.add(experience);
+			}while(c.moveToNext());
+		}
+		c.close();
+		
+		Log.i("CONTENTLOADER - EXPERIENCES", allExperiences.size()+" experiences loaded");
+		
+		return allExperiences;
+		
+	}
+	
 	/**
 	 * 
 	 * 

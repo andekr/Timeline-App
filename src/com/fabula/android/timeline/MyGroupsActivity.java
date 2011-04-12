@@ -27,8 +27,12 @@ import android.widget.AdapterView.OnItemLongClickListener;
 
 import com.fabula.android.timeline.adapters.ExpandableGroupsListViewAdapter;
 import com.fabula.android.timeline.adapters.UserListAdapter;
+import com.fabula.android.timeline.contentmanagers.ContentLoader;
+import com.fabula.android.timeline.contentmanagers.ContentUpdater;
 import com.fabula.android.timeline.contentmanagers.UserGroupManager;
+import com.fabula.android.timeline.database.TimelineDatabaseHelper;
 import com.fabula.android.timeline.database.UserGroupDatabaseHelper;
+import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.models.Group;
 import com.fabula.android.timeline.models.User;
 import com.fabula.android.timeline.sync.Downloader;
@@ -106,6 +110,18 @@ public class MyGroupsActivity extends Activity implements ProgressDialogActivity
 	 * Leaves the selected group
 	 */
 	protected void leaveGroup() {
+		
+		ContentLoader experienceLoader = new ContentLoader(this);
+		ContentUpdater experienceUpdater = new ContentUpdater(this);
+		ArrayList<Experience> experiencesConnectedToSelectedGroup = experienceLoader.LoadAllSharedExperiencesOnGroupFromDatabase(selectedGroup);
+		
+		TimelineDatabaseHelper.getCurrentTimeLineDatabase().beginTransaction();
+		for (Experience experience : experiencesConnectedToSelectedGroup) {
+			experience.setShared(false);
+			experienceUpdater.setExperienceShareStatus(experience);
+		}
+		TimelineDatabaseHelper.getCurrentTimeLineDatabase().setTransactionSuccessful();
+		TimelineDatabaseHelper.getCurrentTimeLineDatabase().endTransaction();
 		
 		GAEHandler.removeUserFromGroupOnServer(selectedGroup, applicationUser);
 		uGManager.removeUserFromAGroupInTheDatabase(selectedGroup, applicationUser);
