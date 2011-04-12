@@ -82,13 +82,27 @@ public class ExperienceProvider extends BaseContentProvider {
 	public int delete(Uri uri, String id, String[] whereArgs) {
 		return super.getTimelinesDatabase().delete(SQLStatements.TIMELINES_DATABASE_TABLE_NAME, ExperienceColumns._ID + "='"+id+"'", whereArgs);
 	}
-
-	//update some element in the db
-	public int update(Uri uri, ContentValues values, String experienceID,
-			String[] whereArgs) {
-		String where = experienceID+ " = " +ExperienceColumns._ID;
-        int count = super.getTimelinesDatabase().update(SQLStatements.TIMELINES_DATABASE_TABLE_NAME, values, where, whereArgs);
-        getContext().getContentResolver().notifyChange(uri, null);
-        return count;
+	
+	@Override
+	public int update(Uri uri, ContentValues values, String selection,
+			String[] selectionArgs) {
+		int count = 0;
+	    count = super.getTimelinesDatabase().update(
+	               SQLStatements.TIMELINES_DATABASE_TABLE_NAME, 
+	               values,
+	               selection, 
+	               selectionArgs);
+	    
+	      getContext().getContentResolver().notifyChange(uri, null);
+	      return count;
 	}
+
+//	//update some element in the db
+//	public int update(Uri uri, ContentValues values, String experienceID,
+//			String[] whereArgs) {
+//		String where = experienceID+ " = " +ExperienceColumns._ID;
+//        int count = super.getTimelinesDatabase().update(SQLStatements.TIMELINES_DATABASE_TABLE_NAME, values, where, whereArgs);
+//        getContext().getContentResolver().notifyChange(uri, null);
+//        return count;
+//	}
 }

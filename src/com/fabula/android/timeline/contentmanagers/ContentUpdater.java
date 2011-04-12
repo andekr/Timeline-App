@@ -51,6 +51,7 @@ public class ContentUpdater {
 		ContentValues values = new ContentValues();
 		values.put(ExperienceColumns.EXPERIENCE_SHARED, experience.isSharedAsInt());
 		String where = ExperienceColumns._ID+ " = '" +experience.getId()+"'"; 
+		System.out.println("Set experience: "+where);
 		context.getContentResolver().update(ExperienceColumns.CONTENT_URI, values, where, null);
 		
 	}

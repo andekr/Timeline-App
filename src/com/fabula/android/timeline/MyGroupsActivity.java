@@ -52,6 +52,7 @@ public class MyGroupsActivity extends Activity implements ProgressDialogActivity
 	private ExpandableGroupsListViewAdapter groupListAdapter;
 	private UserGroupDatabaseHelper helper;
 	private UserAndGroupServiceHandler userAndGroupServiceHandler;
+	private TimelineDatabaseHelper timelineDatabaseHelper;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -115,13 +116,13 @@ public class MyGroupsActivity extends Activity implements ProgressDialogActivity
 		ContentUpdater experienceUpdater = new ContentUpdater(this);
 		ArrayList<Experience> experiencesConnectedToSelectedGroup = experienceLoader.LoadAllSharedExperiencesOnGroupFromDatabase(selectedGroup);
 		
-		TimelineDatabaseHelper.getCurrentTimeLineDatabase().beginTransaction();
+//		TimelineDatabaseHelper.getCurrentTimeLineDatabase().beginTransaction();
 		for (Experience experience : experiencesConnectedToSelectedGroup) {
 			experience.setShared(false);
 			experienceUpdater.setExperienceShareStatus(experience);
 		}
-		TimelineDatabaseHelper.getCurrentTimeLineDatabase().setTransactionSuccessful();
-		TimelineDatabaseHelper.getCurrentTimeLineDatabase().endTransaction();
+//		TimelineDatabaseHelper.getCurrentTimeLineDatabase().setTransactionSuccessful();
+//		TimelineDatabaseHelper.getCurrentTimeLineDatabase().endTransaction();
 		
 		GAEHandler.removeUserFromGroupOnServer(selectedGroup, applicationUser);
 		uGManager.removeUserFromAGroupInTheDatabase(selectedGroup, applicationUser);
@@ -185,6 +186,7 @@ public class MyGroupsActivity extends Activity implements ProgressDialogActivity
 	@Override
 	public void onBackPressed() {
 		helper.close();
+		timelineDatabaseHelper.close();
 		super.onBackPressed();
 	}
 	/**
@@ -378,9 +380,11 @@ public class MyGroupsActivity extends Activity implements ProgressDialogActivity
 		}
 	};
 	
+	
 	private void setupHelpers() {
 		uGManager = new UserGroupManager(this);
 		helper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
+		timelineDatabaseHelper = new TimelineDatabaseHelper(this, Utilities.ALL_TIMELINES_DATABASE_NAME);
 		userAccount = (Account) getIntent().getParcelableExtra("ACCOUNT");
 		applicationUser = new User(userAccount.name);
 	}
