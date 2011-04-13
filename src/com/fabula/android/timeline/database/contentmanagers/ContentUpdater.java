@@ -40,21 +40,30 @@ public class ContentUpdater {
 	public void setEventShared(Event event) {
 		
 		ContentValues values = new ContentValues();
+		
 		values.put(EventColumns.IS_SHARED, event.isSharedAsInt());
 		String where = EventColumns._ID+ " = '" +event.getId()+"'"; 
 		context.getContentResolver().update(EventColumns.CONTENT_URI, values, where, null);
 		
 	}
 	
-	public void setExperienceShareStatus(Experience	experience) {
+	public void updateExperience(Experience experience) {
 		
 		ContentValues values = new ContentValues();
-		values.put(ExperienceColumns.EXPERIENCE_SHARED, experience.isSharedAsInt());
+		 values.put(ExperienceColumns.EXPERIENCE_SHARED, experience.isSharedAsInt());
+		 if (experience.isShared()) {
+			 values.put(ExperienceColumns.EXPERIENCE_SHARED_WITH, experience.getSharingGroup());
+		 }
 		String where = ExperienceColumns._ID+ " = '" +experience.getId()+"'"; 
 		System.out.println("Set experience: "+where);
 		context.getContentResolver().update(ExperienceColumns.CONTENT_URI, values, where, null);
 		
 	}
+	
+//	public void setExperienceSharestatus(Experience experience, boolean shared) {
+//		experience.setShared(shared);
+//		updateExperience(experience);
+//	}
 	
 	
 

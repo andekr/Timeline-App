@@ -17,11 +17,11 @@ import com.fabula.android.timeline.models.Event.EventColumns;
 public class EmotionsProvider extends BaseContentProvider {
 	
 	public static final Uri CONTENT_URI = Uri
-			.parse("content://com.fabula.android.timeline.providers.emotionsprovider");
+			.parse("content://com.fabula.android.timeline.database.providers.emotionsprovider");
 
 	private static HashMap<String, String> emotionsColumnMapping;
 	
-	public static final String AUTHORITY = "com.fabula.android.timeline.providers.emotionsprovider";
+	public static final String AUTHORITY = "com.fabula.android.timeline.database.providers.emotionsprovider";
 
 	public Cursor query(Uri uri, String[] columns, String where,
 			String[] whereArgs, String sortOrder) {

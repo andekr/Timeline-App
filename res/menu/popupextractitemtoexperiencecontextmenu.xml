@@ -8,4 +8,5 @@
 <item android:id="@+id/MENU_DELETE_TIMELINE"></item>
 <item android:id="@+id/MENU_OPEN_TIMELINE"></item>
 <item android:id="@+id/MENU_ADD_USER"></item>
+<item android:id="@+id/MENU_SHARE_TIMELINE"></item>
 </menu>

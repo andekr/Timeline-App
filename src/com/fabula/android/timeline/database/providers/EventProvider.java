@@ -16,7 +16,7 @@ import com.fabula.android.timeline.models.Event.EventColumns;
 
 public class EventProvider extends BaseContentProvider {
 	
-	public static final String AUTHORITY = "com.fabula.android.timeline.providers.EventProvider";
+	public static final String AUTHORITY = "com.fabula.android.timeline.database.providers.EventProvider";
 
 	
     public static final Uri CONTENT_URI = 

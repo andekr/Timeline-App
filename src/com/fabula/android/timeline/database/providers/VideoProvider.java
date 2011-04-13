@@ -12,9 +12,9 @@ import com.fabula.android.timeline.models.SimpleVideo.VideoColumns;
 
 public class VideoProvider extends BaseContentProvider {
 	public static final Uri CONTENT_URI = Uri
-			.parse("content://com.fabula.android.timeline.providers.videoprovider");
+			.parse("content://com.fabula.android.timeline.database.providers.videoprovider");
 	
-	public static final String AUTHORITY = "com.fabula.android.timeline.providers.videoprovider";
+	public static final String AUTHORITY = "com.fabula.android.timeline.database.providers.videoprovider";
 
 	private static HashMap<String, String> videoColumnMapping;
 	

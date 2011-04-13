@@ -9,13 +9,14 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.util.Log;
 
 import com.fabula.android.timeline.database.SQLStatements;
 import com.fabula.android.timeline.models.Experience.ExperienceColumns;
 
 public class ExperienceProvider extends BaseContentProvider {
 	
-	public static final String AUTHORITY = "com.fabula.android.timeline.providers.ExperienceProvider";
+	public static final String AUTHORITY = "com.fabula.android.timeline.database.providers.ExperienceProvider";
 
 	
     public static final Uri CONTENT_URI = 
@@ -91,6 +92,7 @@ public class ExperienceProvider extends BaseContentProvider {
 	               values,
 	               selection, 
 	               selectionArgs);
+	    Log.d("Experience update", "antall endrede rader "+count);
 	    
 	      getContext().getContentResolver().notifyChange(uri, null);
 	      return count;

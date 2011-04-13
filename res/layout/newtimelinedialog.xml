@@ -9,5 +9,9 @@
     <ToggleButton android:textOn="@string/yes_label" android:text="ToggleButton" android:layout_width="wrap_content" android:textOff="@string/no_label" android:layout_height="wrap_content" android:layout_toRightOf="@+id/ShareTimelineTextView" android:id="@+id/ShareTimelineToggleButton" android:layout_below="@+id/TimelineNameEditText" android:layout_marginLeft="10dip" android:layout_marginTop="5dip"></ToggleButton>
     <ListView android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/sharedtimelinegroupslist" android:layout_below="@+id/selectedGroupText" android:visibility="gone" android:paddingTop="5dip" android:layout_above="@+id/newgroupbutton_in_timelinedialog" android:cacheColorHint="#00000000"></ListView>
     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/selectedGroupText" android:layout_below="@+id/ShareTimelineToggleButton" android:text="TEST" android:visibility="gone" android:textColor="@color/Black" android:paddingTop="5dip" android:paddingLeft="5dip"></TextView>
-    <ImageButton android:layout_width="wrap_content" android:background="@drawable/add_group_button" android:id="@+id/newgroupbutton_in_timelinedialog" android:layout_height="75dip" android:layout_alignParentBottom="true" android:visibility="gone" android:layout_centerHorizontal="true"></ImageButton>
+    <LinearLayout android:id="@+id/linearLayout1" android:layout_height="wrap_content" android:weightSum="3" android:layout_alignParentBottom="true" android:layout_width="fill_parent">
+        <Button android:layout_height="wrap_content" android:id="@+id/okbutton" android:text="OK" android:layout_weight="1" android:layout_width="0dp"></Button>
+        <Button android:layout_height="wrap_content" android:id="@+id/cancel" android:text="Cancel" android:layout_weight="1" android:layout_width="0dp"></Button>
+        <Button android:id="@+id/newgroupbutton_in_timelinedialog" android:text="Add group" android:layout_weight="1" android:visibility="invisible" android:layout_height="wrap_content" android:layout_width="0dp"></Button>
+    </LinearLayout>
 </RelativeLayout>

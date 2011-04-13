@@ -14,8 +14,8 @@ import android.net.Uri;
 
 public class UserProvider extends BaseContentProvider {
 	
-	public static final Uri CONTENT_URI = Uri.parse("content://com.fabula.android.timeline.providers.userprovider");
-	public static final String AUTHORITY = "com.fabula.android.timeline.providers.userprovider";
+	public static final Uri CONTENT_URI = Uri.parse("content://com.fabula.android.timeline.database.providers.userprovider");
+	public static final String AUTHORITY = "com.fabula.android.timeline.database.providers.userprovider";
 	
 	private static HashMap<String, String> userColumnsMapping;
 	
