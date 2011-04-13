@@ -119,7 +119,7 @@ public class MyGroupsActivity extends Activity implements ProgressDialogActivity
 //		TimelineDatabaseHelper.getCurrentTimeLineDatabase().beginTransaction();
 		for (Experience experience : experiencesConnectedToSelectedGroup) {
 			experience.setShared(false);
-			experienceUpdater.setExperienceShareStatus(experience);
+			experienceUpdater.updateExperience(experience);
 		}
 //		TimelineDatabaseHelper.getCurrentTimeLineDatabase().setTransactionSuccessful();
 //		TimelineDatabaseHelper.getCurrentTimeLineDatabase().endTransaction();
@@ -137,6 +137,7 @@ public class MyGroupsActivity extends Activity implements ProgressDialogActivity
 		
 		groupListAdapter.notifyDataSetChanged();
 	}
+
 	
 	private void deleteGroupFromDatabase(Group group) {
 		uGManager.deleteGroupFromDatabase(group);

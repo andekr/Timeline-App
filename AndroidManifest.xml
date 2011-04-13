@@ -48,7 +48,7 @@
         </activity>
         
         <activity android:label="@string/app_name"
-            android:name="com.fabula.android.timeline.Map.TimelineMapView" android:screenOrientation="landscape" android:theme="@android:style/Theme.NoTitleBar">
+            android:name="com.fabula.android.timeline.map.TimelineMapView" android:screenOrientation="landscape" android:theme="@android:style/Theme.NoTitleBar">
         </activity>
         
         <activity android:label="@string/app_name"
@@ -62,17 +62,17 @@
             
             
            <provider
-            android:authorities="com.fabula.android.timeline.providers.ExperienceProvider" android:name="com.fabula.android.timeline.providers.ExperienceProvider"/>
+            android:authorities="com.fabula.android.timeline.database.providers.ExperienceProvider" android:name="com.fabula.android.timeline.database.providers.ExperienceProvider"/>
         <provider
-            android:authorities="com.fabula.android.timeline.providers.EventProvider" android:name="com.fabula.android.timeline.providers.EventProvider"/>
+            android:authorities="com.fabula.android.timeline.database.providers.EventProvider" android:name="com.fabula.android.timeline.database.providers.EventProvider"/>
         <provider
-            android:authorities="com.fabula.android.timeline.providers.NoteProvider" android:name="com.fabula.android.timeline.providers.NoteProvider"/>
+            android:authorities="com.fabula.android.timeline.database.providers.NoteProvider" android:name="com.fabula.android.timeline.database.providers.NoteProvider"/>
         <provider
-            android:authorities="com.fabula.android.timeline.providers.EventItemProvider" android:name="com.fabula.android.timeline.providers.EventItemProvider"/>
+            android:authorities="com.fabula.android.timeline.database.providers.EventItemProvider" android:name="com.fabula.android.timeline.database.providers.EventItemProvider"/>
         <provider
-            android:authorities="com.fabula.android.timeline.providers.PictureProvider" android:name="com.fabula.android.timeline.providers.PictureProvider"/>
+            android:authorities="com.fabula.android.timeline.database.providers.PictureProvider" android:name="com.fabula.android.timeline.database.providers.PictureProvider"/>
         <provider
-            android:authorities="com.fabula.android.timeline.providers.BaseContentProvider" android:name="com.fabula.android.timeline.providers.BaseContentProvider"/>
+            android:authorities="com.fabula.android.timeline.database.providers.BaseContentProvider" android:name="com.fabula.android.timeline.database.providers.BaseContentProvider"/>
         <!-- 
 	<receiver android:name=".receivers.IntentReceiver" android:enabled="true">
 			<intent-filter>
@@ -81,19 +81,19 @@
 		</receiver>
  -->
         <provider
-            android:authorities="com.fabula.android.timeline.providers.recordingprovider" android:name="com.fabula.android.timeline.providers.RecordingProvider"/>
+            android:authorities="com.fabula.android.timeline.database.providers.recordingprovider" android:name="com.fabula.android.timeline.database.providers.RecordingProvider"/>
         <provider
-            android:authorities="com.fabula.android.timeline.providers.videoprovider" android:name="com.fabula.android.timeline.providers.VideoProvider"/>
+            android:authorities="com.fabula.android.timeline.database.providers.videoprovider" android:name="com.fabula.android.timeline.database.providers.VideoProvider"/>
         <provider
-            android:authorities="com.fabula.android.timeline.providers.emotionsprovider" android:name="com.fabula.android.timeline.providers.EmotionsProvider"></provider>
+            android:authorities="com.fabula.android.timeline.database.providers.emotionsprovider" android:name="com.fabula.android.timeline.database.providers.EmotionsProvider"></provider>
         <provider
-            android:authorities="com.fabula.android.timeline.providers.groupprovider" android:name="com.fabula.android.timeline.providers.GroupProvider"></provider>
+            android:authorities="com.fabula.android.timeline.database.providers.groupprovider" android:name="com.fabula.android.timeline.database.providers.GroupProvider"></provider>
         <provider
-            android:authorities="com.fabula.android.timeline.providers.userprovider" android:name="com.fabula.android.timeline.providers.UserProvider"></provider>    
+            android:authorities="com.fabula.android.timeline.database.providers.userprovider" android:name="com.fabula.android.timeline.database.providers.UserProvider"></provider>    
    		<provider
-            android:authorities="com.fabula.android.timeline.providers.usergroupprovider" android:name="com.fabula.android.timeline.providers.UserGroupProvider"></provider>   
+            android:authorities="com.fabula.android.timeline.database.providers.usergroupprovider" android:name="com.fabula.android.timeline.database.providers.UserGroupProvider"></provider>   
         <provider
-            android:authorities="com.fabula.android.timeline.providers.tagprovider" android:name="providers.TagProvider"></provider>  
+            android:authorities="com.fabula.android.timeline.database.providers.tagprovider" android:name="com.fabula.android.timeline.database.providers.TagProvider"></provider>  
 </application>
     <uses-sdk android:minSdkVersion="7"/>
     <uses-permission android:name="android.permission.CAMERA"/>

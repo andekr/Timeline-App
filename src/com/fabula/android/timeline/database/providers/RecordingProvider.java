@@ -17,7 +17,7 @@ public class RecordingProvider extends BaseContentProvider {
 	private static HashMap<String, String> recordingColumnMapping;
 	private static final UriMatcher recordingUriMatcher;
 	
-	public static final String AUTHORITY = "com.fabula.android.timeline.providers.recordingprovider";
+	public static final String AUTHORITY = "com.fabula.android.timeline.database.providers.recordingprovider";
 
 	private static final int RECORDINGS = 1;
 	private static final int RECORDINGS_ID = 2;  

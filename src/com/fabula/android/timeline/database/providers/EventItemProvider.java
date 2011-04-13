@@ -18,7 +18,7 @@ import com.fabula.android.timeline.models.EventItem.EventItemsColumns;
 
 public class EventItemProvider extends BaseContentProvider {
 
-	public static final String AUTHORITY = "com.fabula.android.timeline.providers.EventItemProvider";
+	public static final String AUTHORITY = "com.fabula.android.timeline.database.providers.EventItemProvider";
 	
 	private static final int EVENT_ID = 1;
 	private static final int EVENT_ITEM_ID = 2;

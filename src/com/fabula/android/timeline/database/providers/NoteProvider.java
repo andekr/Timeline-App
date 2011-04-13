@@ -21,7 +21,7 @@ public class NoteProvider extends BaseContentProvider {
     private static final UriMatcher sUriMatcher;
     private static HashMap<String, String> sNotesProjectionMap;
     
-    public static final String AUTHORITY = "com.fabula.android.timeline.providers.NoteProvider";
+    public static final String AUTHORITY = "com.fabula.android.timeline.database.providers.NoteProvider";
 
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection,

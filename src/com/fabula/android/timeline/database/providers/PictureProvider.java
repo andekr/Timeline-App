@@ -22,7 +22,7 @@ public class PictureProvider extends BaseContentProvider {
 	private static HashMap<String, String> imageColumnMapping;
 	private static final UriMatcher imageUriMatcher;
 	
-	public static final String AUTHORITY = "com.fabula.android.timeline.providers.PictureProvider";
+	public static final String AUTHORITY = "com.fabula.android.timeline.database.providers.PictureProvider";
 		
 	/**
 	 * @see android.content.ContentProvider#query(Uri,String[],String,String[],String)

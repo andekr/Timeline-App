@@ -42,6 +42,7 @@ import com.fabula.android.timeline.database.UserGroupDatabaseHelper;
 import com.fabula.android.timeline.database.contentmanagers.ContentAdder;
 import com.fabula.android.timeline.database.contentmanagers.ContentLoader;
 import com.fabula.android.timeline.database.contentmanagers.UserGroupManager;
+import com.fabula.android.timeline.dialogs.NewTimelineDialog;
 import com.fabula.android.timeline.dialogs.TimelineBrowserDialog;
 import com.fabula.android.timeline.map.TimelineMapView;
 import com.fabula.android.timeline.models.Experience;
@@ -581,8 +582,11 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 				}
 				else {
 					Toast.makeText(getApplicationContext(), "You can only create private timelines in offline mode", Toast.LENGTH_SHORT).show();
-					openDialogForTimelineNameInput();
+//					openDialogForTimelineNameInput();
+					NewTimelineDialog newTimelineDialog = new NewTimelineDialog(DashboardActivity.this, null,timelineIntent);
+					newTimelineDialog.show();
 				}
+			
 		}
 	};
 
@@ -653,7 +657,9 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 	}
 
 	public void callBack() {
-		openDialogForTimelineNameInput();
+//		openDialogForTimelineNameInput();
+		NewTimelineDialog newTimelineDialog = new NewTimelineDialog(DashboardActivity.this, null, timelineIntent);
+		newTimelineDialog.show();
 //		closeDatabaseHelpers();
 	}
 	

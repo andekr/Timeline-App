@@ -15,7 +15,7 @@ import com.fabula.android.timeline.models.Experience.TagColumns;
 
 public class TagProvider extends BaseContentProvider {
 
-	public static final String AUTHORITY = "com.fabula.android.timeline.providers.tagprovider";
+	public static final String AUTHORITY = "com.fabula.android.timeline.database.providers.tagprovider";
 	private static final int TAG_ITEM = 1;
 	private static final int TAGGED_EVENT_ITEM = 2;
 	

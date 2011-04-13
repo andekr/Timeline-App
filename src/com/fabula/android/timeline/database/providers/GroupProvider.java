@@ -15,8 +15,8 @@ import com.fabula.android.timeline.models.Group.GroupColumns;
 
 public class GroupProvider extends BaseContentProvider {
 
-	public static final Uri CONTENT_URI = Uri.parse("content://com.fabula.android.timeline.providers.groupprovider");
-	public static final String AUTHORITY = "com.fabula.android.timeline.providers.groupprovider";
+	public static final Uri CONTENT_URI = Uri.parse("content://com.fabula.android.timeline.database.providers.groupprovider");
+	public static final String AUTHORITY = "com.fabula.android.timeline.database.providers.groupprovider";
 	
 	private static HashMap<String, String> groupColumnsMapping;
 	

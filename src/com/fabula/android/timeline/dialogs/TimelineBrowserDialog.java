@@ -26,8 +26,10 @@ import com.fabula.android.timeline.adapters.TimelineListAdapter;
 import com.fabula.android.timeline.database.TimelineDatabaseHelper;
 import com.fabula.android.timeline.database.contentmanagers.ContentDeleter;
 import com.fabula.android.timeline.database.contentmanagers.ContentLoader;
+import com.fabula.android.timeline.database.contentmanagers.ContentUpdater;
 import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.utilities.Constants;
+import com.fabula.android.timeline.utilities.Utilities;
 
 public class TimelineBrowserDialog extends Dialog {
 
@@ -99,6 +101,15 @@ public TimelineBrowserDialog(Context context, Intent receivedIntent, int shared)
 			openExperience(selectedTimeline);
 			this.dismiss();
 			break;
+		case R.id.MENU_SHARE_TIMELINE:
+			Intent timelineIntent = new Intent(context, TimelineActivity.class);
+			timelineIntent.setAction(Constants.INTENT_ACTION_NEW_TIMELINE); //Default Intent action for TimelineActivity is to create/open a timeline.
+			NewTimelineDialog newTimelineDialog = new NewTimelineDialog(context, selectedTimeline, timelineIntent);
+			newTimelineDialog.show();
+//			ContentUpdater contentUpdater = new ContentUpdater(context);
+//			contentUpdater.setExperienceSharestatus(selectedTimeline, true);
+			this.dismiss();
+			break;
 		}
 		return false;
 	}
@@ -146,7 +157,7 @@ public TimelineBrowserDialog(Context context, Intent receivedIntent, int shared)
 		public boolean onItemLongClick(AdapterView<?> arg0, View view,
 				int position, long id) {
 			
-			TimelineBrowserDialog.this.setSelectedTimeline(timelineAdapter.getItem(position));
+			setSelectedTimeline(timelineAdapter.getItem(position));
 			arg0.setOnCreateContextMenuListener(new OnCreateContextMenuListener() {
 				
 				public void onCreateContextMenu(ContextMenu menu, View v,
@@ -156,6 +167,9 @@ public TimelineBrowserDialog(Context context, Intent receivedIntent, int shared)
 					else
 						menu.add(R.id.MENU_OPEN_TIMELINE, 0, 0, R.string.Open_timeline_label);
 					menu.add(R.id.MENU_DELETE_TIMELINE, 0,0, R.string.Delete_timeline_label);
+					if(!selectedTimeline.isShared()){
+						menu.add(R.id.MENU_SHARE_TIMELINE, 0,0, R.string.ShareTimeline_label);
+					}
 				}
 			});
 			

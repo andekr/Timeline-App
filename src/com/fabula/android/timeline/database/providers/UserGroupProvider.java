@@ -16,7 +16,7 @@ import android.net.Uri;
 
 public class UserGroupProvider extends BaseContentProvider {
 	
-	public static final String AUTHORITY = "com.fabula.android.timeline.providers.usergroupprovider";
+	public static final String AUTHORITY = "com.fabula.android.timeline.database.providers.usergroupprovider";
 	
 	private static HashMap<String, String> usersToGroupsProvider;
 	
