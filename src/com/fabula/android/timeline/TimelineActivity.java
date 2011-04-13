@@ -63,7 +63,7 @@ import com.fabula.android.timeline.models.SimpleRecording;
 import com.fabula.android.timeline.models.SimpleVideo;
 import com.fabula.android.timeline.models.Zoom;
 import com.fabula.android.timeline.models.MoodEvent.MoodEnum;
-import com.fabula.android.timeline.sync.GAEHandler;
+import com.fabula.android.timeline.sync.GoogleAppEngineHandler;
 import com.fabula.android.timeline.utilities.Constants;
 import com.fabula.android.timeline.utilities.MyLocation;
 import com.fabula.android.timeline.utilities.Utilities;
@@ -785,7 +785,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
  		Runnable SendMoodEventRunnable = new Runnable() {
 			
 			public void run() {
-				GAEHandler.persistTimelineObject(moodEvent);
+				GoogleAppEngineHandler.persistTimelineObject(moodEvent);
 			}
 		};
 		

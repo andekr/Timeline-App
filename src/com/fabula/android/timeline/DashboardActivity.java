@@ -48,7 +48,7 @@ import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.models.Experiences;
 import com.fabula.android.timeline.models.Group;
 import com.fabula.android.timeline.models.User;
-import com.fabula.android.timeline.sync.GAEHandler;
+import com.fabula.android.timeline.sync.GoogleAppEngineHandler;
 import com.fabula.android.timeline.sync.UserAndGroupServiceHandler;
 import com.fabula.android.timeline.utilities.Constants;
 import com.fabula.android.timeline.utilities.MyLocation;
@@ -179,10 +179,10 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 				progressDialog.setMessage("Checking user against server ...");
 			}
 		});
-		registered = GAEHandler.IsUserRegistered(user.getUserName());
+		registered = GoogleAppEngineHandler.IsUserRegistered(user.getUserName());
 		//Register user if not registered
 		if(!registered){
-			GAEHandler.addUserToServer(user);
+			GoogleAppEngineHandler.addUserToServer(user);
 			runOnUiThread(new Runnable() {
 				
 				public void run() {
@@ -357,7 +357,7 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		uGManager.addGroupToGroupDatabase(group);
 		uGManager.addUserToAGroupInTheDatabase(group, user);
 		group.addMembers(user);
-		GAEHandler.addGroupToServer(group);
+		GoogleAppEngineHandler.addGroupToServer(group);
 		Toast.makeText(this, "You have created the group: " +group.toString() , Toast.LENGTH_SHORT).show();
 	}
 
@@ -432,9 +432,9 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		}
 		
 		Experiences experiences = new Experiences(sharedExperiences);
-		GAEHandler.persistTimelineObject(experiences);
+		GoogleAppEngineHandler.persistTimelineObject(experiences);
 		
-		Experiences exps = GAEHandler.getAllSharedExperiences(user);
+		Experiences exps = GoogleAppEngineHandler.getAllSharedExperiences(user);
 		if(exps!=null){
 			for (Experience e : exps.getExperiences()) {
 				e.setSharingGroupObject(uGManager.getGroupFromDatabase(e.getSharingGroup()));

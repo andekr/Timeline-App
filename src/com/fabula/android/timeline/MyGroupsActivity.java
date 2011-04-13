@@ -35,7 +35,7 @@ import com.fabula.android.timeline.database.contentmanagers.UserGroupManager;
 import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.models.Group;
 import com.fabula.android.timeline.models.User;
-import com.fabula.android.timeline.sync.GAEHandler;
+import com.fabula.android.timeline.sync.GoogleAppEngineHandler;
 import com.fabula.android.timeline.sync.UserAndGroupServiceHandler;
 import com.fabula.android.timeline.utilities.Constants;
 
@@ -78,7 +78,7 @@ public class MyGroupsActivity extends Activity implements ProgressDialogActivity
 		connectedGroups.add(group);
 		groupListAdapter.notifyDataSetChanged();
 		Toast.makeText(MyGroupsActivity.this.getApplicationContext(), "You have created the group: " +group.toString() , Toast.LENGTH_SHORT).show();
-		GAEHandler.addGroupToServer(group);
+		GoogleAppEngineHandler.addGroupToServer(group);
 		
 	}
 	
@@ -90,7 +90,7 @@ public class MyGroupsActivity extends Activity implements ProgressDialogActivity
 		for (User user : selectedUsers) {
 //			if(!isAlreadyPartOfGroup(user, selectedGroup)) {
 				uGManager.addUserToAGroupInTheDatabase(selectedGroup, user);
-				GAEHandler.addUserToGroupOnServer(selectedGroup, user);
+				GoogleAppEngineHandler.addUserToGroupOnServer(selectedGroup, user);
 				selectedGroup.addMembers(user);
 //			}
 		}
@@ -124,7 +124,7 @@ public class MyGroupsActivity extends Activity implements ProgressDialogActivity
 //		TimelineDatabaseHelper.getCurrentTimeLineDatabase().setTransactionSuccessful();
 //		TimelineDatabaseHelper.getCurrentTimeLineDatabase().endTransaction();
 		
-		GAEHandler.removeUserFromGroupOnServer(selectedGroup, applicationUser);
+		GoogleAppEngineHandler.removeUserFromGroupOnServer(selectedGroup, applicationUser);
 		uGManager.removeUserFromAGroupInTheDatabase(selectedGroup, applicationUser);
 		connectedGroups.remove(selectedGroup);
 		selectedGroup.removeMember(applicationUser);
@@ -132,7 +132,7 @@ public class MyGroupsActivity extends Activity implements ProgressDialogActivity
 		//delete the group if it has no members
 		if(selectedGroup.getMembers().isEmpty()) {
 			deleteGroupFromDatabase(selectedGroup);
-			GAEHandler.removeGroupFromDatabase(selectedGroup);
+			GoogleAppEngineHandler.removeGroupFromDatabase(selectedGroup);
 		}
 		
 		groupListAdapter.notifyDataSetChanged();
@@ -150,7 +150,7 @@ public class MyGroupsActivity extends Activity implements ProgressDialogActivity
 	private ArrayList <Group> getAllGroupsConnectedToUser(Account user) {
 		
 		//TODO move this to appropriate place
-		uGManager.addUsersToUserDatabase(GAEHandler.getUsers());
+		uGManager.addUsersToUserDatabase(GoogleAppEngineHandler.getUsers());
 		ArrayList <Group> allGroups = uGManager.getAllGroupsConnectedToAUser(applicationUser);
 		return allGroups;
 	}

@@ -46,7 +46,7 @@ import com.fabula.android.timeline.models.Event;
 import com.fabula.android.timeline.models.EventItem;
 import com.fabula.android.timeline.models.SimpleNote;
 import com.fabula.android.timeline.models.Emotion.EmotionEnum;
-import com.fabula.android.timeline.sync.GAEHandler;
+import com.fabula.android.timeline.sync.GoogleAppEngineHandler;
 import com.fabula.android.timeline.utilities.Constants;
 import com.fabula.android.timeline.utilities.MyLocation;
 import com.fabula.android.timeline.utilities.Utilities;
@@ -212,7 +212,7 @@ public class EventDialog extends Dialog {
  		shareEventThread = new Runnable() {
 			
 			public void run() {
-				GAEHandler.persistTimelineObject(mEvent);
+				GoogleAppEngineHandler.persistTimelineObject(mEvent);
 				ContentUpdater updater = new ContentUpdater(mContext);
 				updater.setEventShared(mEvent);
 			}
@@ -284,7 +284,7 @@ public class EventDialog extends Dialog {
 		Runnable SendEventRunnable = new Runnable() {
 			
 			public void run() {
-				GAEHandler.persistTimelineObject(mEvent);
+				GoogleAppEngineHandler.persistTimelineObject(mEvent);
 			}
 		};	
     	//A little overkill to send the whole event. TODO: Make similar for EventItem
