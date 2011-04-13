@@ -1,6 +1,6 @@
 package com.fabula.android.timeline.models;
 
-import com.fabula.android.timeline.Utilities;
+import com.fabula.android.timeline.utilities.Utilities;
 
 
 public enum Zoom {

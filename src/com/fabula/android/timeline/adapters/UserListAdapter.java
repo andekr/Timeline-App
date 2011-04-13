@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
-import com.fabula.android.timeline.MyGroupsActivity;
 import com.fabula.android.timeline.R;
 import com.fabula.android.timeline.models.Group;
 import com.fabula.android.timeline.models.User;

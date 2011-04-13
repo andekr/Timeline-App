@@ -10,9 +10,9 @@ import android.provider.BaseColumns;
 import android.util.Log;
 import android.view.View;
 
-import com.fabula.android.timeline.Utilities;
+import com.fabula.android.timeline.database.providers.EventItemProvider;
 import com.fabula.android.timeline.models.Event.EventColumns;
-import com.fabula.android.timeline.providers.EventItemProvider;
+import com.fabula.android.timeline.utilities.Utilities;
 
 public abstract class EventItem {
 	

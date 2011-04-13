@@ -14,13 +14,13 @@ import android.provider.BaseColumns;
 import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
 
-import com.fabula.android.timeline.Utilities;
-import com.fabula.android.timeline.providers.PictureProvider;
+import com.fabula.android.timeline.database.providers.PictureProvider;
+import com.fabula.android.timeline.utilities.Constants;
+import com.fabula.android.timeline.utilities.Utilities;
 
 public class SimplePicture extends EventItem {
 
@@ -43,7 +43,7 @@ public class SimplePicture extends EventItem {
 	public SimplePicture(String id, Account u, String pictureFilename) {
 		super(id, u);
 		className = "SimplePicture";
-		File file = Utilities.DownloadFromUrl(pictureFilename, Utilities.IMAGE_STORAGE_FILEPATH+pictureFilename);
+		File file = Utilities.DownloadFromUrl(pictureFilename, Constants.IMAGE_STORAGE_FILEPATH+pictureFilename);
 		this.pictureUri = Uri.fromFile(file);
 		this.filename = pictureFilename;
 	}

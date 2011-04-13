@@ -20,24 +20,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.View.OnCreateContextMenuListener;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
 
 import com.fabula.android.timeline.adapters.TagListAdapter;
-import com.fabula.android.timeline.contentmanagers.ContentAdder;
-import com.fabula.android.timeline.contentmanagers.TagManager;
 import com.fabula.android.timeline.database.DatabaseHelper;
 import com.fabula.android.timeline.database.TimelineDatabaseHelper;
+import com.fabula.android.timeline.database.contentmanagers.ContentAdder;
+import com.fabula.android.timeline.database.contentmanagers.TagManager;
 import com.fabula.android.timeline.models.BaseEvent;
 import com.fabula.android.timeline.models.Experience;
+import com.fabula.android.timeline.utilities.Constants;
+import com.fabula.android.timeline.utilities.Utilities;
 
 public class MyTagsActivity extends Activity {
 
@@ -65,7 +63,7 @@ public class MyTagsActivity extends Activity {
 	}
 
 	private boolean isNewTagIntent() {
-		return getIntent().getAction()!= null && getIntent().getAction().equals(Utilities.INTENT_ACTION_NEW_TAG);
+		return getIntent().getAction()!= null && getIntent().getAction().equals(Constants.INTENT_ACTION_NEW_TAG);
 	}
 	
 	/**
@@ -171,13 +169,13 @@ public class MyTagsActivity extends Activity {
 			String databaseName = tagExperience.getTitle() + ".db";
 
 			Intent timelineIntent = new Intent(this, TimelineActivity.class);
-			timelineIntent.setAction(Utilities.INTENT_ACTION_NEW_TIMELINE);
-			timelineIntent.putExtra(Utilities.DATABASENAME_REQUEST, databaseName);
-			timelineIntent.putExtra(Utilities.SHARED_REQUEST, tagExperience.isShared());
-			timelineIntent.putExtra(Utilities.EXPERIENCEID_REQUEST, tagExperience.getId());
-			timelineIntent.putExtra(Utilities.EXPERIENCECREATOR_REQUEST, tagExperience.getUser().name);
+			timelineIntent.setAction(Constants.INTENT_ACTION_NEW_TIMELINE);
+			timelineIntent.putExtra(Constants.DATABASENAME_REQUEST, databaseName);
+			timelineIntent.putExtra(Constants.SHARED_REQUEST, tagExperience.isShared());
+			timelineIntent.putExtra(Constants.EXPERIENCEID_REQUEST, tagExperience.getId());
+			timelineIntent.putExtra(Constants.EXPERIENCECREATOR_REQUEST, tagExperience.getUser().name);
 			
-			new TimelineDatabaseHelper(this, Utilities.ALL_TIMELINES_DATABASE_NAME);
+			new TimelineDatabaseHelper(this, Constants.ALL_TIMELINES_DATABASE_NAME);
 			new DatabaseHelper(this, databaseName);
 			ContentAdder adder = new ContentAdder(this);
 			adder.addExperienceToTimelineContentProvider(tagExperience);
@@ -195,7 +193,7 @@ public class MyTagsActivity extends Activity {
 	}
 	
 	private void setupHelpers() {
-		new TimelineDatabaseHelper(this, Utilities.ALL_TIMELINES_DATABASE_NAME);
+		new TimelineDatabaseHelper(this, Constants.ALL_TIMELINES_DATABASE_NAME);
 		tagManager = new TagManager(this);
 	}
 	

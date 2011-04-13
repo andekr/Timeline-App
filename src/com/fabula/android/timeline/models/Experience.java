@@ -9,8 +9,8 @@ import android.accounts.Account;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-import com.fabula.android.timeline.providers.ExperienceProvider;
-import com.fabula.android.timeline.providers.TagProvider;
+import com.fabula.android.timeline.database.providers.ExperienceProvider;
+import com.fabula.android.timeline.database.providers.TagProvider;
 
 /**
  * 

@@ -8,10 +8,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 
 import com.fabula.android.timeline.R;
-import com.fabula.android.timeline.Utilities;
 import com.fabula.android.timeline.adapters.AttachmentAdapter;
 import com.fabula.android.timeline.barcode.IntentIntegrator;
 import com.fabula.android.timeline.models.Experience;
+import com.fabula.android.timeline.utilities.Constants;
 
 /**
  * The class that initiates actions for attaching items to the timeline.
@@ -69,14 +69,14 @@ public class AttachmentAdder {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        timeLineActivity.startActivityForResult(Intent.createChooser(intent, "Select Picture"), Utilities.SELECT_PICTURE);
+        timeLineActivity.startActivityForResult(Intent.createChooser(intent, "Select Picture"), Constants.SELECT_PICTURE);
 	}
 	
 	private void openVideoGallery() {
 		Intent intent = new Intent();
 		intent.setType("video/*");
 		intent.setAction(Intent.ACTION_GET_CONTENT);
-		timeLineActivity.startActivityForResult(Intent.createChooser(intent, "Select Video"), Utilities.SELECT_VIDEO);
+		timeLineActivity.startActivityForResult(Intent.createChooser(intent, "Select Video"), Constants.SELECT_VIDEO);
 	}
 	
 	private void openBarcodeScanner() {
@@ -85,7 +85,7 @@ public class AttachmentAdder {
 	
 	private void openFileBrowser() {
 		Intent intent = new Intent("org.openintents.action.PICK_FILE");
-		timeLineActivity.startActivityForResult(intent, Utilities.BROWSE_FILES);
+		timeLineActivity.startActivityForResult(intent, Constants.BROWSE_FILES);
 	}
 	
 

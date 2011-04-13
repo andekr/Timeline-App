@@ -37,21 +37,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ZoomControls;
 
-import com.fabula.android.timeline.Map.TimelineMapView;
 import com.fabula.android.timeline.SimpleGestureFilter.SimpleGestureListener;
 import com.fabula.android.timeline.adapters.TimelineGridAdapter;
 import com.fabula.android.timeline.barcode.IntentIntegrator;
 import com.fabula.android.timeline.barcode.IntentResult;
-import com.fabula.android.timeline.contentmanagers.ContentAdder;
-import com.fabula.android.timeline.contentmanagers.ContentDeleter;
-import com.fabula.android.timeline.contentmanagers.ContentLoader;
-import com.fabula.android.timeline.contentmanagers.ContentUpdater;
 import com.fabula.android.timeline.database.DatabaseHelper;
 import com.fabula.android.timeline.database.TimelineDatabaseHelper;
+import com.fabula.android.timeline.database.contentmanagers.ContentAdder;
+import com.fabula.android.timeline.database.contentmanagers.ContentDeleter;
+import com.fabula.android.timeline.database.contentmanagers.ContentLoader;
+import com.fabula.android.timeline.database.contentmanagers.ContentUpdater;
 import com.fabula.android.timeline.dialogs.AttachmentAdder;
 import com.fabula.android.timeline.dialogs.EventDialog;
 import com.fabula.android.timeline.dialogs.MoodDialog;
 import com.fabula.android.timeline.exceptions.MaxZoomedOutException;
+import com.fabula.android.timeline.map.TimelineMapView;
 import com.fabula.android.timeline.models.BaseEvent;
 import com.fabula.android.timeline.models.Event;
 import com.fabula.android.timeline.models.EventItem;
@@ -64,7 +64,9 @@ import com.fabula.android.timeline.models.SimpleVideo;
 import com.fabula.android.timeline.models.Zoom;
 import com.fabula.android.timeline.models.MoodEvent.MoodEnum;
 import com.fabula.android.timeline.sync.GAEHandler;
+import com.fabula.android.timeline.utilities.Constants;
 import com.fabula.android.timeline.utilities.MyLocation;
+import com.fabula.android.timeline.utilities.Utilities;
 
 
 
@@ -137,10 +139,10 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
         contentDeleter = new ContentDeleter(getApplicationContext());
        
         //Get intent content
-        databaseName = getIntent().getExtras().getString(Utilities.DATABASENAME_REQUEST);
-        experienceID = getIntent().getExtras().getString(Utilities.EXPERIENCEID_REQUEST);
-        experienceCreator = getIntent().getExtras().getString(Utilities.EXPERIENCECREATOR_REQUEST);
-        sharedExperience = getIntent().getExtras().getBoolean(Utilities.SHARED_REQUEST);
+        databaseName = getIntent().getExtras().getString(Constants.DATABASENAME_REQUEST);
+        experienceID = getIntent().getExtras().getString(Constants.EXPERIENCEID_REQUEST);
+        experienceCreator = getIntent().getExtras().getString(Constants.EXPERIENCECREATOR_REQUEST);
+        sharedExperience = getIntent().getExtras().getBoolean(Constants.SHARED_REQUEST);
         
         Log.i(this.getClass().getSimpleName(), "****Got DB: "+databaseName+" from Intent****");
         Log.i(this.getClass().getSimpleName(), "Experience ID: "+experienceID);
@@ -150,7 +152,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
         
         //Instantiates database helper and loads events from database
         new DatabaseHelper(this, databaseName);
-        new TimelineDatabaseHelper(this, Utilities.ALL_TIMELINES_DATABASE_NAME);
+        new TimelineDatabaseHelper(this, Constants.ALL_TIMELINES_DATABASE_NAME);
         loadedEvents = loadEventItemsFromDatabase();
         TimelineDatabaseHelper.getCurrentTimeLineDatabase().close();
         
@@ -164,22 +166,22 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
         setupMoodButtonQuickAction();
        
         //If the activity is started with a send-Intent(e.g. via share button in the Gallery), the item is added to the Timeline
-        if(getIntent().getAction().equals(Utilities.INTENT_ACTION_ADD_TO_TIMELINE)){
+        if(getIntent().getAction().equals(Constants.INTENT_ACTION_ADD_TO_TIMELINE)){
         	if(getIntent().getType().contains("image/")){
         			imageUri = (Uri) getIntent().getExtras().get(Intent.EXTRA_STREAM);
         			String filename =(Utilities.getUserAccount(this).name+new Date().getTime()).hashCode()+".jpg";
-    				Utilities.copyFile(Utilities.getRealPathFromURI(imageUri, this), Utilities.IMAGE_STORAGE_FILEPATH, filename);
+    				Utilities.copyFile(Utilities.getRealPathFromURI(imageUri, this), Constants.IMAGE_STORAGE_FILEPATH, filename);
         			addPictureToTimeline(filename);
         	}
         	else if(getIntent().getType().contains("video/")){
         			videoUri = (Uri) getIntent().getExtras().get(Intent.EXTRA_STREAM);
         			String filename =(Utilities.getUserAccount(this).name+new Date().getTime()).hashCode()+Utilities.getExtension(Utilities.getRealPathFromURI(videoUri, this));
-    				Utilities.copyFile(Utilities.getRealPathFromURI(videoUri, this), Utilities.VIDEO_STORAGE_FILEPATH, filename);
+    				Utilities.copyFile(Utilities.getRealPathFromURI(videoUri, this), Constants.VIDEO_STORAGE_FILEPATH, filename);
         			addVideoToTimeline(filename);
         	}else if(getIntent().getType().contains("audio/")){
         			audioUri = (Uri) getIntent().getExtras().get(Intent.EXTRA_STREAM);
         			String filename =(Utilities.getUserAccount(this).name+new Date().getTime()).hashCode()+Utilities.getExtension(Utilities.getRealPathFromURI(audioUri, this));
-    				Utilities.copyFile(Utilities.getRealPathFromURI(audioUri, this), Utilities.RECORDING_STORAGE_FILEPATH, filename);
+    				Utilities.copyFile(Utilities.getRealPathFromURI(audioUri, this), Constants.RECORDING_STORAGE_FILEPATH, filename);
         			addAudioToTimeline(filename);
         	}
         	else if(getIntent().getType().contains("text/plain")){
@@ -220,7 +222,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     	
     	switch (requestCode) {
-		case Utilities.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE:
+		case Constants.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE:
 			  if (resultCode == RESULT_OK) {
 	    	        //use data here to access the image
 				   Log.i(this.getClass().getSimpleName(), "********* PICTURE CREATED **************");
@@ -236,7 +238,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	    	        Toast.makeText(this, "Picture was not taken", Toast.LENGTH_SHORT).show();
 	    	    }
 			break;
-		case Utilities.CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE:
+		case Constants.CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE:
 			   if (resultCode == RESULT_OK) {
 	    	        //use data here to access the video
 				Log.i(this.getClass().getSimpleName(), "********* VIDEO RECORDING CREATED **************");
@@ -245,7 +247,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 				   
 	   	    	videoUri = data.getData();
     			String filename =(Utilities.getUserAccount(this).name+new Date().getTime()).hashCode()+Utilities.getExtension(Utilities.getRealPathFromURI(videoUri, this));
-				Utilities.copyFile(Utilities.getRealPathFromURI(videoUri, this), Utilities.VIDEO_STORAGE_FILEPATH, filename);
+				Utilities.copyFile(Utilities.getRealPathFromURI(videoUri, this), Constants.VIDEO_STORAGE_FILEPATH, filename);
 				addVideoToTimeline(filename);
 	   	    	
 	    	    } else if (resultCode == RESULT_CANCELED) {
@@ -254,7 +256,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	    	        Toast.makeText(this, "Video was not taken", Toast.LENGTH_SHORT).show();
 	    	    }
 			break;
-		case Utilities.RECORD_AUDIO_ACTIVITY_REQUEST_CODE:
+		case Constants.RECORD_AUDIO_ACTIVITY_REQUEST_CODE:
 			   if (resultCode == RESULT_OK) {
 				   //use data here to access the audio
 				   Log.i(this.getClass().getSimpleName(), "********* AUDIO RECORDING CREATED **************");
@@ -263,7 +265,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 				  
 				    audioUri = data.getData();
 	       			String filename =(Utilities.getUserAccount(this).name+new Date().getTime()).hashCode()+Utilities.getExtension(Utilities.getRealPathFromURI(audioUri, this));
-	   				Utilities.copyFile(Utilities.getRealPathFromURI(audioUri, this), Utilities.RECORDING_STORAGE_FILEPATH, filename);
+	   				Utilities.copyFile(Utilities.getRealPathFromURI(audioUri, this), Constants.RECORDING_STORAGE_FILEPATH, filename);
 	       			addAudioToTimeline(filename);
 
 	    	    } else if (resultCode == RESULT_CANCELED) {
@@ -273,7 +275,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	    	    }
 			break;
 			
-		case Utilities.CREATE_NOTE_ACTIVITY_REQUEST_CODE:
+		case Constants.CREATE_NOTE_ACTIVITY_REQUEST_CODE:
 			   if (resultCode == RESULT_OK) {
 	    	        //use data here to access the audio
 				   Log.i(this.getClass().getSimpleName(), "********* NOTE CREATED **************");
@@ -292,7 +294,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	    	    }
 			break;
 			
-		case Utilities.EDIT_NOTE:
+		case Constants.EDIT_NOTE:
 			   if (resultCode == RESULT_OK) {
 	    	        //use data here to access the audio
 	    	    	Toast.makeText(this, "Note edited" , Toast.LENGTH_SHORT).show();
@@ -306,7 +308,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	    	    }
 			break;
 			
-		case Utilities.NEW_TAG_REQUESTCODE:
+		case Constants.NEW_TAG_REQUESTCODE:
 			   if (resultCode == RESULT_OK) {
 	    	        //use data here to access the audio
 	    	    
@@ -318,25 +320,25 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	    	        Toast.makeText(this, "Tag was not added", Toast.LENGTH_SHORT).show();
 	    	    }
 			break;
-			case Utilities.SELECT_PICTURE:
+			case Constants.SELECT_PICTURE:
 			if(resultCode == Activity.RESULT_OK) {
 				Log.i(this.getClass().getSimpleName(), "********* PICTURE SELECTED **************");
 				
 				Toast.makeText(this, "Picture was selected", Toast.LENGTH_SHORT).show();
 				imageUri = (Uri) data.getData();
 				String filename =(Utilities.getUserAccount(this).name+new Date().getTime()).hashCode()+".jpg";
-				Utilities.copyFile(Utilities.getRealPathFromURI(imageUri, this), Utilities.IMAGE_STORAGE_FILEPATH, filename);
+				Utilities.copyFile(Utilities.getRealPathFromURI(imageUri, this), Constants.IMAGE_STORAGE_FILEPATH, filename);
 				//TODO: Kopiere filen til Fabula-images også?
 				addPictureToTimeline(filename);	//Eller skal det være attachment?
 			}
 			break;
-			case Utilities.CAPTURE_BARCODE:
+			case Constants.CAPTURE_BARCODE:
 				Log.i(this.getClass().getSimpleName(), "********* BARCODE SCANNED **************");
 				
 				getBarcodeResults(requestCode, resultCode, data);
 				break;
 		
-		case Utilities.MAP_VIEW_ACTIVITY_REQUEST_CODE:
+		case Constants.MAP_VIEW_ACTIVITY_REQUEST_CODE:
 			
 			if(resultCode == RESULT_OK) {
 				
@@ -409,14 +411,14 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 		   try {
 			  
 			   intentFilename =(Utilities.getUserAccount(this).name+new Date().getTime()).hashCode()+".jpg";
-			   imageUri = Uri.fromFile(new File(Utilities.IMAGE_STORAGE_FILEPATH+intentFilename));
-			   if(!(new File(Utilities.IMAGE_STORAGE_FILEPATH)).exists()) {
-					(new File(Utilities.IMAGE_STORAGE_FILEPATH)).mkdirs();
+			   imageUri = Uri.fromFile(new File(Constants.IMAGE_STORAGE_FILEPATH+intentFilename));
+			   if(!(new File(Constants.IMAGE_STORAGE_FILEPATH)).exists()) {
+					(new File(Constants.IMAGE_STORAGE_FILEPATH)).mkdirs();
 				}
 			    //create new Intent
 			    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 			    intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-			    startActivityForResult(intent, Utilities.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+			    startActivityForResult(intent, Constants.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 		} catch (Exception e) {
 			Log.e("StartCamera", "Feil", e);
 			Toast.makeText(this, "SD card not availiable", Toast.LENGTH_LONG).show();
@@ -445,7 +447,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
       	    Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
 //      	    intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);//Did not work in Android 2.3
       	    intent.putExtra("output", uri.getPath());
-      	    startActivityForResult(intent, Utilities.CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
+      	    startActivityForResult(intent, Constants.CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
 		} catch (Exception e) {
 			Toast.makeText(this, "SD card not availiable", Toast.LENGTH_LONG).show();
 		}
@@ -461,7 +463,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	 */
 	public void startAudioRecording(){
 		Intent voiceIntent = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
-		startActivityForResult(voiceIntent, Utilities.RECORD_AUDIO_ACTIVITY_REQUEST_CODE);
+		startActivityForResult(voiceIntent, Constants.RECORD_AUDIO_ACTIVITY_REQUEST_CODE);
 	}
 	
 	/**
@@ -472,8 +474,8 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	 */
 	public void createNote(){
 		Intent noteIntent = new Intent(this, NoteActivity.class);
-		noteIntent.putExtra(Utilities.REQUEST_CODE, Utilities.CREATE_NOTE_ACTIVITY_REQUEST_CODE);
-		startActivityForResult(noteIntent, Utilities.CREATE_NOTE_ACTIVITY_REQUEST_CODE);
+		noteIntent.putExtra(Constants.REQUEST_CODE, Constants.CREATE_NOTE_ACTIVITY_REQUEST_CODE);
+		startActivityForResult(noteIntent, Constants.CREATE_NOTE_ACTIVITY_REQUEST_CODE);
 	}
 	
 	/**
@@ -483,8 +485,8 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	public void openMapView() {
 		if(Utilities.isConnectedToInternet(getApplicationContext())) {
 			Intent mapViewIntent = new Intent(this, TimelineMapView.class);	
-			mapViewIntent.setAction(Utilities.INTENT_ACTION_OPEN_MAP_VIEW_FROM_TIMELINE);
-			startActivityForResult(mapViewIntent, Utilities.MAP_VIEW_ACTIVITY_REQUEST_CODE);
+			mapViewIntent.setAction(Constants.INTENT_ACTION_OPEN_MAP_VIEW_FROM_TIMELINE);
+			startActivityForResult(mapViewIntent, Constants.MAP_VIEW_ACTIVITY_REQUEST_CODE);
 		}
 		else {
 			Toast.makeText(getApplicationContext(), "You have to be connected to the internett to use this functionality", Toast.LENGTH_SHORT).show();

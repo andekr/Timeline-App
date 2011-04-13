@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.fabula.android.timeline.Utilities;
+import com.fabula.android.timeline.utilities.Constants;
 
 /**
  * Database helper for the database of timelines.
@@ -21,7 +21,7 @@ public class TimelineDatabaseHelper extends SQLiteOpenHelper{
 	private String databaseName;
 	
 	public TimelineDatabaseHelper(Context context, String databaseName){
-		super(context, databaseName, null, Utilities.DATABASE_VERSION);
+		super(context, databaseName, null, Constants.DATABASE_VERSION);
 		this.databaseName = databaseName;
 		
 		allTimelinesDatabase = this.getWritableDatabase();

@@ -3,7 +3,6 @@ package com.fabula.android.timeline.sync;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,11 +14,9 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.accounts.Account;
 import android.location.Location;
 import android.util.Log;
 
-import com.fabula.android.timeline.Utilities;
 import com.fabula.android.timeline.models.BaseEvent;
 import com.fabula.android.timeline.models.Event;
 import com.fabula.android.timeline.models.EventItem;
@@ -27,28 +24,22 @@ import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.models.Experiences;
 import com.fabula.android.timeline.models.Groups;
 import com.fabula.android.timeline.models.MoodEvent;
-import com.fabula.android.timeline.models.SimpleNote;
-import com.fabula.android.timeline.models.SimplePicture;
-import com.fabula.android.timeline.models.SimpleRecording;
-import com.fabula.android.timeline.models.SimpleVideo;
 import com.fabula.android.timeline.models.User;
 import com.fabula.android.timeline.models.Users;
 import com.fabula.android.timeline.models.MoodEvent.MoodEnum;
+import com.fabula.android.timeline.utilities.Constants;
+import com.fabula.android.timeline.utilities.Utilities;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
 
 public class Downloader {
 	
-	public static Experiences getAllSharedExperiencesFromServer(User user){
+	protected static Experiences getAllSharedExperiencesFromServer(User user){
 		
 		try {
 			Log.i("DOWNLOADER", "Json Parser started.. Getting all Experiences");
 			GsonBuilder gsonB = new GsonBuilder();
-			gsonB.registerTypeAdapter(EventItem.class, new EventItemDeserializer());
+			gsonB.registerTypeAdapter(EventItem.class, new Deserializers.EventItemDeserializer());
 			gsonB.serializeNulls();
 			
 			Gson gson = gsonB.create();
@@ -95,7 +86,7 @@ public class Downloader {
 		
 	}
 	
-	 public static boolean IsUserRegistered(String username){
+	protected static boolean IsUserRegistered(String username){
 		 boolean registered = true; 
 		 InputStream is = getJSONData("/rest/user/"+username+"/");
 		 JSONObject json = null;
@@ -117,7 +108,7 @@ public class Downloader {
 		 return registered;
 	 }
 	 
-	 public static Users getUsersFromServer(){
+	protected static Users getUsersFromServer(){
 				try {
 					Log.i("DOWNLOADER", "Json Parser started.. Getting all users");
 					Gson gson = new Gson();
@@ -132,7 +123,7 @@ public class Downloader {
 				}
 	 }
 	 
-	 public static Groups getGroupsFromServer(User user){
+	protected static Groups getGroupsFromServer(User user){
 			try {
 				Log.i("DOWNLOADER", "Json Parser started.. Getting all groups for the user "+user.getUserName());
 				Gson gson = new Gson();
@@ -153,7 +144,7 @@ public class Downloader {
 	 }
 	 
 
-	public static int getAverageMoodForExperience(Experience experience) {
+	protected static int getAverageMoodForExperience(Experience experience) {
 		 InputStream is = getJSONData("/rest/mood/experience/id/"+experience.getId()+"/");
 		 int average = 0;
 		 if(is!=null){
@@ -172,7 +163,7 @@ public class Downloader {
         DefaultHttpClient httpClient = new DefaultHttpClient();
         InputStream data = null;
         try {
-            HttpHost targetHost = new HttpHost(Utilities.GOOGLE_APP_ENGINE_URL, 80, "http");
+            HttpHost targetHost = new HttpHost(Constants.GOOGLE_APP_ENGINE_URL, 80, "http");
             HttpGet httpGet = new HttpGet(url);
          // Make sure the server knows what kind of a response we will accept
     		httpGet.addHeader("Accept", "application/json");
@@ -193,37 +184,6 @@ public class Downloader {
         return data;
     }
 	
-
-	public static class EventItemDeserializer implements JsonDeserializer<EventItem> {
-		  public EventItem deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-		      throws JsonParseException {
-			  
-			 String className = json.getAsJsonObject().get("className").getAsString();
-			 String id = json.getAsJsonObject().get("id").getAsString();
-			 Account creator = new Account(json.getAsJsonObject().get("creator").getAsString(), "com.google");
-			 EventItem ei;
-			if(className.equals("SimplePicture")){
-				 String filename = json.getAsJsonObject().get("filename").getAsString();
-				ei = new SimplePicture(id, creator, filename);
-				  return ei;
-			}else if(className.equals("SimpleNote")){
-				String noteTitle = json.getAsJsonObject().get("noteTitle").getAsString();
-				String noteText = json.getAsJsonObject().get("noteText").getAsString();
-				ei = new SimpleNote(id, noteTitle, noteText, creator);
-				  return ei;
-			} else if(className.equals("SimpleRecording")){
-				 String filename = json.getAsJsonObject().get("filename").getAsString();
-					ei = new SimpleRecording(id, creator, filename);
-					return ei;
-			}else if(className.equals("SimpleVideo")){
-				    String filename = json.getAsJsonObject().get("filename").getAsString();
-					ei = new SimpleVideo(id, creator, filename);
-					return ei;
-			}else 
-				  return null;
-			  
-		  }
-		}
 
 //	public static class EventDeserializer implements JsonDeserializer<BaseEvent> {
 //		  public BaseEvent deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)

@@ -14,7 +14,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
-import android.location.Location;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -24,38 +23,36 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 
-import com.fabula.android.timeline.Map.TimelineMapView;
 import com.fabula.android.timeline.adapters.GroupListAdapter;
-import com.fabula.android.timeline.contentmanagers.ContentAdder;
-import com.fabula.android.timeline.contentmanagers.ContentLoader;
-import com.fabula.android.timeline.contentmanagers.TagManager;
-import com.fabula.android.timeline.contentmanagers.UserGroupManager;
 import com.fabula.android.timeline.database.DatabaseHelper;
 import com.fabula.android.timeline.database.TimelineDatabaseHelper;
 import com.fabula.android.timeline.database.UserGroupDatabaseHelper;
+import com.fabula.android.timeline.database.contentmanagers.ContentAdder;
+import com.fabula.android.timeline.database.contentmanagers.ContentLoader;
+import com.fabula.android.timeline.database.contentmanagers.UserGroupManager;
 import com.fabula.android.timeline.dialogs.TimelineBrowserDialog;
-import com.fabula.android.timeline.models.BaseEvent;
-import com.fabula.android.timeline.models.Event;
+import com.fabula.android.timeline.map.TimelineMapView;
 import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.models.Experiences;
 import com.fabula.android.timeline.models.Group;
 import com.fabula.android.timeline.models.User;
-import com.fabula.android.timeline.sync.Downloader;
 import com.fabula.android.timeline.sync.GAEHandler;
 import com.fabula.android.timeline.sync.UserAndGroupServiceHandler;
+import com.fabula.android.timeline.utilities.Constants;
 import com.fabula.android.timeline.utilities.MyLocation;
+import com.fabula.android.timeline.utilities.Utilities;
 
 
 /**
@@ -82,7 +79,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 	private ImageButton myGroupsButton;
 	private TextView lastSyncedTextView;
 	private Intent timelineIntent;
-	private Intent profileIntent;
 	private Intent myGroupsIntent;
 	private Intent tagsIntent;
 	private ContentAdder contentAdder;
@@ -152,9 +148,9 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		if (getIntent().getAction().equals(Intent.ACTION_SEND)
 				|| getIntent().getAction().equals("share")) {
 			timelineIntent = getIntent();
-			timelineIntent.setAction(Utilities.INTENT_ACTION_ADD_TO_TIMELINE);
+			timelineIntent.setAction(Constants.INTENT_ACTION_ADD_TO_TIMELINE);
 			timelineIntent.setClass(this, TimelineActivity.class); //Changes the class to start
-			browseAllTimelines(Utilities.SHARED_ALL);
+			browseAllTimelines(Constants.SHARED_ALL);
 		}
 		
  		syncThread = new Runnable() {
@@ -183,7 +179,7 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 				progressDialog.setMessage("Checking user against server ...");
 			}
 		});
-		registered = Downloader.IsUserRegistered(user.getUserName());
+		registered = GAEHandler.IsUserRegistered(user.getUserName());
 		//Register user if not registered
 		if(!registered){
 			GAEHandler.addUserToServer(user);
@@ -377,14 +373,14 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		
 		String databaseName = timeLine.getTitle() + ".db";
 
-		timelineIntent.putExtra(Utilities.DATABASENAME_REQUEST, databaseName);
-		timelineIntent.putExtra(Utilities.SHARED_REQUEST, shared);
-		timelineIntent.putExtra(Utilities.EXPERIENCEID_REQUEST, timeLine.getId());
-		timelineIntent.putExtra(Utilities.EXPERIENCECREATOR_REQUEST, timeLine.getUser().name);
+		timelineIntent.putExtra(Constants.DATABASENAME_REQUEST, databaseName);
+		timelineIntent.putExtra(Constants.SHARED_REQUEST, shared);
+		timelineIntent.putExtra(Constants.EXPERIENCEID_REQUEST, timeLine.getId());
+		timelineIntent.putExtra(Constants.EXPERIENCECREATOR_REQUEST, timeLine.getUser().name);
 		
 		if(shared) {
 			timeLine.setSharingGroupObject(group);
-			timelineIntent.putExtra(Utilities.SHARED_WITH_REQUEST, timeLine.getSharingGroupObject().getId());
+			timelineIntent.putExtra(Constants.SHARED_WITH_REQUEST, timeLine.getSharingGroupObject().getId());
 		}
 		
 		contentAdder.addExperienceToTimelineContentProvider(timeLine);
@@ -438,7 +434,7 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		Experiences experiences = new Experiences(sharedExperiences);
 		GAEHandler.persistTimelineObject(experiences);
 		
-		Experiences exps = Downloader.getAllSharedExperiencesFromServer(user);
+		Experiences exps = GAEHandler.getAllSharedExperiences(user);
 		if(exps!=null){
 			for (Experience e : exps.getExperiences()) {
 				e.setSharingGroupObject(uGManager.getGroupFromDatabase(e.getSharingGroup()));
@@ -538,8 +534,8 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 	}
 	
 	private void setupDatabaseHelpers() {
-		userGroupDatabaseHelper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
-		timelineDatabaseHelper = new TimelineDatabaseHelper(this, Utilities.ALL_TIMELINES_DATABASE_NAME);
+		userGroupDatabaseHelper = new UserGroupDatabaseHelper(this, Constants.USER_GROUP_DATABASE_NAME);
+		timelineDatabaseHelper = new TimelineDatabaseHelper(this, Constants.ALL_TIMELINES_DATABASE_NAME);
 	}
 	
 	private void closeDatabaseHelpers() {
@@ -572,8 +568,8 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 	
 	public void openMapView() {
 		Intent mapViewIntent = new Intent(this, TimelineMapView.class);
-		mapViewIntent.setAction(Utilities.INTENT_ACTION_OPEN_MAP_VIEW_FROM_DASHBOARD);
-		startActivityForResult(mapViewIntent, Utilities.ALL_EXPERIENCES_MAP_ACTIVITY_REQUEST_CODE);
+		mapViewIntent.setAction(Constants.INTENT_ACTION_OPEN_MAP_VIEW_FROM_DASHBOARD);
+		startActivityForResult(mapViewIntent, Constants.ALL_EXPERIENCES_MAP_ACTIVITY_REQUEST_CODE);
 	}
 	
 	//listeners
@@ -593,14 +589,14 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 	private OnClickListener browseTimeLineListener = new OnClickListener() {
 
 		public void onClick(View v) {
-			browseAllTimelines(Utilities.SHARED_FALSE);
+			browseAllTimelines(Constants.SHARED_FALSE);
 		}
 	};
 	
 	private OnClickListener browseSharedTimeLinesListener = new OnClickListener() {
 
 		public void onClick(View v) {
-			browseAllTimelines(Utilities.SHARED_TRUE);		
+			browseAllTimelines(Constants.SHARED_TRUE);		
 		}
 
 	};
@@ -644,9 +640,8 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		myGroupsIntent = new Intent(this, MyGroupsActivity.class);
 		myGroupsIntent.putExtra("ACCOUNT", creator);
 		
-		profileIntent = new Intent(this, ProfileActivity.class);
 		timelineIntent = new Intent(this, TimelineActivity.class);
-		timelineIntent.setAction(Utilities.INTENT_ACTION_NEW_TIMELINE); //Default Intent action for TimelineActivity is to create/open a timeline.
+		timelineIntent.setAction(Constants.INTENT_ACTION_NEW_TIMELINE); //Default Intent action for TimelineActivity is to create/open a timeline.
 		tagsIntent = new Intent(this, MyTagsActivity.class);
 	}
 

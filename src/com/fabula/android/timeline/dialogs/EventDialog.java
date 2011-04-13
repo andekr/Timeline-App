@@ -23,7 +23,6 @@ import android.view.Window;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnCreateContextMenuListener;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,25 +31,25 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout.LayoutParams;
 
 import com.fabula.android.timeline.MyTagsActivity;
 import com.fabula.android.timeline.NoteActivity;
 import com.fabula.android.timeline.R;
 import com.fabula.android.timeline.TimelineActivity;
-import com.fabula.android.timeline.Utilities;
 import com.fabula.android.timeline.adapters.TagListAdapter;
-import com.fabula.android.timeline.contentmanagers.ContentUpdater;
-import com.fabula.android.timeline.contentmanagers.TagManager;
 import com.fabula.android.timeline.database.TimelineDatabaseHelper;
+import com.fabula.android.timeline.database.contentmanagers.ContentUpdater;
+import com.fabula.android.timeline.database.contentmanagers.TagManager;
 import com.fabula.android.timeline.models.Emotion;
 import com.fabula.android.timeline.models.Event;
 import com.fabula.android.timeline.models.EventItem;
 import com.fabula.android.timeline.models.SimpleNote;
 import com.fabula.android.timeline.models.Emotion.EmotionEnum;
 import com.fabula.android.timeline.sync.GAEHandler;
+import com.fabula.android.timeline.utilities.Constants;
 import com.fabula.android.timeline.utilities.MyLocation;
+import com.fabula.android.timeline.utilities.Utilities;
 
 /**
  * 
@@ -308,9 +307,9 @@ public class EventDialog extends Dialog {
 			noteIntent.putExtra("NOTE_ID", item.getItemId());//TODO: Ikke bra å bruke denne ID'en. Må tenke på bedre løsninger her...
 			noteIntent.putExtra(Intent.EXTRA_SUBJECT, ((SimpleNote)items.get(item.getItemId())).getNoteTitle()); 
 			noteIntent.putExtra(Intent.EXTRA_TEXT, ((SimpleNote)items.get(item.getItemId())).getNoteText());
-			noteIntent.putExtra(Utilities.REQUEST_CODE, Utilities.EDIT_NOTE);
+			noteIntent.putExtra(Constants.REQUEST_CODE, Constants.EDIT_NOTE);
 			
-			mActivity.startActivityForResult(noteIntent, Utilities.EDIT_NOTE); 
+			mActivity.startActivityForResult(noteIntent, Constants.EDIT_NOTE); 
 			return true;
 			
 		case R.id.MENU_DELETE_ITEM:
@@ -600,9 +599,9 @@ public class EventDialog extends Dialog {
 		
 		public void onClick(View arg0) {
 			Intent tagIntent = new Intent(mActivity.getBaseContext(), MyTagsActivity.class);
-			tagIntent.setAction(Utilities.INTENT_ACTION_NEW_TAG);
+			tagIntent.setAction(Constants.INTENT_ACTION_NEW_TAG);
 			
-			mActivity.startActivityForResult(tagIntent, Utilities.NEW_TAG_REQUESTCODE); 
+			mActivity.startActivityForResult(tagIntent, Constants.NEW_TAG_REQUESTCODE); 
 			
 		}
 	};
@@ -612,7 +611,7 @@ public class EventDialog extends Dialog {
 	}
 	
 	private void setupHelpers() {
-		new TimelineDatabaseHelper(mContext, Utilities.ALL_TIMELINES_DATABASE_NAME);
+		new TimelineDatabaseHelper(mContext, Constants.ALL_TIMELINES_DATABASE_NAME);
 		tagManager = new TagManager(mContext);
 	}
 	

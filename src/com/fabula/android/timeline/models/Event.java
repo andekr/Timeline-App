@@ -9,7 +9,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-import com.fabula.android.timeline.providers.EventProvider;
+import com.fabula.android.timeline.database.providers.EventProvider;
 
 public class Event extends BaseEvent {
 	

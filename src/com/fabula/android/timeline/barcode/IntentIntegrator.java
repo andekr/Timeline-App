@@ -15,14 +15,14 @@ package com.fabula.android.timeline.barcode;
  * limitations under the License.
  */
 
-import com.fabula.android.timeline.Utilities;
-
-import android.app.AlertDialog;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+
+import com.fabula.android.timeline.utilities.Constants;
 
 /**
  * <p>A utility class which helps ease integration with Barcode Scanner via {@link Intent}s. This is a simple
@@ -78,7 +78,7 @@ import android.net.Uri;
  */
 public final class IntentIntegrator {
 
-  public static final int REQUEST_CODE = Utilities.CAPTURE_BARCODE; // get it?
+  public static final int REQUEST_CODE = Constants.CAPTURE_BARCODE; // get it?
 
   public static final String DEFAULT_TITLE = "Installere Barcode Scanner?";
   public static final String DEFAULT_MESSAGE =

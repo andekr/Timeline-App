@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fabula.android.timeline.R;
-import com.fabula.android.timeline.providers.NoteProvider;
+import com.fabula.android.timeline.database.providers.NoteProvider;
 
 public class SimpleNote extends EventItem{
 	

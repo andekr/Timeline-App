@@ -22,13 +22,12 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import com.fabula.android.timeline.R;
 import com.fabula.android.timeline.TimelineActivity;
 import com.fabula.android.timeline.TimelineDirectory;
-import com.fabula.android.timeline.Utilities;
 import com.fabula.android.timeline.adapters.TimelineListAdapter;
-import com.fabula.android.timeline.contentmanagers.ContentDeleter;
-import com.fabula.android.timeline.contentmanagers.ContentLoader;
 import com.fabula.android.timeline.database.TimelineDatabaseHelper;
-import com.fabula.android.timeline.database.UserGroupDatabaseHelper;
+import com.fabula.android.timeline.database.contentmanagers.ContentDeleter;
+import com.fabula.android.timeline.database.contentmanagers.ContentLoader;
 import com.fabula.android.timeline.models.Experience;
+import com.fabula.android.timeline.utilities.Constants;
 
 public class TimelineBrowserDialog extends Dialog {
 
@@ -55,13 +54,13 @@ public TimelineBrowserDialog(Context context, Intent receivedIntent, int shared)
 		ContentLoader contentLoader = new ContentLoader(context);
 		ArrayList<Experience> allExperiences =null;
 		switch (shared) {
-		case Utilities.SHARED_ALL:
+		case Constants.SHARED_ALL:
 			allExperiences = contentLoader.LoadAllExperiencesFromDatabase();
 			break;
-		case Utilities.SHARED_TRUE:
+		case Constants.SHARED_TRUE:
 			allExperiences = contentLoader.LoadAllSharedExperiencesFromDatabase();
 			break;
-		case Utilities.SHARED_FALSE:
+		case Constants.SHARED_FALSE:
 			allExperiences = contentLoader.LoadPrivateExperiencesFromDatabase();
 			break;
 
@@ -108,7 +107,7 @@ public TimelineBrowserDialog(Context context, Intent receivedIntent, int shared)
 		
 		public void onClick(DialogInterface dialog, int which) {
 			directory.deleteTimeline(selectedTimeline.getTitle()+".db");
-			new TimelineDatabaseHelper(context, Utilities.ALL_TIMELINES_DATABASE_NAME);
+			new TimelineDatabaseHelper(context, Constants.ALL_TIMELINES_DATABASE_NAME);
 			ContentDeleter contentDeleter = new ContentDeleter(context);
 			contentDeleter.deleteExperienceFromDB(selectedTimeline);
 			
@@ -123,10 +122,10 @@ public TimelineBrowserDialog(Context context, Intent receivedIntent, int shared)
 		boolean shared = experience.isShared();
 		String id = experience.getId();
 		
-		receivedIntent.putExtra(Utilities.DATABASENAME_REQUEST, databaseName);
-		receivedIntent.putExtra(Utilities.SHARED_REQUEST, shared);
-		receivedIntent.putExtra(Utilities.EXPERIENCEID_REQUEST, id);
-		receivedIntent.putExtra(Utilities.EXPERIENCECREATOR_REQUEST, experience.getUser().name);
+		receivedIntent.putExtra(Constants.DATABASENAME_REQUEST, databaseName);
+		receivedIntent.putExtra(Constants.SHARED_REQUEST, shared);
+		receivedIntent.putExtra(Constants.EXPERIENCEID_REQUEST, id);
+		receivedIntent.putExtra(Constants.EXPERIENCECREATOR_REQUEST, experience.getUser().name);
 		
 		context.startActivity(receivedIntent);
 		this.dismiss();
@@ -152,7 +151,7 @@ public TimelineBrowserDialog(Context context, Intent receivedIntent, int shared)
 				
 				public void onCreateContextMenu(ContextMenu menu, View v,
 						ContextMenuInfo menuInfo) {
-					if(receivedIntent.getAction().equals(Utilities.INTENT_ACTION_ADD_TO_TIMELINE))
+					if(receivedIntent.getAction().equals(Constants.INTENT_ACTION_ADD_TO_TIMELINE))
 						menu.add(R.id.MENU_OPEN_TIMELINE, 0, 0, R.string.Add_to_timeline_label);
 					else
 						menu.add(R.id.MENU_OPEN_TIMELINE, 0, 0, R.string.Open_timeline_label);

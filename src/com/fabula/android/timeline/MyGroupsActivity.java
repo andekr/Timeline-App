@@ -27,17 +27,17 @@ import android.widget.AdapterView.OnItemLongClickListener;
 
 import com.fabula.android.timeline.adapters.ExpandableGroupsListViewAdapter;
 import com.fabula.android.timeline.adapters.UserListAdapter;
-import com.fabula.android.timeline.contentmanagers.ContentLoader;
-import com.fabula.android.timeline.contentmanagers.ContentUpdater;
-import com.fabula.android.timeline.contentmanagers.UserGroupManager;
 import com.fabula.android.timeline.database.TimelineDatabaseHelper;
 import com.fabula.android.timeline.database.UserGroupDatabaseHelper;
+import com.fabula.android.timeline.database.contentmanagers.ContentLoader;
+import com.fabula.android.timeline.database.contentmanagers.ContentUpdater;
+import com.fabula.android.timeline.database.contentmanagers.UserGroupManager;
 import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.models.Group;
 import com.fabula.android.timeline.models.User;
-import com.fabula.android.timeline.sync.Downloader;
 import com.fabula.android.timeline.sync.GAEHandler;
 import com.fabula.android.timeline.sync.UserAndGroupServiceHandler;
+import com.fabula.android.timeline.utilities.Constants;
 
 public class MyGroupsActivity extends Activity implements ProgressDialogActivity {
 	
@@ -150,7 +150,7 @@ public class MyGroupsActivity extends Activity implements ProgressDialogActivity
 	private ArrayList <Group> getAllGroupsConnectedToUser(Account user) {
 		
 		//TODO move this to appropriate place
-		uGManager.addUsersToUserDatabase(Downloader.getUsersFromServer().getUsers());
+		uGManager.addUsersToUserDatabase(GAEHandler.getUsers());
 		ArrayList <Group> allGroups = uGManager.getAllGroupsConnectedToAUser(applicationUser);
 		return allGroups;
 	}
@@ -383,8 +383,8 @@ public class MyGroupsActivity extends Activity implements ProgressDialogActivity
 	
 	private void setupHelpers() {
 		uGManager = new UserGroupManager(this);
-		helper = new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
-		timelineDatabaseHelper = new TimelineDatabaseHelper(this, Utilities.ALL_TIMELINES_DATABASE_NAME);
+		helper = new UserGroupDatabaseHelper(this, Constants.USER_GROUP_DATABASE_NAME);
+		timelineDatabaseHelper = new TimelineDatabaseHelper(this, Constants.ALL_TIMELINES_DATABASE_NAME);
 		userAccount = (Account) getIntent().getParcelableExtra("ACCOUNT");
 		applicationUser = new User(userAccount.name);
 	}

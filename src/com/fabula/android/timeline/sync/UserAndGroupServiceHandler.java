@@ -4,12 +4,12 @@ import android.app.ProgressDialog;
 import android.content.Context;
 
 import com.fabula.android.timeline.ProgressDialogActivity;
-import com.fabula.android.timeline.Utilities;
-import com.fabula.android.timeline.contentmanagers.UserGroupManager;
+import com.fabula.android.timeline.database.contentmanagers.UserGroupManager;
 import com.fabula.android.timeline.models.Group;
 import com.fabula.android.timeline.models.Groups;
 import com.fabula.android.timeline.models.User;
 import com.fabula.android.timeline.models.Users;
+import com.fabula.android.timeline.utilities.Utilities;
 
 public class UserAndGroupServiceHandler {
 

@@ -13,7 +13,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.fabula.android.timeline.Utilities;
 import com.google.android.maps.GeoPoint;
 
 /**

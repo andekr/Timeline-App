@@ -17,8 +17,9 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 
 import com.fabula.android.timeline.R;
-import com.fabula.android.timeline.Utilities;
-import com.fabula.android.timeline.providers.RecordingProvider;
+import com.fabula.android.timeline.database.providers.RecordingProvider;
+import com.fabula.android.timeline.utilities.Constants;
+import com.fabula.android.timeline.utilities.Utilities;
 
 public class SimpleRecording extends EventItem{
 
@@ -42,10 +43,10 @@ public class SimpleRecording extends EventItem{
 	public SimpleRecording(String id, Account u, String recordingFilename) {
 		super(id, u);
 		className = "SimpleRecording";
-		if(!(new File(Utilities.RECORDING_STORAGE_FILEPATH)).exists()) {
-			(new File(Utilities.RECORDING_STORAGE_FILEPATH)).mkdirs();
+		if(!(new File(Constants.RECORDING_STORAGE_FILEPATH)).exists()) {
+			(new File(Constants.RECORDING_STORAGE_FILEPATH)).mkdirs();
 		}
-		File file = Utilities.DownloadFromUrl(recordingFilename, Utilities.RECORDING_STORAGE_FILEPATH+recordingFilename);
+		File file = Utilities.DownloadFromUrl(recordingFilename, Constants.RECORDING_STORAGE_FILEPATH+recordingFilename);
 		this.recordingUri = Uri.fromFile(file);
 		filename = recordingFilename;
 	}

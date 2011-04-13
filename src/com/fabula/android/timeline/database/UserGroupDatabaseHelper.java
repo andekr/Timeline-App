@@ -1,12 +1,11 @@
 package com.fabula.android.timeline.database;
 
-import com.fabula.android.timeline.Utilities;
-
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import com.fabula.android.timeline.utilities.Constants;
 
 public class UserGroupDatabaseHelper extends SQLiteOpenHelper {
 
@@ -15,7 +14,7 @@ public class UserGroupDatabaseHelper extends SQLiteOpenHelper {
 	private String databaseName;
 	
 	public UserGroupDatabaseHelper(Context context, String databaseName) {
-		super(context, databaseName, null, Utilities.USER_GROUP_DATABASE_VERSION);
+		super(context, databaseName, null, Constants.USER_GROUP_DATABASE_VERSION);
 		
 		this.databaseName = databaseName;
 		userGroupDatabase = getWritableDatabase();

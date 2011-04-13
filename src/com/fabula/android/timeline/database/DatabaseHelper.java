@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
 import android.util.Log;
 
-import com.fabula.android.timeline.Utilities;
+import com.fabula.android.timeline.utilities.Constants;
 
 /**
  * 
@@ -28,7 +28,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private String databaseName;
 
 	public DatabaseHelper(Context context, String databaseName) {
-		super(context, (databaseName.trim().endsWith(".db"))? databaseName : databaseName+".db", null, Utilities.DATABASE_VERSION);
+		super(context, (databaseName.trim().endsWith(".db"))? databaseName : databaseName+".db", null, Constants.DATABASE_VERSION);
 		if(!databaseName.trim().endsWith(".db"))
 			databaseName = databaseName+".db";
 		this.databaseName = databaseName;

@@ -3,12 +3,10 @@ package com.fabula.android.timeline.models;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gson.*;
-
 
 
 /**
- * Wrapper classs for XML-serialization
+ * Wrapper class for JSON-serialization
  * 
  * 
  * @author andekr

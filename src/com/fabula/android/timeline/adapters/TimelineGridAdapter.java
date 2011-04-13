@@ -9,16 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.fabula.android.timeline.R;
-import com.fabula.android.timeline.Utilities;
-import com.fabula.android.timeline.TimelineActivity;
-import com.fabula.android.timeline.dialogs.EventDialog;
-import com.fabula.android.timeline.dialogs.MoodDialog;
-import com.fabula.android.timeline.exceptions.MaxZoomedOutException;
-import com.fabula.android.timeline.models.BaseEvent;
-import com.fabula.android.timeline.models.Event;
-import com.fabula.android.timeline.models.MoodEvent;
-import com.fabula.android.timeline.models.Zoom;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -32,7 +22,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnCreateContextMenuListener;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
@@ -42,6 +31,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout.LayoutParams;
+
+import com.fabula.android.timeline.R;
+import com.fabula.android.timeline.TimelineActivity;
+import com.fabula.android.timeline.dialogs.EventDialog;
+import com.fabula.android.timeline.dialogs.MoodDialog;
+import com.fabula.android.timeline.exceptions.MaxZoomedOutException;
+import com.fabula.android.timeline.models.BaseEvent;
+import com.fabula.android.timeline.models.Event;
+import com.fabula.android.timeline.models.MoodEvent;
+import com.fabula.android.timeline.models.Zoom;
+import com.fabula.android.timeline.utilities.Utilities;
 
 /**
  * 
@@ -110,7 +110,7 @@ public class TimelineGridAdapter extends ArrayAdapter<BaseEvent> {
 			slotNumber = slotNumber+ZOOMTYPE.getColumns();
 		}
 		}
-		Log.i(TimelineGridAdapter.class.toString(), "Inserted event into slot # "+slotNumber);
+//		Log.i(TimelineGridAdapter.class.toString(), "Inserted event into slot # "+slotNumber);
 		displayedEvents.put(slotNumber, event);
 		notifyDataSetChanged();
 	}
@@ -154,7 +154,7 @@ public class TimelineGridAdapter extends ArrayAdapter<BaseEvent> {
 	 */
     public View getView(int position, View convertView, ViewGroup parent) {
     	if(position<ZOOMTYPE.getColumns()){
-    		Log.i(this.getClass().getSimpleName()+" getView", "Creating headers"+ZOOMTYPE.toString());
+//    		Log.i(this.getClass().getSimpleName()+" getView", "Creating headers"+ZOOMTYPE.toString());
     		TextView textView = new TextView(mContext);
     		switch (ZOOMTYPE.getType()) {
 			case Utilities.DAY_MODE: //Creates "timeline"

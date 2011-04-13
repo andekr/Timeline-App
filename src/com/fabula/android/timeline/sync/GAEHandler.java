@@ -1,36 +1,33 @@
 package com.fabula.android.timeline.sync;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 import android.util.Log;
 
-import com.fabula.android.timeline.Utilities;
 import com.fabula.android.timeline.models.BaseEvent;
 import com.fabula.android.timeline.models.Event;
 import com.fabula.android.timeline.models.EventItem;
 import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.models.Experiences;
 import com.fabula.android.timeline.models.Group;
-import com.fabula.android.timeline.models.MoodEvent;
 import com.fabula.android.timeline.models.SimplePicture;
 import com.fabula.android.timeline.models.SimpleRecording;
 import com.fabula.android.timeline.models.SimpleVideo;
 import com.fabula.android.timeline.models.User;
+import com.fabula.android.timeline.utilities.Constants;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
 
 /**
  * 
  * Handler for Google App Engine synchronization.
  * 
+ * All actions to the Google App Engine is routed through this method.
+ * 
+ * 
  */
 public class GAEHandler {
+	private static final String TAG = "Google App Engine Handler";
 	
 
 	//ADDERS
@@ -41,9 +38,8 @@ public class GAEHandler {
 	 */
 	public static void persistTimelineObject(Object object){
 		GsonBuilder gsonB = new GsonBuilder();
-		gsonB.registerTypeAdapter(MoodEvent.class, new EventSerializer());
-		gsonB.registerTypeAdapter(Event.class, new EventSerializer());
-		gsonB.registerTypeAdapter(Experiences.class, new ExperiencesSerializer());
+		gsonB.registerTypeAdapter(BaseEvent.class, new Serializers.EventSerializer());
+		gsonB.registerTypeAdapter(Experiences.class, new Serializers.ExperiencesSerializer());
 		
 		Gson gson = gsonB.create();
 		String jsonString ="";
@@ -54,47 +50,13 @@ public class GAEHandler {
 			Log.e("save", e.getMessage());
 		}
 		
-		    //Saving json to server
-		    System.out.println("Lagrer JSON på Google App Engine: "+jsonString);
+		    Log.i(TAG, "Saving TimelineObject-JSON to Google App Engine ");
 		    Uploader.putToGAE(object, jsonString);
 		    
-		    //Saving pictures to server. Any better way to do this than the almighty nesting going on here?
-		    System.out.println("Lagrer bilder på server");
-		    if(object instanceof Experiences){
-		    	if(((Experiences) object).getExperiences()!=null){
-			    	for (Experience ex : ((Experiences) object).getExperiences()) {
-			    		if(((Experience) ex).getEvents()!=null){
-				    		for (BaseEvent baseEvent : ex.getEvents()) {
-				    			if(baseEvent.getEventItems()!=null && baseEvent.isShared()){
-						    		for (EventItem eventI : baseEvent.getEventItems()) {
-								    	if(eventI instanceof SimplePicture){
-								    		Uploader.uploadFile(Utilities.IMAGE_STORAGE_FILEPATH+((SimplePicture)eventI).getPictureFilename(), ((SimplePicture)eventI).getPictureFilename());
-								    	}else if(eventI instanceof SimpleVideo){
-								    		Uploader.uploadFile(Utilities.VIDEO_STORAGE_FILEPATH+((SimpleVideo)eventI).getVideoFilename(), ((SimpleVideo)eventI).getVideoFilename());
-								    	}else if(eventI instanceof SimpleRecording){
-								    		Uploader.uploadFile(Utilities.RECORDING_STORAGE_FILEPATH+((SimpleRecording)eventI).getRecordingFilename(), ((SimpleRecording)eventI).getRecordingFilename());
-								    	}
-									}
-				    			}
-							}
-			    		}
-					} 
-		    	}
-		    	
-		    }else if(object instanceof Event){
-		    	for (EventItem eventI : ((Event)object).getEventItems()) {
-			    	if(eventI instanceof SimplePicture){
-			    		Uploader.uploadFile(Utilities.IMAGE_STORAGE_FILEPATH+((SimplePicture)eventI).getPictureFilename(), ((SimplePicture)eventI).getPictureFilename());
-			    	}else if(eventI instanceof SimpleVideo){
-			    		Uploader.uploadFile(Utilities.VIDEO_STORAGE_FILEPATH+((SimpleVideo)eventI).getVideoFilename(), ((SimpleVideo)eventI).getVideoFilename());
-			    	}else if(eventI instanceof SimpleRecording){
-			    		Uploader.uploadFile(Utilities.RECORDING_STORAGE_FILEPATH+((SimpleRecording)eventI).getRecordingFilename(), ((SimpleRecording)eventI).getRecordingFilename());
-			    	}
-				}
-		    }
+		    Log.i(TAG, "Saving files on server");
+		    storeFilesOnServer(object);
 		  
 	}
-	
 	
 	public static void addGroupToServer(Group groupToAdd){
 		Gson gson = new Gson();
@@ -106,7 +68,8 @@ public class GAEHandler {
 			Log.e("save", e.getMessage());
 		}
 		
-	    System.out.println("Lagrer JSON på Google App Engine: "+jsonString);
+	    System.out.println();
+	    Log.i(TAG, "Saving group-JSON on Google App Engine: "+jsonString);
 	    Uploader.putGroupToGAE(jsonString);
 	    
 	}
@@ -122,12 +85,12 @@ public class GAEHandler {
 			Log.e("save", e.getMessage());
 		}
 		
-	    System.out.println("Lagrer JSON på Google App Engine: "+jsonString);
+		Log.i(TAG, "Saving user-JSON on Google App Engine: "+jsonString);
 	    Uploader.putUserToGAE(jsonString);
 	}
 	
 	public static void addUserToGroupOnServer(Group groupToGetNewMember, User userToAddToGroup) {
-		System.out.println("Legger til "+ userToAddToGroup +"  til "+groupToGetNewMember.getName()+" på Google App Engine");
+		Log.i(TAG,"Adding "+ userToAddToGroup +"  to "+groupToGetNewMember.getName()+" on Google App Engine");
 		Uploader.putUserToGroupToGAE(groupToGetNewMember, userToAddToGroup);
 	}
 	
@@ -147,93 +110,63 @@ public class GAEHandler {
 		return Downloader.getAverageMoodForExperience(experience);
 	}
 	
-	//
+	public static Experiences getAllSharedExperiences(User user){
+		return Downloader.getAllSharedExperiencesFromServer(user);
+	}
 	
-	/**
-	 * Custom serializer for {@link Gson} to remove empty lists, which Google App Engine can't handle right. Not good coding!
-	 * 
-	 */
-	private static class ExperiencesSerializer implements JsonSerializer<Experiences> {
-		  public JsonElement serialize(Experiences src, Type typeOfSrc, JsonSerializationContext context) {
-			  if(src.getExperiences().size()==0)
-					 src.setExperiences(null);
-			  else{
-				  for (Experience ex: src.getExperiences()) {
-					 if(ex.getEvents().size()==0)
-						 ex.setEvents(null);
-					  else{
-						  List<BaseEvent> baseEvents = new ArrayList<BaseEvent>();
-						  try {
-							  for (BaseEvent baseEvent : ex.getEvents()) {
-								  BaseEvent bEvent = null;
-									if(baseEvent instanceof Event){
-										bEvent = convertEventToBaseEvent(baseEvent);
-										baseEvents.add(bEvent);
-									}else if (baseEvent instanceof MoodEvent){
-										bEvent = convertMoodEventToBaseEvent(baseEvent);
-										baseEvents.add(bEvent);
-									}
-							}
-							  ex.setEvents(baseEvents);
-						} catch (Exception e) {
-							e.printStackTrace();
+	public static List<User> getUsers(){
+		return Downloader.getUsersFromServer().getUsers();
+	}
+	
+	public static boolean IsUserRegistered(String username) {
+		return Downloader.IsUserRegistered(username);
+	}
+	
+
+	
+	//HELPERS
+	
+	//Saving pictures to server. 
+	//TODO: Any better way to do this than the almighty nesting going on here?
+	private static void storeFilesOnServer(Object object) {
+		if(object instanceof Experiences){
+			if(((Experiences) object).getExperiences()!=null){
+		    	for (Experience ex : ((Experiences) object).getExperiences()) {
+		    		if(((Experience) ex).getEvents()!=null){
+			    		for (BaseEvent baseEvent : ex.getEvents()) {
+			    			if(baseEvent.getEventItems()!=null && baseEvent.isShared()){
+					    		for (EventItem eventI : baseEvent.getEventItems()) {
+							    	if(eventI instanceof SimplePicture){
+							    		Uploader.uploadFile(Constants.IMAGE_STORAGE_FILEPATH+((SimplePicture)eventI).getPictureFilename(), 
+							    				((SimplePicture)eventI).getPictureFilename());
+							    	}else if(eventI instanceof SimpleVideo){
+							    		Uploader.uploadFile(Constants.VIDEO_STORAGE_FILEPATH+((SimpleVideo)eventI).getVideoFilename(), 
+							    				((SimpleVideo)eventI).getVideoFilename());
+							    	}else if(eventI instanceof SimpleRecording){
+							    		Uploader.uploadFile(Constants.RECORDING_STORAGE_FILEPATH+((SimpleRecording)eventI).getRecordingFilename(), 
+							    				((SimpleRecording)eventI).getRecordingFilename());
+							    	}
+								}
+			    			}
 						}
-						
-					  }
-				  }
-			  }
-			 
-			Gson gson = new Gson();
-		    return new JsonParser().parse(gson.toJson(src));
-		  }
-		}
-	
-	private static class EventSerializer implements JsonSerializer<BaseEvent> {
-		  public JsonElement serialize(BaseEvent baseEvent, Type typeOfSrc, JsonSerializationContext context) {
-			  BaseEvent bEvent = null;
-			  if(baseEvent instanceof Event){
-				bEvent = convertEventToBaseEvent(baseEvent);
-				
-			}else if (baseEvent instanceof MoodEvent){
-				bEvent = convertMoodEventToBaseEvent(baseEvent);
+		    		}
+				} 
 			}
-			 
-			Gson gson = new Gson();
-		    return new JsonParser().parse(gson.toJson(bEvent));
-		  }
-
+			
+		}else if(object instanceof Event){
+			for (EventItem eventI : ((Event)object).getEventItems()) {
+		    	if(eventI instanceof SimplePicture){
+		    		Uploader.uploadFile(Constants.IMAGE_STORAGE_FILEPATH+((SimplePicture)eventI).getPictureFilename(), 
+		    				((SimplePicture)eventI).getPictureFilename());
+		    	}else if(eventI instanceof SimpleVideo){
+		    		Uploader.uploadFile(Constants.VIDEO_STORAGE_FILEPATH+((SimpleVideo)eventI).getVideoFilename(), 
+		    				((SimpleVideo)eventI).getVideoFilename());
+		    	}else if(eventI instanceof SimpleRecording){
+		    		Uploader.uploadFile(Constants.RECORDING_STORAGE_FILEPATH+((SimpleRecording)eventI).getRecordingFilename(), 
+		    				((SimpleRecording)eventI).getRecordingFilename());
+		    	}
+			}
+		}
 	}
-	
-	private static BaseEvent convertEventToBaseEvent(BaseEvent baseEvent) {
-		BaseEvent bEvent = new BaseEvent(baseEvent.getId(), baseEvent.getExperienceid(), 
-				baseEvent.getDatetime(), baseEvent.getLocation(), baseEvent.getUser());
-		
-		bEvent.setClassName(baseEvent.getClassName());
-		if(((Event)baseEvent).getEmotionList().size()==0)
-			bEvent.setEmotionList(null);
-		else
-			bEvent.setEmotionList(baseEvent.getEmotionList());
-		
-		if(((Event)baseEvent).getEventItems().size()==0)
-			bEvent.setEventItems(null);
-		else
-			bEvent.setEventItems(((Event)baseEvent).getEventItems());
-		
-		
-		bEvent.setShared(((Event)baseEvent).isShared());
-		
-		return bEvent;
-	}
-
-	private static BaseEvent convertMoodEventToBaseEvent(BaseEvent baseEvent) {
-		BaseEvent moodBaseEvent = new BaseEvent(baseEvent.getId(), baseEvent.getExperienceid(), 
-				baseEvent.getDatetime(), baseEvent.getLocation(), baseEvent.getUser());
-		moodBaseEvent.setClassName(((MoodEvent)baseEvent).getClassName());
-		moodBaseEvent.setMoodInt(((MoodEvent)baseEvent).getMood().getMoodInt());
-		moodBaseEvent.setShared(((MoodEvent)baseEvent).isShared());
-		moodBaseEvent.setAverage(((MoodEvent)baseEvent).isAverage());
-		return moodBaseEvent;
-	}
-
 
 }

@@ -1,7 +1,5 @@
 package com.fabula.android.timeline;
 
-import com.fabula.android.timeline.models.SimpleNote;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +7,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.fabula.android.timeline.models.SimpleNote;
+import com.fabula.android.timeline.utilities.Constants;
 
 /**
  * The Activity for creation of a {@linkplain SimpleNote}.
@@ -43,7 +44,7 @@ public class NoteActivity extends Activity {
 		noteTitle = (EditText)findViewById(R.id.NoteTitleEditText);
 		noteText = (EditText)findViewById(R.id.NoteTextEditText);
 		
-		if(Utilities.EDIT_NOTE == getIntent().getExtras().getInt(Utilities.REQUEST_CODE)){
+		if(Constants.EDIT_NOTE == getIntent().getExtras().getInt(Constants.REQUEST_CODE)){
 			noteTitle.setText(getIntent().getExtras().getString(Intent.EXTRA_SUBJECT));
 			noteText.setText(getIntent().getExtras().getString(Intent.EXTRA_TEXT));
 		}

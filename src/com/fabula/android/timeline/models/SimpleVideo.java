@@ -14,8 +14,9 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 
 import com.fabula.android.timeline.R;
-import com.fabula.android.timeline.Utilities;
-import com.fabula.android.timeline.providers.VideoProvider;
+import com.fabula.android.timeline.database.providers.VideoProvider;
+import com.fabula.android.timeline.utilities.Constants;
+import com.fabula.android.timeline.utilities.Utilities;
 
 
 
@@ -35,10 +36,10 @@ public class SimpleVideo extends EventItem {
 	public SimpleVideo(String id, Account u, String videoFilename) {
 		super(id, u);
 		className = "SimpleVideo";
-		if(!(new File(Utilities.VIDEO_STORAGE_FILEPATH)).exists()) {
-			(new File(Utilities.VIDEO_STORAGE_FILEPATH)).mkdirs();
+		if(!(new File(Constants.VIDEO_STORAGE_FILEPATH)).exists()) {
+			(new File(Constants.VIDEO_STORAGE_FILEPATH)).mkdirs();
 		}
-		File file = Utilities.DownloadFromUrl(videoFilename, Utilities.VIDEO_STORAGE_FILEPATH+videoFilename);
+		File file = Utilities.DownloadFromUrl(videoFilename, Constants.VIDEO_STORAGE_FILEPATH+videoFilename);
 		this.videoURI = Uri.fromFile(file);
 		filename = videoFilename;
 	}

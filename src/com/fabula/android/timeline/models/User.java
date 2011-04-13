@@ -2,7 +2,7 @@ package com.fabula.android.timeline.models;
 
 import java.util.UUID;
 
-import com.fabula.android.timeline.providers.UserProvider;
+import com.fabula.android.timeline.database.providers.UserProvider;
 
 import android.net.Uri;
 import android.provider.BaseColumns;

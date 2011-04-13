@@ -17,17 +17,21 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.CoreProtocolPNames;
 
 import android.util.Log;
 
-import com.fabula.android.timeline.Utilities;
 import com.fabula.android.timeline.models.BaseEvent;
 import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.models.Experiences;
 import com.fabula.android.timeline.models.Group;
 import com.fabula.android.timeline.models.User;
+import com.fabula.android.timeline.utilities.Constants;
+import com.fabula.android.timeline.utilities.Utilities;
 
 public class Uploader {
+	
+	final static HttpHost targetHost = new HttpHost(Constants.GOOGLE_APP_ENGINE_URL, 80, "http");
 	
 	public static void uploadFile(String locationFilename, String saveFilename){
 		System.out.println("saving "+locationFilename+"!! ");
@@ -112,7 +116,6 @@ public class Uploader {
 	}
 	
 	public static void putToGAE(Object o, String jsonString){       
-		HttpHost targetHost = new HttpHost(Utilities.GOOGLE_APP_ENGINE_URL, 80, "http");
 		// Using PUT here
 		HttpPut httpPut = makeHttpPutBasedOnObjectType(o);
 		makeJSONHttpRequestContentTypeHeader(httpPut);
@@ -121,7 +124,6 @@ public class Uploader {
 
 	
 	public static void putGroupToGAE(final String jsonString){  
-		final HttpHost targetHost = new HttpHost(Utilities.GOOGLE_APP_ENGINE_URL, 80, "http");
 		// Using PUT here
 		final HttpPut httpPut = new HttpPut("/rest/group/");
 		makeJSONHttpRequestContentTypeHeader(httpPut);
@@ -129,7 +131,6 @@ public class Uploader {
 	}
 	
 	public static void putUserToGroupToGAE(Group groupToAddUser, User userToAddToGroup){  
-		final HttpHost targetHost = new HttpHost(Utilities.GOOGLE_APP_ENGINE_URL, 80, "http");
 		// Using PUT here
 		final HttpPut httpPut = new HttpPut("/rest/group/"+groupToAddUser.getId()+"/user/"+userToAddToGroup.getUserName()+"/");
 		makeJSONHttpRequestContentTypeHeader(httpPut);
@@ -138,14 +139,12 @@ public class Uploader {
 	
 	public static void deleteUserFromGroupToGAE(Group groupToRemoveMember,
 			User userToRemoveFromGroup) {
-		final HttpHost targetHost = new HttpHost(Utilities.GOOGLE_APP_ENGINE_URL, 80, "http");
 		//using DELETE here
 		final HttpDelete httpDelete = new HttpDelete("/rest/group/"+groupToRemoveMember.getId()+"/user/"+userToRemoveFromGroup.getUserName()+"/");
 		sendDeleteRequestTOGAEServer("", targetHost, httpDelete);
 	}
 	
 	public static void deleteUserFromGroupToGAE(Group selectedGroup) {
-		final HttpHost targetHost = new HttpHost(Utilities.GOOGLE_APP_ENGINE_URL, 80, "http");
 		//using DELETE here
 		final HttpDelete httpDelete = new HttpDelete("/rest/group/"+selectedGroup.getId()+"/");
 		
@@ -154,7 +153,6 @@ public class Uploader {
 	}
 
 	public static void putUserToGAE(final String jsonString){  
-		final HttpHost targetHost = new HttpHost(Utilities.GOOGLE_APP_ENGINE_URL, 80, "http");
 		// Using PUT here
 		final HttpPut httpPut = new HttpPut("/rest/user/");
 		makeJSONHttpRequestContentTypeHeader(httpPut);
@@ -190,6 +188,7 @@ public class Uploader {
 		httpRequest.addHeader("Accept", "application/json");
 		// Also be sure to tell the server what kind of content we are sending
 		httpRequest.addHeader("Content-Type", "application/json");
+		httpRequest.addHeader(CoreProtocolPNames.USER_AGENT, "Android");
 	}
 	
 

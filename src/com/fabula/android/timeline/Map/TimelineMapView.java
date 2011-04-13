@@ -1,4 +1,4 @@
-package com.fabula.android.timeline.Map;
+package com.fabula.android.timeline.map;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,15 +7,15 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.fabula.android.timeline.R;
-import com.fabula.android.timeline.Utilities;
-import com.fabula.android.timeline.contentmanagers.ContentLoader;
 import com.fabula.android.timeline.database.DatabaseHelper;
 import com.fabula.android.timeline.database.TimelineDatabaseHelper;
 import com.fabula.android.timeline.database.UserGroupDatabaseHelper;
+import com.fabula.android.timeline.database.contentmanagers.ContentLoader;
 import com.fabula.android.timeline.models.BaseEvent;
-import com.fabula.android.timeline.models.Event;
 import com.fabula.android.timeline.models.Experience;
+import com.fabula.android.timeline.utilities.Constants;
 import com.fabula.android.timeline.utilities.MyLocation;
+import com.fabula.android.timeline.utilities.Utilities;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
@@ -45,10 +45,10 @@ public class TimelineMapView extends MapActivity {
 		setupViews();
 		setUpMapControllers();
 		
-		if(getIntent().getAction().equals(Utilities.INTENT_ACTION_OPEN_MAP_VIEW_FROM_TIMELINE)) {
+		if(getIntent().getAction().equals(Constants.INTENT_ACTION_OPEN_MAP_VIEW_FROM_TIMELINE)) {
 			addEventsToMap(loadEventsWithGeolocationFromDatabase());
 		}
-		else if(getIntent().getAction().equals(Utilities.INTENT_ACTION_OPEN_MAP_VIEW_FROM_DASHBOARD)) {
+		else if(getIntent().getAction().equals(Constants.INTENT_ACTION_OPEN_MAP_VIEW_FROM_DASHBOARD)) {
 			addAllTimelineAppEventsToMap();
 		}
 	}
@@ -70,9 +70,9 @@ public class TimelineMapView extends MapActivity {
 	 * Adds all the events saved in all the timeline to the map view
 	 */
 	private void addAllTimelineAppEventsToMap() {
-		new TimelineDatabaseHelper(this, Utilities.ALL_TIMELINES_DATABASE_NAME);
+		new TimelineDatabaseHelper(this, Constants.ALL_TIMELINES_DATABASE_NAME);
 		contentLoader = new ContentLoader(this);
-		new UserGroupDatabaseHelper(this, Utilities.USER_GROUP_DATABASE_NAME);
+		new UserGroupDatabaseHelper(this, Constants.USER_GROUP_DATABASE_NAME);
 		ArrayList<Experience> experiences = contentLoader.LoadAllExperiencesFromDatabase();
 		TimelineDatabaseHelper.getCurrentTimeLineDatabase().close();
 		UserGroupDatabaseHelper.getUserDatabase().close();
