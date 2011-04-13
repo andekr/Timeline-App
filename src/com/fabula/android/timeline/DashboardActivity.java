@@ -615,7 +615,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 	
 	private OnClickListener viewProfileListener = new OnClickListener() {
 		public void onClick(View v) {
-//			startActivity(profileIntent);
 			startActivity(tagsIntent);
 		}
 	};
