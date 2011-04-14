@@ -156,6 +156,7 @@ public class UserGroupManager {
 				
 		Cursor c = context.getContentResolver().query(UserProvider.CONTENT_URI, userTableColumns, where, null, null);
 		int numberOfRowsReturned = c.getCount();
+		c.close();
 		
 		if(numberOfRowsReturned != 0) {
 			return true;

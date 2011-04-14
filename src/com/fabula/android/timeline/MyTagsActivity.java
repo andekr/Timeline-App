@@ -197,6 +197,18 @@ public class MyTagsActivity extends Activity {
 		tagManager = new TagManager(this);
 	}
 	
+	@Override
+	protected void onDestroy() {
+		TimelineDatabaseHelper.getCurrentTimeLineDatabase().close();
+		super.onDestroy();
+	}
+	
+	@Override
+	public void onBackPressed() {
+		TimelineDatabaseHelper.getCurrentTimeLineDatabase().close();
+		super.onBackPressed();
+	}
+	
 	/**
 	 * Setup views and instansiate objects the activity is going to use
 	 */
