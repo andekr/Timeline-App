@@ -13,20 +13,9 @@ import com.fabula.android.timeline.database.providers.EventProvider;
 
 public class Event extends BaseEvent {
 	
-//	private String id;
-//	private String experienceid;
-	
-//	private transient Location location;
-//	private transient Date datetime;
-	
-//	private double longitude;
-//	private double latitude;
-//	
-//	private long datetimemillis;
 	private List<EventItem> eventItems;
 	private List<Emotion> emotionList;
 	private String className;
-//	private boolean shared;
 	
 	public Event(){
 		className = this.getClass().getSimpleName();
@@ -35,82 +24,19 @@ public class Event extends BaseEvent {
 	
 	public Event(String exID, Location location, Account user) {
 		super(exID, location, user);
-//		super(exID, location);
-//		this.experienceid = exID;
 		eventItems = new ArrayList<EventItem>();
 		emotionList = new ArrayList<Emotion>();
 		className = this.getClass().getSimpleName();
 		setTags(new ArrayList<String>());
-//		setLocation(location);
 	}
 	
 	public Event(String id, String exID, Date dateTime, Location location, Account user) {
 		super(id, exID, dateTime, location, user);
-//		this.id = id;
-//		this.experienceid = exID;
 		eventItems = new ArrayList<EventItem>();
 		emotionList = new ArrayList<Emotion>();
 		className = this.getClass().getSimpleName();
 		setTags(new ArrayList<String>());
-//		setDatetime(dateTime);
-//		setLocation(location);
 	}
-	
-//	public String getId() {
-//		return id;
-//	}
-//	public void setId(String id) {
-//		this.id = id;
-//	}
-	
-//	public String getExperienceid() {
-//		return experienceid;
-//	}
-
-//	public void setExperienceid(String experienceid) {
-//		this.experienceid = experienceid;
-//	}
-
-//	public Date getDatetime() {
-//		return datetime;
-//	}
-	
-//	public long getDatetimemillis(){
-//		return datetimemillis;
-//	}
-	
-//	public void setDatetime(Date datetime) {
-//		datetimemillis = datetime.getTime();
-//		this.datetime = datetime;
-//	}
-//	public Location getLocation() {
-//		return location;
-//	}
-//	
-//	public GeoPoint getGeoPointLocation() {
-//
-//		return new GeoPoint((int)(getLatitude() * 1E6) , (int) (getLongitude() * 1E6));
-//	}
-
-//	public void setLocation(Location location) {
-//		this.longitude = location.getLongitude();
-//		this.latitude = location.getLatitude();
-//		this.location = location;
-//	}
-	
-//	public Double getLatitude(){
-//		return latitude;
-//	}
-	
-//	public void setLatitude(Double latitude){
-//	}
-	
-//	public Double getLongitude(){
-//		return longitude;
-//	}
-//	
-//	public void setLongitude(Double longitude){
-//	}
 	
 	public void addEventItem(EventItem evItem){
 		eventItems.add(evItem);
@@ -137,18 +63,6 @@ public class Event extends BaseEvent {
 		this.emotionList = emotionList;
 	}
 	
-//	public boolean isShared() {
-//		return shared;
-//	}
-//
-//	public void setShared(boolean shared) {
-//		this.shared = shared;
-//	}
-//	
-//	public int isSharedAsInt() {
-//		return isShared() ? 1 : 0;
-//	}
-
 	public String getClassName() {
 		return className;
 	}
@@ -162,7 +76,6 @@ public class Event extends BaseEvent {
 		private EventColumns(){}
 		public static final Uri CONTENT_URI = Uri.parse("content://" +EventProvider.AUTHORITY+ "/events");
 		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.fabula.events";
-//		public static final String EVENT_ID = "_id";
 		public static final String EVENT_EXPERIENCEID = "experienceid";
 		public static final String EVENT_LOCATION_LAT = "latitude";
 		public static final String EVENT_LOCATION_LNG = "longitude";

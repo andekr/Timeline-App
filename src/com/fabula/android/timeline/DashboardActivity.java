@@ -168,10 +168,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		progressDialog.dismiss();
 	}
 	
-//	private void addUserToDatabaseIfNewUser() {
-//		uGManager.addUserToUserDatabase(user);
-//	}
-	
 	private void setLastSyncedTextView() {
 		if(lastSynced!=0){
 			String lastSyncedFormattedString = DateFormat.format
@@ -181,7 +177,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 			lastSyncedTextView.setText(getResources().getString(R.string.Last_synced_label).toString()+" Never");
 		}
 	}
-
 
 	/**
 	 * Adds the new timeline to the database containing all the timelines.
@@ -273,7 +268,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		return Long.valueOf(strContent.toString());
 	}
 	
-	
 	/**
 	 * Thread to notify user that timelines have been synced. Intended run on UI thread.
 	 * 
@@ -322,7 +316,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 	@Override
 	protected void onRestart() {
 		super.onRestart();
-//		setupDatabaseHelpers();
 		timelineIntent = new Intent(this, TimelineActivity.class);
 		timelineIntent.setAction("NEW");
 	}
@@ -447,10 +440,8 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 	}
 
 	public void callBack() {
-//		openDialogForTimelineNameInput();
 		NewTimelineDialog newTimelineDialog = new NewTimelineDialog(DashboardActivity.this, null, timelineIntent);
 		newTimelineDialog.show();
-//		closeDatabaseHelpers();
 	}
 	
 	/**

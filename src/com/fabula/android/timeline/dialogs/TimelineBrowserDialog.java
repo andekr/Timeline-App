@@ -106,8 +106,6 @@ public TimelineBrowserDialog(Context context, Intent receivedIntent, int shared)
 			timelineIntent.setAction(Constants.INTENT_ACTION_NEW_TIMELINE); //Default Intent action for TimelineActivity is to create/open a timeline.
 			NewTimelineDialog newTimelineDialog = new NewTimelineDialog(context, selectedTimeline, timelineIntent);
 			newTimelineDialog.show();
-//			ContentUpdater contentUpdater = new ContentUpdater(context);
-//			contentUpdater.setExperienceSharestatus(selectedTimeline, true);
 			this.dismiss();
 			break;
 		}
@@ -177,7 +175,6 @@ public TimelineBrowserDialog(Context context, Intent receivedIntent, int shared)
 		}
 	};
 
-	
 	public void setSelectedTimeline(Experience timeline) {
 		this.selectedTimeline = timeline;
 	}

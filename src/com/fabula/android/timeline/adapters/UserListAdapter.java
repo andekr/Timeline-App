@@ -23,16 +23,12 @@ public class UserListAdapter extends ArrayAdapter<User> {
 	private Context mContext;
 	private ArrayList <User> users, checkedUsers;
 	private LayoutInflater mInflater;
-	private Group group;
-	private Group selectedGroup;
 
 	public UserListAdapter(Context context, ArrayList <User> users, Group group) {
 		 super(context, 0);
 		 this.mContext = context;
 		 this.users = users;
-		 this.group = group;
 		 this.checkedUsers = new ArrayList<User>();
-		 this.selectedGroup = group;
 		 mInflater = LayoutInflater.from(mContext); 
 		 setNotifyOnChange(true);
 	 }
@@ -57,11 +53,6 @@ public class UserListAdapter extends ArrayAdapter<User> {
 		return checkedUsers.size();
 	}
 	
-	public void setSelectedGroup(Group group) {
-		selectedGroup = group;
-	}
-	
-
 	public View getView(final int position, View convertView, ViewGroup parent) {
 
 		ViewHolder holder;
@@ -95,19 +86,7 @@ public class UserListAdapter extends ArrayAdapter<User> {
 			 
 			 holder.icon.setImageResource(R.drawable.individual_timeline);
 			 holder.text.setText(users.get(position).toString());
-//			 holder.checkBox.setChecked(isAlreadyPartOfGroup(users.get(position), group));
 			 return convertView;
 	 }
-
-//	private boolean isAlreadyPartOfGroup(User user, Group group) {
-//	
-//			for (User u : group.getMembers()) {
-//				if(user.getUserName().equals(u.getUserName())) {
-//					return true;
-//				}
-//			}
-//		return false;
-//	}
-	
 }	 
 
