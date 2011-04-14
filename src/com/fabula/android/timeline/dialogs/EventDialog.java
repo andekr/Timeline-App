@@ -160,18 +160,7 @@ public class EventDialog extends Dialog {
 				confirmation.show();	
 			}
 		});
-		
-// 		shareButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-//			
-//			public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked) {
-//				
-////						mEvent.setShared(isChecked);
-////						shareButton.setEnabled(!mEvent.isShared());
-////						Thread shareThread = new Thread(shareEventThread, "shareThread");
-////		 				shareThread.start();
-//			}
-//		});
- 		
+			
  		ImageButton deleteButton = (ImageButton)findViewById(R.id.popupDeleteButton);
  		deleteButton.setTag(event);
  		deleteButton.setOnClickListener(new View.OnClickListener() {

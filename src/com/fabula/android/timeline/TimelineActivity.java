@@ -68,8 +68,6 @@ import com.fabula.android.timeline.utilities.Constants;
 import com.fabula.android.timeline.utilities.MyLocation;
 import com.fabula.android.timeline.utilities.Utilities;
 
-
-
 /**
  * 
  * This is the main timeline {@linkplain Activity}.
@@ -106,17 +104,12 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	public String databaseName, experienceID, experienceCreator;
 	public boolean sharedExperience;
 	private DatabaseHelper dbHelper;
-	
 	private ArrayList<BaseEvent> loadedEvents;
-//	private ArrayList<Event> loadedEvents;
 	private Experience timeline;
-	
 	private Uri imageUri;
 	private Uri videoUri;
 	private Uri audioUri;
-	
 	private MyLocation myLocation;
-	
 	private SimpleGestureFilter detector;
 	private EventDialog eventDialog;
 	private MoodDialog moodDialog;
@@ -213,10 +206,6 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 		contentLoader = new ContentLoader(getApplicationContext());
 		return contentLoader.LoadAllEventsFromDatabase();
 	}
-//	private ArrayList<Event> loadEventItemsFromDatabase() {
-//		contentLoader = new ContentLoader(getApplicationContext());
-//		return contentLoader.LoadAllEventsFromDatabase();
-//	}
 
 	@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -675,18 +664,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 			startAttachmentDialog();
 		}
 	};
-	
-//	private OnClickListener addMoodListener = new OnClickListener() {
-//		
-//		public void onClick(View v) {
-//			
-//			
-//		}
-//	};
 		
-
-	
-
 	/**
 	 * Method that adds a picture to the timeline.
 	 * Creates a {@link SimplePicture}.

@@ -27,36 +27,14 @@ public class TagListAdapter extends ArrayAdapter<String> {
 		 this.checkedTags = checkedTags;
 	 }
 
-//	public int getCount() {
-//		return tags.size();
-//	}
-//
-//	public String getItem(int position) {
-//		return tags.get(position);
-//	}
-//
-//	public long getItemId(int position) {
-//		return position;
-//	}
-//	
 	public List<String> getCheckedTags() {
 		return checkedTags;
 	}
-//
+
 	public void setCheckedTags(List<String> checkedTags) {
 		this.checkedTags = checkedTags;
 	}
-//
-//	public int getAmountOfSelectedTags() {
-//		return checkedTags.size();
-//	}
-//	
-//	
-//
-//	public List<String> getTags() {
-//		return tags;
-//	}
-//
+
 	public void setTags(List<String> tags) {
 		this.tags = tags;
 		notifyDataSetChanged();
@@ -93,16 +71,11 @@ public class TagListAdapter extends ArrayAdapter<String> {
 			 holder.checkBox.setTag(position);
 		 }
 			 
-			 holder.text.setText(tags.get(position).toString());
-//			 holder.checkBox.setChecked(isAlreadyPartOfGroup(users.get(position), group));
+			holder.text.setText(tags.get(position).toString());
 			holder.checkBox.setChecked(checkedTags.contains(tags.get(position)));
 			
 			 return convertView;
 	 }
-	
-
-	
-
 	
 	private void listClickAction(View v) {
 		boolean checked = false;
@@ -120,19 +93,6 @@ public class TagListAdapter extends ArrayAdapter<String> {
 			checkedTags.remove(getItem(myPosition));
 		}
 		((CheckBox)v).setChecked(checked);
-	}
- 
-	
-	
-//	private boolean isAlreadyPartOfGroup(User user, Group group) {
-//	
-//			for (User u : group.getMembers()) {
-//				if(user.getUserName().equals(u.getUserName())) {
-//					return true;
-//				}
-//			}
-//		return false;
-//	}
-	
+	}	
 }	 
 

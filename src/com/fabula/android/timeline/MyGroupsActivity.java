@@ -88,11 +88,9 @@ public class MyGroupsActivity extends Activity implements ProgressDialogActivity
 	 */
 	protected void addUsersToGroup(ArrayList<User> selectedUsers) {
 		for (User user : selectedUsers) {
-//			if(!isAlreadyPartOfGroup(user, selectedGroup)) {
 				uGManager.addUserToAGroupInTheDatabase(selectedGroup, user);
 				GoogleAppEngineHandler.addUserToGroupOnServer(selectedGroup, user);
 				selectedGroup.addMembers(user);
-//			}
 		}
 		Toast.makeText(this, "New users has been added to group "+selectedGroup+"!", Toast.LENGTH_SHORT).show();
 		userlistAdapter.notifyDataSetChanged();
@@ -116,20 +114,16 @@ public class MyGroupsActivity extends Activity implements ProgressDialogActivity
 		ContentUpdater experienceUpdater = new ContentUpdater(this);
 		ArrayList<Experience> experiencesConnectedToSelectedGroup = experienceLoader.LoadAllSharedExperiencesOnGroupFromDatabase(selectedGroup);
 		
-//		TimelineDatabaseHelper.getCurrentTimeLineDatabase().beginTransaction();
 		for (Experience experience : experiencesConnectedToSelectedGroup) {
 			experience.setShared(false);
 			experienceUpdater.updateExperience(experience);
 		}
-//		TimelineDatabaseHelper.getCurrentTimeLineDatabase().setTransactionSuccessful();
-//		TimelineDatabaseHelper.getCurrentTimeLineDatabase().endTransaction();
-		
+
 		GoogleAppEngineHandler.removeUserFromGroupOnServer(selectedGroup, applicationUser);
 		uGManager.removeUserFromAGroupInTheDatabase(selectedGroup, applicationUser);
 		connectedGroups.remove(selectedGroup);
 		selectedGroup.removeMember(applicationUser);
 		
-		//delete the group if it has no members
 		if(selectedGroup.getMembers().isEmpty()) {
 			deleteGroupFromDatabase(selectedGroup);
 			GoogleAppEngineHandler.removeGroupFromDatabase(selectedGroup);

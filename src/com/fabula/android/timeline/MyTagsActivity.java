@@ -54,12 +54,10 @@ public class MyTagsActivity extends Activity {
 		setupHelpers();
 		setupViews();
 		
-		
 		if(isNewTagIntent()){
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 			openNewTagNameInputDialog();
 		}
-		
 	}
 
 	private boolean isNewTagIntent() {
@@ -78,13 +76,10 @@ public class MyTagsActivity extends Activity {
 	        setResult(RESULT_OK, getIntent());
 			finish();
 		}
-			
 		else
 			setupViews();
 	}
 	
-
-
 	/**
 	 * Input dialog for the writing the name of a new group
 	 */
@@ -117,13 +112,11 @@ public class MyTagsActivity extends Activity {
 
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
-
 			}
 		}).setOnCancelListener(new OnCancelListener() {
 			
 			public void onCancel(DialogInterface dialog) {
 				dialog.dismiss();
-				
 			}
 		});
 		
@@ -196,7 +189,7 @@ public class MyTagsActivity extends Activity {
 		new TimelineDatabaseHelper(this, Constants.ALL_TIMELINES_DATABASE_NAME);
 		tagManager = new TagManager(this);
 	}
-	
+		
 	/**
 	 * Setup views and instansiate objects the activity is going to use
 	 */
@@ -205,7 +198,6 @@ public class MyTagsActivity extends Activity {
 		
 		addNewTagButton = (Button) findViewById(R.id.tagsCreateButton);
 		addNewTagButton.setOnClickListener(newTagButtonListener);
-		
 		
 		showInTimelineButton = (Button) findViewById(R.id.tagShowInTimelineButton);
 		showInTimelineButton.setOnClickListener(showInTimelineButtonListener);
@@ -257,32 +249,9 @@ public class MyTagsActivity extends Activity {
 		return false;
 	}
 	
-
-	
-//	/**
-//	 * Listener for a long click on an Item in the group list view
-//	 */
-//	private OnItemLongClickListener openItemLongClickMenuListener = new OnItemLongClickListener() {
-//
-//		public boolean onItemLongClick(AdapterView<?> view, View arg1,
-//				final int position, long arg3) {
-//					
-//			view.setOnCreateContextMenuListener(new OnCreateContextMenuListener() {
-//				
-//				public void onCreateContextMenu(ContextMenu menu, View v,
-//						ContextMenuInfo menuInfo) {
-//										
-//					
-//				}
-//			});
-//			return false;
-//		}
-//	};
-	
 	/**
 	 * Confirmation dialog that pops when you tries to leave a group
 	 */
-	
 	private void deleteTagConfirmationDialog(final String tagName) {
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
