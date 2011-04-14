@@ -10,7 +10,6 @@ import com.fabula.android.timeline.R;
 public class MoodEvent extends BaseEvent{
 	
 	private MoodEnum mood;
-	private String className;
 	private boolean average;
 	
 	public MoodEvent(){

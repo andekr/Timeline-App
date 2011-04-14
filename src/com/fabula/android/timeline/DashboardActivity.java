@@ -403,7 +403,7 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 				closeDatabaseHelpers();
 			}
 			else {
-				Toast.makeText(getApplicationContext(), "You have to be connected to internett to use this functionality", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), "You have to be connected to Internet to use this functionality", Toast.LENGTH_SHORT).show();
 			}
 		}
 	};
@@ -425,7 +425,7 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 				shareThread.start();
 			}
 			else {
-				Toast.makeText(getApplicationContext(), "You have to be connected to internett to use this functionaltiy", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), "You have to be connected to Internet to use this functionaltiy", Toast.LENGTH_SHORT).show();
 			}
 		}
 	};
@@ -447,10 +447,8 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 	}
 
 	public void callBack() {
-//		openDialogForTimelineNameInput();
 		NewTimelineDialog newTimelineDialog = new NewTimelineDialog(DashboardActivity.this, null, timelineIntent);
 		newTimelineDialog.show();
-//		closeDatabaseHelpers();
 	}
 	
 	/**

@@ -74,16 +74,17 @@ public class Utilities {
 	public static int getMapImageIcon(BaseEvent ex) {
 		
 		if(ex instanceof Event) {
-			if(ex.getEventItems().size()==1){
-				if(ex.getEventItems().get(0) instanceof SimplePicture){
+			Event e= (Event)ex;
+			if(e.getEventItems().size()==1){
+				if(e.getEventItems().get(0) instanceof SimplePicture){
 					return R.drawable.mapicon_photo;
-				}else if(ex.getEventItems().get(0) instanceof SimpleRecording){
+				}else if(e.getEventItems().get(0) instanceof SimpleRecording){
 					return R.drawable.mapicon_audio;
-				}else if(ex.getEventItems().get(0) instanceof SimpleVideo){
+				}else if(e.getEventItems().get(0) instanceof SimpleVideo){
 					return R.drawable.mapicon_video;
-				}else if(ex.getEventItems().get(0) instanceof SimpleAttachment){
+				}else if(e.getEventItems().get(0) instanceof SimpleAttachment){
 					return R.drawable.mapicon_note;
-				}else if(ex.getEventItems().get(0) instanceof SimpleNote){
+				}else if(e.getEventItems().get(0) instanceof SimpleNote){
 					return R.drawable.mapicon_note;
 				}
 			}

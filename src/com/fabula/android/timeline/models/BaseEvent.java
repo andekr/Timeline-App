@@ -24,7 +24,7 @@ public class BaseEvent {
 	private String creator;
 	private transient List<String> tags;
 	//For GSON
-	private String className;
+	protected String className;
 	private int mood;
 	private List<EventItem> eventItems;
 	private List<Emotion> emotionList;

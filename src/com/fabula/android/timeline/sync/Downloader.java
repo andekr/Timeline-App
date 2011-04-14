@@ -62,7 +62,6 @@ public class Downloader {
 							event.setEmotionList(be.getEmotionList());
 							event.setEventItems(be.getEventItems());
 							event.setShared(be.isShared());
-//							event.setTags(be.getTags());
 							baseEvents.add(event);
 						}else if(be.getClassName().equals(MoodEvent.class.getSimpleName())){
 							MoodEvent me = new MoodEvent(be.getId(), be.getExperienceid(), 

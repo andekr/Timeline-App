@@ -50,7 +50,7 @@ public class GoogleAppEngineHandler {
 			Log.e("save", e.getMessage());
 		}
 		
-		    Log.i(TAG, "Saving TimelineObject-JSON to Google App Engine ");
+		    Log.i(TAG, "Saving TimelineObject-JSON to Google App Engine "+jsonString);
 		    Uploader.putToGAE(object, jsonString);
 		    
 		    Log.i(TAG, "Saving files on server");
@@ -134,19 +134,22 @@ public class GoogleAppEngineHandler {
 		    	for (Experience ex : ((Experiences) object).getExperiences()) {
 		    		if(((Experience) ex).getEvents()!=null){
 			    		for (BaseEvent baseEvent : ex.getEvents()) {
-			    			if(baseEvent.getEventItems()!=null && baseEvent.isShared()){
-					    		for (EventItem eventI : baseEvent.getEventItems()) {
-							    	if(eventI instanceof SimplePicture){
-							    		Uploader.uploadFile(Constants.IMAGE_STORAGE_FILEPATH+((SimplePicture)eventI).getPictureFilename(), 
-							    				((SimplePicture)eventI).getPictureFilename());
-							    	}else if(eventI instanceof SimpleVideo){
-							    		Uploader.uploadFile(Constants.VIDEO_STORAGE_FILEPATH+((SimpleVideo)eventI).getVideoFilename(), 
-							    				((SimpleVideo)eventI).getVideoFilename());
-							    	}else if(eventI instanceof SimpleRecording){
-							    		Uploader.uploadFile(Constants.RECORDING_STORAGE_FILEPATH+((SimpleRecording)eventI).getRecordingFilename(), 
-							    				((SimpleRecording)eventI).getRecordingFilename());
-							    	}
-								}
+			    			if(baseEvent instanceof Event){
+			    				Event event = (Event)baseEvent;
+			    			if(event.getEventItems()!=null && event.isShared()){
+						    		for (EventItem eventI : event.getEventItems()) {
+								    	if(eventI instanceof SimplePicture){
+								    		Uploader.uploadFile(Constants.IMAGE_STORAGE_FILEPATH+((SimplePicture)eventI).getPictureFilename(), 
+								    				((SimplePicture)eventI).getPictureFilename());
+								    	}else if(eventI instanceof SimpleVideo){
+								    		Uploader.uploadFile(Constants.VIDEO_STORAGE_FILEPATH+((SimpleVideo)eventI).getVideoFilename(), 
+								    				((SimpleVideo)eventI).getVideoFilename());
+								    	}else if(eventI instanceof SimpleRecording){
+								    		Uploader.uploadFile(Constants.RECORDING_STORAGE_FILEPATH+((SimpleRecording)eventI).getRecordingFilename(), 
+								    				((SimpleRecording)eventI).getRecordingFilename());
+								    	}
+									}
+			    				}
 			    			}
 						}
 		    		}

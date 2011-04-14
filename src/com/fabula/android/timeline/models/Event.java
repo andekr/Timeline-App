@@ -25,7 +25,6 @@ public class Event extends BaseEvent {
 //	private long datetimemillis;
 	private List<EventItem> eventItems;
 	private List<Emotion> emotionList;
-	private String className;
 //	private boolean shared;
 	
 	public Event(){
