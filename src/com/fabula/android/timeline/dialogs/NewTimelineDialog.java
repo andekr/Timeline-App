@@ -20,7 +20,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.fabula.android.timeline.R;
-import com.fabula.android.timeline.TimelineActivity;
 import com.fabula.android.timeline.adapters.GroupListAdapter;
 import com.fabula.android.timeline.database.DatabaseHelper;
 import com.fabula.android.timeline.database.contentmanagers.ContentAdder;
@@ -38,7 +37,7 @@ public class NewTimelineDialog extends Dialog {
 	private static final String TAG = "NewTimelineDialog";
 	
 	private Context context; 
-	private Experience experienceToEdit;
+	private Experience experience;
 	private User user;
 	private ListView groupList;
 	private GroupListAdapter groupListAdapter;
@@ -56,13 +55,13 @@ public class NewTimelineDialog extends Dialog {
 		super(context);
 		setContentView(R.layout.newtimelinedialog);
 		this.context = context;
-		this.experienceToEdit = experienceToEdit;
+		this.experience = experienceToEdit;
 		this.user = new User(Utilities.getUserAccount(context).name);
 		this.timelineIntent = timelineIntent;
 		
 		contentAdder = new ContentAdder(context);
 		
-		if(experienceToEdit!=null)
+		if(experience!=null)
 			this.setTitle("Select a group to share with");
 		else
 			this.setTitle("Create a new timeline");
@@ -108,10 +107,10 @@ public class NewTimelineDialog extends Dialog {
 			}
 		});
 		
-		if(experienceToEdit!=null){
+		if(this.experience!=null){
 			shareToggle.setChecked(true);
 			shareToggle.setEnabled(false);
-			inputTextField.setText(experienceToEdit.getTitle());
+			inputTextField.setText(this.experience.getTitle());
 			inputTextField.setEnabled(false);
 		}
 		
@@ -136,12 +135,12 @@ public class NewTimelineDialog extends Dialog {
 				else {
 					String inputName = inputTextField.getText().toString().trim();
 					boolean share = shareToggle.isChecked();
-					if(experienceToEdit!=null){
-						experienceToEdit.setShared(true);
-						experienceToEdit.setSharingGroupObject(selectedGroup);
+					if(experience!=null){
+						experience.setShared(true);
+						experience.setSharingGroupObject(selectedGroup);
 						ContentUpdater contentUpdater = new ContentUpdater(context);
-						contentUpdater.updateExperience(experienceToEdit);
-						Toast.makeText(context, "Timeline: "+experienceToEdit.toString()+" has been shared with "+selectedGroup.toString(), Toast.LENGTH_SHORT).show();
+						contentUpdater.updateExperience(NewTimelineDialog.this.experience);
+						Toast.makeText(context, "Timeline: "+experience.toString()+" has been shared with "+selectedGroup.toString(), Toast.LENGTH_SHORT).show();
 					}else
 						createNewTimeline(inputName, share, selectedGroup);
 					
@@ -165,7 +164,7 @@ public class NewTimelineDialog extends Dialog {
 		
 		final AlertDialog.Builder groupNameInputDialog = new AlertDialog.Builder(context);
 		
-		LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View layout = inflater.inflate(R.layout.newgroupdialog, (ViewGroup) findViewById(R.id.newgroupdialogroot));
 		groupNameInputDialog.setView(layout);
 		

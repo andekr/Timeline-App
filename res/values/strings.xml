@@ -26,7 +26,7 @@
 	<string name="Enter_name_label">Create a new timeline</string>
 	<string name="Timelinename_hint">Name of timeline</string>
 	<string name="Groupname_hint">Name of group</string>
-	<string name="ShareTimeline_label">Share timeline?</string>
+	<string name="ShareTimeline_label">Share timeline</string>
 	<string name="Select_Timeline_label">Select a timeline!</string>
 	<string name="Last_synced_label">Last synced:</string>
 	<string name="Add_user_label">Add user</string>

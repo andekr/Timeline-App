@@ -8,34 +8,21 @@ import java.util.Date;
 
 import android.accounts.Account;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.DialogInterface.OnCancelListener;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 
-import com.fabula.android.timeline.adapters.GroupListAdapter;
 import com.fabula.android.timeline.database.DatabaseHelper;
 import com.fabula.android.timeline.database.TimelineDatabaseHelper;
 import com.fabula.android.timeline.database.UserGroupDatabaseHelper;
@@ -47,7 +34,6 @@ import com.fabula.android.timeline.dialogs.TimelineBrowserDialog;
 import com.fabula.android.timeline.map.TimelineMapView;
 import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.models.Experiences;
-import com.fabula.android.timeline.models.Group;
 import com.fabula.android.timeline.models.User;
 import com.fabula.android.timeline.sync.GoogleAppEngineHandler;
 import com.fabula.android.timeline.sync.UserAndGroupServiceHandler;
@@ -86,14 +72,11 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 	private ContentLoader contentLoader;
 	private Account creator;
 	private User user;
-	private Group selectedGroup;
 	Runnable syncThread, addGroupToServerThread, checkUserRunnable;
 	private long lastSynced=0;
 	boolean registered=false;
 	private UserGroupDatabaseHelper userGroupDatabaseHelper;
 	private UserGroupManager uGManager;
-	private GroupListAdapter groupListAdapter;
-	private ListView groupList;
 	private ProgressDialog progressDialog;
 	private TimelineDatabaseHelper timelineDatabaseHelper;
 
@@ -105,12 +88,8 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		creator = Utilities.getUserAccount(this);
 		user = new User(creator.name);
 		
-		//only used when a new timeline is created
-		selectedGroup = null;
-		
 		//Initializes the content managers
 		setupHelpers();
-//		testTag();
 		
 		uGManager.addUserToUserDatabase(user);
 		
@@ -163,17 +142,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		
 	}
 
-//	private void testTag() {
-//		TagManager tagManager = new TagManager(getApplicationContext());
-//		
-//		tagManager.addTagToDatabase("EIT");
-//		tagManager.addTagToDatabase("SPORT");
-//		tagManager.addTagToDatabase("NY TAG");
-//		
-//		System.out.println("TAGMANAGER!");
-//		
-//	}
-
 	private void checkIfUserIsRegisteredOnServer() {
 		runOnUiThread(new Runnable() {
 			public void run() {
@@ -214,182 +182,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		}
 	}
 
-	/**
-	 * Opens the dialog for creating a new timeline.
-	 * Input is name and if the timeline should be shared.
-	 *
-	 */
-	private void openDialogForTimelineNameInput() {
-		
-		
-		final AlertDialog.Builder timelineNameInputDialog = new AlertDialog.Builder(
-				this);
-		
-		final Context mContext = getApplicationContext();
-		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
-		View layout = inflater.inflate(R.layout.newtimelinedialog, (ViewGroup) findViewById(R.id.layout_root));
-		timelineNameInputDialog.setView(layout);
-		
-		groupList = (ListView) layout.findViewById(R.id.sharedtimelinegroupslist);
-		groupListAdapter = new GroupListAdapter(getApplicationContext(), uGManager.getAllGroupsConnectedToAUser(user));
-		groupList.setAdapter(groupListAdapter);
-		
-		final ImageButton addGroupButton = (ImageButton) layout.findViewById(R.id.newgroupbutton_in_timelinedialog);
-		addGroupButton.setOnClickListener(new OnClickListener() {
-			
-			public void onClick(View v) {
-				openNewGroupNameInputDialog();
-			}
-		});
-		
-		final TextView selectedGroupText = (TextView) layout.findViewById(R.id.selectedGroupText);
-		selectedGroupText.setText("Select a group to share with:");
-		
-		final EditText inputTextField = (EditText)layout.findViewById(R.id.TimelineNameEditText);
-		final ToggleButton shareToggle = (ToggleButton)layout.findViewById(R.id.ShareTimelineToggleButton);
-		
-		shareToggle.setEnabled(Utilities.isConnectedToInternet(mContext));
-		groupList.setOnItemClickListener(new OnItemClickListener() {
-
-			public void onItemClick(AdapterView<?> arg0, View view, int position,
-					long arg3) {
-				selectedGroupText.setText("Share with group: " + groupList.getAdapter().getItem(position));
-				selectedGroup = (Group) groupList.getAdapter().getItem(position);
-			}
-		});
-				
-		shareToggle.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				if(isChecked) {
-					selectedGroupText.setVisibility(View.VISIBLE);
-					groupList.setVisibility(View.VISIBLE);
-					addGroupButton.setVisibility(View.VISIBLE);
-				}
-				
-				else {
-					selectedGroupText.setVisibility(View.GONE);
-					groupList.setVisibility(View.GONE);	
-					addGroupButton.setVisibility(View.GONE);
-					selectedGroup = null;
-					selectedGroupText.setText("Select a group to share with");
-				}
-			}
-		});
-
-		timelineNameInputDialog.setTitle("Enter a name for your timeline!");
-		timelineNameInputDialog.setPositiveButton("Ok",
-				new DialogInterface.OnClickListener() {
-
-			public void onClick(DialogInterface dialog, int which) {
-				
-				if(shareToggle.isChecked() && selectedGroup == null) {
-					Toast.makeText(mContext, "You have to select a group to share the timeline with!", Toast.LENGTH_SHORT).show();
-				}
-				else {
-					String inputName = inputTextField.getText().toString().trim();
-					boolean share = shareToggle.isChecked();
-					createNewTimeline(inputName, share, selectedGroup);
-					dialog.dismiss();
-				}
-			}
-		});
-
-		timelineNameInputDialog.setNegativeButton("Cancel",
-				new DialogInterface.OnClickListener() {
-
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.cancel();
-
-			}
-		});
-		
-		timelineNameInputDialog.show();
-	}
-	
-	private void openNewGroupNameInputDialog() {
-		
-		final AlertDialog.Builder groupNameInputDialog = new AlertDialog.Builder(
-				this);
-		
-		Context mContext = getApplicationContext();
-		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
-		View layout = inflater.inflate(R.layout.newgroupdialog, (ViewGroup) findViewById(R.id.newgroupdialogroot));
-		groupNameInputDialog.setView(layout);
-		
-		final EditText inputTextField = (EditText)layout.findViewById(R.id.NewGroupeditText);
-
-		groupNameInputDialog.setTitle("Enter a name for your group!");
-		groupNameInputDialog.setPositiveButton("Ok",
-				new DialogInterface.OnClickListener() {
-
-			public void onClick(DialogInterface dialog, int which) {
-				String inputName = inputTextField.getText().toString().trim();
-				addNewGroup(inputName);
-				dialog.dismiss();
-			}
-		});
-
-		groupNameInputDialog.setNegativeButton("Cancel",
-				new DialogInterface.OnClickListener() {
-
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-
-			}
-		}).setOnCancelListener(new OnCancelListener() {
-			
-			public void onCancel(DialogInterface dialog) {
-				dialog.dismiss();
-				
-			}
-		});
-		
-		groupNameInputDialog.show();
-	}
-	
-	/**
-	 * Add a new group to the database
-	 * @param groupName The name of the new group
-	 */
-	protected void addNewGroup(String groupName) {
-		
-		Group group = new Group(groupName);
-		uGManager.addGroupToGroupDatabase(group);
-		uGManager.addUserToAGroupInTheDatabase(group, user);
-		group.addMembers(user);
-		GoogleAppEngineHandler.addGroupToServer(group);
-		Toast.makeText(this, "You have created the group: " +group.toString() , Toast.LENGTH_SHORT).show();
-	}
-
-	/**
-	 * Creates a new timeline and starts the Timeline activity
-	 * 
-	 * @param timelineName String. Name of the new Timeline
-	 * @param shared boolean If the Timeline should be shared
-	 */
-	private void createNewTimeline(String timelineName, boolean shared, Group group) {
-
-		Experience timeLine = new Experience(timelineName, shared, creator);
-		
-		String databaseName = timeLine.getTitle() + ".db";
-
-		timelineIntent.putExtra(Constants.DATABASENAME_REQUEST, databaseName);
-		timelineIntent.putExtra(Constants.SHARED_REQUEST, shared);
-		timelineIntent.putExtra(Constants.EXPERIENCEID_REQUEST, timeLine.getId());
-		timelineIntent.putExtra(Constants.EXPERIENCECREATOR_REQUEST, timeLine.getUser().name);
-		
-		if(shared) {
-			timeLine.setSharingGroupObject(group);
-			timelineIntent.putExtra(Constants.SHARED_WITH_REQUEST, timeLine.getSharingGroupObject().getId());
-		}
-		
-		contentAdder.addExperienceToTimelineContentProvider(timeLine);
-		new DatabaseHelper(this, databaseName);
-		startActivity(timelineIntent);
-		DatabaseHelper.getCurrentTimelineDatabase().close();
-	}
-
 
 	/**
 	 * Adds the new timeline to the database containing all the timelines.
@@ -417,6 +209,7 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 	
 	/**
 	 * Synchronize shared timelines with database.
+	 * First all local objects are persisted on server, then all content for this user on the server is downloaded.
 	 * 
 	 */
 	private void syncTimelines() {
@@ -554,7 +347,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		switch (item.getItemId()) {
 		case R.id.NEW_MAP_VIEW:
 			openMapView();
-			System.out.println("HER SKAL KARTE ÅPNE SEG");
 			return true;
 
 		default:
@@ -582,7 +374,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 				}
 				else {
 					Toast.makeText(getApplicationContext(), "You can only create private timelines in offline mode", Toast.LENGTH_SHORT).show();
-//					openDialogForTimelineNameInput();
 					NewTimelineDialog newTimelineDialog = new NewTimelineDialog(DashboardActivity.this, null,timelineIntent);
 					newTimelineDialog.show();
 				}
