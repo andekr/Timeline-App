@@ -140,6 +140,7 @@ public class NewTimelineDialog extends Dialog {
 						experience.setSharingGroupObject(selectedGroup);
 						ContentUpdater contentUpdater = new ContentUpdater(context);
 						contentUpdater.updateExperience(NewTimelineDialog.this.experience);
+						GoogleAppEngineHandler.persistTimelineObject(experience);
 						Toast.makeText(context, "Timeline: "+experience.toString()+" has been shared with "+selectedGroup.toString(), Toast.LENGTH_SHORT).show();
 					}else
 						createNewTimeline(inputName, share, selectedGroup);

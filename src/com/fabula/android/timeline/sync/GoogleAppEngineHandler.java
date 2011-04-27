@@ -40,6 +40,7 @@ public class GoogleAppEngineHandler {
 		GsonBuilder gsonB = new GsonBuilder();
 		gsonB.registerTypeAdapter(BaseEvent.class, new Serializers.EventSerializer());
 		gsonB.registerTypeAdapter(Event.class, new Serializers.EventSerializer());
+		gsonB.registerTypeAdapter(Experience.class, new Serializers.ExperienceSerializer());
 		gsonB.registerTypeAdapter(Experiences.class, new Serializers.ExperiencesSerializer());
 		
 		Gson gson = gsonB.create();

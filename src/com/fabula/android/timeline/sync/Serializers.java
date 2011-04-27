@@ -15,6 +15,18 @@ import com.google.gson.JsonSerializer;
 
 public class Serializers {
 	
+	protected static class ExperienceSerializer implements JsonSerializer<Experience> {
+		  public JsonElement serialize(Experience src, Type typeOfSrc, JsonSerializationContext context) {
+					 if(src.getEvents().size()==0)
+						 src.setEvents(null);
+			 
+			Gson gson = new Gson();
+		    return new JsonParser().parse(gson.toJson(src));
+		  }
+		}
+
+	
+
 	/**
 	 * Custom serializer for {@link Gson} to remove empty lists, which Google App Engine can't handle right.
 	 * GSON treats empty lists with two brackets [], while Google App Engine inserts an empty object to the database
