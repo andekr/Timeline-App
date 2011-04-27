@@ -117,19 +117,36 @@ public class MoodEvent extends BaseEvent{
 		public static MoodEnum getType(double x, double y) {
 			
 			if(x >= 0.5 && y >= 0.5) {
-				return MoodEnum.VERY_HAPPY;
+				
+				MoodEnum m = MoodEnum.VERY_HAPPY;
+				m.x = x;
+				m.y = y;
+				return m;
 			}
 			else if (x >= 0.5 && y <= 0.5 ) {
-				return MoodEnum.SAD;
+				MoodEnum m = MoodEnum.SAD;
+				m.x = x;
+				m.y = y;
+				return m;
 			}
 			else if(x <= 0.5 && y <= 0.5) {
-				return MoodEnum.VERY_SAD;
+				MoodEnum m = MoodEnum.VERY_SAD;
+				m.x = x;
+				m.y = y;
+				return m;
 			}
 			else if(x <= 0.5 && y >= 0.5) {
-				return MoodEnum.HAPPY;
+				MoodEnum m = MoodEnum.HAPPY;
+				m.x = x;
+				m.y = y;
+				return m;
 			}
 			else {
-				return MoodEnum.HAPPY;
+				
+				MoodEnum m = MoodEnum.HAPPY;
+				m.x = x;
+				m.y = y;
+				return m;
 			}
 //			switch (type) {
 //			case 2:
