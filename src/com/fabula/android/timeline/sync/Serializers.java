@@ -32,19 +32,19 @@ public class Serializers {
 				  for (Experience ex: src.getExperiences()) {
 					 if(ex.getEvents().size()==0)
 						 ex.setEvents(null);
-					  else{
-						  try {
-							  for (BaseEvent baseEvent : ex.getEvents()) {
-									if(baseEvent instanceof Event){
-										removeEmptyListsFromEvent((Event)baseEvent);
-									}
-							}
-						} 
-						  catch (Exception e) {
-							e.printStackTrace();
-						}
-						
-					  }
+//					  else{
+//						  try {
+//							  for (BaseEvent baseEvent : ex.getEvents()) {
+//									if(baseEvent instanceof Event){
+//										removeEmptyListsFromEvent((Event)baseEvent);
+//									}
+//							}
+//						} 
+//						  catch (Exception e) {
+//							e.printStackTrace();
+//						}
+//						
+//					  }
 				  }
 			  }
 			 
