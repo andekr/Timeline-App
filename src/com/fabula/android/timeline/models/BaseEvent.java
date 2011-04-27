@@ -25,10 +25,11 @@ public class BaseEvent {
 	private transient List<String> tags;
 	//For GSON
 	protected String className;
-	private int mood;
 	private List<EventItem> eventItems;
 	private List<Emotion> emotionList;
 	private boolean average;
+	private double moodY;
+	private double moodX;
 	
 	public BaseEvent() {	
 	}
@@ -152,14 +153,22 @@ public class BaseEvent {
 		this.className = className;
 	}
 
-	public int getMoodInt() {
-		return mood;
+	public void setMoodX(double x) {
+		this.moodX = x;
 	}
-
-	public void setMoodInt(int mood) {
-		this.mood = mood;
+	
+	public void setMoodY(double y) {
+		this.moodY = y;
 	}
-
+	
+	public double getMoodX() {
+		return this.moodX;
+	}
+	
+	public double getMoodY() {
+		return this.moodY;
+	}
+	
 	public List<EventItem> getEventItems() {
 		return eventItems;
 	}

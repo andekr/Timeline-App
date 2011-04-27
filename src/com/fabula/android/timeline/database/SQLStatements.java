@@ -45,7 +45,8 @@ public class SQLStatements {
         EventColumns.EVENT_TITLE+" long not null, "+
         EventColumns.IS_SHARED+" INTEGER, "+
         EventColumns.CREATOR+ " varchar not null, "+
-        EventColumns.MOOD + " INTEGER" +");";
+        EventColumns.MOODX + " varchar, "+
+        EventColumns.MOODY + " varchar "+");";
     
     public static final String EVENT_TO_EVENT_ITEM_DATABASE_CREATE =
         "create table " + EVENT_TO_EVENT_ITEM_DATABASE_TABLE_NAME + 

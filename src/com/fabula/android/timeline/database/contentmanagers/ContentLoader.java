@@ -56,7 +56,7 @@ public class ContentLoader {
 		
 		ArrayList<BaseEvent> allEvents = new ArrayList<BaseEvent>();
 		
-		String[] eventTableColumns = new String[]{EventColumns._ID, EventColumns.EVENT_EXPERIENCEID, EventColumns.EVENT_TITLE, EventColumns.EVENT_LOCATION_LAT, EventColumns.EVENT_LOCATION_LNG, EventColumns.IS_SHARED, EventColumns.CREATOR, EventColumns.MOOD};
+		String[] eventTableColumns = new String[]{EventColumns._ID, EventColumns.EVENT_EXPERIENCEID, EventColumns.EVENT_TITLE, EventColumns.EVENT_LOCATION_LAT, EventColumns.EVENT_LOCATION_LNG, EventColumns.IS_SHARED, EventColumns.CREATOR, EventColumns.MOODX, EventColumns.MOODY};
 		
 		Cursor c = context.getContentResolver().query(EventColumns.CONTENT_URI, eventTableColumns, null, null, null);
 		
@@ -67,7 +67,7 @@ public class ContentLoader {
 				location.setLatitude(Double.parseDouble(c.getString(c.getColumnIndex(EventColumns.EVENT_LOCATION_LAT))));
 				location.setLongitude(Double.parseDouble(c.getString(c.getColumnIndex(EventColumns.EVENT_LOCATION_LNG))));
 				
-				if(((Integer) c.getInt(c.getColumnIndex(EventColumns.MOOD)) == 1000)) {
+				if((Double.parseDouble(c.getString(c.getColumnIndex(EventColumns.MOODX))) == 1000)) {
 					Event event = new Event(c.getString(c.getColumnIndex(EventColumns._ID)),
 							c.getString(c.getColumnIndex(EventColumns.EVENT_EXPERIENCEID)), 
 							createdDate,
@@ -84,7 +84,7 @@ public class ContentLoader {
 							c.getString(c.getColumnIndex(EventColumns.EVENT_EXPERIENCEID)), 
 							createdDate,
 							location,
-							MoodEnum.getType(c.getInt(c.getColumnIndex(EventColumns.MOOD))),
+							MoodEnum.getType((Double.parseDouble(c.getString(c.getColumnIndex(EventColumns.MOODX)))), (Double.parseDouble(c.getString(c.getColumnIndex(EventColumns.MOODY))))),
 							new Account(c.getString(c.getColumnIndex(EventColumns.CREATOR)), "com.google"));
 					allEvents.add(moodEvent);
 				}	

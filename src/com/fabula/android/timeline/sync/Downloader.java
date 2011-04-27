@@ -65,7 +65,7 @@ public class Downloader {
 							baseEvents.add(event);
 						}else if(be.getClassName().equals(MoodEvent.class.getSimpleName())){
 							MoodEvent me = new MoodEvent(be.getId(), be.getExperienceid(), 
-									new Date(be.getDatetimemillis()), location, MoodEnum.getType(be.getMoodInt()) , be.getUser());
+									new Date(be.getDatetimemillis()), location, MoodEnum.getType(be.getMoodX(), be.getMoodY()) , be.getUser());
 							me.setShared(true);
 							me.setAverage(be.isAverage());
 							baseEvents.add(me);

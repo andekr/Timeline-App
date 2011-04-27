@@ -1054,16 +1054,16 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 			}
 		});
 		
-		final ActionItem likewise = new ActionItem();
-		
-		likewise.setIcon(this.getResources().getDrawable(MoodEnum.LIKEWISE.getIcon()));
-		likewise.setOnClickListener(new View.OnClickListener() {
-			
-			public void onClick(View v) {
-				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.LIKEWISE, user));
-				qa.dismiss();
-			}
-		});
+//		final ActionItem likewise = new ActionItem();
+//		
+//		likewise.setIcon(this.getResources().getDrawable(MoodEnum.LIKEWISE.getIcon()));
+//		likewise.setOnClickListener(new View.OnClickListener() {
+//			
+//			public void onClick(View v) {
+//				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.LIKEWISE, user));
+//				qa.dismiss();
+//			}
+//		});
 		
 		final ActionItem sad = new ActionItem();
 		
@@ -1095,7 +1095,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 				
 				qa.addActionItem(veryHappy);
 				qa.addActionItem(happy);
-				qa.addActionItem(likewise);
+//				qa.addActionItem(likewise);
 				qa.addActionItem(sad);
 				qa.addActionItem(verySad);
 				qa.setAnimStyle(QuickAction.ANIM_AUTO);

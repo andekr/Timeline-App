@@ -21,10 +21,11 @@ public class MoodEvent extends BaseEvent{
 	public MoodEvent(String experienceID, Location location, MoodEnum mood, Account user) {
 		super(experienceID, location, user);
 		this.mood = mood;
-		setMoodInt(mood.getMoodInt());
 		className = this.getClass().getSimpleName();
 		setShared(true);
 		setAverage(false);
+		setMoodX(mood.getMoodX());
+		setMoodY(mood.getMoodY());
 	}
 	
 	public MoodEvent(String id, String experienceID, Date dateTime, Location location, MoodEnum mood, Account user) {
@@ -33,7 +34,8 @@ public class MoodEvent extends BaseEvent{
 		className = this.getClass().getSimpleName();
 		setShared(true);
 		setAverage(false);
-		setMoodInt(mood.getMoodInt());
+		setMoodX(mood.getMoodX());
+		setMoodY(mood.getMoodY());
 	}
 
 	public MoodEnum getMood() {
@@ -68,15 +70,14 @@ public class MoodEvent extends BaseEvent{
 		this.average = average;
 	}
 
-
-
 	public enum MoodEnum {
-		VERY_HAPPY(2), HAPPY(1), LIKEWISE(0), SAD(-1), VERY_SAD(-2);
+		VERY_HAPPY(1,1), HAPPY(0,1), SAD(1,0), VERY_SAD(0,0);
 
-		private int type;
+		private double x,y;
 		
-		MoodEnum(int type){
-			this.type = type;
+		MoodEnum(double x, double y){
+			this.x = x;
+			this.y = y;
 		}
 		
 		public int getIcon(){
@@ -86,8 +87,8 @@ public class MoodEvent extends BaseEvent{
 				 return R.drawable.mood_very_happy;
 			case HAPPY:
 				return R.drawable.mood_happy;
-			case LIKEWISE:
-				 return R.drawable.mood_likewise;
+//			case LIKEWISE:
+//				 return R.drawable.mood_likewise;
 			case SAD:
 				 return R.drawable.mood_sad;
 			case VERY_SAD:
@@ -97,30 +98,53 @@ public class MoodEvent extends BaseEvent{
 			}
 		}
 		
-		public int getMoodInt() {
-			return type;
+//		public int getMoodInt() {
+//			return type;
+//		}
+		
+		public double getMoodX() {
+			return x;
+		}
+		
+		public double getMoodY() {
+			return y;
 		}
 		
 		public String getName(){
 			return name();
 		}
 		
-		public static MoodEnum getType(int type) {
+		public static MoodEnum getType(double x, double y) {
 			
-			switch (type) {
-			case 2:
-				return MoodEnum.VERY_HAPPY;
-			case 1:
-				return MoodEnum.HAPPY;
-			case 0: 
-				return MoodEnum.LIKEWISE;
-			case -1:
-				return MoodEnum.SAD;
-			case -2:
-				return MoodEnum.VERY_SAD;
-			default:
+			if(x >= 0.5 && y >= 0.5) {
 				return MoodEnum.VERY_HAPPY;
 			}
+			else if (x >= 0.5 && y <= 0.5 ) {
+				return MoodEnum.SAD;
+			}
+			else if(x <= 0.5 && y <= 0.5) {
+				return MoodEnum.VERY_SAD;
+			}
+			else if(x <= 0.5 && y >= 0.5) {
+				return MoodEnum.HAPPY;
+			}
+			else {
+				return MoodEnum.HAPPY;
+			}
+//			switch (type) {
+//			case 2:
+//				return MoodEnum.VERY_HAPPY;
+//			case 1:
+//				return MoodEnum.HAPPY;
+//			case 0: 
+////				return MoodEnum.LIKEWISE;
+////			case -1:
+//				return MoodEnum.SAD;
+//			case -2:
+//				return MoodEnum.VERY_SAD;
+//			default:
+//				return MoodEnum.VERY_HAPPY;
+//			}
 		}
 		
 	}

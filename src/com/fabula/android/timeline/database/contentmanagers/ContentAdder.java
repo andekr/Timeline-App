@@ -47,10 +47,12 @@ public class ContentAdder {
 		 
 		 if(event instanceof MoodEvent)  {
 			 MoodEvent mood = (MoodEvent) event;
-			 values.put(EventColumns.MOOD,  mood.getMood().getMoodInt());
+			 values.put(EventColumns.MOODX,  mood.getMood().getMoodX());
+			 values.put(EventColumns.MOODY, mood.getMood().getMoodY());
 		 }
 		 else {
-			 values.put(EventColumns.MOOD, 1000); //UGLY HACK FOR SEPERATING BETWEEN EVENT AND MOODEVENT
+			 values.put(EventColumns.MOODX, 1000); //UGLY HACK FOR SEPERATING BETWEEN EVENT AND MOODEVENT
+			 values.put(EventColumns.MOODY, 1000); //UGLY HACK FOR SEPERATING BETWEEN EVENT AND MOODEVENT
 		 }
 		 	
 		 try {
