@@ -42,6 +42,8 @@ public class Event extends BaseEvent {
 	}
 	
 	public List<EventItem> getEventItems() {
+		if(eventItems==null)
+			eventItems = new ArrayList<EventItem>();
 		return eventItems;
 	}
 	public void setEventItems(List<EventItem> eventItems) {

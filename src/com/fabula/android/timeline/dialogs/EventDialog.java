@@ -111,7 +111,7 @@ public class EventDialog extends Dialog {
 	
          mainLayout = (LinearLayout)findViewById(R.id.PopupContentLinearLayout);
          emotionLayout = (LinearLayout)findViewById(R.id.PopupMenuDockLinearLayout);
-         updateMainview();
+//         updateMainview();
          
         ((TimelineActivity)mActivity).setSelectedEvent(this.mEvent);
          

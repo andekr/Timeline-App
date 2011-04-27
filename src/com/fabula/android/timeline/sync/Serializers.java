@@ -32,26 +32,19 @@ public class Serializers {
 				  for (Experience ex: src.getExperiences()) {
 					 if(ex.getEvents().size()==0)
 						 ex.setEvents(null);
-//					  else{
-//						  List<BaseEvent> baseEvents = new ArrayList<BaseEvent>();
-//						  try {
-//							  for (BaseEvent baseEvent : ex.getEvents()) {
-//								  BaseEvent bEvent = null;
-//									if(baseEvent instanceof Event){
-//										bEvent = convertEventToBaseEvent((Event)baseEvent);
-//										baseEvents.add(bEvent);
-//									}else if (baseEvent instanceof MoodEvent){
-//										bEvent = convertMoodEventToBaseEvent((MoodEvent)baseEvent);
-//										baseEvents.add(bEvent);
-//									}
-//							}
-//							  ex.setEvents(baseEvents);
-//						} 
-//						  catch (Exception e) {
-//							e.printStackTrace();
-//						}
-//						
-//					  }
+					  else{
+						  try {
+							  for (BaseEvent baseEvent : ex.getEvents()) {
+									if(baseEvent instanceof Event){
+										removeEmptyListsFromEvent((Event)baseEvent);
+									}
+							}
+						} 
+						  catch (Exception e) {
+							e.printStackTrace();
+						}
+						
+					  }
 				  }
 			  }
 			 
@@ -99,10 +92,10 @@ public class Serializers {
 	 * @return the {@link BaseEvent} created 
 	 */
 	private static Event removeEmptyListsFromEvent(Event event) {
-		if(((Event)event).getEmotionList().size()==0)
+		if(event.getEmotionList().size()==0)
 			event.setEmotionList(null);
 		
-		if(((Event)event).getEventItems().size()==0)
+		if(event.getEventItems().size()==0)
 			event.setEventItems(null);
 		
 		

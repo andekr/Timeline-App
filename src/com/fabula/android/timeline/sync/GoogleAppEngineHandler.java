@@ -39,6 +39,7 @@ public class GoogleAppEngineHandler {
 	public static void persistTimelineObject(Object object){
 		GsonBuilder gsonB = new GsonBuilder();
 		gsonB.registerTypeAdapter(BaseEvent.class, new Serializers.EventSerializer());
+		gsonB.registerTypeAdapter(Event.class, new Serializers.EventSerializer());
 		gsonB.registerTypeAdapter(Experiences.class, new Serializers.ExperiencesSerializer());
 		
 		Gson gson = gsonB.create();
