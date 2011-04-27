@@ -21,6 +21,7 @@ public class MoodEvent extends BaseEvent{
 	public MoodEvent(String experienceID, Location location, MoodEnum mood, Account user) {
 		super(experienceID, location, user);
 		this.mood = mood;
+		setMoodInt(mood.getMoodInt());
 		className = this.getClass().getSimpleName();
 		setShared(true);
 		setAverage(false);
@@ -32,6 +33,7 @@ public class MoodEvent extends BaseEvent{
 		className = this.getClass().getSimpleName();
 		setShared(true);
 		setAverage(false);
+		setMoodInt(mood.getMoodInt());
 	}
 
 	public MoodEnum getMood() {
