@@ -374,7 +374,7 @@ public class TimelineGridAdapter extends ArrayAdapter<BaseEvent> {
 
 
 	public void updateDialog(){
-		dialog.updateMainview();
+		dialog.updateMainview(true);
 	}
 	
 	public void updateTagDialog(){

@@ -111,7 +111,7 @@ public class EventDialog extends Dialog {
 	
          mainLayout = (LinearLayout)findViewById(R.id.PopupContentLinearLayout);
          emotionLayout = (LinearLayout)findViewById(R.id.PopupMenuDockLinearLayout);
-//         updateMainview();
+         updateMainview(false);
          
         ((TimelineActivity)mActivity).setSelectedEvent(this.mEvent);
          
@@ -220,7 +220,7 @@ public class EventDialog extends Dialog {
 	 * Update method to run after adding items
 	 * 
 	 */
-	public void updateMainview() {
+	public void updateMainview(boolean sendToServer) {
 		items = this.mEvent.getEventItems();
         mainLayout.removeAllViews();
         emotionLayout.removeAllViews();
@@ -269,16 +269,19 @@ public class EventDialog extends Dialog {
 			ImageView emotionIcon  = getEmotionIcon(mContext.getResources().getDrawable(emotion.getEmotionType().getIcon()));
 			emotionLayout.addView(emotionIcon);
 		}
+		if(sendToServer){
+			Runnable SendEventRunnable = new Runnable() {
+				
+				public void run() {
+					GoogleAppEngineHandler.persistTimelineObject(mEvent);
+				}
+			};	
+	    	//A little overkill to send the whole event. TODO: Make similar for EventItem
+	    	Thread sendEventThread = new Thread(SendEventRunnable, "shareThread");
+			sendEventThread.start();
+		}
 		
-		Runnable SendEventRunnable = new Runnable() {
-			
-			public void run() {
-				GoogleAppEngineHandler.persistTimelineObject(mEvent);
-			}
-		};	
-    	//A little overkill to send the whole event. TODO: Make similar for EventItem
-    	Thread sendEventThread = new Thread(SendEventRunnable, "shareThread");
-		sendEventThread.start();
+		
 		
 	}
 	
@@ -412,7 +415,7 @@ public class EventDialog extends Dialog {
 				((TimelineActivity)mActivity).getContentAdder().addEmotionToDatabase((Event) v.getTag(), emo);
 				Toast.makeText(mContext, R.string.like_toast , Toast.LENGTH_SHORT).show();
 				Log.i(this.toString(), "LIKE event set");
-				updateMainview();
+				updateMainview(true);
 			}
 		});
 				
@@ -429,7 +432,7 @@ public class EventDialog extends Dialog {
 				((TimelineActivity)mActivity).getContentAdder().addEmotionToDatabase((Event) v.getTag(), emo);
 				Toast.makeText(mContext, R.string.cool_toast , Toast.LENGTH_SHORT).show();
 				Log.i(this.toString(), "COOL event set");
-				updateMainview();
+				updateMainview(true);
 			}
 		});
 		
@@ -445,7 +448,7 @@ public class EventDialog extends Dialog {
 				((TimelineActivity)mActivity).getContentAdder().addEmotionToDatabase((Event) v.getTag(), emo);
 				Toast.makeText(mContext, R.string.dislike_toast , Toast.LENGTH_SHORT).show();
 				Log.i(this.toString(), "DISLIKE event set");
-				updateMainview();
+				updateMainview(true);
 			}
 		});
 		
@@ -461,7 +464,7 @@ public class EventDialog extends Dialog {
 				((TimelineActivity)mActivity).getContentAdder().addEmotionToDatabase((Event) v.getTag(), emo);
 				Toast.makeText(mContext, R.string.sad_toast , Toast.LENGTH_SHORT).show();
 				Log.i(this.toString(), "SAD event set");
-				updateMainview();
+				updateMainview(true);
 			}
 
 		});
@@ -492,7 +495,7 @@ public class EventDialog extends Dialog {
         if(items.size()==0){
         	deleteEvent(mEvent);
         }else{
-        	updateMainview();
+        	updateMainview(true);
         }
 		
 	}
@@ -502,7 +505,7 @@ public class EventDialog extends Dialog {
         if(items.size()==0){
         	deleteEvent(mEvent);
         }else{
-        	updateMainview();
+        	updateMainview(true);
         }
 	}
 	
