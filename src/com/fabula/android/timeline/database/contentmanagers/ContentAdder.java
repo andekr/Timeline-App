@@ -155,8 +155,6 @@ public class ContentAdder {
 				addEmotionToDatabase(event, emo);
 			}
 		}
-		
-		
 	}
 
 	private void connectEventWithEventItemInDatabase(Event event, EventItem item) {

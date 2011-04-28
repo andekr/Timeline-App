@@ -13,7 +13,8 @@
  </LinearLayout>
   
 <LinearLayout
-  android:orientation="vertical" android:background="@color/White" android:layout_below="@+id/mooddialogheader" android:layout_height="fill_parent" android:layout_width="fill_parent">
-    <ImageView android:src="@drawable/icon" android:id="@+id/mooddialogpicture" android:layout_gravity="center_horizontal" android:layout_height="fill_parent" android:layout_width="fill_parent" android:scaleType="fitXY" android:paddingBottom="15dip" android:paddingLeft="15dip" android:paddingRight="15dip" android:paddingTop="15dip"></ImageView>
+  android:orientation="vertical" android:background="@color/White" android:layout_below="@+id/mooddialogheader" android:layout_width="fill_parent" android:id="@+id/moodpicture" android:layout_height="fill_parent">
+    <ImageView android:src="@drawable/icon" android:id="@+id/mooddialogpicture" android:layout_gravity="center_horizontal" android:scaleType="fitXY" android:paddingBottom="15dip" android:paddingLeft="15dip" android:paddingRight="15dip" android:paddingTop="15dip" android:layout_height="145dip" android:layout_width="145dip"></ImageView>
+    <TextView android:text="TextView" android:id="@+id/moodmapcoordinates" android:textColor="@color/Black" android:layout_width="fill_parent" android:layout_height="wrap_content" android:paddingLeft="10dip"></TextView>
 </LinearLayout>
 </RelativeLayout>

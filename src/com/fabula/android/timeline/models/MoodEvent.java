@@ -69,6 +69,12 @@ public class MoodEvent extends BaseEvent{
 	public void setAverage(boolean average) {
 		this.average = average;
 	}
+	
+	@Override
+	public String toString() {
+		
+		return "Valence: "+ getMoodX()+ "   Arousal: "+ getMoodY()+ "";
+	}
 
 	public enum MoodEnum {
 		VERY_HAPPY(1,1), HAPPY(0,1), SAD(1,0), VERY_SAD(0,0);

@@ -15,6 +15,7 @@ public class MoodDialog extends Dialog{
 	private TextView dateText;
 	private TextView creatorText;
 	private ImageView moodPicture;
+	private TextView coordinatesText;
 
 	public MoodDialog(Context context, MoodEvent moodEvent) {
 		super(context);
@@ -24,6 +25,9 @@ public class MoodDialog extends Dialog{
 		dateText = (TextView) findViewById(R.id.moodDialogTimestamp);
 		creatorText = (TextView) findViewById(R.id.moodDialogUsername);
 		moodPicture = (ImageView) findViewById(R.id.mooddialogpicture);
+		coordinatesText = (TextView) findViewById(R.id.moodmapcoordinates);
+		
+		coordinatesText.setText(moodEvent.toString());
 		
 		dateText.setText(DateFormat.format
        		 ("dd MM yy "+DateFormat.HOUR_OF_DAY+":mm:ss",moodEvent.getDatetime()));
