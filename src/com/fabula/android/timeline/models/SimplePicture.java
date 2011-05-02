@@ -43,7 +43,7 @@ public class SimplePicture extends EventItem {
 	public SimplePicture(String id, Account u, String pictureFilename) {
 		super(id, u);
 		className = "SimplePicture";
-		File file = Utilities.DownloadFromUrl(pictureFilename, Constants.IMAGE_STORAGE_FILEPATH+pictureFilename);
+		File file = Utilities.DownloadFromUrl(pictureFilename, Constants.IMAGE_STORAGE_FILEPATH+Utilities.getFilenameFromURL(pictureFilename));
 		this.pictureUri = Uri.fromFile(file);
 		this.filename = pictureFilename;
 	}
@@ -54,7 +54,7 @@ public class SimplePicture extends EventItem {
 	}
 	public void setPictureUri(Uri pictureUri, String pictureFilename) {
 		this.pictureUri = pictureUri;
-		this.filename = pictureFilename;
+		this.filename = Constants.MEDIASTORE_URL+pictureFilename;
 	}
 	
 	public String getPictureFilename() {
