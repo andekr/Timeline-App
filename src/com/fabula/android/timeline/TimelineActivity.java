@@ -880,9 +880,10 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 			openMapView();
 			return true;
 		case R.id.AVERAGE_TIMELINE_MOOD:
-			
-			
-//			MoodEvent averageMood = new MoodEvent(timeline, null, mood, user)
+			double[] moodCoordinates = GoogleAppEngineHandler.getAverageMoodForExperience(timeline);
+			MoodEvent averageMood = new MoodEvent(timeline.getId(), null, MoodEnum.getType(moodCoordinates[0], moodCoordinates[1]), timeline.getUser());
+			new MoodDialog(this, averageMood).show();
+			return true;
 		default:
 			break;
 		}
