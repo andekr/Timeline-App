@@ -12,7 +12,6 @@ import java.net.URLConnection;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.StringEntity;
@@ -29,11 +28,9 @@ import com.fabula.android.timeline.models.User;
 import com.fabula.android.timeline.utilities.Constants;
 import com.fabula.android.timeline.utilities.Utilities;
 
-public class Uploader {
+public class ServerUploader {
 	
-	final static HttpHost targetHost = new HttpHost(Constants.GOOGLE_APP_ENGINE_URL, 80, "http");
-	
-	public static void uploadFile(String locationFilename, String saveFilename){
+	protected static void uploadFile(String locationFilename, String saveFilename){
 		System.out.println("saving "+locationFilename+"!! ");
 		if(!saveFilename.contains("."))
 			saveFilename = saveFilename+Utilities.getExtension(locationFilename);
@@ -115,49 +112,34 @@ public class Uploader {
 		}
 	}
 	
-	public static void putToGAE(Object o, String jsonString){       
+	protected static void putToGAE(Object o, String jsonString){       
 		// Using PUT here
 		HttpPut httpPut = makeHttpPutBasedOnObjectType(o);
 		makeJSONHttpRequestContentTypeHeader(httpPut);
-		sendJSONTOGAEServer(jsonString, targetHost, httpPut);
+		sendJSONTOGAEServer(jsonString, Constants.targetHost, httpPut);
 	}
 
 	
-	public static void putGroupToGAE(final String jsonString){  
+	protected static void putGroupToGAE(final String jsonString){  
 		// Using PUT here
 		final HttpPut httpPut = new HttpPut("/rest/group/");
 		makeJSONHttpRequestContentTypeHeader(httpPut);
-		sendJSONTOGAEServer(jsonString, targetHost, httpPut);
+		sendJSONTOGAEServer(jsonString, Constants.targetHost, httpPut);
 	}
 	
-	public static void putUserToGroupToGAE(Group groupToAddUser, User userToAddToGroup){  
+	protected static void putUserToGroupToGAE(Group groupToAddUser, User userToAddToGroup){  
 		// Using PUT here
 		final HttpPut httpPut = new HttpPut("/rest/group/"+groupToAddUser.getId()+"/user/"+userToAddToGroup.getUserName()+"/");
 		makeJSONHttpRequestContentTypeHeader(httpPut);
-		sendJSONTOGAEServer("", targetHost, httpPut);
+		sendJSONTOGAEServer("", Constants.targetHost, httpPut);
 	}
 	
-	public static void deleteUserFromGroupToGAE(Group groupToRemoveMember,
-			User userToRemoveFromGroup) {
-		//using DELETE here
-		final HttpDelete httpDelete = new HttpDelete("/rest/group/"+groupToRemoveMember.getId()+"/user/"+userToRemoveFromGroup.getUserName()+"/");
-		sendDeleteRequestTOGAEServer("", targetHost, httpDelete);
-	}
-	
-	public static void deleteUserFromGroupToGAE(Group selectedGroup) {
-		//using DELETE here
-		final HttpDelete httpDelete = new HttpDelete("/rest/group/"+selectedGroup.getId()+"/");
-		
-		sendDeleteRequestTOGAEServer("", targetHost, httpDelete);
-		
-	}
-
-	public static void putUserToGAE(final String jsonString){  
+	protected static void putUserToGAE(final String jsonString){  
 		// Using PUT here
 		final HttpPut httpPut = new HttpPut("/rest/user/");
 		makeJSONHttpRequestContentTypeHeader(httpPut);
 		
-		sendJSONTOGAEServer(jsonString, targetHost, httpPut);
+		sendJSONTOGAEServer(jsonString, Constants.targetHost, httpPut);
 		
 	}
 
@@ -228,33 +210,7 @@ public class Uploader {
 	
 	}
 	
-	private static void sendDeleteRequestTOGAEServer(String string,
-			final HttpHost targetHost, final HttpDelete httpDelete) {
-	Runnable sendRunnable = new Runnable() {
-			
-			public void run() {
-				try
-				{
-					DefaultHttpClient httpClient = new DefaultHttpClient();
-					
-				        // execute is a blocking call, it's best to call this code in a thread separate from the ui's
-				    HttpResponse response = httpClient.execute(targetHost, httpDelete);
-
-				    Log.v("Delete to GAE", Utilities.convertStreamToString(response.getEntity().getContent()));
-				}
-				catch (Exception ex)
-				{
-				        ex.printStackTrace();
-				}
-					}
-		};
-		
-		Thread thread =  new Thread(null, sendRunnable, "deleteToGAE");
-        thread.start();
-		
-	}
-	
-	public static boolean exists(String URLName){
+	private static boolean exists(String URLName){
 		URL url;
 		try {
 			url = new URL(URLName);

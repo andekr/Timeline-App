@@ -70,7 +70,7 @@ public class UserAndGroupServiceHandler {
 		downloadUsers();	
 	}
 	private void downloadUsers() {
-		Users selectableUsersFromServer = Downloader.getUsersFromServer();
+		Users selectableUsersFromServer = ServerDownloader.getUsersFromServer();
 		if(selectableUsersFromServer!=null){
 			for (User user : selectableUsersFromServer.getUsers()) {
 				uGManager.addUserToUserDatabase(user);
@@ -89,7 +89,7 @@ public class UserAndGroupServiceHandler {
 	
 	
 	private void downloadGroups() {
-		Groups groupsUserIsConnectedToFromServer = Downloader.getGroupsFromServer(new User(Utilities.getUserAccount(mContext).name));
+		Groups groupsUserIsConnectedToFromServer = ServerDownloader.getGroupsFromServer(new User(Utilities.getUserAccount(mContext).name));
 		
 		if(groupsUserIsConnectedToFromServer!=null){
 			for (Group groupToAddToDatabase : groupsUserIsConnectedToFromServer.getGroups()) {

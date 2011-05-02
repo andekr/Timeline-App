@@ -45,7 +45,7 @@ public class GoogleAppEngineHandler {
 		
 		Gson gson = gsonB.create();
 		String jsonString ="";
-
+ 
 		try {
 			jsonString = gson.toJson(object, object.getClass());
 		} catch (Exception e) {
@@ -53,7 +53,7 @@ public class GoogleAppEngineHandler {
 		}
 		
 		    Log.i(TAG, "Saving TimelineObject-JSON to Google App Engine "+jsonString);
-		    Uploader.putToGAE(object, jsonString);
+		    ServerUploader.putToGAE(object, jsonString);
 		    
 		    Log.i(TAG, "Saving files on server");
 		    storeFilesOnServer(object);
@@ -72,7 +72,7 @@ public class GoogleAppEngineHandler {
 		
 	    System.out.println();
 	    Log.i(TAG, "Saving group-JSON on Google App Engine: "+jsonString);
-	    Uploader.putGroupToGAE(jsonString);
+	    ServerUploader.putGroupToGAE(jsonString);
 	    
 	}
 	
@@ -88,40 +88,40 @@ public class GoogleAppEngineHandler {
 		}
 		
 		Log.i(TAG, "Saving user-JSON on Google App Engine: "+jsonString);
-	    Uploader.putUserToGAE(jsonString);
+	    ServerUploader.putUserToGAE(jsonString);
 	}
 	
 	public static void addUserToGroupOnServer(Group groupToGetNewMember, User userToAddToGroup) {
 		Log.i(TAG,"Adding "+ userToAddToGroup +"  to "+groupToGetNewMember.getName()+" on Google App Engine");
-		Uploader.putUserToGroupToGAE(groupToGetNewMember, userToAddToGroup);
+		ServerUploader.putUserToGroupToGAE(groupToGetNewMember, userToAddToGroup);
 	}
 	
 	
 	//REMOVERS
 	public static void removeUserFromGroupOnServer(Group groupToRemoveMember, User userToRemoveFromGroup) {
-		Uploader.deleteUserFromGroupToGAE(groupToRemoveMember, userToRemoveFromGroup);
+		ServerDeleter.deleteUserFromGroupToGAE(groupToRemoveMember, userToRemoveFromGroup);
 	}
 	
 	public static void removeGroupFromDatabase(Group selectedGroup) {
-		Uploader.deleteUserFromGroupToGAE(selectedGroup);
+		ServerDeleter.deleteUserFromGroupToGAE(selectedGroup);
 	}
 	
 	//GETTERS
 	
-	public static int getAverageMoodForExperience(Experience experience){
-		return Downloader.getAverageMoodForExperience(experience);
+	public static double[] getAverageMoodForExperience(Experience experience){
+		return ServerDownloader.getAverageMoodForExperience(experience);
 	}
 	
 	public static Experiences getAllSharedExperiences(User user){
-		return Downloader.getAllSharedExperiencesFromServer(user);
+		return ServerDownloader.getAllSharedExperiencesFromServer(user);
 	}
 	
 	public static List<User> getUsers(){
-		return Downloader.getUsersFromServer().getUsers();
+		return ServerDownloader.getUsersFromServer().getUsers();
 	}
 	
 	public static boolean IsUserRegistered(String username) {
-		return Downloader.IsUserRegistered(username);
+		return ServerDownloader.IsUserRegistered(username);
 	}
 	
 
@@ -141,13 +141,13 @@ public class GoogleAppEngineHandler {
 			    			if(event.getEventItems()!=null && event.isShared()){
 						    		for (EventItem eventI : event.getEventItems()) {
 								    	if(eventI instanceof SimplePicture){
-								    		Uploader.uploadFile(Constants.IMAGE_STORAGE_FILEPATH+((SimplePicture)eventI).getPictureFilename(), 
+								    		ServerUploader.uploadFile(Constants.IMAGE_STORAGE_FILEPATH+((SimplePicture)eventI).getPictureFilename(), 
 								    				((SimplePicture)eventI).getPictureFilename());
 								    	}else if(eventI instanceof SimpleVideo){
-								    		Uploader.uploadFile(Constants.VIDEO_STORAGE_FILEPATH+((SimpleVideo)eventI).getVideoFilename(), 
+								    		ServerUploader.uploadFile(Constants.VIDEO_STORAGE_FILEPATH+((SimpleVideo)eventI).getVideoFilename(), 
 								    				((SimpleVideo)eventI).getVideoFilename());
 								    	}else if(eventI instanceof SimpleRecording){
-								    		Uploader.uploadFile(Constants.RECORDING_STORAGE_FILEPATH+((SimpleRecording)eventI).getRecordingFilename(), 
+								    		ServerUploader.uploadFile(Constants.RECORDING_STORAGE_FILEPATH+((SimpleRecording)eventI).getRecordingFilename(), 
 								    				((SimpleRecording)eventI).getRecordingFilename());
 								    	}
 									}
@@ -161,13 +161,13 @@ public class GoogleAppEngineHandler {
 		}else if(object instanceof Event){
 			for (EventItem eventI : ((Event)object).getEventItems()) {
 		    	if(eventI instanceof SimplePicture){
-		    		Uploader.uploadFile(Constants.IMAGE_STORAGE_FILEPATH+((SimplePicture)eventI).getPictureFilename(), 
+		    		ServerUploader.uploadFile(Constants.IMAGE_STORAGE_FILEPATH+((SimplePicture)eventI).getPictureFilename(), 
 		    				((SimplePicture)eventI).getPictureFilename());
 		    	}else if(eventI instanceof SimpleVideo){
-		    		Uploader.uploadFile(Constants.VIDEO_STORAGE_FILEPATH+((SimpleVideo)eventI).getVideoFilename(), 
+		    		ServerUploader.uploadFile(Constants.VIDEO_STORAGE_FILEPATH+((SimpleVideo)eventI).getVideoFilename(), 
 		    				((SimpleVideo)eventI).getVideoFilename());
 		    	}else if(eventI instanceof SimpleRecording){
-		    		Uploader.uploadFile(Constants.RECORDING_STORAGE_FILEPATH+((SimpleRecording)eventI).getRecordingFilename(), 
+		    		ServerUploader.uploadFile(Constants.RECORDING_STORAGE_FILEPATH+((SimpleRecording)eventI).getRecordingFilename(), 
 		    				((SimpleRecording)eventI).getRecordingFilename());
 		    	}
 			}

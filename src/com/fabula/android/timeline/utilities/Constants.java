@@ -2,6 +2,8 @@ package com.fabula.android.timeline.utilities;
 
 import java.io.File;
 
+import org.apache.http.HttpHost;
+
 import android.os.Environment;
 
 public class Constants {
@@ -43,6 +45,8 @@ public class Constants {
 	public static final String USER_GROUP_DATABASE_NAME = "user_group_database.db";
 
 	public static final String GOOGLE_APP_ENGINE_URL = "reflectapp.appspot.com";
+	
+	public static final HttpHost targetHost = new HttpHost(Constants.GOOGLE_APP_ENGINE_URL, 80, "http");
     
     
     public static float HOUR_IN_MILLIS = 3600000;

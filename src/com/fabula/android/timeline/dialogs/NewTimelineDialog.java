@@ -234,6 +234,7 @@ public class NewTimelineDialog extends Dialog {
 		if(shared) {
 			timeLine.setSharingGroupObject(group);
 			timelineIntent.putExtra(Constants.SHARED_WITH_REQUEST, timeLine.getSharingGroupObject().getId());
+			GoogleAppEngineHandler.persistTimelineObject(timeLine); 
 		}
 		
 		
