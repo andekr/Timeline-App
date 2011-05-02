@@ -1,5 +1,6 @@
 package com.fabula.android.timeline.models;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 
 import android.accounts.Account;
@@ -72,8 +73,8 @@ public class MoodEvent extends BaseEvent{
 	
 	@Override
 	public String toString() {
-		
-		return "Valence: "+ getMoodX()+ "   Arousal: "+ getMoodY()+ "";
+		DecimalFormat twoDecimals = new DecimalFormat("#0.00");
+		return "Valence: "+ twoDecimals.format(getMoodX())+ "   Arousal: "+twoDecimals.format(getMoodY());
 	}
 
 	public enum MoodEnum {
