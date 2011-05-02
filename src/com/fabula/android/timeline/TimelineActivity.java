@@ -877,7 +877,10 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 		case R.id.NEW_MAP_VIEW:
 			openMapView();
 			return true;
-
+		case R.id.AVERAGE_TIMELINE_MOOD:
+			
+			
+//			MoodEvent averageMood = new MoodEvent(timeline, null, mood, user)
 		default:
 			break;
 		}

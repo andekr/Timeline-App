@@ -5,4 +5,8 @@
   <item   android:id="@+id/NEW_MAP_VIEW"
           android:icon="@android:drawable/ic_menu_mapmode"
           android:title="@string/map_view" />
+          
+  <item android:id="@+id/AVERAGE_TIMELINE_MOOD"
+  		android:icon="@drawable/ic_menu_emoticons"
+  		android:title="@string/average_timeline_mood" />
 </menu>
