@@ -312,6 +312,21 @@ public class Utilities {
 		return filename.substring(dot);
 	}
 	
+	public static String getFilenameFromURL(String url){
+		int slashIndex = url.lastIndexOf('/');
+		int dotIndex = url.lastIndexOf('.', slashIndex);
+		if (dotIndex == -1)
+		{
+		  return url.substring(slashIndex + 1);
+		}
+		else
+		{
+		  return "";
+		}
+	}
+	
+	
+	
 	public static String getRealPathFromURI(Uri contentUri, Activity a) {
         String[] proj = { MediaStore.Images.Media.DATA };
         Cursor cursor = a.managedQuery(contentUri, proj, null, null, null);
@@ -388,7 +403,7 @@ public class Utilities {
 	
     public static File DownloadFromUrl(String imageURL, String fileName) {  //this is the downloader method
         try {
-                URL url = new URL("http://folk.ntnu.no/andekr/upload/files/" + imageURL); //you can write here any link
+                URL url = new URL(imageURL); //you can write here any link
                 File file = new File(fileName);
                 System.out.println("THE FILENAME IS "+fileName);
                 if(!file.exists()){
