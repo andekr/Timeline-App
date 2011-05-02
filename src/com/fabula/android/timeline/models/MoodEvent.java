@@ -14,7 +14,7 @@ public class MoodEvent extends BaseEvent{
 	
 	public MoodEvent(){
 		className = this.getClass().getSimpleName();
-		setShared(true);
+		setShared(false);
 		setAverage(false);
 	}
 
@@ -22,7 +22,7 @@ public class MoodEvent extends BaseEvent{
 		super(experienceID, location, user);
 		this.mood = mood;
 		className = this.getClass().getSimpleName();
-		setShared(true);
+		setShared(false);
 		setAverage(false);
 		setMoodX(mood.getMoodX());
 		setMoodY(mood.getMoodY());
@@ -32,7 +32,7 @@ public class MoodEvent extends BaseEvent{
 		super(id, experienceID, dateTime, location, user);
 		this.mood = mood;
 		className = this.getClass().getSimpleName();
-		setShared(true);
+		setShared(false);
 		setAverage(false);
 		setMoodX(mood.getMoodX());
 		setMoodY(mood.getMoodY());
