@@ -30,7 +30,7 @@ public class MoodDialog extends Dialog{
 		coordinatesText.setText(moodEvent.toString());
 		
 		dateText.setText(DateFormat.format
-       		 ("dd MM yy "+DateFormat.HOUR_OF_DAY+":mm:ss",moodEvent.getDatetime()));
+       		 ("dd.MM.yy "+DateFormat.HOUR_OF_DAY+":mm:ss",moodEvent.getDatetime()));
 		if(moodEvent.isAverage())
 			creatorText.setText("Current average");
 		else
