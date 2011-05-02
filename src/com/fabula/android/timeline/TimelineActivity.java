@@ -181,6 +181,8 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
         			addNoteToTimeline(getIntent());
         	}
         }
+        
+        Log.d("AVERAGE", "Avg "+GoogleAppEngineHandler.getAverageMoodForExperience(timeline)[0]+", "+GoogleAppEngineHandler.getAverageMoodForExperience(timeline)[1]);
     }
 
 	private void setupZoom() {

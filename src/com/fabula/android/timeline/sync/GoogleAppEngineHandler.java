@@ -108,7 +108,7 @@ public class GoogleAppEngineHandler {
 	
 	//GETTERS
 	
-	public static int getAverageMoodForExperience(Experience experience){
+	public static double[] getAverageMoodForExperience(Experience experience){
 		return ServerDownloader.getAverageMoodForExperience(experience);
 	}
 	

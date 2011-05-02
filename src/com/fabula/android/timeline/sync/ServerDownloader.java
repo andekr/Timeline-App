@@ -143,11 +143,20 @@ public class ServerDownloader {
 	 }
 	 
 
-	protected static int getAverageMoodForExperience(Experience experience) {
-		 InputStream is = getJSONData("/rest/mood/experience/id/"+experience.getId()+"/");
-		 int average = 0;
+	protected static double[] getAverageMoodForExperience(Experience experience) {
+		 InputStream is = getJSONData("/rest/mood/id/"+experience.getId()+"/");
+		 double[] average = new double[]{0,0};
 		 if(is!=null){
-			 average = Integer.valueOf(Utilities.convertStreamToString(is));
+			 JSONObject json;
+			try {
+				json = new JSONObject(Utilities.convertStreamToString(is));
+				average[0] = json.getDouble("moodX");
+				average[1] = json.getDouble("moodY");
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		 }
 		return average;
 	}
