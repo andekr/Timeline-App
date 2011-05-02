@@ -51,7 +51,7 @@ public class Event extends BaseEvent {
 	}
 	
 	public void addEmotion(Emotion emotion){
-		emotionList.add(emotion);
+		getEmotionList().add(emotion);
 	}
 	
 	public List<Emotion> getEmotionList() {
