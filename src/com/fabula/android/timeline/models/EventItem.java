@@ -13,6 +13,7 @@ import android.view.View;
 import com.fabula.android.timeline.database.providers.EventItemProvider;
 import com.fabula.android.timeline.models.Event.EventColumns;
 import com.fabula.android.timeline.utilities.Utilities;
+import com.google.gson.annotations.SerializedName;
 
 public abstract class EventItem {
 	
@@ -22,6 +23,7 @@ public abstract class EventItem {
 	
 	//Workaroud for GSON to serialize these fields in subclasses
 	String className;
+	@SerializedName("filename")
 	String url;
 	String noteTitle;
 	String noteText;
