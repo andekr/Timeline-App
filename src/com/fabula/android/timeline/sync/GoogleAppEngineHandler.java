@@ -145,10 +145,10 @@ public class GoogleAppEngineHandler {
 								    		ServerUploader.uploadFile(Constants.IMAGE_STORAGE_FILEPATH+((SimplePicture)eventI).getPictureFilename(), 
 								    				((SimplePicture)eventI).getPictureFilename());
 								    	}else if(eventI instanceof SimpleVideo){
-								    		ServerUploader.uploadFile(Constants.VIDEO_STORAGE_FILEPATH+Utilities.getFilenameFromURL(((SimpleVideo)eventI).getVideoFilename()), 
+								    		ServerUploader.uploadFile(Constants.VIDEO_STORAGE_FILEPATH+((SimpleVideo)eventI).getVideoFilename(), 
 								    				((SimpleVideo)eventI).getVideoFilename());
 								    	}else if(eventI instanceof SimpleRecording){
-								    		ServerUploader.uploadFile(Constants.RECORDING_STORAGE_FILEPATH+Utilities.getFilenameFromURL(((SimpleRecording)eventI).getRecordingFilename()), 
+								    		ServerUploader.uploadFile(Constants.RECORDING_STORAGE_FILEPATH+((SimpleRecording)eventI).getRecordingFilename(), 
 								    				((SimpleRecording)eventI).getRecordingFilename());
 								    	}
 									}
@@ -165,10 +165,10 @@ public class GoogleAppEngineHandler {
 		    		ServerUploader.uploadFile(Constants.IMAGE_STORAGE_FILEPATH+((SimplePicture)eventI).getPictureFilename(), 
 		    				((SimplePicture)eventI).getPictureFilename());
 		    	}else if(eventI instanceof SimpleVideo){
-		    		ServerUploader.uploadFile(Constants.VIDEO_STORAGE_FILEPATH+Utilities.getFilenameFromURL(((SimpleVideo)eventI).getVideoFilename()), 
+		    		ServerUploader.uploadFile(Constants.VIDEO_STORAGE_FILEPATH+((SimpleVideo)eventI).getVideoFilename(), 
 		    				((SimpleVideo)eventI).getVideoFilename());
 		    	}else if(eventI instanceof SimpleRecording){
-		    		ServerUploader.uploadFile(Constants.RECORDING_STORAGE_FILEPATH+Utilities.getFilenameFromURL(((SimpleRecording)eventI).getRecordingFilename()), 
+		    		ServerUploader.uploadFile(Constants.RECORDING_STORAGE_FILEPATH+((SimpleRecording)eventI).getRecordingFilename(), 
 		    				((SimpleRecording)eventI).getRecordingFilename());
 		    	}
 			}
