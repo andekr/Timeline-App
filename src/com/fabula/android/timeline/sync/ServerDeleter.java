@@ -4,6 +4,7 @@ import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.CoreProtocolPNames;
 
 import android.util.Log;
 
@@ -18,6 +19,7 @@ public class ServerDeleter {
 			User userToRemoveFromGroup) {
 		//using DELETE here
 		final HttpDelete httpDelete = new HttpDelete("/rest/group/"+groupToRemoveMember.getId()+"/user/"+userToRemoveFromGroup.getUserName()+"/");
+		httpDelete.addHeader(CoreProtocolPNames.USER_AGENT, "TimelineAndroid");
 		sendDeleteRequestTOGAEServer("", Constants.targetHost, httpDelete);
 	}
 	

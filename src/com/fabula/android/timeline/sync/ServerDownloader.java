@@ -11,6 +11,7 @@ import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.CoreProtocolPNames;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -169,6 +170,7 @@ public class ServerDownloader {
 	 */
 	public static InputStream getJSONData(String url){
         DefaultHttpClient httpClient = new DefaultHttpClient();
+        httpClient.getParams().setParameter(CoreProtocolPNames.USER_AGENT, "TimelineAndroid");
         InputStream data = null;
         try {
             HttpHost targetHost = new HttpHost(Constants.GOOGLE_APP_ENGINE_URL, 80, "http");
@@ -177,6 +179,7 @@ public class ServerDownloader {
     		httpGet.addHeader("Accept", "application/json");
     		// Also be sure to tell the server what kind of content we are sending
     		httpGet.addHeader("Content-Type", "application/json");
+    		
             
             HttpResponse response = httpClient.execute(targetHost, httpGet);
             data = null; 

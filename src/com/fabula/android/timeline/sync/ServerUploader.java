@@ -171,7 +171,7 @@ public class ServerUploader {
 		httpRequest.addHeader("Accept", "application/json");
 		// Also be sure to tell the server what kind of content we are sending
 		httpRequest.addHeader("Content-Type", "application/json");
-		httpRequest.addHeader(CoreProtocolPNames.USER_AGENT, "Android");
+		httpRequest.addHeader(CoreProtocolPNames.USER_AGENT, "TimelineAndroid");
 	}
 	
 
