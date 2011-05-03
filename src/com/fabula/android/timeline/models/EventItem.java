@@ -22,7 +22,7 @@ public abstract class EventItem {
 	
 	//Workaroud for GSON to serialize these fields in subclasses
 	String className;
-	String filename;
+	String url;
 	String noteTitle;
 	String noteText;
 	
@@ -130,7 +130,7 @@ public abstract class EventItem {
 	        sb.append("EventItem className: ").append(className+"\n");
 	        sb.append("EventItem title: ").append(noteTitle+"\n");
 	        sb.append("EventItem text: ").append(noteText+"\n");
-	        sb.append("EventItem filename: ").append(filename+"\n");
+	        sb.append("EventItem url: ").append(url+"\n");
 	       
 	    return sb.toString();
 	}

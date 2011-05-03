@@ -314,15 +314,7 @@ public class Utilities {
 	
 	public static String getFilenameFromURL(String url){
 		int slashIndex = url.lastIndexOf('/');
-		int dotIndex = url.lastIndexOf('.', slashIndex);
-		if (dotIndex == -1)
-		{
-		  return url.substring(slashIndex + 1);
-		}
-		else
-		{
-		  return "";
-		}
+		 return url.substring(slashIndex + 1);
 	}
 	
 	

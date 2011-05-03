@@ -676,7 +676,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	private void addPictureToTimeline(String filename){
 		
 		SimplePicture picture = new SimplePicture(this);
-		picture.setPictureUri(imageUri, filename);
+		picture.setPictureUri(imageUri, Constants.MEDIASTORE_URL+filename);
 		
 		
     	if(selectedEvent!=null){
@@ -696,7 +696,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	private void addVideoToTimeline(String filename){
 		
 		SimpleVideo sVideo = new SimpleVideo(this);
-		sVideo.setVideoUri(videoUri, filename);
+		sVideo.setVideoUri(videoUri, Constants.MEDIASTORE_URL+filename);
 			
     	if(selectedEvent!=null){
     		addItemToExistingEvent(sVideo);
@@ -714,7 +714,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	 */
 	private void addAudioToTimeline(String filename) {
 		 SimpleRecording sRecordring = new SimpleRecording(this);
-		 sRecordring.setRecordingUri(audioUri, filename);
+		 sRecordring.setRecordingUri(audioUri, Constants.MEDIASTORE_URL+filename);
 		
 		if(selectedEvent!=null){
 				addItemToExistingEvent(sRecordring);

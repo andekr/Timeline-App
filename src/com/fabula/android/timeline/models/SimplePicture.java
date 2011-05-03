@@ -33,36 +33,37 @@ public class SimplePicture extends EventItem {
 		className = "SimplePicture";
 	}
 	
-	public SimplePicture(String id, Uri uri, Account u, String pictureFilename) {
+	public SimplePicture(String id, Uri uri, Account u, String pictureUrl) {
 		super(id, u);
 		className = "SimplePicture";
 		this.pictureUri = uri;
-		this.filename = pictureFilename;
+		this.url = pictureUrl;
 	}
 	
-	public SimplePicture(String id, Account u, String pictureFilename) {
+	public SimplePicture(String id, Account u, String pictureUrl) {
 		super(id, u);
 		className = "SimplePicture";
-		File file = Utilities.DownloadFromUrl(pictureFilename, Constants.IMAGE_STORAGE_FILEPATH+Utilities.getFilenameFromURL(pictureFilename));
+		this.url = pictureUrl;
+		File file = Utilities.DownloadFromUrl(pictureUrl, Constants.IMAGE_STORAGE_FILEPATH+getPictureFilename());
 		this.pictureUri = Uri.fromFile(file);
-		this.filename = pictureFilename;
+		
 	}
 	
 
 	public Uri getPictureUri() {
 		return pictureUri;
 	}
-	public void setPictureUri(Uri pictureUri, String pictureFilename) {
+	public void setPictureUri(Uri pictureUri, String pictureUrl) {
 		this.pictureUri = pictureUri;
-		this.filename = Constants.MEDIASTORE_URL+pictureFilename;
+		this.url = pictureUrl;
 	}
 	
 	public String getPictureFilename() {
-		return filename;
+		return Utilities.getFilenameFromURL(url);
 	}
 
-	public void setPictureFilename(String pictureFilename) {
-		this.filename = pictureFilename;
+	public void setPictureUrl(String pictureUrl) {
+		this.url = pictureUrl;
 	}
 	
 	

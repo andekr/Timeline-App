@@ -33,22 +33,23 @@ public class SimpleRecording extends EventItem{
 		className = "SimpleRecording";
 	}
 	
-	public SimpleRecording(String id, Uri uri, Account u, String recordingFilename){
+	public SimpleRecording(String id, Uri uri, Account u, String recordingUrl){
 		super(id,u);
 		className = "SimpleRecording";
 		this.recordingUri = uri;
-		filename = recordingFilename;
+		url = recordingUrl;
 	}
 	
-	public SimpleRecording(String id, Account u, String recordingFilename) {
+	public SimpleRecording(String id, Account u, String recordingUrl) {
 		super(id, u);
 		className = "SimpleRecording";
 		if(!(new File(Constants.RECORDING_STORAGE_FILEPATH)).exists()) {
 			(new File(Constants.RECORDING_STORAGE_FILEPATH)).mkdirs();
 		}
-		File file = Utilities.DownloadFromUrl(recordingFilename, Constants.RECORDING_STORAGE_FILEPATH+recordingFilename);
+		url = recordingUrl;
+		File file = Utilities.DownloadFromUrl(recordingUrl, Constants.RECORDING_STORAGE_FILEPATH+getRecordingFilename());
 		this.recordingUri = Uri.fromFile(file);
-		filename = recordingFilename;
+		
 	}
 	
 	
@@ -64,17 +65,17 @@ public class SimpleRecording extends EventItem{
 		return recordingUri;
 	}
 
-	public void setRecordingUri(Uri recordingUri, String recordingFilename) {
+	public void setRecordingUri(Uri recordingUri, String recordingUrl) {
 		this.recordingUri = recordingUri;
-		filename = recordingFilename;
+		url = recordingUrl;
 	}
 	
 	public String getRecordingFilename(){
-		return filename;
+		return Utilities.getFilenameFromURL(url);
 	}
 	
-	public void setRecoridingFilename(String recordingFilename){
-		filename=recordingFilename;
+	public void setRecoridingUrl(String recordingUrl){
+		url=recordingUrl;
 	}
 
 	public MediaPlayer getMp() {

@@ -29,13 +29,14 @@ import com.fabula.android.timeline.utilities.Constants;
 import com.fabula.android.timeline.utilities.Utilities;
 
 public class ServerUploader {
+//	noe er feil her. Tror ikke bilder blir lastet opp
 	
 	protected static void uploadFile(String locationFilename, String saveFilename){
 		System.out.println("saving "+locationFilename+"!! ");
 		if(!saveFilename.contains("."))
 			saveFilename = saveFilename+Utilities.getExtension(locationFilename);
 		
-		if(!exists("http://folk.ntnu.no/andekr/upload/files/"+saveFilename)){
+		if(!exists(saveFilename)){
 		
 			HttpURLConnection connection = null;
 			DataOutputStream outputStream = null;

@@ -26,22 +26,23 @@ public class SimpleVideo extends EventItem {
 		super(c);
 		className = "SimpleVideo";
 	}
-	public SimpleVideo(String id, Uri uri, Account u, String videoFilename) {
+	public SimpleVideo(String id, Uri uri, Account u, String videoUrl) {
 		super(id, u);
 		className = "SimplePicture";
 		this.videoURI = uri;
-		filename = videoFilename;
+		url = videoUrl;
 	}
 	
-	public SimpleVideo(String id, Account u, String videoFilename) {
+	public SimpleVideo(String id, Account u, String videoUrl) {
 		super(id, u);
 		className = "SimpleVideo";
 		if(!(new File(Constants.VIDEO_STORAGE_FILEPATH)).exists()) {
 			(new File(Constants.VIDEO_STORAGE_FILEPATH)).mkdirs();
 		}
-		File file = Utilities.DownloadFromUrl(videoFilename, Constants.VIDEO_STORAGE_FILEPATH+videoFilename);
+		url = videoUrl;
+		File file = Utilities.DownloadFromUrl(videoUrl, Constants.VIDEO_STORAGE_FILEPATH+getVideoFilename());
 		this.videoURI = Uri.fromFile(file);
-		filename = videoFilename;
+		
 	}
 	
 	
@@ -49,18 +50,18 @@ public class SimpleVideo extends EventItem {
 	
 
 	public String getVideoFilename() {
-		return filename;
+		return Utilities.getFilenameFromURL(url);
 	}
-	public void setVideoFilename(String videoFileName) {
-		this.filename = videoFileName;
+	public void setVideoFilename(String videoUrl) {
+		this.url = videoUrl;
 	}
 
 	public Uri getVideoUri() {
 		return videoURI;
 	}
-	public void setVideoUri(Uri video, String videoFilename) {
+	public void setVideoUri(Uri video, String videoUrl) {
 		this.videoURI = video;
-		filename = videoFilename;
+		url = videoUrl;
 	}
 	@Override
 	public View getView(Context context) {
