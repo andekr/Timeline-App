@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
     <string name="hello">Hello World, starterActivity!</string>
-    <string name="app_name">TimelineApplication</string>
+    <string name="app_name">Timeline</string>
 
     <string name="create_note_name">Create a new note</string>
 	<string name="save_label">Save</string>
