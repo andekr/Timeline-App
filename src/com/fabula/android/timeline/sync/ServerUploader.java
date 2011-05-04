@@ -29,7 +29,6 @@ import com.fabula.android.timeline.utilities.Constants;
 import com.fabula.android.timeline.utilities.Utilities;
 
 public class ServerUploader {
-//	noe er feil her. Tror ikke bilder blir lastet opp
 	
 	protected static void uploadFile(String locationFilename, String saveFilename){
 		System.out.println("saving "+locationFilename+"!! ");
