@@ -67,7 +67,7 @@ public class SimplePicture extends EventItem {
 	}
 	
 	public String getPictureUrl() {
-		return this.url;
+		return this.url; 
 	}
 	
 	
