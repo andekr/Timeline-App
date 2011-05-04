@@ -152,8 +152,8 @@ public class ServerDownloader {
 			 JSONObject json;
 			try {
 				json = new JSONObject(Utilities.convertStreamToString(is));
-				average[0] = json.getDouble("moodX");
-				average[1] = json.getDouble("moodY");
+				average[0] = json.getDouble("valence");
+				average[1] = json.getDouble("arousal");
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
