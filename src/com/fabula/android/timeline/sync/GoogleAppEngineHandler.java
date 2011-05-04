@@ -97,7 +97,6 @@ public class GoogleAppEngineHandler {
 		ServerUploader.putUserToGroupToGAE(groupToGetNewMember, userToAddToGroup);
 	}
 	
-	
 	//REMOVERS
 	public static void removeUserFromGroupOnServer(Group groupToRemoveMember, User userToRemoveFromGroup) {
 		ServerDeleter.deleteUserFromGroupToGAE(groupToRemoveMember, userToRemoveFromGroup);
