@@ -28,8 +28,8 @@ public class BaseEvent {
 	private List<EventItem> eventItems;
 	private List<Emotion> emotionList;
 	private boolean average;
-	private double moodY;
-	private double moodX;
+	private double arousal;
+	private double valence;
 	
 	public BaseEvent() {	
 	}
@@ -154,19 +154,19 @@ public class BaseEvent {
 	}
 
 	public void setMoodX(double x) {
-		this.moodX = x;
+		this.valence = x;
 	}
 	
 	public void setMoodY(double y) {
-		this.moodY = y;
+		this.arousal = y;
 	}
 	
 	public double getMoodX() {
-		return this.moodX;
+		return this.valence;
 	}
 	
 	public double getMoodY() {
-		return this.moodY;
+		return this.arousal;
 	}
 	
 	public List<EventItem> getEventItems() {

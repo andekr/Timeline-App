@@ -332,16 +332,15 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 	
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.mapviewmenu, menu);
+	    inflater.inflate(R.menu.dashboard_menu, menu);
 	    return true;
 	}
 	
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.NEW_MAP_VIEW:
-			openMapView();
+		case R.id.SEND_EMAIL_WITH_CONTENT:
+			GoogleAppEngineHandler.sendEmailWithActivity();
 			return true;
-
 		default:
 			break;
 		}

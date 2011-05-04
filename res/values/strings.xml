@@ -72,6 +72,7 @@
 	<string name="openMapView">Open Mapview</string>
 	<string name="map_view">Open Map View</string>
 	<string name="average_timeline_mood">See average timeline mood</string>
+	<string name="email_title">Send activity report!</string>
 
 
 </resources>

@@ -174,4 +174,9 @@ public class GoogleAppEngineHandler {
 		}
 	}
 
+	public static void sendEmailWithActivity() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
