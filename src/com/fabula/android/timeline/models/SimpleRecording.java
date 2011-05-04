@@ -74,8 +74,12 @@ public class SimpleRecording extends EventItem{
 		return Utilities.getFilenameFromURL(url);
 	}
 	
-	public void setRecoridingUrl(String recordingUrl){
+	public void setRecordingUrl(String recordingUrl){
 		url=recordingUrl;
+	}
+	
+	public String getRecordingUrl() {
+		return this.url;
 	}
 
 	public MediaPlayer getMp() {

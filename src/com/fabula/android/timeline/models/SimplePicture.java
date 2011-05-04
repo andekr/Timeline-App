@@ -66,6 +66,9 @@ public class SimplePicture extends EventItem {
 		this.url = pictureUrl;
 	}
 	
+	public String getPictureUrl() {
+		return this.url;
+	}
 	
 	
 	//For GSON serializing

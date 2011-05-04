@@ -142,14 +142,14 @@ public class GoogleAppEngineHandler {
 			    			if(event.getEventItems()!=null && event.isShared()){
 						    		for (EventItem eventI : event.getEventItems()) {
 								    	if(eventI instanceof SimplePicture){
-								    		ServerUploader.uploadFile(Constants.IMAGE_STORAGE_FILEPATH+((SimplePicture)eventI).getPictureFilename(), 
+								    		ServerUploader.uploadFile(Constants.IMAGE_STORAGE_FILEPATH+((SimplePicture)eventI).getPictureUrl(), 
 								    				((SimplePicture)eventI).getPictureFilename());
 								    	}else if(eventI instanceof SimpleVideo){
-								    		ServerUploader.uploadFile(Constants.VIDEO_STORAGE_FILEPATH+((SimpleVideo)eventI).getVideoFilename(), 
+								    		ServerUploader.uploadFile(Constants.VIDEO_STORAGE_FILEPATH+((SimpleVideo)eventI).getVideoUrl(), 
 								    				((SimpleVideo)eventI).getVideoFilename());
 								    	}else if(eventI instanceof SimpleRecording){
 								    		ServerUploader.uploadFile(Constants.RECORDING_STORAGE_FILEPATH+((SimpleRecording)eventI).getRecordingFilename(), 
-								    				((SimpleRecording)eventI).getRecordingFilename());
+								    				((SimpleRecording)eventI).getRecordingUrl());
 								    	}
 									}
 			    				}

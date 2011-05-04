@@ -52,9 +52,14 @@ public class SimpleVideo extends EventItem {
 	public String getVideoFilename() {
 		return Utilities.getFilenameFromURL(url);
 	}
-	public void setVideoFilename(String videoUrl) {
+	public void setVideoUrl(String videoUrl) {
 		this.url = videoUrl;
 	}
+	
+	public String getVideoUrl() {
+		return this.url;
+	}
+	
 
 	public Uri getVideoUri() {
 		return videoURI;
