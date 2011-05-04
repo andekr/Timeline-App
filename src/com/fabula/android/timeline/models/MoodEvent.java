@@ -94,8 +94,6 @@ public class MoodEvent extends BaseEvent{
 				 return R.drawable.happy;
 			case NERVOUS:
 				return R.drawable.nervous;
-//			case LIKEWISE:
-//				 return R.drawable.mood_likewise;
 			case CALM:
 				 return R.drawable.calm;
 			case SAD:
@@ -104,11 +102,7 @@ public class MoodEvent extends BaseEvent{
 				return R.drawable.calm;
 			}
 		}
-		
-//		public int getMoodInt() {
-//			return type;
-//		}
-		
+				
 		public double getMoodX() {
 			return x;
 		}
@@ -155,20 +149,6 @@ public class MoodEvent extends BaseEvent{
 				m.y = y;
 				return m;
 			}
-//			switch (type) {
-//			case 2:
-//				return MoodEnum.VERY_HAPPY;
-//			case 1:
-//				return MoodEnum.HAPPY;
-//			case 0: 
-////				return MoodEnum.LIKEWISE;
-////			case -1:
-//				return MoodEnum.SAD;
-//			case -2:
-//				return MoodEnum.VERY_SAD;
-//			default:
-//				return MoodEnum.VERY_HAPPY;
-//			}
 		}
 		
 	}
