@@ -164,7 +164,7 @@ public class ServerDownloader {
 	}
 	
 	public static void sendStatusMailToUser(User userToEmail) {
-		InputStream is = getJSONData("/rest/status/"+userToEmail);
+		getJSONData("/rest/status/"+userToEmail);
 	}
 	
 	/**

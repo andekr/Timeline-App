@@ -339,7 +339,14 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.SEND_EMAIL_WITH_CONTENT:
-			GoogleAppEngineHandler.sendEmailWithActivity(user);
+			//Check if user is registered
+			Runnable sendEmailRunnable = new Runnable() {
+				public void run() {
+					GoogleAppEngineHandler.sendEmailWithActivity(user);
+				}
+			};
+			Thread sendEmailThread = new Thread(sendEmailRunnable);
+			sendEmailThread.start();
 			return true;
 		default:
 			break;
