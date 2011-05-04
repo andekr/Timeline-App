@@ -3,6 +3,6 @@
   xmlns:android="http://schemas.android.com/apk/res/android">
   
     <item android:id="@+id/SEND_EMAIL_WITH_CONTENT"
-          android:icon="@android:drawable/ic_menu_mapmode"
+          android:icon="@android:drawable/ic_menu_send"
           android:title="@string/email_title" />
 </menu>
