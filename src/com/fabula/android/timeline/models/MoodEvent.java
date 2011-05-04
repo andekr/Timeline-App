@@ -78,7 +78,7 @@ public class MoodEvent extends BaseEvent{
 	}
 
 	public enum MoodEnum {
-		VERY_HAPPY(1,1), HAPPY(0,1), SAD(1,0), VERY_SAD(0,0);
+		HAPPY(1,1), NERVOUS(0,1), CALM(1,0), SAD(0,0);
 
 		private double x,y;
 		
@@ -90,18 +90,18 @@ public class MoodEvent extends BaseEvent{
 		public int getIcon(){
 			
 			switch (this) {
-			case VERY_HAPPY:
-				 return R.drawable.mood_very_happy;
 			case HAPPY:
-				return R.drawable.mood_happy;
+				 return R.drawable.happy;
+			case NERVOUS:
+				return R.drawable.nervous;
 //			case LIKEWISE:
 //				 return R.drawable.mood_likewise;
+			case CALM:
+				 return R.drawable.calm;
 			case SAD:
-				 return R.drawable.mood_sad;
-			case VERY_SAD:
-				return R.drawable.mood_very_sad;
+				return R.drawable.sad;
 			default:
-				return R.drawable.mood_happy;
+				return R.drawable.calm;
 			}
 		}
 		
@@ -125,32 +125,32 @@ public class MoodEvent extends BaseEvent{
 			
 			if(x >= 0.5 && y >= 0.5) {
 				
-				MoodEnum m = MoodEnum.VERY_HAPPY;
+				MoodEnum m = MoodEnum.NERVOUS;
 				m.x = x;
 				m.y = y;
 				return m;
 			}
 			else if (x >= 0.5 && y <= 0.5 ) {
-				MoodEnum m = MoodEnum.SAD;
+				MoodEnum m = MoodEnum.CALM;
 				m.x = x;
 				m.y = y;
 				return m;
 			}
 			else if(x <= 0.5 && y <= 0.5) {
-				MoodEnum m = MoodEnum.VERY_SAD;
+				MoodEnum m = MoodEnum.SAD;
 				m.x = x;
 				m.y = y;
 				return m;
 			}
 			else if(x <= 0.5 && y >= 0.5) {
-				MoodEnum m = MoodEnum.HAPPY;
+				MoodEnum m = MoodEnum.NERVOUS;
 				m.x = x;
 				m.y = y;
 				return m;
 			}
 			else {
 				
-				MoodEnum m = MoodEnum.HAPPY;
+				MoodEnum m = MoodEnum.NERVOUS;
 				m.x = x;
 				m.y = y;
 				return m;

@@ -1039,11 +1039,11 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 		final ActionItem veryHappy = new ActionItem();
 		
 		final Account user = Utilities.getUserAccount(getApplicationContext());
-		veryHappy.setIcon(this.getResources().getDrawable(MoodEnum.VERY_HAPPY.getIcon()));
+		veryHappy.setIcon(this.getResources().getDrawable(MoodEnum.HAPPY.getIcon()));
 		veryHappy.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.VERY_HAPPY, user));
+				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.HAPPY, user));
 				qa.dismiss();
 			}
 		});
@@ -1051,11 +1051,11 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 				
 		final ActionItem happy = new ActionItem();
 		
-		happy.setIcon(this.getResources().getDrawable(MoodEnum.HAPPY.getIcon()));
+		happy.setIcon(this.getResources().getDrawable(MoodEnum.NERVOUS.getIcon()));
 		happy.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.HAPPY, user));
+				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.NERVOUS, user));
 				qa.dismiss();
 			}
 		});
@@ -1073,22 +1073,22 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 		
 		final ActionItem sad = new ActionItem();
 		
-		sad.setIcon(this.getResources().getDrawable(MoodEnum.SAD.getIcon()));
+		sad.setIcon(this.getResources().getDrawable(MoodEnum.CALM.getIcon()));
 		sad.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.SAD, user));
+				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.CALM, user));
 				qa.dismiss();
 			}
 		});
 		
 		final ActionItem verySad = new ActionItem();
 		
-		verySad.setIcon(this.getResources().getDrawable(MoodEnum.VERY_SAD.getIcon()));
+		verySad.setIcon(this.getResources().getDrawable(MoodEnum.SAD.getIcon()));
 		verySad.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.VERY_SAD, user));
+				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.SAD, user));
 				qa.dismiss();
 			}
 		});
