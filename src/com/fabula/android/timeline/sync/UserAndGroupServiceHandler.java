@@ -2,6 +2,7 @@ package com.fabula.android.timeline.sync;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.util.Log;
 
 import com.fabula.android.timeline.ProgressDialogActivity;
 import com.fabula.android.timeline.database.contentmanagers.UserGroupManager;

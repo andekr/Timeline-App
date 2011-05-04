@@ -63,13 +63,9 @@ public class UserProvider extends BaseContentProvider {
 	}
 	
 	@Override
-	public int delete(Uri uri, String userName, String[] whereArgs) {
+	public int delete(Uri uri, String where, String[] whereArgs) {
 		int count = 0;
-		
-		String where = userName+ " = " +UserColumns.USER_NAME;
-		
 		count = super.getUserDatabase().delete(SQLStatements.USER_DATABASE_TABLE_NAME, where, whereArgs);
-		
 		return count;
 	}
 	
