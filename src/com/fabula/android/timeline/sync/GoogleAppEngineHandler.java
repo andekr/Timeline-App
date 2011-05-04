@@ -97,6 +97,8 @@ public class GoogleAppEngineHandler {
 		ServerUploader.putUserToGroupToGAE(groupToGetNewMember, userToAddToGroup);
 	}
 	
+	
+	
 	//REMOVERS
 	public static void removeUserFromGroupOnServer(Group groupToRemoveMember, User userToRemoveFromGroup) {
 		ServerDeleter.deleteUserFromGroupToGAE(groupToRemoveMember, userToRemoveFromGroup);
@@ -124,6 +126,10 @@ public class GoogleAppEngineHandler {
 		return ServerDownloader.IsUserRegistered(username);
 	}
 	
+	public static void sendEmailWithActivity(User userToEmail) {
+		ServerDownloader.sendStatusMailToUser(userToEmail);
+	}
+	
 
 	
 	//HELPERS
@@ -141,11 +147,11 @@ public class GoogleAppEngineHandler {
 			    			if(event.getEventItems()!=null && event.isShared()){
 						    		for (EventItem eventI : event.getEventItems()) {
 								    	if(eventI instanceof SimplePicture){
-								    		ServerUploader.uploadFile(Constants.IMAGE_STORAGE_FILEPATH+((SimplePicture)eventI).getPictureUrl(), 
-								    				((SimplePicture)eventI).getPictureFilename());
+								    		ServerUploader.uploadFile(Constants.IMAGE_STORAGE_FILEPATH+((SimplePicture)eventI).getPictureFilename(), 
+								    				((SimplePicture)eventI).getPictureUrl());
 								    	}else if(eventI instanceof SimpleVideo){
-								    		ServerUploader.uploadFile(Constants.VIDEO_STORAGE_FILEPATH+((SimpleVideo)eventI).getVideoUrl(), 
-								    				((SimpleVideo)eventI).getVideoFilename());
+								    		ServerUploader.uploadFile(Constants.VIDEO_STORAGE_FILEPATH+((SimpleVideo)eventI).getVideoFilename(), 
+								    				((SimpleVideo)eventI).getVideoUrl());
 								    	}else if(eventI instanceof SimpleRecording){
 								    		ServerUploader.uploadFile(Constants.RECORDING_STORAGE_FILEPATH+((SimpleRecording)eventI).getRecordingFilename(), 
 								    				((SimpleRecording)eventI).getRecordingUrl());
@@ -162,21 +168,16 @@ public class GoogleAppEngineHandler {
 			for (EventItem eventI : ((Event)object).getEventItems()) {
 		    	if(eventI instanceof SimplePicture){
 		    		ServerUploader.uploadFile(Constants.IMAGE_STORAGE_FILEPATH+((SimplePicture)eventI).getPictureFilename(), 
-		    				((SimplePicture)eventI).getPictureFilename());
+		    				((SimplePicture)eventI).getPictureUrl());
 		    	}else if(eventI instanceof SimpleVideo){
 		    		ServerUploader.uploadFile(Constants.VIDEO_STORAGE_FILEPATH+((SimpleVideo)eventI).getVideoFilename(), 
-		    				((SimpleVideo)eventI).getVideoFilename());
+		    				((SimpleVideo)eventI).getVideoUrl());
 		    	}else if(eventI instanceof SimpleRecording){
 		    		ServerUploader.uploadFile(Constants.RECORDING_STORAGE_FILEPATH+((SimpleRecording)eventI).getRecordingFilename(), 
-		    				((SimpleRecording)eventI).getRecordingFilename());
+		    				((SimpleRecording)eventI).getRecordingUrl());
 		    	}
 			}
 		}
-	}
-
-	public static void sendEmailWithActivity() {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

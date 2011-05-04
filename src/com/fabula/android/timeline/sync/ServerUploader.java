@@ -142,7 +142,7 @@ public class ServerUploader {
 		sendJSONTOGAEServer(jsonString, Constants.targetHost, httpPut);
 		
 	}
-
+	
 	/**
 	 * Sets the uri of the host based on the kind of {@link Object} to persist.
 	 * 
@@ -256,6 +256,7 @@ public class ServerUploader {
 //	       return false;
 //	    }
 	}
+
 	
 
 

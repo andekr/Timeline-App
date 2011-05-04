@@ -10,6 +10,7 @@ import java.util.List;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.CoreProtocolPNames;
 import org.json.JSONException;
@@ -160,6 +161,10 @@ public class ServerDownloader {
 			
 		 }
 		return average;
+	}
+	
+	public static void sendStatusMailToUser(User userToEmail) {
+		InputStream is = getJSONData("/rest/status/"+userToEmail);
 	}
 	
 	/**
