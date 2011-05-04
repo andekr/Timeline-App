@@ -119,7 +119,7 @@ public class MoodEvent extends BaseEvent{
 			
 			if(x >= 0.5 && y >= 0.5) {
 				
-				MoodEnum m = MoodEnum.NERVOUS;
+				MoodEnum m = MoodEnum.HAPPY;
 				m.x = x;
 				m.y = y;
 				return m;
@@ -143,8 +143,7 @@ public class MoodEvent extends BaseEvent{
 				return m;
 			}
 			else {
-				
-				MoodEnum m = MoodEnum.NERVOUS;
+				MoodEnum m = MoodEnum.CALM;
 				m.x = x;
 				m.y = y;
 				return m;
