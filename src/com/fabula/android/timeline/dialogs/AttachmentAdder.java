@@ -6,6 +6,7 @@ import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.widget.Toast;
 
 import com.fabula.android.timeline.R;
 import com.fabula.android.timeline.adapters.AttachmentAdapter;
@@ -46,17 +47,17 @@ public class AttachmentAdder {
 		        if(attachmentTypes[item].equals(timeLineActivityContext.getResources().getString(R.string.picture))) {
 		        	openImageGallery();
 		        }
-		        else if(attachmentTypes[item].equals(timeLineActivityContext.getResources().getString(R.string.file))) {
-		        	openFileBrowser();
-		        }
+//		        else if(attachmentTypes[item].equals(timeLineActivityContext.getResources().getString(R.string.file))) {
+//		        	openFileBrowser();
+//		        }
 		        else if(attachmentTypes[item].equals(timeLineActivityContext.getResources().getString(R.string.video))) { 
 		        	openVideoGallery();
 		        }
+		        else if(attachmentTypes[item].equals(timeLineActivityContext.getResources().getString(R.string.audio))) {
+		        	Toast.makeText(timeLineActivityContext, "Not implemented", Toast.LENGTH_SHORT).show();
+		        }
 		        else if(attachmentTypes[item].equals(timeLineActivityContext.getResources().getString(R.string.barcode))) {
 		        	openBarcodeScanner();
-		        }
-		        else if(attachmentTypes[item].equals(timeLineActivityContext.getResources().getString(R.string.url))) {
-		        	//Implement? Or just use note?
 		        }
 		    }
 		});
@@ -83,10 +84,10 @@ public class AttachmentAdder {
 		IntentIntegrator.initiateScan(timeLineActivity);
 	}
 	
-	private void openFileBrowser() {
-		Intent intent = new Intent("org.openintents.action.PICK_FILE");
-		timeLineActivity.startActivityForResult(intent, Constants.BROWSE_FILES);
-	}
+//	private void openFileBrowser() {
+//		Intent intent = new Intent("org.openintents.action.PICK_FILE");
+//		timeLineActivity.startActivityForResult(intent, Constants.BROWSE_FILES);
+//	}
 	
 
 }

@@ -9,7 +9,7 @@
   </LinearLayout>
   
   <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/descriptionRow" android:paddingTop="20dip" android:layout_below="@+id/group_header_row">
-      <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/titleTextView" android:text="Your Groups:" android:textSize="20dip" android:textColor="@color/Black"></TextView>
+      <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/titleTextView" android:text="My Groups:" android:textSize="20dip" android:textColor="@color/Black"></TextView>
   </LinearLayout>
   
   <LinearLayout android:layout_width="wrap_content" android:id="@+id/listGroupsRow" android:paddingTop="20dip" android:layout_below="@+id/descriptionRow" android:layout_height="wrap_content" android:layout_above="@+id/buttonRow" android:background="@color/White">
