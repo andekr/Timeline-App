@@ -15,9 +15,8 @@ import com.fabula.android.timeline.models.SimpleRecording;
 import com.fabula.android.timeline.models.SimpleVideo;
 import com.fabula.android.timeline.models.User;
 import com.fabula.android.timeline.utilities.Constants;
-import com.fabula.android.timeline.utilities.Utilities;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.myjson.Gson;
+import com.google.myjson.GsonBuilder;
 
 /**
  * 

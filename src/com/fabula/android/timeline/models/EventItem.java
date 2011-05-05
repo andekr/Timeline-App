@@ -13,7 +13,7 @@ import android.view.View;
 import com.fabula.android.timeline.database.providers.EventItemProvider;
 import com.fabula.android.timeline.models.Event.EventColumns;
 import com.fabula.android.timeline.utilities.Utilities;
-import com.google.gson.annotations.SerializedName;
+import com.google.myjson.annotations.SerializedName;
 
 public abstract class EventItem {
 	

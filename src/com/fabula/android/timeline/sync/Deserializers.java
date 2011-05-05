@@ -4,16 +4,16 @@ import java.lang.reflect.Type;
 
 import android.accounts.Account;
 
-import com.fabula.android.timeline.models.BaseEvent;
 import com.fabula.android.timeline.models.EventItem;
 import com.fabula.android.timeline.models.SimpleNote;
 import com.fabula.android.timeline.models.SimplePicture;
 import com.fabula.android.timeline.models.SimpleRecording;
 import com.fabula.android.timeline.models.SimpleVideo;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
+import com.google.myjson.JsonDeserializationContext;
+import com.google.myjson.JsonDeserializer;
+import com.google.myjson.JsonElement;
+import com.google.myjson.JsonParseException;
+
 
 public class Deserializers {
 	

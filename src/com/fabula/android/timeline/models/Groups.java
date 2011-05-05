@@ -2,7 +2,7 @@ package com.fabula.android.timeline.models;
 
 import java.util.List;
 
-import com.google.gson.annotations.SerializedName;
+import com.google.myjson.annotations.SerializedName;
 
 
 
