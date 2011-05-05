@@ -355,11 +355,13 @@ public class MyGroupsActivity extends Activity implements ProgressDialogActivity
 				public void onCreateContextMenu(ContextMenu menu, View v,
 						ContextMenuInfo menuInfo) {
 					
+					
 					//make sure that the selectedGroup is not out of bounds:
 					ExpandableListView.ExpandableListContextMenuInfo info =
 						(ExpandableListView.ExpandableListContextMenuInfo) menuInfo;
 					MyGroupsActivity.this.setSelectedGroup(groupListAdapter.getGroup(ExpandableListView.getPackedPositionGroup(info.packedPosition)));
 					
+					menu.setHeaderTitle(MyGroupsActivity.this.selectedGroup.toString());
 					menu.add(R.id.MENU_ADD_USER,0,0, R.string.Add_user_label);
 					menu.add(R.id.MENU_DELETE_ITEM, 0,0, R.string.Leave_group_label);
 				}

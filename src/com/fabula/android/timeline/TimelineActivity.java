@@ -314,7 +314,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 			if(resultCode == Activity.RESULT_OK) {
 				Log.i(this.getClass().getSimpleName(), "********* PICTURE SELECTED **************");
 				
-				Toast.makeText(this, "Picture was selected", Toast.LENGTH_SHORT).show();
+				
 				imageUri = (Uri) data.getData();
 				String filename =(Utilities.getUserAccount(this).name+new Date().getTime()).hashCode()+".jpg";
 				Utilities.copyFile(Utilities.getRealPathFromURI(imageUri, this), Constants.IMAGE_STORAGE_FILEPATH, filename);
@@ -322,6 +322,16 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 				addPictureToTimeline(filename);	//Eller skal det være attachment?
 			}
 			break;
+			case Constants.SELECT_VIDEO:
+			if(resultCode == Activity.RESULT_OK) {
+				Log.i(this.getClass().getSimpleName(), "********* VIDEO SELECTED **************");
+				Toast.makeText(this, "Video was selected", Toast.LENGTH_SHORT).show();
+				videoUri = (Uri) data.getData();
+    			String filename =(Utilities.getUserAccount(this).name+new Date().getTime()).hashCode()+Utilities.getExtension(Utilities.getRealPathFromURI(videoUri, this));
+				Utilities.copyFile(Utilities.getRealPathFromURI(videoUri, this), Constants.VIDEO_STORAGE_FILEPATH, filename);
+    			addVideoToTimeline(filename);
+				
+			}
 			case Constants.CAPTURE_BARCODE:
 				Log.i(this.getClass().getSimpleName(), "********* BARCODE SCANNED **************");
 				
