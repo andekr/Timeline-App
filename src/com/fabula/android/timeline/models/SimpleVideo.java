@@ -36,9 +36,6 @@ public class SimpleVideo extends EventItem {
 	public SimpleVideo(String id, Account u, String videoUrl) {
 		super(id, u);
 		className = "SimpleVideo";
-		if(!(new File(Constants.VIDEO_STORAGE_FILEPATH)).exists()) {
-			(new File(Constants.VIDEO_STORAGE_FILEPATH)).mkdirs();
-		}
 		url = videoUrl;
 		File file = Utilities.DownloadFromUrl(videoUrl, Constants.VIDEO_STORAGE_FILEPATH+getVideoFilename());
 		this.videoURI = Uri.fromFile(file);

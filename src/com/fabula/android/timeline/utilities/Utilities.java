@@ -317,6 +317,11 @@ public class Utilities {
 		 return url.substring(slashIndex + 1);
 	}
 	
+	public static String getFilePathFromURL(String url){
+		int slashIndex = url.lastIndexOf('/');
+		 return url.substring(0, slashIndex+1);
+	}
+	
 	
 	
 	public static String getRealPathFromURI(Uri contentUri, Activity a) {
@@ -403,6 +408,11 @@ public class Utilities {
 	                Log.d("ImageManager", "download begining");
 	                Log.d("ImageManager", "download url:" + url);
 	                Log.d("ImageManager", "downloaded file name:" + fileName);
+	                File downloadFolder = new File(Utilities.getFilePathFromURL(fileName));
+	                if(!downloadFolder.exists()) {
+	                	downloadFolder.mkdirs();
+	        		}
+	                
 	                /* Open a connection to that URL. */
 	                URLConnection ucon = url.openConnection();
 	

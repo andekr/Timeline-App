@@ -10,7 +10,6 @@ import java.util.List;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPut;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.CoreProtocolPNames;
 import org.json.JSONException;
@@ -31,8 +30,8 @@ import com.fabula.android.timeline.models.Users;
 import com.fabula.android.timeline.models.MoodEvent.MoodEnum;
 import com.fabula.android.timeline.utilities.Constants;
 import com.fabula.android.timeline.utilities.Utilities;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.myjson.Gson;
+import com.google.myjson.GsonBuilder;
 
 public class ServerDownloader {
 	

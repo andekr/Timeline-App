@@ -7,11 +7,11 @@ import com.fabula.android.timeline.models.Event;
 import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.models.Experiences;
 import com.fabula.android.timeline.models.MoodEvent;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
+import com.google.myjson.Gson;
+import com.google.myjson.JsonElement;
+import com.google.myjson.JsonParser;
+import com.google.myjson.JsonSerializationContext;
+import com.google.myjson.JsonSerializer;
 
 public class Serializers {
 	
