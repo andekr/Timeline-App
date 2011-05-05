@@ -13,8 +13,8 @@ import com.fabula.android.timeline.database.providers.EventProvider;
 
 public class Event extends BaseEvent {
 	
-	private List<EventItem> eventItems;
-	private List<Emotion> emotionList;
+//	private List<EventItem> eventItems;
+//	private List<Emotion> emotionList;
 	
 	public Event(){
 		className = this.getClass().getSimpleName();
@@ -41,27 +41,8 @@ public class Event extends BaseEvent {
 		eventItems.add(evItem);
 	}
 	
-	public List<EventItem> getEventItems() {
-		if(eventItems==null)
-			eventItems = new ArrayList<EventItem>();
-		return eventItems;
-	}
-	public void setEventItems(List<EventItem> eventItems) {
-		this.eventItems = eventItems;
-	}
-	
 	public void addEmotion(Emotion emotion){
 		getEmotionList().add(emotion);
-	}
-	
-	public List<Emotion> getEmotionList() {
-		if(emotionList==null)
-			emotionList = new ArrayList<Emotion>();
-		return emotionList;
-	}
-
-	public void setEmotionList(List<Emotion> emotionList) {
-		this.emotionList = emotionList;
 	}
 	
 	public String getClassName() {

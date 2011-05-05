@@ -21,7 +21,8 @@ public class Serializers {
 						 src.setEvents(null);
 			 
 			Gson gson = new Gson();
-		    return new JsonParser().parse(gson.toJson(src));
+			JsonElement je = new JsonParser().parse(gson.toJson(src));
+		    return je;
 		  }
 		}
 
@@ -44,24 +45,25 @@ public class Serializers {
 				  for (Experience ex: src.getExperiences()) {
 					 if(ex.getEvents().size()==0)
 						 ex.setEvents(null);
-//					  else{
-//						  try {
-//							  for (BaseEvent baseEvent : ex.getEvents()) {
-//									if(baseEvent instanceof Event){
-//										removeEmptyListsFromEvent((Event)baseEvent);
-//									}
-//							}
-//						} 
-//						  catch (Exception e) {
-//							e.printStackTrace();
-//						}
-//						
-//					  }
+					  else{
+						  try {
+							  for (BaseEvent baseEvent : ex.getEvents()) {
+									if(baseEvent instanceof Event){
+										removeEmptyListsFromEvent((Event)baseEvent);
+									}
+							}
+						} 
+						  catch (Exception e) {
+							e.printStackTrace();
+						}
+						
+					  }
 				  }
 			  }
 			 
 			Gson gson = new Gson();
-		    return new JsonParser().parse(gson.toJson(src));
+			JsonElement je = new JsonParser().parse(gson.toJson(src));
+		    return je;
 		  }
 		}
 	
@@ -80,22 +82,18 @@ public class Serializers {
 	protected static class EventSerializer implements JsonSerializer<BaseEvent> {
 		  public JsonElement serialize(BaseEvent baseEvent, Type typeOfSrc, JsonSerializationContext context) {
 			 Gson gson = new Gson();
-//			  BaseEvent bEvent = null;
 			  if(baseEvent instanceof Event){
 				  return new JsonParser().parse(gson.toJson(removeEmptyListsFromEvent((Event)baseEvent)));
-//				bEvent = convertEventToBaseEvent((Event)baseEvent);
 			}else if (baseEvent instanceof MoodEvent){
 				return new JsonParser().parse(gson.toJson((MoodEvent)baseEvent));
-//				bEvent = convertMoodEventToBaseEvent((MoodEvent)baseEvent);
 			}else {
 				 return new JsonParser().parse(gson.toJson(baseEvent));
 			}
 			 
-//			Gson gson = new Gson();
-//		    return new JsonParser().parse(gson.toJson(bEvent));
 		  }
 
 	}
+	
 	
 	/**
 	 * Helper class to convert {@link Event} to BaseEvent

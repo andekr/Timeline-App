@@ -25,8 +25,8 @@ public class BaseEvent {
 	private transient List<String> tags;
 	//For GSON
 	protected String className;
-	private List<EventItem> eventItems;
-	private List<Emotion> emotionList;
+	protected List<EventItem> eventItems;
+	protected List<Emotion> emotionList;
 	private boolean average;
 	private double arousal;
 	private double valence;
@@ -170,14 +170,17 @@ public class BaseEvent {
 	}
 	
 	public List<EventItem> getEventItems() {
+		if(eventItems==null)
+			eventItems = new ArrayList<EventItem>();
 		return eventItems;
 	}
-
 	public void setEventItems(List<EventItem> eventItems) {
 		this.eventItems = eventItems;
 	}
-
+	
 	public List<Emotion> getEmotionList() {
+		if(emotionList==null)
+			emotionList = new ArrayList<Emotion>();
 		return emotionList;
 	}
 
