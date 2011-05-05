@@ -28,7 +28,7 @@ public class SimpleVideo extends EventItem {
 	}
 	public SimpleVideo(String id, Uri uri, Account u, String videoUrl) {
 		super(id, u);
-		className = "SimplePicture";
+		className = "SimpleVideo";
 		this.videoURI = uri;
 		url = videoUrl;
 	}
