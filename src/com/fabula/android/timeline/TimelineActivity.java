@@ -945,6 +945,19 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 		  case SimpleGestureFilter.SWIPE_LEFT :  str = "Swipe Left";
 		  System.out.println(scrollview.getScrollX());
 		  System.out.println(scrollview.getMeasuredWidth());
+		  
+		  //Hack for Galaxy tab
+		  if(scrollview.getMeasuredWidth()==1024){
+			  if(scrollview.getScrollX()==(scrollview.getMeasuredWidth()-548) || scrollview.getScrollX()==0){
+			  	  gridview.startAnimation(slideRightOut);
+			  	  EventAdapter.plusOne();
+			  	  str = "Månednummer:"+Utilities.getMonthNumberOfDate(EventAdapter.getZoomDate());
+			  	  str += "Dag:"+EventAdapter.getZoomDate().getDate();
+			  	  gridview.startAnimation(slideLeftIn);
+			  	}
+		  }
+			
+		  
 		  	if(scrollview.getScrollX()==(scrollview.getMeasuredWidth()-100) || scrollview.getScrollX()==0){
 		  	  gridview.startAnimation(slideRightOut);
 		  	  EventAdapter.plusOne();
