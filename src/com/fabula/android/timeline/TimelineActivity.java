@@ -790,6 +790,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 		contentAdder.addEventToEventContentProvider(moodEvent);
 		Thread sendMoodThread = new Thread(SendMoodEventRunnable, "shareThread");
 		sendMoodThread.start();
+		Toast.makeText(this, "Your mood is added to server!", Toast.LENGTH_SHORT).show();
 	}
 	
 	/**
