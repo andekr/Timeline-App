@@ -9,4 +9,5 @@
 <item android:id="@+id/MENU_OPEN_TIMELINE"></item>
 <item android:id="@+id/MENU_ADD_USER"></item>
 <item android:id="@+id/MENU_SHARE_TIMELINE"></item>
+<item android:id="@+id/MENU_SHOW_CREATOR"></item>
 </menu>

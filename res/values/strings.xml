@@ -33,6 +33,7 @@
 	<string name="Select_user_label">Select a user:</string>
 	<string name="Not_shared_label">Not shared</string>
 	<string name="Shared_label">Shared</string>
+	<string name="Show_creator_label">Show creator</string>
 
 
     <string name="picture">Picture</string>

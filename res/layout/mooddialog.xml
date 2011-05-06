@@ -8,7 +8,7 @@
      <TextView android:id="@+id/moodidalogTitle" android:textColor="@color/White" android:layout_width="wrap_content" android:textSize="24dip" android:text="Mood" android:layout_height="wrap_content" android:paddingRight="5dip"></TextView>
      <LinearLayout android:layout_height="wrap_content" android:id="@+id/linearLayout1" android:layout_width="match_parent" android:orientation="vertical" android:layout_gravity="right">
          <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="timestamp" android:id="@+id/moodDialogTimestamp" android:layout_gravity="right" android:textSize="10dip"></TextView>
-         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="right" android:id="@+id/moodDialogUsername" android:text="username" android:marqueeRepeatLimit="marquee_forever" android:textSize="10dip"></TextView>
+         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="right" android:id="@+id/moodDialogUsername" android:text="username" android:marqueeRepeatLimit="marquee_forever" android:textSize="10dip" android:ellipsize="marquee"></TextView>
      </LinearLayout>
  </LinearLayout>
   

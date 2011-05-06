@@ -104,7 +104,7 @@ public class EventDialog extends Dialog {
 	         addressString += address.getAddressLine(0)+", "; //Address
 	         addressString += address.getAddressLine(1)+" "; // Zipcode and area
 		} catch (Exception e) {
-			addressString = "Ukjent sted";
+			addressString = "Unknown location";
 		}
 	        
          }
@@ -259,6 +259,7 @@ public class EventDialog extends Dialog {
 						menu.add(R.id.MENU_EDIT_NOTE, v.getId(), 0, R.string.Edit_label);
 					}
 					menu.add(R.id.MENU_DELETE_ITEM, v.getId(), 0, R.string.Delete_item_label);
+					menu.add(R.id.MENU_SHOW_CREATOR, v.getId(), 0, R.string.Show_creator_label);
 				}
 			});
          	
@@ -307,8 +308,13 @@ public class EventDialog extends Dialog {
 			return true;
 			
 		case R.id.MENU_DELETE_ITEM:
-			Log.v("LONG-CLICK", "Extract: "+items.get(item.getItemId()).getId());
+			Log.v("LONG-CLICK", "Delete: "+items.get(item.getItemId()).getId());
 			deleteEventItem(items.remove(item.getItemId()));
+			
+			return true;
+		case R.id.MENU_SHOW_CREATOR:
+			Log.v("LONG-CLICK", "Show creator: "+items.get(item.getItemId()).getId());
+			Toast.makeText(EventDialog.this.mContext, "Creator of this item: "+items.get(item.getItemId()).getCreator(), Toast.LENGTH_LONG).show();
 			
 			return true;
 	}
