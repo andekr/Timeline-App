@@ -93,6 +93,7 @@ public class EventDialog extends Dialog {
          
          TextView dialogDateTime = (TextView)findViewById(R.id.PopupDialogDateAndTimeTextView);
          TextView dialogLocation = (TextView)findViewById(R.id.PopupDialogLocationTextView);
+         TextView dialogCreator = (TextView)findViewById(R.id.popupDialogCreatorTextView);
          
          //Set header (time and location)
          dialogDateTime.setText(DateFormat.format
@@ -108,6 +109,7 @@ public class EventDialog extends Dialog {
 	        
          }
          dialogLocation.setText(addressString);
+         dialogCreator.append("\n"+this.mEvent.getUser().name);
 	
          mainLayout = (LinearLayout)findViewById(R.id.PopupContentLinearLayout);
          emotionLayout = (LinearLayout)findViewById(R.id.PopupMenuDockLinearLayout);

@@ -7,19 +7,19 @@
 		android:layout_toLeftOf="@+id/PopupMoreActionsRelativeLayout"
 		android:layout_height="50dip" android:background="@color/Header">
 		<TextView android:layout_toRightOf="@+id/PopupDialogTypeIconImageView"
-			android:layout_width="fill_parent" android:gravity="center"
 			android:id="@+id/PopupDialogDateAndTimeTextView" android:text="Overskrift med dato og tid"
 			android:textSize="24sp" android:textColor="@color/White"
-			android:layout_height="wrap_content" android:layout_alignTop="@+id/PopupDialogTypeIconImageView"></TextView>
+			android:layout_height="wrap_content" android:layout_alignTop="@+id/PopupDialogTypeIconImageView" android:gravity="left" android:layout_width="wrap_content"></TextView>
+		<TextView android:layout_toRightOf="@+id/PopupDialogDateAndTimeTextView" android:layout_height="wrap_content" android:layout_alignTop="@+id/PopupDialogDateAndTimeTextView" android:layout_alignBottom="@+id/PopupDialogDateAndTimeTextView" android:layout_width="fill_parent" android:textColor="@color/White" android:text="Creator:" android:textSize="10sp" android:paddingLeft="10dip" android:paddingRight="5dip" android:gravity="top|center" android:paddingTop="2dip" android:id="@+id/popupDialogCreatorTextView" android:maxLines="2" android:ellipsize="marquee"></TextView>
 		<TextView android:layout_height="wrap_content"
 			android:layout_below="@+id/PopupDialogDateAndTimeTextView"
 			android:layout_alignLeft="@+id/PopupDialogDateAndTimeTextView"
 			android:layout_width="fill_parent" android:layout_centerHorizontal="true"
-			android:gravity="center" android:text="Lokasjon"
-			android:id="@+id/PopupDialogLocationTextView" android:textColor="@color/White"></TextView>
+			android:text="Lokasjon"
+			android:id="@+id/PopupDialogLocationTextView" android:textColor="@color/White" android:gravity="left"></TextView>
 		<ImageView android:layout_height="40dp"
 			android:id="@+id/PopupDialogTypeIconImageView" android:layout_width="40dp"
-			android:layout_alignParentLeft="true" android:src="@drawable/ic_menu_camera"></ImageView>
+			android:layout_alignParentLeft="true" android:src="@drawable/ic_menu_camera" android:layout_marginRight="10dip"></ImageView>
 	</RelativeLayout>
 
 
