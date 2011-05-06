@@ -12,11 +12,11 @@
 		android:background="@color/Header" android:id="@+id/TimeLineHeaderLinearLayout"
 		android:layout_height="25dip">
 		<ImageButton android:background="@drawable/header_home_button"
-			android:layout_height="fill_parent" android:layout_width="170dp"
-			android:id="@+id/HomeButton" android:focusable="false"></ImageButton>
-		<TextView android:layout_width="fill_parent" android:gravity="right|center_vertical"
+			android:layout_height="fill_parent" android:id="@+id/HomeButton" android:focusable="false" android:layout_width="170dp"></ImageButton>
+		<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TimelineName" android:text="TimelineName" android:textColor="@color/White"></TextView>
+		<TextView android:gravity="right|center_vertical"
 			android:layout_height="fill_parent" android:text="Screenlabel"
-			android:id="@+id/TimelineLabel" android:textColor="@color/White"></TextView>
+			android:id="@+id/TimelineLabel" android:textColor="@color/White" android:layout_width="fill_parent"></TextView>
 	</LinearLayout>
 	<HorizontalScrollView android:id="@+id/HorizontalScrollView01"
 		android:layout_height="fill_parent"

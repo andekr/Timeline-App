@@ -82,7 +82,7 @@ import com.fabula.android.timeline.utilities.Utilities;
 public class TimelineActivity extends Activity implements SimpleGestureListener {
 	
 	private LinearLayout cameraButton, videoCameraButton, audioRecorderButton, createNoteButton, attachmentButton, moodButton;
-	private TextView screenTitle;
+	private TextView screenTitle, timelineTitleTextView;
 	private TimelineGridAdapter EventAdapter;
 	private Event selectedEvent;
 	private ContentAdder contentAdder;
@@ -545,6 +545,13 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 		
 		
 		screenTitle = (TextView)findViewById(R.id.TimelineLabel);
+		timelineTitleTextView = (TextView) findViewById(R.id.TimelineName);
+		if(timeline.getTitle().contains(".db")) {
+			timelineTitleTextView.setText(timeline.getTitle().substring(0, timeline.getTitle().indexOf(".db")));
+		}else {
+			timelineTitleTextView.setText(timeline.getTitle());
+		}
+		
 		
     	cameraButton = (LinearLayout)findViewById(R.id.MenuCameraButton);
     	cameraButton.setOnClickListener(startCameraListener);

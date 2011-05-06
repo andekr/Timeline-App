@@ -57,18 +57,44 @@ public class Utilities {
 		
 		if(ex.getEventItems().size()==1){
 			if(ex.getEventItems().get(0) instanceof SimplePicture){
-				return R.drawable.ic_menu_camera;
+				if(!ex.isShared()){
+					return R.drawable.ic_menu_camera;
+				}else{
+					return R.drawable.ic_menu_camera_green;
+				}
 			}else if(ex.getEventItems().get(0) instanceof SimpleRecording){
-				return R.drawable.ic_menu_audio;
+				if(!ex.isShared()){
+					return R.drawable.ic_menu_audio;			
+				}else{
+					return R.drawable.ic_menu_audio_green;
+				}
 			}else if(ex.getEventItems().get(0) instanceof SimpleVideo){
-				return R.drawable.ic_menu_video;
+				if(!ex.isShared()) {
+					return R.drawable.ic_menu_video;
+				}else{
+					return R.drawable.ic_menu_video_green;
+				}
+				
 			}else if(ex.getEventItems().get(0) instanceof SimpleAttachment){
-				return R.drawable.ic_menu_attachment;
+				if(!ex.isShared()) {
+					return R.drawable.ic_menu_attachment;
+				}else{
+					return R.drawable.ic_menu_attachment_green;
+				}
 			}else if(ex.getEventItems().get(0) instanceof SimpleNote){
-				return R.drawable.ic_menu_note;
+				if(!ex.isShared()) {
+					return R.drawable.ic_menu_note;
+				}else{
+					return R.drawable.ic_menu_note_green;
+				}
 			}
 		}
-		return R.drawable.ic_menu_archive;
+		if(!ex.isShared()) {
+			return R.drawable.ic_menu_archive;
+		}
+		else {
+			return R.drawable.ic_menu_archive_green;
+		}
 	}
 	
 	public static int getMapImageIcon(BaseEvent ex) {
