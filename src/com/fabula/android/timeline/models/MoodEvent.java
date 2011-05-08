@@ -84,7 +84,7 @@ public class MoodEvent extends BaseEvent{
 	}
 
 	public enum MoodEnum {
-		HAPPY(1,1), NERVOUS(0,1), CALM(1,0), SORRY(0,0);
+		HAPPY(1,1), NERVOUS(0,1), CALM(1,0), SAD(0,0);
 
 		private double x,y;
 		private double avgX, avgY;
@@ -103,7 +103,7 @@ public class MoodEvent extends BaseEvent{
 				return R.drawable.nervous;
 			case CALM:
 				 return R.drawable.calm;
-			case SORRY:
+			case SAD:
 				return R.drawable.sad;
 			default:
 				return R.drawable.calm;
@@ -146,7 +146,7 @@ public class MoodEvent extends BaseEvent{
 				return m;
 			}
 			else if(x <= 0.5 && y <= 0.5) {
-				MoodEnum m = MoodEnum.SORRY;
+				MoodEnum m = MoodEnum.SAD;
 				m.avgX = x;
 				m.avgY = y;
 				return m;

@@ -1067,11 +1067,11 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 	}
 	  
 	private void setupMoodButtonQuickAction() {
-		final ActionItem veryHappy = new ActionItem();
+		final ActionItem happy = new ActionItem();
 		
 		final Account user = Utilities.getUserAccount(getApplicationContext());
-		veryHappy.setIcon(this.getResources().getDrawable(MoodEnum.HAPPY.getIcon()));
-		veryHappy.setOnClickListener(new View.OnClickListener() {
+		happy.setIcon(this.getResources().getDrawable(MoodEnum.HAPPY.getIcon()));
+		happy.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
 				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.HAPPY, user));
@@ -1080,10 +1080,10 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 		});
 				
 				
-		final ActionItem happy = new ActionItem();
+		final ActionItem nervous = new ActionItem();
 		
-		happy.setIcon(this.getResources().getDrawable(MoodEnum.NERVOUS.getIcon()));
-		happy.setOnClickListener(new View.OnClickListener() {
+		nervous.setIcon(this.getResources().getDrawable(MoodEnum.NERVOUS.getIcon()));
+		nervous.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
 				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.NERVOUS, user));
@@ -1102,10 +1102,10 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 //			}
 //		});
 		
-		final ActionItem sad = new ActionItem();
+		final ActionItem calm = new ActionItem();
 		
-		sad.setIcon(this.getResources().getDrawable(MoodEnum.CALM.getIcon()));
-		sad.setOnClickListener(new View.OnClickListener() {
+		calm.setIcon(this.getResources().getDrawable(MoodEnum.CALM.getIcon()));
+		calm.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
 				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.CALM, user));
@@ -1113,13 +1113,13 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 			}
 		});
 		
-		final ActionItem verySad = new ActionItem();
+		final ActionItem sad = new ActionItem();
 		
-		verySad.setIcon(this.getResources().getDrawable(MoodEnum.SORRY.getIcon()));
-		verySad.setOnClickListener(new View.OnClickListener() {
+		sad.setIcon(this.getResources().getDrawable(MoodEnum.SAD.getIcon()));
+		sad.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.SORRY, user));
+				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.SAD, user));
 				qa.dismiss();
 			}
 		});
@@ -1130,11 +1130,11 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 			public void onClick(View v) {
 				qa = new QuickAction(v);
 				
-				qa.addActionItem(veryHappy);
 				qa.addActionItem(happy);
+				qa.addActionItem(nervous);
 //				qa.addActionItem(likewise);
+				qa.addActionItem(calm);
 				qa.addActionItem(sad);
-				qa.addActionItem(verySad);
 				qa.setAnimStyle(QuickAction.ANIM_AUTO);
 				qa.show();
 				
