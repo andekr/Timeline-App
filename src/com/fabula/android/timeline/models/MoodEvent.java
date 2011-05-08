@@ -68,12 +68,18 @@ public class MoodEvent extends BaseEvent{
 	}
 
 	public void setAverage(boolean average) {
+		setMoodX(getMood().getAvgX());
+		setMoodY(getMood().getAvgY());
 		this.average = average;
 	}
 	
 	@Override
 	public String toString() {
 		DecimalFormat twoDecimals = new DecimalFormat("#0.00");
+		
+		if(average) {
+			return "Valence: "+ twoDecimals.format(getMood().getAvgX())+ "   Arousal: "+twoDecimals.format(getMood().getAvgY());
+		}
 		return "Valence: "+ twoDecimals.format(getMoodX())+ "   Arousal: "+twoDecimals.format(getMoodY());
 	}
 
@@ -81,7 +87,8 @@ public class MoodEvent extends BaseEvent{
 		HAPPY(1,1), NERVOUS(0,1), CALM(1,0), SAD(0,0);
 
 		private double x,y;
-		
+		private double avgX, avgY;
+				
 		MoodEnum(double x, double y){
 			this.x = x;
 			this.y = y;
@@ -111,6 +118,14 @@ public class MoodEvent extends BaseEvent{
 			return y;
 		}
 		
+		public double getAvgX() {
+			return avgX;
+		}
+		
+		public double getAvgY()
+		{
+			return avgY;
+		}
 		public String getName(){
 			return name();
 		}
@@ -120,32 +135,32 @@ public class MoodEvent extends BaseEvent{
 			if(x >= 0.5 && y >= 0.5) {
 				
 				MoodEnum m = MoodEnum.HAPPY;
-				m.x = x;
-				m.y = y;
+				m.avgX = x;
+				m.avgY = y;
 				return m;
 			}
 			else if (x >= 0.5 && y <= 0.5 ) {
 				MoodEnum m = MoodEnum.CALM;
-				m.x = x;
-				m.y = y;
+				m.avgX = x;
+				m.avgY = y;
 				return m;
 			}
 			else if(x <= 0.5 && y <= 0.5) {
 				MoodEnum m = MoodEnum.SAD;
-				m.x = x;
-				m.y = y;
+				m.avgX = x;
+				m.avgY = y;
 				return m;
 			}
 			else if(x <= 0.5 && y >= 0.5) {
 				MoodEnum m = MoodEnum.NERVOUS;
-				m.x = x;
-				m.y = y;
+				m.avgX = x;
+				m.avgY = y;
 				return m;
 			}
 			else {
 				MoodEnum m = MoodEnum.CALM;
-				m.x = x;
-				m.y = y;
+				m.avgX = x;
+				m.avgY = y;
 				return m;
 			}
 		}
