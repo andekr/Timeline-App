@@ -196,9 +196,24 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		if (dialog.getNumberOfTimelinesSaved() != 0) {
 			dialog.show();
 		} else {
-			Toast.makeText(this,
-					"No timelines exists yet. Create a new one first!",
-					Toast.LENGTH_SHORT).show();
+			switch (shared) {
+			case Constants.SHARED_TRUE:
+				Toast.makeText(this,
+						"No shared timelines exists yet. Synchronize, create new or share a private timeline!",
+						Toast.LENGTH_LONG).show();
+				break;
+			case Constants.SHARED_FALSE:
+				Toast.makeText(this,
+						"No private timelines exists yet. Create a new one first or look in \"my shared timelines\"",
+						Toast.LENGTH_LONG).show();
+				break;
+			default:
+				Toast.makeText(this,
+						"No timelines exists yet. Create a new one or synchronize!",
+						Toast.LENGTH_SHORT).show();
+				break;
+			}
+
 		}
 	}
 	

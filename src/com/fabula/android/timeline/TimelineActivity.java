@@ -1115,11 +1115,11 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 		
 		final ActionItem verySad = new ActionItem();
 		
-		verySad.setIcon(this.getResources().getDrawable(MoodEnum.SAD.getIcon()));
+		verySad.setIcon(this.getResources().getDrawable(MoodEnum.SORRY.getIcon()));
 		verySad.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.SAD, user));
+				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.SORRY, user));
 				qa.dismiss();
 			}
 		});
