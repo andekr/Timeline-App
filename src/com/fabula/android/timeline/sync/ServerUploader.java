@@ -157,6 +157,8 @@ public class ServerUploader {
 			httpPut = new HttpPut("/rest/experience/");
 		else if(o instanceof BaseEvent)
 			httpPut = new HttpPut("/rest/event/");
+		
+		httpPut.getParams().setParameter(CoreProtocolPNames.USER_AGENT, "TimelineAndroid");
 		return httpPut;
 	}
 	
@@ -170,7 +172,8 @@ public class ServerUploader {
 		httpRequest.addHeader("Accept", "application/json");
 		// Also be sure to tell the server what kind of content we are sending
 		httpRequest.addHeader("Content-Type", "application/json");
-		httpRequest.addHeader(CoreProtocolPNames.USER_AGENT, "TimelineAndroid");
+//		httpRequest.addHeader(CoreProtocolPNames.USER_AGENT, "TimelineAndroid");
+		
 	}
 	
 

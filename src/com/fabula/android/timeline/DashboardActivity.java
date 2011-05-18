@@ -486,4 +486,9 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		lastSyncedTextView = (TextView)findViewById(R.id.DashLastSyncedTextView);
 		setLastSyncedTextView();	
 	}
+	
+	@Override
+	public void onBackPressed() {
+		this.finish();
+	}
 }
