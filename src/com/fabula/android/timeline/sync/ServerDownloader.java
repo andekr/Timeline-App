@@ -35,6 +35,15 @@ import com.google.myjson.GsonBuilder;
 
 public class ServerDownloader {
 	
+	/**
+	 * Method that gets all the {@link Experiences} from the server.
+	 * Some grinding of the data has to be done in this method, as events are downloaded
+	 * as {@link BaseEvent}s. This method converts the {@link BaseEvent}s into its right subclass
+	 * based on the className attribute.
+	 * 
+	 * @param user
+	 * @return
+	 */
 	protected static Experiences getAllSharedExperiencesFromServer(User user){
 		
 		try {
@@ -96,13 +105,9 @@ public class ServerDownloader {
 			 try {
 				json = new JSONObject(response);
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		 }
-		 
-		 
-		 
 		 registered = json==null ? false : true;
 		 
 		 return registered;
@@ -154,7 +159,6 @@ public class ServerDownloader {
 				average[0] = json.getDouble("valence");
 				average[1] = json.getDouble("arousal");
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
@@ -199,39 +203,4 @@ public class ServerDownloader {
         return data;
     }
 	
-
-//	public static class EventDeserializer implements JsonDeserializer<BaseEvent> {
-//		  public BaseEvent deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-//		      throws JsonParseException {
-//			  
-//			 String className = json.getAsJsonObject().get("className").getAsString();
-//			 String id = json.getAsJsonObject().get("id").getAsString();
-//			 String exID = json.getAsJsonObject().get("experienceid").getAsString();
-//			 double latitude = json.getAsJsonObject().get("latitude").getAsDouble();
-//			 double longitude = json.getAsJsonObject().get("longitude").getAsDouble();
-//			 Date dateTime = new Date(json.getAsJsonObject().get("datetimemillis").getAsLong());
-//			 Location location = new Location("");
-//			 location.setLatitude(latitude);
-//			 location.setLongitude(longitude);
-//			 Account user = new Account(json.getAsJsonObject().get("creator").getAsString(), "com.google");
-//			 json.getAsJsonObject().getAsJsonArray("datetimemillis");
-//			 
-//			 BaseEvent be;
-//			if(className.equals("Event")){
-//				be = new Event(id, exID, dateTime, location, user);
-//				be.setEmotionList(emotionList)
-//				be.setEventItems(eventItems)
-//				  return ei;
-//			}else if(className.equals("SimpleNote")){
-//				String noteTitle = json.getAsJsonObject().get("noteTitle").getAsString();
-//				String noteText = json.getAsJsonObject().get("noteText").getAsString();
-//				ei = new SimpleNote(id, noteTitle, noteText, creator);
-//				  return ei;
-//			} else 
-//				  return null;
-//			  
-//		  }
-//		}
-
-
 }

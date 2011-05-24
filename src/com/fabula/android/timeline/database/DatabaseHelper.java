@@ -32,7 +32,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		if(!databaseName.trim().endsWith(".db"))
 			databaseName = databaseName+".db";
 		this.databaseName = databaseName;
-//		File sdCardDirectory = Environment.getExternalStorageDirectory();
 	
 		timelineDatabase = this.getWritableDatabase();
 	}	

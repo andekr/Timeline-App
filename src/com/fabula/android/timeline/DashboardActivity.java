@@ -31,7 +31,6 @@ import com.fabula.android.timeline.database.contentmanagers.ContentLoader;
 import com.fabula.android.timeline.database.contentmanagers.UserGroupManager;
 import com.fabula.android.timeline.dialogs.NewTimelineDialog;
 import com.fabula.android.timeline.dialogs.TimelineBrowserDialog;
-import com.fabula.android.timeline.map.TimelineMapView;
 import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.models.Experiences;
 import com.fabula.android.timeline.models.User;
@@ -48,10 +47,12 @@ import com.fabula.android.timeline.utilities.Utilities;
  * 
  * Implemented buttons:
  * -New timeline
- * -My timelines(all timelines - private and shared)
- * -Shared timelines
- * -Profile(shows the username)
- * -Syncronize(collects all shared experiences and sends to a server)
+ * -My private timelines({@link Experience} with shared=false)
+ * -My groups
+ * -My shared timelines({@link Experience} with shared=true)
+ * -My tags
+ * -Synchronize(collects all shared experiences and sends to a server, 
+ * as well as downloading all of the users shared experiences from the server)
  * 
  * @author andekr
  *
@@ -95,8 +96,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		
 		setupIntents();
 
-		//Check for Internet
-		
 		progressDialog = new ProgressDialog(this);
 		
 		//Check if user is registered
@@ -106,6 +105,7 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 			}
 		};
 		
+		//Checks for Internet connection
 		if(Utilities.isConnectedToInternet(this)){
 			Thread checkUserThread = new Thread(checkUserRunnable, "checkUserThread");
 			checkUserThread.start();
@@ -115,7 +115,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 			Toast.makeText(this, "You are not connected to Internet. Some functions will not be availiable. But you can still collect your experiences!", Toast.LENGTH_LONG).show();
 		}
 		
-		
 		try {
 			lastSynced = getLastSynced();
 		} catch (Exception e) {
@@ -124,7 +123,11 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		
 		setupViews();
 		
-		//If the application is started with a SEND- or share Intent, change the Intent to add to a timeline
+		/*
+		 * If the application is started with a SEND- or share Intent, change the Intent to add to a timeline
+		 * This is for cases where the users clicks "share" in another application and selects "Timeline" as application
+		 * to share with
+		 */
 		if (getIntent().getAction().equals(Intent.ACTION_SEND)
 				|| getIntent().getAction().equals("share")) {
 			timelineIntent = getIntent();
@@ -133,8 +136,8 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 			browseAllTimelines(Constants.SHARED_ALL);
 		}
 		
+		//Prepares the sync thread
  		syncThread = new Runnable() {
-			
 			public void run() {
 				syncTimelines();
 			}
@@ -142,6 +145,13 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		
 	}
 
+	/**
+	 * 
+	 * Checks if user is registered on the Timeline server.
+	 * If not, the user is registered, using the e-mail address from the primary
+	 * Google Account on the device.
+	 * 
+	 */
 	private void checkIfUserIsRegisteredOnServer() {
 		runOnUiThread(new Runnable() {
 			public void run() {
@@ -153,7 +163,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		if(!registered){
 			GoogleAppEngineHandler.addUserToServer(user);
 			runOnUiThread(new Runnable() {
-				
 				public void run() {
 					progressDialog.setMessage("Not registered. Registering user.");
 				}
@@ -189,6 +198,10 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 	}
 
 
+	/**
+	 * Opens a dialog based on an integer constant defined in {@link Constants}.
+	 * 
+	 */
 	private void browseAllTimelines(int shared) {
 		TimelineBrowserDialog dialog = new TimelineBrowserDialog(this,
 				timelineIntent, shared);
@@ -221,6 +234,8 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 	 * Synchronize shared timelines with database.
 	 * First all local objects are persisted on server, then all content for this user on the server is downloaded.
 	 * 
+	 * TODO: This should be refactored into a new class, and be optimized to help poor run time.
+	 * 
 	 */
 	private void syncTimelines() {
 		UserAndGroupServiceHandler ugHandler =  new UserAndGroupServiceHandler(this, this);
@@ -250,6 +265,11 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		runOnUiThread(confirmSync);
 	}
 	
+	/**
+	 * Stores the time of the last sync in a local file.
+	 * 
+	 * @param lastSyncedInMillis Time of last sync in milliseconds
+	 */
 	private void storeLastSynced(long lastSyncedInMillis){
 		String FILENAME = "lastSynced";
 		String lastSynced = String.valueOf(lastSyncedInMillis);
@@ -266,8 +286,18 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		}
 	}
 	
+	/**
+	 * Gets the time of last sync.
+	 * 
+	 * 
+	 * Used in setting last synced TextView.
+	 * Other possible usages is to use this as input when syncing, so that only new content is synced.
+	 * 
+	 * 
+	 * @return Time of last sync in milliseconds
+	 */
 	private long getLastSynced(){
-		String FILENAME = "lastSynced";
+		final String FILENAME = "lastSynced";
 		int ch;
 	    StringBuffer strContent = new StringBuffer("");
 		
@@ -335,16 +365,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		timelineIntent.setAction("NEW");
 	}
 	
-	private void setupDatabaseHelpers() {
-		userGroupDatabaseHelper = new UserGroupDatabaseHelper(this, Constants.USER_GROUP_DATABASE_NAME);
-		timelineDatabaseHelper = new TimelineDatabaseHelper(this, Constants.ALL_TIMELINES_DATABASE_NAME);
-	}
-	
-	private void closeDatabaseHelpers() {
-		userGroupDatabaseHelper.close();
-		timelineDatabaseHelper.close();
-	}
-	
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
 	    inflater.inflate(R.menu.dashboard_menu, menu);
@@ -354,7 +374,6 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.SEND_EMAIL_WITH_CONTENT:
-			//Check if user is registered
 			Runnable sendEmailRunnable = new Runnable() {
 				public void run() {
 					GoogleAppEngineHandler.sendEmailWithActivity(user);
@@ -369,17 +388,8 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		return super.onOptionsItemSelected(item);
 	}
 	
-	/**
-	 * Open the map view where all the events in every timeline is showed on the map.
-	 */
+	//LISTENERS
 	
-	public void openMapView() {
-		Intent mapViewIntent = new Intent(this, TimelineMapView.class);
-		mapViewIntent.setAction(Constants.INTENT_ACTION_OPEN_MAP_VIEW_FROM_DASHBOARD);
-		startActivityForResult(mapViewIntent, Constants.ALL_EXPERIENCES_MAP_ACTIVITY_REQUEST_CODE);
-	}
-	
-	//listeners
 	private OnClickListener newTimeLineListener = new OnClickListener() {
 		public void onClick(View v) {
 				if(Utilities.isConnectedToInternet(getApplicationContext())) {
@@ -444,6 +454,8 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 		}
 	};
 	
+	//SETUP HELPERS
+	
 	private void setupIntents() {
 		myGroupsIntent = new Intent(this, MyGroupsActivity.class);
 		myGroupsIntent.putExtra("ACCOUNT", creator);
@@ -463,6 +475,16 @@ public class DashboardActivity extends Activity implements ProgressDialogActivit
 	public void callBack() {
 		NewTimelineDialog newTimelineDialog = new NewTimelineDialog(DashboardActivity.this, null, timelineIntent);
 		newTimelineDialog.show();
+	}
+	
+	private void setupDatabaseHelpers() {
+		userGroupDatabaseHelper = new UserGroupDatabaseHelper(this, Constants.USER_GROUP_DATABASE_NAME);
+		timelineDatabaseHelper = new TimelineDatabaseHelper(this, Constants.ALL_TIMELINES_DATABASE_NAME);
+	}
+	
+	private void closeDatabaseHelpers() {
+		userGroupDatabaseHelper.close();
+		timelineDatabaseHelper.close();
 	}
 	
 	/**

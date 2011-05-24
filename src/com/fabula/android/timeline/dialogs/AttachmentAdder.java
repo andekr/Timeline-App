@@ -47,9 +47,6 @@ public class AttachmentAdder {
 		        if(attachmentTypes[item].equals(timeLineActivityContext.getResources().getString(R.string.picture))) {
 		        	openImageGallery();
 		        }
-//		        else if(attachmentTypes[item].equals(timeLineActivityContext.getResources().getString(R.string.file))) {
-//		        	openFileBrowser();
-//		        }
 		        else if(attachmentTypes[item].equals(timeLineActivityContext.getResources().getString(R.string.video))) { 
 		        	openVideoGallery();
 		        }
@@ -84,10 +81,4 @@ public class AttachmentAdder {
 		IntentIntegrator.initiateScan(timeLineActivity);
 	}
 	
-//	private void openFileBrowser() {
-//		Intent intent = new Intent("org.openintents.action.PICK_FILE");
-//		timeLineActivity.startActivityForResult(intent, Constants.BROWSE_FILES);
-//	}
-	
-
 }

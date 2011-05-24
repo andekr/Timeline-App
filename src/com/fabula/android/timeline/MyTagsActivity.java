@@ -32,11 +32,19 @@ import com.fabula.android.timeline.database.DatabaseHelper;
 import com.fabula.android.timeline.database.TimelineDatabaseHelper;
 import com.fabula.android.timeline.database.contentmanagers.ContentAdder;
 import com.fabula.android.timeline.database.contentmanagers.TagManager;
+import com.fabula.android.timeline.dialogs.EventDialog;
 import com.fabula.android.timeline.models.BaseEvent;
 import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.utilities.Constants;
 import com.fabula.android.timeline.utilities.Utilities;
 
+/**
+ * The activity containg the tag management view
+ * 
+ * 
+ * @author andekr
+ *
+ */
 public class MyTagsActivity extends Activity {
 
 	private Button addNewTagButton, showInTimelineButton;
@@ -60,6 +68,11 @@ public class MyTagsActivity extends Activity {
 		}
 	}
 
+	/**
+	 * 
+	 * 
+	 * @return true if the Intent is to create a new tag(typically if called from the {@link EventDialog}.
+	 */
 	private boolean isNewTagIntent() {
 		return getIntent().getAction()!= null && getIntent().getAction().equals(Constants.INTENT_ACTION_NEW_TAG);
 	}
@@ -68,7 +81,6 @@ public class MyTagsActivity extends Activity {
 	 * Add a new group to the database
 	 * @param groupName. The group name of the new group
 	 */
-
 	protected void addNewTag(String tagName) {
 		tagManager.addTagToDatabase(tagName);
 		Toast.makeText(MyTagsActivity.this.getApplicationContext(), "You have created the tag: " +tagName , Toast.LENGTH_SHORT).show();
@@ -123,11 +135,10 @@ public class MyTagsActivity extends Activity {
 		tagNameInputDialog.show();
 	}
 	
-	/**
-	 * Confirmation dialog that pops when you tries to leave a group
-	 */
 	
-	//listeners
+	//LISTENERS
+	
+	
 	private android.view.View.OnClickListener newTagButtonListener = new View.OnClickListener() {
 		
 		public void onClick(View v) {
@@ -142,6 +153,12 @@ public class MyTagsActivity extends Activity {
 		}	
 	};
 	
+	/**
+	 * The method to set up and create a new timeline based on selected tags
+	 * 
+	 * TODO: This method should be subject to some refactoring
+	 * 
+	 */
 	private void createAndOpenNewExperienceBasedOnSelectedTags() {
 		List<String> selectedTagsName = tagListAdapter.getCheckedTags();
 		List<BaseEvent> eventsTaggedWithSelectedTags = tagManager.getAllEventsConnectedToTag(selectedTagsName);
@@ -217,11 +234,7 @@ public class MyTagsActivity extends Activity {
 		
 		registerForContextMenu(myTagsList);
 	}
-	/**
-	 * Lager en contextmeny som inneholder ett element
-	 * - "Merk som sett"
-	 * 
-	 */
+
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
@@ -250,7 +263,7 @@ public class MyTagsActivity extends Activity {
 	}
 	
 	/**
-	 * Confirmation dialog that pops when you tries to leave a group
+	 * Confirmation dialog that pops when you try to delete a tag
 	 */
 	private void deleteTagConfirmationDialog(final String tagName) {
 		

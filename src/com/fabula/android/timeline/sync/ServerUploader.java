@@ -35,7 +35,7 @@ public class ServerUploader {
 		if(!saveFilename.contains("."))
 			saveFilename = saveFilename+Utilities.getExtension(locationFilename);
 		
-		if(!exists(saveFilename)){
+		if(!fileExistsOnServer(saveFilename)){
 		
 			HttpURLConnection connection = null;
 			DataOutputStream outputStream = null;
@@ -213,7 +213,7 @@ public class ServerUploader {
 	
 	}
 	
-	private static boolean exists(String URLName){
+	private static boolean fileExistsOnServer(String URLName){
 		URL url;
 		try {
 			url = new URL(URLName);
@@ -236,28 +236,12 @@ public class ServerUploader {
 			   System.err.println ("error - not a http request!");
 			}
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		return false;
-
-//	    try {
-//	      HttpURLConnection.setFollowRedirects(false);
-//	      // note : you may also need
-//	      //        HttpURLConnection.setInstanceFollowRedirects(false)
-//	      HttpURLConnection con =
-//	         (HttpURLConnection) new URL(URLName).openConnection();
-//	      con.setRequestMethod("HEAD");
-//	      return (con.getResponseCode() == HttpURLConnection.HTTP_OK);
-//	    }
-//	    catch (Exception e) {
-//	       e.printStackTrace();
-//	       return false;
-//	    }
 	}
 
 	

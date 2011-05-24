@@ -236,7 +236,6 @@ public class EventDialog extends Dialog {
        int i = 0;
 		for (EventItem exItem : items) {
          	View contentView = exItem.getView(mContext);
-             //contentView.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
          	Intent openIntent = exItem.getIntent();
 			if(openIntent!=null){
 				contentView.setOnClickListener(new View.OnClickListener() {
@@ -522,17 +521,6 @@ public class EventDialog extends Dialog {
     	((TimelineActivity)mActivity).setSelectedEvent(null);
     	((TimelineActivity)mActivity).removeEvent(event);
 	}
-	
-//	public void addEmotionToDatabase(Event tag, Emotion emo) {
-//		
-//		ContentValues values = new ContentValues();
-//		
-//		values.put(EmotionColumns._ID, emo.getEmotionid());
-//		values.put(EmotionColumns.EVENT_ID, tag.getId());
-//		values.put(EmotionColumns.EMOTION_TYPE, emo.getEmotionType().getType());
-//		
-//		mContext.getContentResolver().insert(EmotionColumns.CONTENT_URI, values);
-//	}
 	
 	public android.view.View.OnClickListener tagClickListener = new View.OnClickListener() {
 		

@@ -26,10 +26,8 @@ import com.fabula.android.timeline.adapters.TimelineListAdapter;
 import com.fabula.android.timeline.database.TimelineDatabaseHelper;
 import com.fabula.android.timeline.database.contentmanagers.ContentDeleter;
 import com.fabula.android.timeline.database.contentmanagers.ContentLoader;
-import com.fabula.android.timeline.database.contentmanagers.ContentUpdater;
 import com.fabula.android.timeline.models.Experience;
 import com.fabula.android.timeline.utilities.Constants;
-import com.fabula.android.timeline.utilities.Utilities;
 
 public class TimelineBrowserDialog extends Dialog {
 

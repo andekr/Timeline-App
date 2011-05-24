@@ -64,11 +64,6 @@ public class Constants {
 
 	final public static int NEW_TAG_REQUESTCODE = 746;
 
-	
-
-	
-    
-    
     static File sdCardDirectory = Environment.getExternalStorageDirectory();
     public static String IMAGE_STORAGE_FILEPATH = sdCardDirectory.getPath()+"/data/com.fabula.android.timeline/images/";
     public static String VIDEO_STORAGE_FILEPATH = sdCardDirectory.getPath()+"/data/com.fabula.android.timeline/videos/";

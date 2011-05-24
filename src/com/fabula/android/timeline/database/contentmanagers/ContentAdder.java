@@ -26,6 +26,8 @@ import com.fabula.android.timeline.models.SimpleVideo.VideoColumns;
 
 /**
  * Helper class for adding different models to their respective ContentProviders (Saving them using SQLite)
+ * 
+ * @author andrstor
  */
 public class ContentAdder {
 	

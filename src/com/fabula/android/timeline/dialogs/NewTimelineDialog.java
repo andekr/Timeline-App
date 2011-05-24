@@ -34,6 +34,7 @@ import com.fabula.android.timeline.utilities.Utilities;
 
 public class NewTimelineDialog extends Dialog {
 	
+	@SuppressWarnings("unused")
 	private static final String TAG = "NewTimelineDialog";
 	
 	private Context context; 

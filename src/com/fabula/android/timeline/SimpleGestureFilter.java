@@ -5,6 +5,13 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.GestureDetector.SimpleOnGestureListener;
 
+/**
+ * Based on http://android-journey.blogspot.com/2010/01/android-gestures.html
+ * 
+ * 
+ * @author andekr
+ *
+ */
 public class SimpleGestureFilter extends SimpleOnGestureListener{
     
 	 public final static int SWIPE_UP    = 1;

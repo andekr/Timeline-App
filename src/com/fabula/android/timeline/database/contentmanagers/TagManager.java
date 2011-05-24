@@ -54,7 +54,6 @@ public class TagManager {
 	 * @param tagName name of the tag
 	 * @param event the event to tag
 	 */
-	
 	public void addTagToEventInDatabase(String tagName, BaseEvent event) {
 		ContentValues values = new ContentValues();
 		
@@ -109,7 +108,6 @@ public class TagManager {
 	 * Gets all the tags saved in the database
 	 * @return a list of all the tags in the database
 	 */
-
 	public ArrayList<String> getAllTags() {
 
 		
@@ -205,7 +203,6 @@ public class TagManager {
 				allTags.add(getTag(c.getInt(c.getColumnIndex(TagColumns.TAG_ID))));
 			} while (c.moveToNext());
 		}
-//		TimelineDatabaseHelper.getCurrentTimeLineDatabase().close();
 		c.close();
 		return allTags;
 	}

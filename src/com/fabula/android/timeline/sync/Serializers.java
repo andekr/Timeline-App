@@ -15,6 +15,15 @@ import com.google.myjson.JsonSerializer;
 
 public class Serializers {
 	
+	/**
+	 * Custom serializer for {@link Gson} to remove empty lists, which Google App Engine can't handle right.
+	 * GSON treats empty lists with two brackets [], while Google App Engine inserts an empty object to the database
+	 * if two brackets with empty content is received.
+	 * This method substitutes empty lists with null, so they are not serialized. 
+	 * Not very good coding, and not very modifiable. 
+	 * 
+	 * So, if new lists are introduced, one have to implement the empty check for this list as well.
+	 */
 	protected static class ExperienceSerializer implements JsonSerializer<Experience> {
 		  public JsonElement serialize(Experience src, Type typeOfSrc, JsonSerializationContext context) {
 					 if(src.getEvents().size()==0)
@@ -96,10 +105,10 @@ public class Serializers {
 	
 	
 	/**
-	 * Helper class to convert {@link Event} to BaseEvent
+	 * Helper class to remove empty lists from Event
 	 * 
-	 * @param event the {@linkplain Event} to convert
-	 * @return the {@link BaseEvent} created 
+	 * @param event the {@linkplain Event} to remove empty lists from
+	 * @return the {@link Event} with removed empty lists 
 	 */
 	private static Event removeEmptyListsFromEvent(Event event) {
 		if(event.getEmotionList().size()==0)
@@ -112,21 +121,5 @@ public class Serializers {
 		
 		return event;
 	}
-
-//	/**
-//	 * Helper class to convert {@link MoodEvent} to BaseEvent
-//	 * 
-//	 * @param event the {@linkplain MoodEvent} to convert
-//	 * @return the {@link BaseEvent} created 
-//	 */
-//	private static BaseEvent convertMoodEventToBaseEvent(MoodEvent event) {
-//		BaseEvent moodBaseEvent = new BaseEvent(event.getId(), event.getExperienceid(), 
-//				event.getDatetime(), event.getLocation(), event.getUser());
-//		moodBaseEvent.setClassName(((MoodEvent)event).getClassName());
-//		moodBaseEvent.setMoodInt(((MoodEvent)event).getMood().getMoodInt());
-//		moodBaseEvent.setShared(((MoodEvent)event).isShared());
-//		moodBaseEvent.setAverage(((MoodEvent)event).isAverage());
-//		return moodBaseEvent;
-//	}
 
 }

@@ -79,22 +79,18 @@ public class SimplePicture extends EventItem {
 	@Override
 	public View getView(Context context) {
         ImageView image = new ImageView(context);
-       // image.setImageURI(getPictureUri());
         Bitmap bm = null;
         try {
 			bm = MediaStore.Images.Media.getBitmap(context.getContentResolver(), getPictureUri());
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         image.setImageBitmap(getThumbnail(bm));
         bm.recycle();
         image.setTag(this);
 
-//        FrameLayout.LayoutParams pictureLayout = new FrameLayout.LayoutParams(new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.TOP));
         image.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.TOP));
         image.setPadding(10, 10, 0, 0);
         return image;

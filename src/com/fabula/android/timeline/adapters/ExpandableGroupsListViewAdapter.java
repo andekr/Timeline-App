@@ -14,6 +14,14 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+/**
+ * Adapter for a list of expandable items.
+ * 
+ * Used in group list in Timeline application.
+ * 
+ * @author andekr
+ *
+ */
 public class ExpandableGroupsListViewAdapter extends BaseExpandableListAdapter{
 
 	private ArrayList <Group> groups;
@@ -31,7 +39,6 @@ public class ExpandableGroupsListViewAdapter extends BaseExpandableListAdapter{
 	}
 
 	public long getChildId(int groupPosition, int childPosition) {
-		// TODO Auto-generated method stub
 		return childPosition;
 	}
 

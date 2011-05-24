@@ -10,6 +10,14 @@ import android.location.Location;
 
 import com.google.android.maps.GeoPoint;
 
+/**
+ * The model for the BaseEvent which includes common properites of events.
+ * 
+ * 
+ * 
+ * @author andekr
+ *
+ */
 public class BaseEvent {
 	
 	private String id;
@@ -23,7 +31,7 @@ public class BaseEvent {
 	private transient Account user;
 	private String creator;
 	private transient List<String> tags;
-	//For GSON
+	//For GSON only
 	protected String className;
 	protected List<EventItem> eventItems;
 	protected List<Emotion> emotionList;

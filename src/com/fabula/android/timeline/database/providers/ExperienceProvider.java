@@ -97,13 +97,4 @@ public class ExperienceProvider extends BaseContentProvider {
 	      getContext().getContentResolver().notifyChange(uri, null);
 	      return count;
 	}
-
-//	//update some element in the db
-//	public int update(Uri uri, ContentValues values, String experienceID,
-//			String[] whereArgs) {
-//		String where = experienceID+ " = " +ExperienceColumns._ID;
-//        int count = super.getTimelinesDatabase().update(SQLStatements.TIMELINES_DATABASE_TABLE_NAME, values, where, whereArgs);
-//        getContext().getContentResolver().notifyChange(uri, null);
-//        return count;
-//	}
 }

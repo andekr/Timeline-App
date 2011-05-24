@@ -39,6 +39,14 @@ import com.fabula.android.timeline.sync.GoogleAppEngineHandler;
 import com.fabula.android.timeline.sync.UserAndGroupServiceHandler;
 import com.fabula.android.timeline.utilities.Constants;
 
+
+/**
+ * 
+ * The activity class for the user and group management.
+ * 
+ * @author andekr
+ *
+ */
 public class MyGroupsActivity extends Activity implements ProgressDialogActivity {
 	
 	private Account userAccount;
@@ -201,7 +209,7 @@ public class MyGroupsActivity extends Activity implements ProgressDialogActivity
 	}
 	
 	/**
-	 * Dialog for selecting wich user to add to the group
+	 * Dialog for selecting which user to add to the group
 	 */
 	private void openSelectUserToAddDialog() {
 		
@@ -293,7 +301,6 @@ public class MyGroupsActivity extends Activity implements ProgressDialogActivity
 	/**
 	 * Confirmation dialog that pops when you tries to leave a group
 	 */
-	
 	private void leaveGroupConfirmationDialog() {
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -377,6 +384,7 @@ public class MyGroupsActivity extends Activity implements ProgressDialogActivity
 		}
 	};
 	
+	//SETUP HELPERS
 	
 	private void setupHelpers() {
 		uGManager = new UserGroupManager(this);
@@ -388,7 +396,7 @@ public class MyGroupsActivity extends Activity implements ProgressDialogActivity
 	
 	
 	/**
-	 * Setup views and instansiate objects the activity is going to use
+	 * Setup views and instantiate objects the activity is going to use
 	 */
 	private void setupViews() {
 		myGroupsList = (ExpandableListView) findViewById(R.id.groupsList);

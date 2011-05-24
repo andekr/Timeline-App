@@ -14,6 +14,8 @@ import com.fabula.android.timeline.database.providers.TagProvider;
 
 /**
  * 
+ * A central model as it is the container of all events(and items)
+ * 
  * @author andekr
  *
  */
@@ -147,8 +149,13 @@ public class Experience {
 	}
 
 
+	/**
+	 * Method that gives the time span of the experience. Can be useful to set the
+	 * granularity of the view.
+	 * 
+	 */
 	public float getTimeScopeOfExperience(){
-		float min=0, max=0, diff;//Min blir aldri satt!
+		float min=0, max=0, diff;
 		
 		for (BaseEvent event : events) {
 			if(min==0)

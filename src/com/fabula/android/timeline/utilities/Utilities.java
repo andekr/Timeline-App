@@ -32,7 +32,6 @@ import android.util.Log;
 import com.fabula.android.timeline.R;
 import com.fabula.android.timeline.models.BaseEvent;
 import com.fabula.android.timeline.models.Event;
-import com.fabula.android.timeline.models.SimpleAttachment;
 import com.fabula.android.timeline.models.SimpleNote;
 import com.fabula.android.timeline.models.SimplePicture;
 import com.fabula.android.timeline.models.SimpleRecording;
@@ -75,12 +74,6 @@ public class Utilities {
 					return R.drawable.ic_menu_video_green;
 				}
 				
-			}else if(ex.getEventItems().get(0) instanceof SimpleAttachment){
-				if(!ex.isShared()) {
-					return R.drawable.ic_menu_attachment;
-				}else{
-					return R.drawable.ic_menu_attachment_green;
-				}
 			}else if(ex.getEventItems().get(0) instanceof SimpleNote){
 				if(!ex.isShared()) {
 					return R.drawable.ic_menu_note;
@@ -108,8 +101,6 @@ public class Utilities {
 					return R.drawable.mapicon_audio;
 				}else if(e.getEventItems().get(0) instanceof SimpleVideo){
 					return R.drawable.mapicon_video;
-				}else if(e.getEventItems().get(0) instanceof SimpleAttachment){
-					return R.drawable.mapicon_note;
 				}else if(e.getEventItems().get(0) instanceof SimpleNote){
 					return R.drawable.mapicon_note;
 				}

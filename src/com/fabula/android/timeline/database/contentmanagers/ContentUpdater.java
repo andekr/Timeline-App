@@ -9,11 +9,12 @@ import com.fabula.android.timeline.models.SimpleNote.NoteColumns;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.provider.ContactsContract.CommonDataKinds.Note;
 import android.util.Log;
 
 /**
  * Helper method for updating model objects in database.
- * Only Notes supports updating.
+ * Only {@link Note} and {@link Experience} supports updating.
  * 
  * @author andekr
  *
@@ -60,10 +61,6 @@ public class ContentUpdater {
 		
 	}
 	
-//	public void setExperienceSharestatus(Experience experience, boolean shared) {
-//		experience.setShared(shared);
-//		updateExperience(experience);
-//	}
 	
 	
 

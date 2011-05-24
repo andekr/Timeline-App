@@ -15,6 +15,12 @@ import com.fabula.android.timeline.models.Event.EventColumns;
 import com.fabula.android.timeline.utilities.Utilities;
 import com.google.myjson.annotations.SerializedName;
 
+/**
+ *  The "master class" of the items.
+ * 
+ * @author andekr
+ *
+ */
 public abstract class EventItem {
 	
 	private String id;

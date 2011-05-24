@@ -2,7 +2,6 @@ package com.fabula.android.timeline.sync;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.util.Log;
 
 import com.fabula.android.timeline.ProgressDialogActivity;
 import com.fabula.android.timeline.database.contentmanagers.UserGroupManager;
@@ -31,15 +30,7 @@ public class UserAndGroupServiceHandler {
 	            }
 	        };
 	}
-    /**
-     * Metoden som starter tråden som henter serier fra serveren
-     * Kan vises uten progressDialog, som er hendig når man trykker seg tilbake til startskjermen.
-     * Evt. endring vil da reflekteres, men uten å hindre brukereren i se på lista. 
-	 * Call this method when you don't want to handle progressbar and threading yourself.
-	 * 
-     * 
-     * @param showProgressDialog Gir mulighet til å vise/ikke vise progressbar ved lasting av nye elementer.
-     */
+
 	public void startDownloadUsersAndGroups() {
 		progressDialog = new ProgressDialog(mContext);
 		Thread thread =  new Thread(null, getUsersAndGroupsRunnable, "getUsersAndGroups");

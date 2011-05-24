@@ -25,31 +25,22 @@ public class Emotion {
 		this.emotionType = emotionType;
 	}
 	
-	
-	
 	public String getEmotionid() {
 		return emotionid;
 	}
-
-
 
 	public void setEmotionid(String emotionid) {
 		this.emotionid = emotionid;
 	}
 
 
-
 	public EmotionEnum getEmotionType() {
 		return emotionType;
 	}
 
-
-
 	public void setEmotionType(EmotionEnum emotionType) {
 		this.emotionType = emotionType;
 	}
-
-
 
 	public enum EmotionEnum{
 		LIKE(R.drawable.emo_im_happy, 1), COOL(R.drawable.emo_im_cool,2), DISLIKE(R.drawable.emo_im_dislike,3), SAD(R.drawable.emo_im_sad,4);
@@ -73,8 +64,6 @@ public class Emotion {
 			return name();
 		}
 	}
-	
-	
 	
 	public static final class EmotionColumns implements BaseColumns {
 		

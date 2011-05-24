@@ -214,7 +214,6 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
     	switch (requestCode) {
 		case Constants.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE:
 			  if (resultCode == RESULT_OK) {
-	    	        //use data here to access the image
 				   Log.i(this.getClass().getSimpleName(), "********* PICTURE CREATED **************");
 				   
 				   Toast.makeText(this, "Picture created", Toast.LENGTH_SHORT).show();
@@ -230,7 +229,6 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 			break;
 		case Constants.CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE:
 			   if (resultCode == RESULT_OK) {
-	    	        //use data here to access the video
 				Log.i(this.getClass().getSimpleName(), "********* VIDEO RECORDING CREATED **************");
 				   
 				Toast.makeText(this, "Video recording created", Toast.LENGTH_SHORT).show();
@@ -248,7 +246,6 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 			break;
 		case Constants.RECORD_AUDIO_ACTIVITY_REQUEST_CODE:
 			   if (resultCode == RESULT_OK) {
-				   //use data here to access the audio
 				   Log.i(this.getClass().getSimpleName(), "********* AUDIO RECORDING CREATED **************");
 				   
 				   Toast.makeText(this, "Audio recording created", Toast.LENGTH_SHORT).show();
@@ -267,7 +264,6 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 			
 		case Constants.CREATE_NOTE_ACTIVITY_REQUEST_CODE:
 			   if (resultCode == RESULT_OK) {
-	    	        //use data here to access the audio
 				   Log.i(this.getClass().getSimpleName(), "********* NOTE CREATED **************");
 				   Log.i(this.getClass().getSimpleName(), "Title: "+data.getExtras().getString(Intent.EXTRA_SUBJECT));
 				   Log.i(this.getClass().getSimpleName(), "Text: "+data.getExtras().getString(Intent.EXTRA_TEXT));
@@ -286,7 +282,6 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 			
 		case Constants.EDIT_NOTE:
 			   if (resultCode == RESULT_OK) {
-	    	        //use data here to access the audio
 	    	    	Toast.makeText(this, "Note edited" , Toast.LENGTH_SHORT).show();
 	    	    
 	    	    updateNote(data);
@@ -300,7 +295,6 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 			
 		case Constants.NEW_TAG_REQUESTCODE:
 			   if (resultCode == RESULT_OK) {
-	    	        //use data here to access the audio
 	    	    
 	    	    updateTags();
 
@@ -318,8 +312,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 				imageUri = (Uri) data.getData();
 				String filename =(Utilities.getUserAccount(this).name+new Date().getTime()).hashCode()+".jpg";
 				Utilities.copyFile(Utilities.getRealPathFromURI(imageUri, this), Constants.IMAGE_STORAGE_FILEPATH, filename);
-				//TODO: Kopiere filen til Fabula-images også?
-				addPictureToTimeline(filename);	//Eller skal det være attachment?
+				addPictureToTimeline(filename);	
 			}
 			break;
 			case Constants.SELECT_VIDEO:
@@ -343,7 +336,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 			if(resultCode == RESULT_OK) {
 				
 				String id = data.getExtras().getString("EVENT_ID");
-				BaseEvent selectedEvent =  timeline.getEvent(id);   //CASTED FROM BASEEVENT TO EVENT
+				BaseEvent selectedEvent =  timeline.getEvent(id);
 				
 				if(selectedEvent != null) {
 					if (selectedEvent instanceof Event) {
@@ -377,7 +370,6 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 				   Toast.makeText(this, "Note created", Toast.LENGTH_SHORT).show();
 			     addNoteToTimeline(intent);
 		    }
-		    // else continue with any other code you need in the method
 		}
 		else if(resultCode == Activity.RESULT_CANCELED) {
 		    Toast.makeText(this, "Attachment was not added", Toast.LENGTH_SHORT).show();
@@ -955,6 +947,7 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 		  System.out.println(scrollview.getMeasuredWidth());
 		  
 		  //Hack for Galaxy tab
+		  //TODO: THIS HAS TO BE REFACTORED TO ALLOW MULTIPLE SCREEN SIZES
 		  if(scrollview.getMeasuredWidth()==1024){
 			  if(scrollview.getScrollX()==(scrollview.getMeasuredWidth()-548) || scrollview.getScrollX()==0){
 			  	  gridview.startAnimation(slideRightOut);
@@ -976,8 +969,6 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 		                                                 break;
 		                                           
 		  } 
-//		   Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
-		
 	}
 	
 	public void setTitle(CharSequence title){
@@ -1091,17 +1082,6 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 			}
 		});
 		
-//		final ActionItem likewise = new ActionItem();
-//		
-//		likewise.setIcon(this.getResources().getDrawable(MoodEnum.LIKEWISE.getIcon()));
-//		likewise.setOnClickListener(new View.OnClickListener() {
-//			
-//			public void onClick(View v) {
-//				addMoodEventToTimeline(new MoodEvent(timeline.getId(), myLocation.getLocation(), MoodEnum.LIKEWISE, user));
-//				qa.dismiss();
-//			}
-//		});
-		
 		final ActionItem calm = new ActionItem();
 		
 		calm.setIcon(this.getResources().getDrawable(MoodEnum.CALM.getIcon()));
@@ -1132,7 +1112,6 @@ public class TimelineActivity extends Activity implements SimpleGestureListener 
 				
 				qa.addActionItem(happy);
 				qa.addActionItem(nervous);
-//				qa.addActionItem(likewise);
 				qa.addActionItem(calm);
 				qa.addActionItem(sad);
 				qa.setAnimStyle(QuickAction.ANIM_AUTO);

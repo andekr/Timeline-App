@@ -57,7 +57,6 @@ public class UserGroupManager {
 	 * Add a group to the database
 	 * @param group The group to be added
 	 */
-
 	public void addGroupToGroupDatabase(Group group) {
 		ContentValues values = new ContentValues();
 		
@@ -134,7 +133,6 @@ public class UserGroupManager {
 	 * Deletes a user from the database
 	 * @param user The user to be deleted
 	 */
-	
 	public void deleteUserFromDatabase(User user) {
 		
 		String where = UserColumns.USER_NAME+ " = " +user.getUserName();

@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.fabula.android.timeline.R;
 
 /**
- * Adapter for attachments. Renders a list of icons and text.
+ * Adapter for attachment list. Renders a list of icons and text.
  * 
  * @author andekr
  *

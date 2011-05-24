@@ -2,7 +2,6 @@ package com.fabula.android.timeline.models;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import android.accounts.Account;
 import android.location.Location;
@@ -11,10 +10,14 @@ import android.provider.BaseColumns;
 
 import com.fabula.android.timeline.database.providers.EventProvider;
 
+/**
+ * The Event model, which is the "normal" event that can hold {@link EventItem}s and {@link Emotion}s.
+ * 
+ * 
+ * @author andekr
+ *
+ */
 public class Event extends BaseEvent {
-	
-//	private List<EventItem> eventItems;
-//	private List<Emotion> emotionList;
 	
 	public Event(){
 		className = this.getClass().getSimpleName();

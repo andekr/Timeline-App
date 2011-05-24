@@ -133,8 +133,11 @@ public class GoogleAppEngineHandler {
 	
 	//HELPERS
 	
-	//Saving pictures to server. 
-	//TODO: Any better way to do this than the almighty nesting going on here?
+	/**
+	 * Saving pictures to server. 
+	 * TODO: Any better way to do this than the almighty nesting going on here?
+	 */
+	
 	private static void storeFilesOnServer(Object object) {
 		if(object instanceof Experiences){
 			if(((Experiences) object).getExperiences()!=null){

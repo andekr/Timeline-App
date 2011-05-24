@@ -14,6 +14,8 @@ import com.fabula.android.timeline.utilities.Constants;
 /**
  * The Activity for creation of a {@linkplain SimpleNote}.
  * 
+ * Thwe activity can be started with an intent to edit an existing note. 
+ * 
  * @author andekr
  *
  */

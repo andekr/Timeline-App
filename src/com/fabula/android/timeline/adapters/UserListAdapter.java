@@ -10,16 +10,20 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.fabula.android.timeline.R;
 import com.fabula.android.timeline.models.Group;
 import com.fabula.android.timeline.models.User;
 
+
+/**
+ * Adapter for the user list used to add users to groups.
+ * 
+ * 
+ */
 public class UserListAdapter extends ArrayAdapter<User> {
 
 	
@@ -35,14 +39,6 @@ public class UserListAdapter extends ArrayAdapter<User> {
 		 mInflater = LayoutInflater.from(mContext); 
 		 setNotifyOnChange(true);
 	 }
-
-//	public int getCount() {
-//		return users.size();
-//	}
-//
-//	public User getItem(int position) {
-//		return users.get(position);
-//	}
 
 	public ArrayList<User> getSelectedUsers() {
 		return checkedUsers;

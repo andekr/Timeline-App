@@ -74,16 +74,8 @@ public class SimpleVideo extends EventItem {
 		ImageView icon = (ImageView)playButton.findViewById(R.id.CustomButtonIcon);
 		icon.setImageResource(R.drawable.ic_menu_video);
 		
-		
-//		ImageButton playButton = new ImageButton(context);
-//		playButton.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_menu_play_clip));
-		
 		playButton.setTag(this);
 		
-//        VideoView videoView = new VideoView(context);
-//        videoView.setTag(this);
-//        videoView.setVideoURI(videoURI);
-//        Log.v("VIDEOVIEW", "VideoURL: "+videoURI+" spiller: "+videoView.isPlaying());
         playButton.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
         return playButton;
 	}

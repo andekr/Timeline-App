@@ -233,51 +233,6 @@ public class ContentLoader {
 		
 	}
 	
-	/**
-	 * 
-	 * 
-	 * 
-	 * @param experience The {@linkplain Experience} to get events from
-	 * @return ArrayList of events connected to the experience
-	 */
-//	public ArrayList<Event> getEvents(Experience experience){
-//		
-//		String[] eventItemsTableColumns = new String[]{EventItemsColumns.EVENT_ID, EventItemsColumns.EVENT_ITEM_ID, EventItemsColumns.EVENT_ITEM_TYPE};
-//		
-//		whereStatement = EventItemsColumns.EVENT_ID +"='"+ event.getId()+"'";
-//		String sortOrder = EventItemsColumns.CREATED_DATE+" ASC";
-//	
-//		Cursor listOfEventItems = context.getContentResolver().query(EventItemsColumns.CONTENT_URI, eventItemsTableColumns, whereStatement, null, sortOrder);
-//		DatabaseUtils.dumpCursor(listOfEventItems);
-//		Log.i("CURSOR", String.valueOf(listOfEventItems.moveToFirst()));
-//		if(listOfEventItems.moveToFirst()) {
-//			do{
-//				
-//				String eventItemID = listOfEventItems.getString(listOfEventItems.getColumnIndex(EventItemsColumns.EVENT_ITEM_ID));
-//				int itemType = listOfEventItems.getInt(listOfEventItems.getColumnIndex(EventItemsColumns.EVENT_ITEM_TYPE));
-//				
-//				if(itemType == ModelType.SimpleNote.numberOfType()) {
-//
-//					addNoteItemToEvent(event, eventItemID);
-//				}
-//				if(itemType == ModelType.SimplePicture.numberOfType()) {
-//					addPictureItemToEvent(event, eventItemID);
-//				}
-//				if(itemType == ModelType.SimpleRecording.numberOfType()) {
-//					addRecordingItemToEvent(event, eventItemID);
-//				}
-//				if(itemType == ModelType.SimpleVideo.numberOfType()) {
-//					addVideoItemToEvent(event, eventItemID);
-//				}
-//				
-//			}while(listOfEventItems.moveToNext());
-//		}
-//		
-//		listOfEventItems.close();
-//		
-//		
-//	}
-
 
 	private void loadAllConnectedEventItems(Event event) {
 			

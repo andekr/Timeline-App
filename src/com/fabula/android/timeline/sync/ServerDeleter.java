@@ -17,14 +17,12 @@ public class ServerDeleter {
 	
 	protected static void deleteUserFromGroupToGAE(Group groupToRemoveMember,
 			User userToRemoveFromGroup) {
-		//using DELETE here
 		final HttpDelete httpDelete = new HttpDelete("/rest/group/"+groupToRemoveMember.getId()+"/user/"+userToRemoveFromGroup.getUserName()+"/");
 		httpDelete.addHeader(CoreProtocolPNames.USER_AGENT, "TimelineAndroid");
 		sendDeleteRequestTOGAEServer("", Constants.targetHost, httpDelete);
 	}
 	
 	protected static void deleteUserFromGroupToGAE(Group selectedGroup) {
-		//using DELETE here
 		final HttpDelete httpDelete = new HttpDelete("/rest/group/"+selectedGroup.getId()+"/");
 		
 		sendDeleteRequestTOGAEServer("", Constants.targetHost, httpDelete);
@@ -40,7 +38,6 @@ public class ServerDeleter {
 				{
 					DefaultHttpClient httpClient = new DefaultHttpClient();
 					
-				        // execute is a blocking call, it's best to call this code in a thread separate from the ui's
 				    HttpResponse response = httpClient.execute(targetHost, httpDelete);
 
 				    Log.v("Delete to GAE", Utilities.convertStreamToString(response.getEntity().getContent()));
